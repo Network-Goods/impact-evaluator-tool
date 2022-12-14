@@ -1,7 +1,8 @@
+import Dashboard from "../../lib/admin/dashboard/Dashboard";
 
 const Home = () => {
   return (
-    <div>here</div>
+    <Dashboard />
   )
 }
 

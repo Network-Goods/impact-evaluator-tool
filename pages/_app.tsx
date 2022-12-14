@@ -23,7 +23,7 @@ export default function SupabaseSlackClone({ Component, pageProps }: { Component
     supabase.auth.getSession().then(({ data: { session }}) => {
       setSession(session);
       setUserLoaded(session ? true : false);
-      console.log('Used loaded ', user_loaded);
+      console.log('user_loaded: ', user_loaded);
       if (session?.user) {
         finish_login();        
       }
