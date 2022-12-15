@@ -1,9 +1,19 @@
 import Dashboard from "../../lib/admin/dashboard/Dashboard";
+import {
+  DashboardStore,
+  DashboardContext,
+} from "../../lib/admin/dashboard/DashboardStore";
+import {
+  NotificationStore,
+  NotificationContext,
+} from "../../lib/utils/Notifications";
 
-const Home = () => {
+export default function Home() {
+  let dashboard_store = new DashboardStore();
+
   return (
-    <Dashboard />
-  )
+    <DashboardContext.Provider value={dashboard_store}>
+      <Dashboard />
+    </DashboardContext.Provider>
+  );
 }
-
-export default Home
