@@ -183,7 +183,7 @@ export class Model {
 
     getEvaluations(): Evaluation[] {
         let evals = Object.values(this.aggregates).filter(aggregate => aggregate.kind == Evaluations.kind);
-        console.log('getting evaluations', evals);
+        console.log('model.getEvaluations()', evals);
         return evals;
     }
 }

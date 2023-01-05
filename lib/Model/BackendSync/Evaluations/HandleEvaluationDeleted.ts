@@ -4,6 +4,7 @@ import { EvaluationDeleted } from "../../Evaluations/Events";
 export const eventKind = EvaluationDeleted.kind;
 
 export async function handler(supabase: SupabaseClient, event: EvaluationDeleted.EvaluationDeleted): Promise<void | Error> {
+    console.log('[eletins eval', event.evaluation_id);
     const { error } = await supabase.from("evaluation").delete().eq('id', event.evaluation_id);
 
     if (error) {

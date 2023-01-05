@@ -1,5 +1,6 @@
 import { Evaluation } from '../Evaluation';
 import * as CreateEvaluation from './CreateEvaluation';
+export * as DeleteEvaluation from './DeleteEvaluation';
 
 export { CreateEvaluation };
 

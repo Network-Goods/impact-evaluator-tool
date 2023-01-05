@@ -7,6 +7,8 @@ export function route_command(command: Command): CommandHandler | null {
     switch (command.kind) {
         case EvaluationCommands.CreateEvaluation.kind:
             return EvaluationCommands.CreateEvaluation;
+        case EvaluationCommands.DeleteEvaluation.kind:
+            return EvaluationCommands.DeleteEvaluation;
         default:
             return null;
     }

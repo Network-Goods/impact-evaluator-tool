@@ -21,9 +21,5 @@ export function init(evaluation_id: string): DeleteEvaluation {
 
 
 export function handle(state: Evaluation, command: DeleteEvaluation): EvaluationDeleted.EvaluationDeleted | Error {
-    if (state) {
-        return new Error('Evaluation already exists');
-    }
-
     return EvaluationDeleted.init(command);
 }
