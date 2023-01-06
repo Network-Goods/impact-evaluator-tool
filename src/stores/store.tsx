@@ -15,70 +15,34 @@ export interface Evaluation {
 } 
 
 class BlockchainStore {
-
-  evaluations: Evaluation[] = [];
+  // evaluations: Array<Evaluation> = [];
   blocks: Array<IBlock> = [];
   transactions: Array<string> = [];
+  evaluations: Array<string> = [];
 
   constructor() {
     makeAutoObservable(this);
   }
 
-  get numberBlocks() {
-    return this.blocks.length;
+  createEvaluation(message: string) {
+    this.evaluations.push(message);
+    // this.evaluations.push({
+    //   id: 's',
+    //   polling_method: 'undefined',
+    //   status: 'draft',
+    //   title: 'New Evaluation',
+    // });
   }
 
-  createEvaluation() {
-    this.evaluations.push({
-      id: 's',
-      polling_method: 'undefined',
-      status: 'draft',
-      title: 'New Evaluation',
-  })
-  }
-
-  get valid() {
-    return this.blocks.every((block, index) => {
-      const prevBlock = this.blocks[index - 1] ?? { hash: "" };
-      const hash = sha256(
-        `${prevBlock.hash}${JSON.stringify(block.transactions)}`
-      ).toString();
-      return hash === block.hash;
-    });
-  }
 
   addTransaction(message: string) {
     this.transactions.push(message);
-  }
-
-  writeBlock() {
-    if (this.transactions.length === 0) {
-      return;
-    }
-
-    const transactions = [...this.transactions];
-    this.transactions = [];
-
-    const prevBlock = this.blocks[this.blocks.length - 1] ?? { hash: "" };
-    const hash = sha256(
-      `${prevBlock.hash}${JSON.stringify(transactions)}`
-    ).toString();
-
-    this.blocks.push({ hash, transactions });
   }
 }
 
 const StoreContext = createContext<BlockchainStore>(new BlockchainStore());
 
 const StoreProvider: FC<{ store: BlockchainStore, children: any }> = ({ store, children }) => {
-  useEffect(() => {
-    const interval = setInterval(() => {
-      store.writeBlock();
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, [store]);
-
   return (
     <StoreContext.Provider value={store}>{children}</StoreContext.Provider>
   );

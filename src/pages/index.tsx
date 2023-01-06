@@ -2,15 +2,6 @@ import { useState, FC } from "react";
 import { observer } from "mobx-react-lite";
 import { useStore } from "src/stores/store";
 
-const Title: FC = observer(() => {
-  const store = useStore();
-
-  return (
-    <h1>
-      {store.numberBlocks} Blocks ({store.valid ? "Valid" : "Invalid"})
-    </h1>
-  );
-});
 
 const Form: FC = () => {
   const store = useStore();
@@ -21,7 +12,7 @@ const Form: FC = () => {
       onSubmit={(e) => {
         e.preventDefault();
         store.addTransaction(message);
-        store.createEvaluation();
+        store.createEvaluation('test');
         setMessage("");
       }}
     >
@@ -52,23 +43,22 @@ const Transactions: FC = observer(() => {
   ) : null;
 });
 
-const Blocks: FC = observer(() => {
+
+const CreateEvaluationButton = observer(() => {
   const store = useStore();
 
+  async function onClick() {
+    // This only triggers an update if something has already been added via the Form component
+    store.createEvaluation('sss');
+  }
+
   return (
-    <div>
-      <h2>Blocks</h2>
-      <ul className="blocks">
-        {[...store.blocks].reverse().map((block) => (
-          <li key={block.hash}>
-            <h3>{block.hash}</h3>
-            <pre>{JSON.stringify(block.transactions, null, 2)}</pre>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <button onClick={() => onClick()}>
+      Create Round
+    </button>
   );
 });
+
 
 const Evaluations: FC = observer(() => {
   const store = useStore();
@@ -78,7 +68,7 @@ const Evaluations: FC = observer(() => {
       <h2>Pending Transactions</h2>
       <ul className="pending">
         {store.evaluations.map((evaluation, index) => (
-          <li key={index}>{evaluation.id}</li>
+          <li key={index}>{evaluation}</li>
         ))}
       </ul>
     </div>
@@ -89,10 +79,9 @@ const Home: FC = () => {
   return (
     <main>
       <Evaluations />
-      <Title />
+      <CreateEvaluationButton />
       <Form />
       <Transactions />
-      <Blocks />
     </main>
   );
 };
