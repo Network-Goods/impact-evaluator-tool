@@ -8,12 +8,14 @@
     "post-update": "yarn upgrade --latest"
   },
   "dependencies": {
+    "@types/uuid": "^9.0.0",
     "crypto-js": "4.1.1",
     "mobx": "6.7.0",
     "mobx-react-lite": "3.4.0",
     "next": "13.1.1",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@types/crypto-js": "^4.1.1",

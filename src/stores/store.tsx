@@ -1,6 +1,7 @@
 import { makeAutoObservable } from "mobx";
 import sha256 from "crypto-js/sha256";
 import { createContext, useContext, useEffect, FC } from "react";
+import { v4 as uuid } from "uuid";
 
 interface IBlock {
   hash: string;
@@ -15,28 +16,23 @@ export interface Evaluation {
 } 
 
 class BlockchainStore {
-  // evaluations: Array<Evaluation> = [];
-  blocks: Array<IBlock> = [];
-  transactions: Array<string> = [];
-  evaluations: Array<string> = [];
+  evaluations: Array<Evaluation> = [];
 
   constructor() {
     makeAutoObservable(this);
   }
 
-  createEvaluation(message: string) {
-    this.evaluations.push(message);
-    // this.evaluations.push({
-    //   id: 's',
-    //   polling_method: 'undefined',
-    //   status: 'draft',
-    //   title: 'New Evaluation',
-    // });
-  }
+  async createEvaluation(): Promise<Evaluation | Error> {
+    let newEvaluation: Evaluation = {
+      id: uuid(),
+      polling_method: 'undefined',
+      status: 'draft',
+      title: 'New Evaluation',
+    }
 
+    this.evaluations.push(newEvaluation);
 
-  addTransaction(message: string) {
-    this.transactions.push(message);
+    return newEvaluation;
   }
 }
 
