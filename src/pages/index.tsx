@@ -1,6 +1,6 @@
 import { useState, FC } from "react";
 import { observer } from "mobx-react-lite";
-import { useStore } from "src/store";
+import { useStore } from "src/stores/store";
 
 const Title: FC = observer(() => {
   const store = useStore();
