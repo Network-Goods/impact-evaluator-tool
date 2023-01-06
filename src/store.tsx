@@ -7,7 +7,16 @@ interface IBlock {
   transactions: Array<string>;
 }
 
+export interface Evaluation {
+  id: string;
+  title: string;
+  polling_method: "undefined" | "quadratic-voting" | "quantitative-evaluation";
+  status: "draft" | "started" | "closed";
+} 
+
 class BlockchainStore {
+
+  evaluations: Evaluation[] = [];
   blocks: Array<IBlock> = [];
   transactions: Array<string> = [];
 
@@ -17,6 +26,15 @@ class BlockchainStore {
 
   get numberBlocks() {
     return this.blocks.length;
+  }
+
+  createEvaluation() {
+    this.evaluations.push({
+      id: 's',
+      polling_method: 'undefined',
+      status: 'draft',
+      title: 'New Evaluation',
+  })
   }
 
   get valid() {
