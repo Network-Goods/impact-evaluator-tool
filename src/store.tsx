@@ -52,7 +52,7 @@ class BlockchainStore {
 
 const StoreContext = createContext<BlockchainStore>(new BlockchainStore());
 
-const StoreProvider: FC<{ store: BlockchainStore }> = ({ store, children }) => {
+const StoreProvider: FC<{ store: BlockchainStore, children: any }> = ({ store, children }) => {
   useEffect(() => {
     const interval = setInterval(() => {
       store.writeBlock();
