@@ -1,24 +1,32 @@
 import { AppProps } from "next/app";
+import { useEffect } from "react";
 import Navbar from "src/components/Navbar";
-import { BlockchainStore, StoreProvider } from "src/stores/store";
 import "../styles/globals.css";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { SupabaseProvider } from "src/lib/supabase";
 
-const store = new BlockchainStore();
+const theme = createTheme({
+  typography: {
+    button: {
+      textTransform: "none",
+    },
+  },
+});
 
-console.log("version ", process.version);
-
-function MyApp({ Component, pageProps }: AppProps) {
+const App = ({ Component, pageProps }: AppProps) => {
   return (
-    <StoreProvider store={store}>
-         <div className="flex flex-col h-full justify-center items-center">
+    <SupabaseProvider>
+      <ThemeProvider theme={theme}>
+        <div className="flex flex-col h-full justify-center items-center">
           <Navbar />
 
           <div className="w-[640px]">
             <Component {...pageProps} />
-       </div>
-     </div>
-     </StoreProvider>
+          </div>
+        </div>
+      </ThemeProvider>
+    </SupabaseProvider>
   );
-}
+};
 
-export default MyApp;
+export default App;
