@@ -1,0 +1,22 @@
+import PLLogo from "public/images/svg/PLLogo";
+import Navbar from "./Navbar";
+
+const AuthNavbar = () => {
+  return (
+    <Navbar>
+      <div className="h-full w-full bg-white shadow-sm">
+        <div className="flex flex-row items-center justify-between w-full max-w-[1600px] h-full px-8 mx-auto">
+          <div className="flex">
+            <PLLogo />
+            <span className="text-[#121212] font-bold text-xl">
+              Impact Evaluator
+            </span>
+          </div>
+          <div>username</div>
+        </div>
+      </div>
+    </Navbar>
+  );
+};
+
+export default AuthNavbar;
