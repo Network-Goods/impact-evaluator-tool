@@ -1,9 +1,10 @@
 import { AppProps } from "next/app";
-import { useEffect } from "react";
-import Navbar from "src/components/Navbar";
 import "../styles/globals.css";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { SupabaseProvider } from "src/lib/supabase";
+import { Inter } from "@next/font/google";
+
+const inter = Inter({ subsets: ["latin"] });
 
 const theme = createTheme({
   typography: {
@@ -17,13 +18,12 @@ const App = ({ Component, pageProps }: AppProps) => {
   return (
     <SupabaseProvider>
       <ThemeProvider theme={theme}>
-        <div className="flex flex-col h-full justify-center items-center">
-          <Navbar />
-
-          <div className="w-[640px]">
-            <Component {...pageProps} />
-          </div>
-        </div>
+        <style jsx global>{`
+          html {
+            font-family: ${inter.style.fontFamily};
+          }
+        `}</style>
+        <Component {...pageProps} />
       </ThemeProvider>
     </SupabaseProvider>
   );

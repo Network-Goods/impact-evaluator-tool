@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
+import Add from "public/images/svg/Add";
 import { useState } from "react";
-import { Button } from "@mui/material";
+import Button from "src/components/Button";
 import { useDashboardStore } from "./store";
 
 const CreateEvaluationButton = () => {
@@ -24,14 +25,14 @@ const CreateEvaluationButton = () => {
   }
 
   return (
-    <Button
-      disabled={disabled}
-      className=""
-      variant="contained"
-      onClick={() => onClick()}
-    >
-      Create Round
-    </Button>
+    <div>
+      <Button
+        text="Create a Round"
+        icon={<Add className="mb-1 fill-white" />}
+        onClick={() => console.log("Create a Round")}
+        disabled
+      />
+    </div>
   );
 };
 
