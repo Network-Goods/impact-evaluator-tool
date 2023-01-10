@@ -5,7 +5,7 @@ import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
-import Typography from "@mui/material/Typography";
+import Close from "public/images/svg/Close";
 
 const style = {
   position: "absolute" as "absolute",
@@ -15,7 +15,8 @@ const style = {
   width: 793,
   bgcolor: "white",
   boxShadow: 24,
-  p: 4,
+  py: 2,
+  px: 8,
   borderRadius: "9.31292px",
 };
 
@@ -23,6 +24,18 @@ const JoinRoundButton = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const [inputs, setInputs] = useState({});
+
+  const handleChange = (event: any) => {
+    const name = event.target.name;
+    const value = event.target.value;
+    setInputs((values) => ({ ...values, [name]: value }));
+  };
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    console.log("inputs", inputs);
+  };
   return (
     <div>
       <Button
@@ -31,7 +44,6 @@ const JoinRoundButton = () => {
         icon={<Add className="mb-1 fill-[#898888]" />}
         onClick={handleOpen}
       />
-      {/* <Button onClick={handleOpen}>Open modal</Button> */}
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -45,12 +57,51 @@ const JoinRoundButton = () => {
       >
         <Fade in={open}>
           <Box sx={style}>
-            <Typography id="transition-modal-title" variant="h6" component="h2">
-              Text in a modal
-            </Typography>
-            <Typography id="transition-modal-description" sx={{ mt: 2 }}>
-              Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-            </Typography>
+            <div className="flex justify-between items-center">
+              <h1 className="text-[28px] text-[#346dee] font-semibold">
+                Join an Impact Evaluator Round
+              </h1>
+
+              <button
+                onClick={handleClose}
+                className="p-6 text-[#333333] hover:text-[#979797] transition-colors duration-200 ease-in-out transform"
+              >
+                <Close className="fill-current" />{" "}
+              </button>
+            </div>
+            <form onSubmit={handleSubmit} className="flex flex-col max-w-xl">
+              <label className="mb-2.5" htmlFor="code">
+                Enter the unique round code:
+                <input
+                  className="appearance-none border rounded-lg w-full py-2 px-3 text-gray font-medium placeholder-gray-light focus:outline-none"
+                  type="text"
+                  name="code"
+                  value={inputs.code || ""}
+                  onChange={handleChange}
+                />
+              </label>
+              <label className="mb-2.5" htmlFor="email">
+                Enter email address:
+                <br />
+                <p className="text-sm text-[#979797]">
+                  Emails are used by round administrators to share details about
+                  the Impact Evaluator.
+                </p>
+                <input
+                  className="appearance-none border rounded-lg w-full py-2 px-3 text-gray font-medium placeholder-gray-light focus:outline-none"
+                  type="text"
+                  name="email"
+                  value={inputs.email || ""}
+                  onChange={handleChange}
+                />
+              </label>
+              <input
+                className="transition-colors duration-200 ease-in-out transform outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold mx-auto
+                px-6 py-1 border border-[#156ff7] bg-[#156ff7] hover:bg-[#002256] hover:border-[#002256] focus:bg-[#002256] text-white text-lg cursor-pointer"
+                type="submit"
+                value="Join"
+              />
+            </form>
           </Box>
         </Fade>
       </Modal>
