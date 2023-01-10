@@ -13,7 +13,7 @@ import { TypedDocumentNode as DocumentNode } from "@graphql-typed-document-node/
  * Therefore it is highly recommended to use the babel-plugin for production.
  */
 const documents = {
-  '\n  query DashboardEvaluationsQuery {\n    draftEvaluations: evaluationCollection(\n      filter: { status: { eq: "draft" } }\n    ) {\n      ...evaluationStubs\n    }\n    startedEvaluations: evaluationCollection(\n      filter: { status: { eq: "started" } }\n    ) {\n      ...evaluationStubs\n    }\n    closedEvaluations: evaluationCollection(\n      filter: { status: { eq: "closed" } }\n    ) {\n      ...evaluationStubs\n    }\n  }\n\n  fragment evaluationStubs on evaluationConnection {\n    edges {\n      node {\n        ...EvaluationStubFragment\n      }\n    }\n  }\n':
+  "\n  query DashboardEvaluationsQuery {\n    evaluations: evaluationCollection {\n      edges {\n        node {\n          ...EvaluationStubFragment\n        }\n      }\n    }\n  }\n":
     types.DashboardEvaluationsQueryDocument,
   "\n  fragment EvaluationStubFragment on evaluation {\n    id\n    name\n    status\n  }\n":
     types.EvaluationStubFragmentFragmentDoc,
@@ -41,8 +41,8 @@ export function gql(source: string): unknown;
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(
-  source: '\n  query DashboardEvaluationsQuery {\n    draftEvaluations: evaluationCollection(\n      filter: { status: { eq: "draft" } }\n    ) {\n      ...evaluationStubs\n    }\n    startedEvaluations: evaluationCollection(\n      filter: { status: { eq: "started" } }\n    ) {\n      ...evaluationStubs\n    }\n    closedEvaluations: evaluationCollection(\n      filter: { status: { eq: "closed" } }\n    ) {\n      ...evaluationStubs\n    }\n  }\n\n  fragment evaluationStubs on evaluationConnection {\n    edges {\n      node {\n        ...EvaluationStubFragment\n      }\n    }\n  }\n'
-): (typeof documents)['\n  query DashboardEvaluationsQuery {\n    draftEvaluations: evaluationCollection(\n      filter: { status: { eq: "draft" } }\n    ) {\n      ...evaluationStubs\n    }\n    startedEvaluations: evaluationCollection(\n      filter: { status: { eq: "started" } }\n    ) {\n      ...evaluationStubs\n    }\n    closedEvaluations: evaluationCollection(\n      filter: { status: { eq: "closed" } }\n    ) {\n      ...evaluationStubs\n    }\n  }\n\n  fragment evaluationStubs on evaluationConnection {\n    edges {\n      node {\n        ...EvaluationStubFragment\n      }\n    }\n  }\n'];
+  source: "\n  query DashboardEvaluationsQuery {\n    evaluations: evaluationCollection {\n      edges {\n        node {\n          ...EvaluationStubFragment\n        }\n      }\n    }\n  }\n"
+): (typeof documents)["\n  query DashboardEvaluationsQuery {\n    evaluations: evaluationCollection {\n      edges {\n        node {\n          ...EvaluationStubFragment\n        }\n      }\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

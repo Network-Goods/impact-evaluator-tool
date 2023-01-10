@@ -62,7 +62,7 @@ export default function Dashboard() {
         <SubTitle text="Ongoing Rounds" />
         <JoinRoundButton />
       </div>
-      {store.draftEvaluations.map((evaluation) => (
+      {store.evaluations.map((evaluation) => (
         <EvaluationCard key={evaluation.id} evaluation={evaluation} />
       ))}
     </div>
