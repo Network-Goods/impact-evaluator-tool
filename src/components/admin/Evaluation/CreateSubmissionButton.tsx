@@ -3,8 +3,10 @@ import { useState } from "react";
 import { Button } from "@mui/material";
 import { Evaluation } from "src/gql/graphql";
 import { useEvaluationStore } from "./EvaluationStore";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
 
 const CreateSubmissionButton = () => {
+  const supabase = useSupabaseClient();
   const store = useEvaluationStore();
   const [disabled, set_disabled] = useState(false);
   const router = useRouter();
@@ -16,7 +18,7 @@ const CreateSubmissionButton = () => {
   async function onClick() {
     set_disabled(true);
 
-    const res = await store.createSubmission();
+    const res = await store.createSubmission(supabase);
 
     if (res instanceof Error) {
       set_disabled(false);

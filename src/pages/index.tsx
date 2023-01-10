@@ -3,6 +3,7 @@ import { useState, FC } from "react";
 import Button from "src/components/Button";
 import Container from "src/components/layout/Container";
 import Layout from "src/components/layout/Layout";
+import Login from "src/components/Login";
 import BasicNavbar from "src/components/navBar/BasicNavbar";
 
 const Index: FC = () => {
@@ -18,11 +19,7 @@ const Index: FC = () => {
               Impact Evaluator Rounds
             </h1>
             <div className="py-8">
-              <Button
-                text="Sign in with Github"
-                onClick={() => console.log("Github sign in")}
-                icon={<Github />}
-              />
+              <Login />
             </div>
           </div>
         </Container>
