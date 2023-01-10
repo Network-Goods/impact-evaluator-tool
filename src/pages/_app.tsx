@@ -3,12 +3,9 @@ import { useEffect, useState } from "react";
 import Navbar from "src/components/Navbar";
 import "../styles/globals.css";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-// import { supabase, SupabaseProvider } from "src/lib/supabase";
-import { useRouter } from "next/router";
-import { useSessionStore } from "src/lib/sessionStore";
-import Login from "src/components/Login";
 import { createBrowserSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { SessionContextProvider } from "@supabase/auth-helpers-react";
+import AuthWrapper from "src/components/AuthWrapper";
 
 const theme = createTheme({
   typography: {
@@ -19,22 +16,7 @@ const theme = createTheme({
 });
 
 const App = ({ Component, pageProps }: AppProps) => {
-  const sessionStore = useSessionStore();
   const [supabase] = useState(() => createBrowserSupabaseClient());
-
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      sessionStore.setSession(session);
-    });
-
-    supabase.auth.onAuthStateChange((_event, session) => {
-      sessionStore.setSession(session);
-    });
-  }, []);
-
-  if (!sessionStore.session) {
-    return <Login />;
-  }
 
   return (
     <SessionContextProvider
@@ -46,7 +28,9 @@ const App = ({ Component, pageProps }: AppProps) => {
           <Navbar />
 
           <div className="w-[640px]">
-            <Component {...pageProps} />
+            <AuthWrapper>
+              <Component {...pageProps} />
+            </AuthWrapper>
           </div>
         </div>
       </ThemeProvider>
