@@ -11,8 +11,7 @@ import { SupabaseClient } from "@supabase/supabase-js";
 export interface DashboardStore {
   fetching: boolean;
   error?: any;
-  draftEvaluations: DocumentType<typeof EvaluationStubFragment>[];
-  startedEvaluations: DocumentType<typeof EvaluationStubFragment>[];
+  evaluations: FromGraphQL<Evaluation>[];
   load: () => void;
   createEvaluation: (
     supabase: SupabaseClient
@@ -21,18 +20,15 @@ export interface DashboardStore {
 
 export const useDashboardStore = create<DashboardStore>()((set, get) => ({
   fetching: true,
-  draftEvaluations: [],
-  startedEvaluations: [],
+  evaluations: [],
 
   load: async () => {
-    console.log("loading dashboard graphql");
     graphQLClient.request(DashboardEvaluationsQuery).then((data: any) => {
       cleanPostgresGraphQLResult(data);
 
       set({
         fetching: false,
-        draftEvaluations: data.draftEvaluations || [],
-        startedEvaluations: data.startedEvaluations || [],
+        evaluations: data.evaluations || [],
       });
     });
   },
@@ -47,7 +43,7 @@ export const useDashboardStore = create<DashboardStore>()((set, get) => ({
     };
 
     set({
-      draftEvaluations: [...get().draftEvaluations, newEvaluation],
+      evaluations: [...get().evaluations, newEvaluation],
     });
 
     await createEvaluation(supabase, newEvaluation);

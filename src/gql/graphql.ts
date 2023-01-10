@@ -683,7 +683,7 @@ export type DashboardEvaluationsQueryQueryVariables = Exact<{
 
 export type DashboardEvaluationsQueryQuery = {
   __typename?: "Query";
-  draftEvaluations?: {
+  evaluations?: {
     __typename?: "evaluationConnection";
     edges: Array<{
       __typename?: "evaluationEdge";
@@ -695,38 +695,6 @@ export type DashboardEvaluationsQueryQuery = {
       };
     }>;
   } | null;
-  startedEvaluations?: {
-    __typename?: "evaluationConnection";
-    edges: Array<{
-      __typename?: "evaluationEdge";
-      node: {
-        __typename?: "evaluation";
-        id: any;
-        name: string;
-        status: string;
-      };
-    }>;
-  } | null;
-  closedEvaluations?: {
-    __typename?: "evaluationConnection";
-    edges: Array<{
-      __typename?: "evaluationEdge";
-      node: {
-        __typename?: "evaluation";
-        id: any;
-        name: string;
-        status: string;
-      };
-    }>;
-  } | null;
-};
-
-export type EvaluationStubsFragment = {
-  __typename?: "evaluationConnection";
-  edges: Array<{
-    __typename?: "evaluationEdge";
-    node: { __typename?: "evaluation"; id: any; name: string; status: string };
-  }>;
 };
 
 export type EvaluationStubFragmentFragment = {
@@ -792,47 +760,6 @@ export const EvaluationStubFragmentFragmentDoc = {
     },
   ],
 } as unknown as DocumentNode<EvaluationStubFragmentFragment, unknown>;
-export const EvaluationStubsFragmentDoc = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "FragmentDefinition",
-      name: { kind: "Name", value: "evaluationStubs" },
-      typeCondition: {
-        kind: "NamedType",
-        name: { kind: "Name", value: "evaluationConnection" },
-      },
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "edges" },
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "node" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "FragmentSpread",
-                        name: { kind: "Name", value: "EvaluationStubFragment" },
-                      },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-    ...EvaluationStubFragmentFragmentDoc.definitions,
-  ],
-} as unknown as DocumentNode<EvaluationStubsFragment, unknown>;
 export const DashboardEvaluationsQueryDocument = {
   kind: "Document",
   definitions: [
@@ -845,129 +772,35 @@ export const DashboardEvaluationsQueryDocument = {
         selections: [
           {
             kind: "Field",
-            alias: { kind: "Name", value: "draftEvaluations" },
+            alias: { kind: "Name", value: "evaluations" },
             name: { kind: "Name", value: "evaluationCollection" },
-            arguments: [
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "filter" },
-                value: {
-                  kind: "ObjectValue",
-                  fields: [
-                    {
-                      kind: "ObjectField",
-                      name: { kind: "Name", value: "status" },
-                      value: {
-                        kind: "ObjectValue",
-                        fields: [
-                          {
-                            kind: "ObjectField",
-                            name: { kind: "Name", value: "eq" },
-                            value: {
-                              kind: "StringValue",
-                              value: "draft",
-                              block: false,
-                            },
-                          },
-                        ],
-                      },
-                    },
-                  ],
-                },
-              },
-            ],
             selectionSet: {
               kind: "SelectionSet",
               selections: [
                 {
-                  kind: "FragmentSpread",
-                  name: { kind: "Name", value: "evaluationStubs" },
-                },
-              ],
-            },
-          },
-          {
-            kind: "Field",
-            alias: { kind: "Name", value: "startedEvaluations" },
-            name: { kind: "Name", value: "evaluationCollection" },
-            arguments: [
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "filter" },
-                value: {
-                  kind: "ObjectValue",
-                  fields: [
-                    {
-                      kind: "ObjectField",
-                      name: { kind: "Name", value: "status" },
-                      value: {
-                        kind: "ObjectValue",
-                        fields: [
-                          {
-                            kind: "ObjectField",
-                            name: { kind: "Name", value: "eq" },
-                            value: {
-                              kind: "StringValue",
-                              value: "started",
-                              block: false,
+                  kind: "Field",
+                  name: { kind: "Name", value: "edges" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "node" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "FragmentSpread",
+                              name: {
+                                kind: "Name",
+                                value: "EvaluationStubFragment",
+                              },
                             },
-                          },
-                        ],
+                          ],
+                        },
                       },
-                    },
-                  ],
-                },
-              },
-            ],
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                {
-                  kind: "FragmentSpread",
-                  name: { kind: "Name", value: "evaluationStubs" },
-                },
-              ],
-            },
-          },
-          {
-            kind: "Field",
-            alias: { kind: "Name", value: "closedEvaluations" },
-            name: { kind: "Name", value: "evaluationCollection" },
-            arguments: [
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "filter" },
-                value: {
-                  kind: "ObjectValue",
-                  fields: [
-                    {
-                      kind: "ObjectField",
-                      name: { kind: "Name", value: "status" },
-                      value: {
-                        kind: "ObjectValue",
-                        fields: [
-                          {
-                            kind: "ObjectField",
-                            name: { kind: "Name", value: "eq" },
-                            value: {
-                              kind: "StringValue",
-                              value: "closed",
-                              block: false,
-                            },
-                          },
-                        ],
-                      },
-                    },
-                  ],
-                },
-              },
-            ],
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                {
-                  kind: "FragmentSpread",
-                  name: { kind: "Name", value: "evaluationStubs" },
+                    ],
+                  },
                 },
               ],
             },
@@ -975,7 +808,7 @@ export const DashboardEvaluationsQueryDocument = {
         ],
       },
     },
-    ...EvaluationStubsFragmentDoc.definitions,
+    ...EvaluationStubFragmentFragmentDoc.definitions,
   ],
 } as unknown as DocumentNode<
   DashboardEvaluationsQueryQuery,
