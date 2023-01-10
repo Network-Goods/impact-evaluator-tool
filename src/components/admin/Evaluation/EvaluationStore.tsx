@@ -100,7 +100,6 @@ export const useEvaluationStore = create<DetailsStore>()((set, get) => ({
         status,
       },
     });
-    console.log("setting status: ", status);
 
     setEvaluationStatus(evaluation, status);
   },
