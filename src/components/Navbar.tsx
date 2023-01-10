@@ -1,6 +1,9 @@
-import { supabase } from "src/lib/supabase";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import { FC } from "react";
 
-const Navbar = () => {
+const Navbar: FC = () => {
+  const supabase = useSupabaseClient();
+
   const handleLogout = async () => {
     const { error } = await supabase.auth.signOut();
 

@@ -1,6 +1,6 @@
 import { v4 as uuid } from "uuid";
-import { supabase } from "src/lib/supabase";
 import { Evaluation, Submission, User2 } from "src/gql/graphql";
+import { SupabaseClient } from "@supabase/supabase-js";
 
 export type FromGraphQL<T> = Omit<
   T,
@@ -8,6 +8,7 @@ export type FromGraphQL<T> = Omit<
 >;
 
 export async function createEvaluation(
+  supabase: SupabaseClient,
   evaluation: FromGraphQL<Evaluation>
 ): Promise<void | Error> {
   // TODO: do something if there are submissions
@@ -24,15 +25,19 @@ export async function createEvaluation(
   }
 }
 
-export async function deleteEvaluation({
-  id,
-}: {
-  id: string;
-}): Promise<void | Error> {
+export async function deleteEvaluation(
+  supabase: SupabaseClient,
+  {
+    id,
+  }: {
+    id: string;
+  }
+): Promise<void | Error> {
   let res = await supabase.from("evaluation").delete().eq("id", id);
 }
 
 export async function deleteSubmission(
+  supabase: SupabaseClient,
   submission: Submission
 ): Promise<void | Error> {
   // TODO: some way of rolling back if one query fails
@@ -44,6 +49,7 @@ export async function deleteSubmission(
 }
 
 export async function setEvaluationName(
+  supabase: SupabaseClient,
   { id }: { id: string },
   name: string
 ): Promise<void | Error> {
@@ -54,6 +60,7 @@ export async function setEvaluationName(
 }
 
 export async function setEvaluationStatus(
+  supabase: SupabaseClient,
   { id }: { id: string },
   status: string
 ): Promise<void | Error> {
@@ -64,6 +71,7 @@ export async function setEvaluationStatus(
 }
 
 export async function setSubmissionName(
+  supabase: SupabaseClient,
   submission: Submission,
   name: string
 ): Promise<void | Error> {
@@ -74,6 +82,7 @@ export async function setSubmissionName(
 }
 
 export async function createEvaluationSubmission(
+  supabase: SupabaseClient,
   evaluation: Evaluation,
   submission: FromGraphQL<Submission>
 ): Promise<void | Error> {
@@ -95,7 +104,10 @@ export async function createEvaluationSubmission(
   }
 }
 
-export async function createUser(user: User2): Promise<void | Error> {
+export async function createUser(
+  supabase: SupabaseClient,
+  user: User2
+): Promise<void | Error> {
   let dbUser: FromGraphQL<User2> = {
     id: user.id,
     email: user.email,

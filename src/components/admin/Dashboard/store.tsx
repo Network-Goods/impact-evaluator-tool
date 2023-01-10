@@ -6,6 +6,7 @@ import { DashboardEvaluationsQuery, EvaluationStubFragment } from "./queries";
 import { createEvaluation, FromGraphQL } from "src/lib/dbUtils";
 import { Evaluation } from "src/gql/graphql";
 import { v4 as uuid } from "uuid";
+import { SupabaseClient } from "@supabase/supabase-js";
 
 export interface DashboardStore {
   fetching: boolean;
@@ -13,7 +14,9 @@ export interface DashboardStore {
   draftEvaluations: DocumentType<typeof EvaluationStubFragment>[];
   startedEvaluations: DocumentType<typeof EvaluationStubFragment>[];
   load: () => void;
-  createEvaluation: () => Promise<FromGraphQL<Evaluation>>;
+  createEvaluation: (
+    supabase: SupabaseClient
+  ) => Promise<FromGraphQL<Evaluation>>;
 }
 
 export const useDashboardStore = create<DashboardStore>()((set, get) => ({
@@ -34,7 +37,9 @@ export const useDashboardStore = create<DashboardStore>()((set, get) => ({
     });
   },
 
-  createEvaluation: async (): Promise<FromGraphQL<Evaluation>> => {
+  createEvaluation: async (
+    supabase: SupabaseClient
+  ): Promise<FromGraphQL<Evaluation>> => {
     let newEvaluation: FromGraphQL<Evaluation> = {
       id: uuid(),
       name: "New Evaluation",
@@ -45,7 +50,7 @@ export const useDashboardStore = create<DashboardStore>()((set, get) => ({
       draftEvaluations: [...get().draftEvaluations, newEvaluation],
     });
 
-    await createEvaluation(newEvaluation);
+    await createEvaluation(supabase, newEvaluation);
     return newEvaluation;
   },
 }));

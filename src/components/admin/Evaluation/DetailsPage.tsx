@@ -8,8 +8,10 @@ import {
 import { FC, useState } from "react";
 import DeleteEvaluationButton from "src/components/DeleteEvaluationButton";
 import { useEvaluationStore } from "./EvaluationStore";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
 
 export const DetailsPage: FC = () => {
+  const supabase = useSupabaseClient();
   const store = useEvaluationStore();
   if (!store.evaluation) {
     return <div>Error: Evaluation not defined</div>;
@@ -17,7 +19,7 @@ export const DetailsPage: FC = () => {
   const [name, setName] = useState(store.evaluation.name);
 
   const onBlur = (event: any) => {
-    store.setEvaluationName(event.target.value);
+    store.setEvaluationName(supabase, event.target.value);
   };
 
   const onChange = (event: any) => {
@@ -25,7 +27,7 @@ export const DetailsPage: FC = () => {
   };
 
   const handleChange = (event: any) => {
-    store.setEvaluationStatus(event.target.value);
+    store.setEvaluationStatus(supabase, event.target.value);
   };
 
   return (

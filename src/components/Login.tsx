@@ -1,8 +1,9 @@
 import { Auth, ThemeSupa } from "@supabase/auth-ui-react";
-import { supabase } from "../lib/supabase";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
 
-// Supabase auth needs to be triggered client-side
 export default function Login() {
+  const supabase = useSupabaseClient();
+
   return (
     <>
       <Auth

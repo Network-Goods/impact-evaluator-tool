@@ -20,21 +20,15 @@ const theme = createTheme({
 
 const App = ({ Component, pageProps }: AppProps) => {
   const sessionStore = useSessionStore();
-  const router = useRouter();
   const [supabase] = useState(() => createBrowserSupabaseClient());
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       sessionStore.setSession(session);
-      console.log("session on auth.getSession", session);
     });
 
     supabase.auth.onAuthStateChange((_event, session) => {
       sessionStore.setSession(session);
-
-      if (!session) {
-        router.push("/login");
-      }
     });
   }, []);
 
@@ -43,7 +37,10 @@ const App = ({ Component, pageProps }: AppProps) => {
   }
 
   return (
-    <SupabaseProvider>
+    <SessionContextProvider
+      supabaseClient={supabase}
+      initialSession={pageProps.initialSession}
+    >
       <ThemeProvider theme={theme}>
         <div className="flex flex-col h-full justify-center items-center">
           <Navbar />
@@ -53,7 +50,7 @@ const App = ({ Component, pageProps }: AppProps) => {
           </div>
         </div>
       </ThemeProvider>
-    </SupabaseProvider>
+    </SessionContextProvider>
   );
 };
 
