@@ -1,5 +1,6 @@
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import PLLogo from "public/images/svg/PLLogo";
+import LogoutButton from "../LogoutButton";
 import Navbar from "./Navbar";
 
 const AuthNavbar = () => {
@@ -17,7 +18,10 @@ const AuthNavbar = () => {
               Impact Evaluator
             </span>
           </div>
-          <div>{username}</div>
+          <div className="flex">
+            <span className="items-center pr-4">{username}</span>
+            <LogoutButton />
+          </div>
         </div>
       </div>
     </Navbar>
