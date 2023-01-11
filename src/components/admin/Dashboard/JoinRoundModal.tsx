@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSession } from "@supabase/auth-helpers-react";
 import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
@@ -27,11 +28,19 @@ type JoinRoundModalProps = {
 const JoinRoundModal = ({ handleClose, open }: JoinRoundModalProps) => {
   const [inputs, setInputs] = useState({});
   const [checked, setChecked] = useState(false);
+  const session = useSession();
+
+  let githubEmail = session?.user.email;
 
   const handleChange = (event: any) => {
     const name = event.target.name;
     const value = event.target.value;
     setInputs((values) => ({ ...values, [name]: value }));
+  };
+
+  const handleChecked = () => {
+    setChecked((prev) => !prev);
+    setInputs((values) => ({ ...values, email: githubEmail }));
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -52,14 +61,14 @@ const JoinRoundModal = ({ handleClose, open }: JoinRoundModalProps) => {
     >
       <Fade in={open}>
         <Box sx={style}>
-          <div className="flex justify-between items-center">
+          <div className="flex justify-between items-center text-offblack">
             <h1 className="text-[28px] text-[#346dee] font-semibold">
               Join an Impact Evaluator Round
             </h1>
 
             <button
               onClick={handleClose}
-              className="p-6 text-[#333333] hover:text-[#979797] transition-colors duration-200 ease-in-out transform"
+              className="p-6 text-offblack hover:text-[#979797] transition-colors duration-200 ease-in-out transform"
             >
               <Close className="fill-current" />{" "}
             </button>
@@ -68,7 +77,7 @@ const JoinRoundModal = ({ handleClose, open }: JoinRoundModalProps) => {
             <label className="my-2" htmlFor="code">
               Enter the unique round code:
               <input
-                className="appearance-none border rounded-lg w-full py-2 px-3 mt-3 text-gray font-medium placeholder-gray-light focus:outline-none"
+                className="appearance-none border rounded-lg w-full py-2 px-3 mt-3 font-medium placeholder-gray-light focus:outline-none"
                 type="text"
                 name="code"
                 //@ts-ignore
@@ -83,7 +92,7 @@ const JoinRoundModal = ({ handleClose, open }: JoinRoundModalProps) => {
                 type="checkbox"
                 name="emailCheck"
                 checked={checked}
-                onChange={() => setChecked((prev) => !prev)}
+                onChange={() => handleChecked()}
               />
             </label>
 
@@ -94,14 +103,25 @@ const JoinRoundModal = ({ handleClose, open }: JoinRoundModalProps) => {
                 Emails are used by round administrators to share details about
                 the Impact Evaluator.
               </p>
-              <input
-                className="appearance-none border rounded-lg w-full py-2 px-3 mt-3 text-gray font-medium placeholder-gray-light focus:outline-none"
-                type="text"
-                name="email"
-                //@ts-ignore
-                value={inputs.email || ""}
-                onChange={handleChange}
-              />
+              {checked ? (
+                <input
+                  className="appearance-none border rounded-lg w-full py-2 px-3 mt-3 font-medium text-gray focus:outline-none"
+                  type="text"
+                  name="email"
+                  //@ts-ignore
+                  value={githubEmail}
+                  disabled={true}
+                />
+              ) : (
+                <input
+                  className="appearance-none border rounded-lg w-full py-2 px-3 mt-3 font-medium  focus:outline-none"
+                  type="text"
+                  name="email"
+                  //@ts-ignore
+                  value={inputs.email || ""}
+                  onChange={handleChange}
+                />
+              )}
             </label>
 
             <input
