@@ -12,6 +12,7 @@ import {
   setEvaluationName,
   setEvaluationStatus,
 } from "src/lib/dbUtils";
+import { SupabaseClient } from "@supabase/supabase-js";
 
 export type LoadOptions = {
   with_submissions?: boolean;
@@ -25,10 +26,12 @@ export interface DetailsStore {
   evaluation?: Evaluation;
   submissions: FromGraphQL<Submission>[];
   load: (evaluation_id: string, options: LoadOptions) => void;
-  setEvaluationName: (name: string) => void;
-  setEvaluationStatus: (name: string) => void;
-  deleteEvaluation: () => void;
-  createSubmission: () => Promise<FromGraphQL<Submission> | Error>;
+  setEvaluationName: (supabase: SupabaseClient, name: string) => void;
+  setEvaluationStatus: (supabase: SupabaseClient, name: string) => void;
+  deleteEvaluation: (supabase: SupabaseClient) => void;
+  createSubmission: (
+    supabase: SupabaseClient
+  ) => Promise<FromGraphQL<Submission> | Error>;
 }
 
 export const useEvaluationStore = create<DetailsStore>()((set, get) => ({
@@ -70,7 +73,7 @@ export const useEvaluationStore = create<DetailsStore>()((set, get) => ({
     }
   },
 
-  setEvaluationName: (name: string) => {
+  setEvaluationName: (supabase: SupabaseClient, name: string) => {
     const evaluation = get().evaluation;
 
     if (!evaluation) {
@@ -84,10 +87,10 @@ export const useEvaluationStore = create<DetailsStore>()((set, get) => ({
       },
     });
 
-    setEvaluationName(evaluation, name);
+    setEvaluationName(supabase, evaluation, name);
   },
 
-  setEvaluationStatus: (status: string) => {
+  setEvaluationStatus: (supabase: SupabaseClient, status: string) => {
     const evaluation = get().evaluation;
 
     if (!evaluation) {
@@ -100,22 +103,23 @@ export const useEvaluationStore = create<DetailsStore>()((set, get) => ({
         status,
       },
     });
-    console.log("setting status: ", status);
 
-    setEvaluationStatus(evaluation, status);
+    setEvaluationStatus(supabase, evaluation, status);
   },
 
-  deleteEvaluation: () => {
+  deleteEvaluation: (supabase: SupabaseClient) => {
     const evaluation = get().evaluation;
 
     if (!evaluation) {
       return;
     }
 
-    deleteEvaluation(evaluation);
+    deleteEvaluation(supabase, evaluation);
   },
 
-  createSubmission: async (): Promise<Error | FromGraphQL<Submission>> => {
+  createSubmission: async (
+    supabase: SupabaseClient
+  ): Promise<Error | FromGraphQL<Submission>> => {
     const evaluation = get().evaluation;
 
     if (!evaluation) {
@@ -135,7 +139,11 @@ export const useEvaluationStore = create<DetailsStore>()((set, get) => ({
       submissions: [...get().submissions, newSubmission],
     });
 
-    let res = await createEvaluationSubmission(evaluation, newSubmission);
+    let res = await createEvaluationSubmission(
+      supabase,
+      evaluation,
+      newSubmission
+    );
     if (res instanceof Error) {
       return res;
     }

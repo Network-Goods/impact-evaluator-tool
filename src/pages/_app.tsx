@@ -1,8 +1,13 @@
 import { AppProps } from "next/app";
 import "../styles/globals.css";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { SupabaseProvider } from "src/lib/supabase";
 import { Inter } from "@next/font/google";
+import { useState } from "react";
+import "../styles/globals.css";
+import { createBrowserSupabaseClient } from "@supabase/auth-helpers-nextjs";
+import { SessionContextProvider } from "@supabase/auth-helpers-react";
+import AuthWrapper from "src/components/AuthWrapper";
+import { useUserProfileStore } from "src/lib/UserProfileStore";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -15,17 +20,24 @@ const theme = createTheme({
 });
 
 const App = ({ Component, pageProps }: AppProps) => {
+  const [supabase] = useState(() => createBrowserSupabaseClient());
+
   return (
-    <SupabaseProvider>
+    <SessionContextProvider
+      supabaseClient={supabase}
+      initialSession={pageProps.initialSession}
+    >
       <ThemeProvider theme={theme}>
         <style jsx global>{`
           html {
             font-family: ${inter.style.fontFamily};
           }
         `}</style>
-        <Component {...pageProps} />
+        <AuthWrapper>
+          <Component {...pageProps} />
+        </AuthWrapper>
       </ThemeProvider>
-    </SupabaseProvider>
+    </SessionContextProvider>
   );
 };
 

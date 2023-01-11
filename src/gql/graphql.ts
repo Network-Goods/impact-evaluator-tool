@@ -107,24 +107,24 @@ export type Mutation = {
   deleteFromevaluatorCollection: EvaluatorDeleteResponse;
   /** Deletes zero or more records from the `submission` collection */
   deleteFromsubmissionCollection: SubmissionDeleteResponse;
-  /** Deletes zero or more records from the `user2` collection */
-  deleteFromuser2Collection: User2DeleteResponse;
+  /** Deletes zero or more records from the `user` collection */
+  deleteFromuserCollection: UserDeleteResponse;
   /** Adds one or more `evaluation` records to the collection */
   insertIntoevaluationCollection?: Maybe<EvaluationInsertResponse>;
   /** Adds one or more `evaluator` records to the collection */
   insertIntoevaluatorCollection?: Maybe<EvaluatorInsertResponse>;
   /** Adds one or more `submission` records to the collection */
   insertIntosubmissionCollection?: Maybe<SubmissionInsertResponse>;
-  /** Adds one or more `user2` records to the collection */
-  insertIntouser2Collection?: Maybe<User2InsertResponse>;
+  /** Adds one or more `user` records to the collection */
+  insertIntouserCollection?: Maybe<UserInsertResponse>;
   /** Updates zero or more records in the `evaluation` collection */
   updateevaluationCollection: EvaluationUpdateResponse;
   /** Updates zero or more records in the `evaluator` collection */
   updateevaluatorCollection: EvaluatorUpdateResponse;
   /** Updates zero or more records in the `submission` collection */
   updatesubmissionCollection: SubmissionUpdateResponse;
-  /** Updates zero or more records in the `user2` collection */
-  updateuser2Collection: User2UpdateResponse;
+  /** Updates zero or more records in the `user` collection */
+  updateuserCollection: UserUpdateResponse;
 };
 
 /** The root type for creating and mutating data */
@@ -146,9 +146,9 @@ export type MutationDeleteFromsubmissionCollectionArgs = {
 };
 
 /** The root type for creating and mutating data */
-export type MutationDeleteFromuser2CollectionArgs = {
+export type MutationDeleteFromuserCollectionArgs = {
   atMost?: Scalars["Int"];
-  filter?: InputMaybe<User2Filter>;
+  filter?: InputMaybe<UserFilter>;
 };
 
 /** The root type for creating and mutating data */
@@ -167,8 +167,8 @@ export type MutationInsertIntosubmissionCollectionArgs = {
 };
 
 /** The root type for creating and mutating data */
-export type MutationInsertIntouser2CollectionArgs = {
-  objects: Array<User2InsertInput>;
+export type MutationInsertIntouserCollectionArgs = {
+  objects: Array<UserInsertInput>;
 };
 
 /** The root type for creating and mutating data */
@@ -193,10 +193,10 @@ export type MutationUpdatesubmissionCollectionArgs = {
 };
 
 /** The root type for creating and mutating data */
-export type MutationUpdateuser2CollectionArgs = {
+export type MutationUpdateuserCollectionArgs = {
   atMost?: Scalars["Int"];
-  filter?: InputMaybe<User2Filter>;
-  set: User2UpdateInput;
+  filter?: InputMaybe<UserFilter>;
+  set: UserUpdateInput;
 };
 
 export type Node = {
@@ -235,8 +235,8 @@ export type Query = {
   node?: Maybe<Node>;
   /** A pagable collection of type `submission` */
   submissionCollection?: Maybe<SubmissionConnection>;
-  /** A pagable collection of type `user2` */
-  user2Collection?: Maybe<User2Connection>;
+  /** A pagable collection of type `user` */
+  userCollection?: Maybe<UserConnection>;
 };
 
 /** The root type for querying data */
@@ -275,13 +275,13 @@ export type QuerySubmissionCollectionArgs = {
 };
 
 /** The root type for querying data */
-export type QueryUser2CollectionArgs = {
+export type QueryUserCollectionArgs = {
   after?: InputMaybe<Scalars["Cursor"]>;
   before?: InputMaybe<Scalars["Cursor"]>;
-  filter?: InputMaybe<User2Filter>;
+  filter?: InputMaybe<UserFilter>;
   first?: InputMaybe<Scalars["Int"]>;
   last?: InputMaybe<Scalars["Int"]>;
-  orderBy?: InputMaybe<Array<User2OrderBy>>;
+  orderBy?: InputMaybe<Array<UserOrderBy>>;
 };
 
 /** Boolean expression comparing fields on type "String" */
@@ -415,7 +415,7 @@ export type Evaluator = Node & {
   id: Scalars["UUID"];
   /** Globally Unique Record Identifier */
   nodeId: Scalars["ID"];
-  user2?: Maybe<User2>;
+  user?: Maybe<User>;
   user_id: Scalars["UUID"];
   voice_credits?: Maybe<Scalars["Int"]>;
 };
@@ -495,7 +495,7 @@ export type Submission = Node & {
   name: Scalars["String"];
   /** Globally Unique Record Identifier */
   nodeId: Scalars["ID"];
-  user2?: Maybe<User2>;
+  user?: Maybe<User>;
   user_id: Scalars["UUID"];
   website_link: Scalars["String"];
 };
@@ -577,20 +577,22 @@ export type SubmissionUpdateResponse = {
   records: Array<Submission>;
 };
 
-export type User2 = Node & {
-  __typename?: "user2";
-  email: Scalars["String"];
+export type User = Node & {
+  __typename?: "user";
+  email?: Maybe<Scalars["String"]>;
   evaluatorCollection?: Maybe<EvaluatorConnection>;
-  github_handle: Scalars["String"];
+  github_handle?: Maybe<Scalars["String"]>;
+  github_user_id?: Maybe<Scalars["UUID"]>;
   id: Scalars["UUID"];
   invite_status?: Maybe<Scalars["String"]>;
   name: Scalars["String"];
   /** Globally Unique Record Identifier */
   nodeId: Scalars["ID"];
+  preferred_email?: Maybe<Scalars["UUID"]>;
   submissionCollection?: Maybe<SubmissionConnection>;
 };
 
-export type User2EvaluatorCollectionArgs = {
+export type UserEvaluatorCollectionArgs = {
   after?: InputMaybe<Scalars["Cursor"]>;
   before?: InputMaybe<Scalars["Cursor"]>;
   filter?: InputMaybe<EvaluatorFilter>;
@@ -599,7 +601,7 @@ export type User2EvaluatorCollectionArgs = {
   orderBy?: InputMaybe<Array<EvaluatorOrderBy>>;
 };
 
-export type User2SubmissionCollectionArgs = {
+export type UserSubmissionCollectionArgs = {
   after?: InputMaybe<Scalars["Cursor"]>;
   before?: InputMaybe<Scalars["Cursor"]>;
   filter?: InputMaybe<SubmissionFilter>;
@@ -608,73 +610,81 @@ export type User2SubmissionCollectionArgs = {
   orderBy?: InputMaybe<Array<SubmissionOrderBy>>;
 };
 
-export type User2Connection = {
-  __typename?: "user2Connection";
-  edges: Array<User2Edge>;
+export type UserConnection = {
+  __typename?: "userConnection";
+  edges: Array<UserEdge>;
   pageInfo: PageInfo;
 };
 
-export type User2DeleteResponse = {
-  __typename?: "user2DeleteResponse";
+export type UserDeleteResponse = {
+  __typename?: "userDeleteResponse";
   /** Count of the records impacted by the mutation */
   affectedCount: Scalars["Int"];
   /** Array of records impacted by the mutation */
-  records: Array<User2>;
+  records: Array<User>;
 };
 
-export type User2Edge = {
-  __typename?: "user2Edge";
+export type UserEdge = {
+  __typename?: "userEdge";
   cursor: Scalars["String"];
-  node: User2;
+  node: User;
 };
 
-export type User2Filter = {
+export type UserFilter = {
   email?: InputMaybe<StringFilter>;
   github_handle?: InputMaybe<StringFilter>;
+  github_user_id?: InputMaybe<UuidFilter>;
   id?: InputMaybe<UuidFilter>;
   invite_status?: InputMaybe<StringFilter>;
   name?: InputMaybe<StringFilter>;
   nodeId?: InputMaybe<IdFilter>;
+  preferred_email?: InputMaybe<UuidFilter>;
 };
 
-export type User2InsertInput = {
+export type UserInsertInput = {
   email?: InputMaybe<Scalars["String"]>;
   github_handle?: InputMaybe<Scalars["String"]>;
+  github_user_id?: InputMaybe<Scalars["UUID"]>;
   id?: InputMaybe<Scalars["UUID"]>;
   invite_status?: InputMaybe<Scalars["String"]>;
   name?: InputMaybe<Scalars["String"]>;
+  preferred_email?: InputMaybe<Scalars["UUID"]>;
 };
 
-export type User2InsertResponse = {
-  __typename?: "user2InsertResponse";
+export type UserInsertResponse = {
+  __typename?: "userInsertResponse";
   /** Count of the records impacted by the mutation */
   affectedCount: Scalars["Int"];
   /** Array of records impacted by the mutation */
-  records: Array<User2>;
+  records: Array<User>;
 };
 
-export type User2OrderBy = {
+export type UserOrderBy = {
   email?: InputMaybe<OrderByDirection>;
   github_handle?: InputMaybe<OrderByDirection>;
+  github_user_id?: InputMaybe<OrderByDirection>;
   id?: InputMaybe<OrderByDirection>;
   invite_status?: InputMaybe<OrderByDirection>;
   name?: InputMaybe<OrderByDirection>;
+  preferred_email?: InputMaybe<OrderByDirection>;
 };
 
-export type User2UpdateInput = {
+export type UserUpdateInput = {
   email?: InputMaybe<Scalars["String"]>;
   github_handle?: InputMaybe<Scalars["String"]>;
+  github_user_id?: InputMaybe<Scalars["UUID"]>;
   id?: InputMaybe<Scalars["UUID"]>;
   invite_status?: InputMaybe<Scalars["String"]>;
   name?: InputMaybe<Scalars["String"]>;
+  preferred_email?: InputMaybe<Scalars["UUID"]>;
 };
 
-export type User2UpdateResponse = {
-  __typename?: "user2UpdateResponse";
+export type UserUpdateResponse = {
+  __typename?: "userUpdateResponse";
   /** Count of the records impacted by the mutation */
   affectedCount: Scalars["Int"];
   /** Array of records impacted by the mutation */
-  records: Array<User2>;
+  records: Array<User>;
 };
 
 export type DashboardEvaluationsQueryQueryVariables = Exact<{
@@ -683,7 +693,7 @@ export type DashboardEvaluationsQueryQueryVariables = Exact<{
 
 export type DashboardEvaluationsQueryQuery = {
   __typename?: "Query";
-  draftEvaluations?: {
+  evaluations?: {
     __typename?: "evaluationConnection";
     edges: Array<{
       __typename?: "evaluationEdge";
@@ -695,38 +705,6 @@ export type DashboardEvaluationsQueryQuery = {
       };
     }>;
   } | null;
-  startedEvaluations?: {
-    __typename?: "evaluationConnection";
-    edges: Array<{
-      __typename?: "evaluationEdge";
-      node: {
-        __typename?: "evaluation";
-        id: any;
-        name: string;
-        status: string;
-      };
-    }>;
-  } | null;
-  closedEvaluations?: {
-    __typename?: "evaluationConnection";
-    edges: Array<{
-      __typename?: "evaluationEdge";
-      node: {
-        __typename?: "evaluation";
-        id: any;
-        name: string;
-        status: string;
-      };
-    }>;
-  } | null;
-};
-
-export type EvaluationStubsFragment = {
-  __typename?: "evaluationConnection";
-  edges: Array<{
-    __typename?: "evaluationEdge";
-    node: { __typename?: "evaluation"; id: any; name: string; status: string };
-  }>;
 };
 
 export type EvaluationStubFragmentFragment = {
@@ -771,6 +749,21 @@ export type SubmissionsQueryQuery = {
   } | null;
 };
 
+export type UserProfileQueryQueryVariables = Exact<{
+  github_user_id: Scalars["UUID"];
+}>;
+
+export type UserProfileQueryQuery = {
+  __typename?: "Query";
+  user?: {
+    __typename?: "userConnection";
+    edges: Array<{
+      __typename?: "userEdge";
+      node: { __typename?: "user"; id: any; preferred_email?: any | null };
+    }>;
+  } | null;
+};
+
 export const EvaluationStubFragmentFragmentDoc = {
   kind: "Document",
   definitions: [
@@ -792,47 +785,6 @@ export const EvaluationStubFragmentFragmentDoc = {
     },
   ],
 } as unknown as DocumentNode<EvaluationStubFragmentFragment, unknown>;
-export const EvaluationStubsFragmentDoc = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "FragmentDefinition",
-      name: { kind: "Name", value: "evaluationStubs" },
-      typeCondition: {
-        kind: "NamedType",
-        name: { kind: "Name", value: "evaluationConnection" },
-      },
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "edges" },
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "node" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "FragmentSpread",
-                        name: { kind: "Name", value: "EvaluationStubFragment" },
-                      },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-    ...EvaluationStubFragmentFragmentDoc.definitions,
-  ],
-} as unknown as DocumentNode<EvaluationStubsFragment, unknown>;
 export const DashboardEvaluationsQueryDocument = {
   kind: "Document",
   definitions: [
@@ -845,129 +797,35 @@ export const DashboardEvaluationsQueryDocument = {
         selections: [
           {
             kind: "Field",
-            alias: { kind: "Name", value: "draftEvaluations" },
+            alias: { kind: "Name", value: "evaluations" },
             name: { kind: "Name", value: "evaluationCollection" },
-            arguments: [
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "filter" },
-                value: {
-                  kind: "ObjectValue",
-                  fields: [
-                    {
-                      kind: "ObjectField",
-                      name: { kind: "Name", value: "status" },
-                      value: {
-                        kind: "ObjectValue",
-                        fields: [
-                          {
-                            kind: "ObjectField",
-                            name: { kind: "Name", value: "eq" },
-                            value: {
-                              kind: "StringValue",
-                              value: "draft",
-                              block: false,
-                            },
-                          },
-                        ],
-                      },
-                    },
-                  ],
-                },
-              },
-            ],
             selectionSet: {
               kind: "SelectionSet",
               selections: [
                 {
-                  kind: "FragmentSpread",
-                  name: { kind: "Name", value: "evaluationStubs" },
-                },
-              ],
-            },
-          },
-          {
-            kind: "Field",
-            alias: { kind: "Name", value: "startedEvaluations" },
-            name: { kind: "Name", value: "evaluationCollection" },
-            arguments: [
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "filter" },
-                value: {
-                  kind: "ObjectValue",
-                  fields: [
-                    {
-                      kind: "ObjectField",
-                      name: { kind: "Name", value: "status" },
-                      value: {
-                        kind: "ObjectValue",
-                        fields: [
-                          {
-                            kind: "ObjectField",
-                            name: { kind: "Name", value: "eq" },
-                            value: {
-                              kind: "StringValue",
-                              value: "started",
-                              block: false,
+                  kind: "Field",
+                  name: { kind: "Name", value: "edges" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "node" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "FragmentSpread",
+                              name: {
+                                kind: "Name",
+                                value: "EvaluationStubFragment",
+                              },
                             },
-                          },
-                        ],
+                          ],
+                        },
                       },
-                    },
-                  ],
-                },
-              },
-            ],
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                {
-                  kind: "FragmentSpread",
-                  name: { kind: "Name", value: "evaluationStubs" },
-                },
-              ],
-            },
-          },
-          {
-            kind: "Field",
-            alias: { kind: "Name", value: "closedEvaluations" },
-            name: { kind: "Name", value: "evaluationCollection" },
-            arguments: [
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "filter" },
-                value: {
-                  kind: "ObjectValue",
-                  fields: [
-                    {
-                      kind: "ObjectField",
-                      name: { kind: "Name", value: "status" },
-                      value: {
-                        kind: "ObjectValue",
-                        fields: [
-                          {
-                            kind: "ObjectField",
-                            name: { kind: "Name", value: "eq" },
-                            value: {
-                              kind: "StringValue",
-                              value: "closed",
-                              block: false,
-                            },
-                          },
-                        ],
-                      },
-                    },
-                  ],
-                },
-              },
-            ],
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                {
-                  kind: "FragmentSpread",
-                  name: { kind: "Name", value: "evaluationStubs" },
+                    ],
+                  },
                 },
               ],
             },
@@ -975,7 +833,7 @@ export const DashboardEvaluationsQueryDocument = {
         ],
       },
     },
-    ...EvaluationStubsFragmentDoc.definitions,
+    ...EvaluationStubFragmentFragmentDoc.definitions,
   ],
 } as unknown as DocumentNode<
   DashboardEvaluationsQueryQuery,
@@ -1174,4 +1032,99 @@ export const SubmissionsQueryDocument = {
 } as unknown as DocumentNode<
   SubmissionsQueryQuery,
   SubmissionsQueryQueryVariables
+>;
+export const UserProfileQueryDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "UserProfileQuery" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "github_user_id" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "UUID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "user" },
+            name: { kind: "Name", value: "userCollection" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "filter" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "github_user_id" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "eq" },
+                            value: {
+                              kind: "Variable",
+                              name: { kind: "Name", value: "github_user_id" },
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "edges" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "node" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "preferred_email" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  UserProfileQueryQuery,
+  UserProfileQueryQueryVariables
 >;
