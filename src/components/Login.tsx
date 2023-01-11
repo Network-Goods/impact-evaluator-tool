@@ -1,6 +1,7 @@
 import { Auth, ThemeSupa } from "@supabase/auth-ui-react";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/router";
+import Layout from "./layout/Layout";
 
 export default function Login() {
   const supabase = useSupabaseClient();
@@ -19,10 +20,8 @@ export default function Login() {
         onlyThirdPartyProviders={true}
         redirectTo={redirectTo}
         appearance={{ theme: ThemeSupa }}
-        // view="update_password"
         supabaseClient={supabase}
         providers={["github"]}
-        // scopes={{github: 'repo'}} // TODO: enable scopes in Auth component.
         socialLayout="vertical"
       />
     </>
