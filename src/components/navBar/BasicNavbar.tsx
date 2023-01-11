@@ -4,7 +4,7 @@ import Navbar from "./Navbar";
 const BasicNavbar = () => {
   return (
     <Navbar>
-      <div className="flex flex-row items-center justify-between h-full w-full bg-[#102d70]">
+      <div className="flex flex-row items-center justify-between h-full w-full bg-blue-dark">
         <div className="w-full max-w-[1600px] px-8 mx-auto">
           <div className="flex">
             <PLLogoWhite />
