@@ -1,7 +1,12 @@
+import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import PLLogo from "public/images/svg/PLLogo";
 import Navbar from "./Navbar";
 
 const AuthNavbar = () => {
+  const session = useSession();
+
+  let username = session?.user.user_metadata.user_name;
+
   return (
     <Navbar>
       <div className="h-full w-full bg-white shadow-sm">
@@ -12,7 +17,7 @@ const AuthNavbar = () => {
               Impact Evaluator
             </span>
           </div>
-          <div>username</div>
+          <div>{username}</div>
         </div>
       </div>
     </Navbar>
