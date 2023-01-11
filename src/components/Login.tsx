@@ -16,6 +16,7 @@ export default function Login() {
   return (
     <>
       <Auth
+        onlyThirdPartyProviders={true}
         redirectTo={redirectTo}
         appearance={{ theme: ThemeSupa }}
         // view="update_password"
