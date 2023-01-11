@@ -9,14 +9,15 @@ import Close from "public/images/svg/Close";
 
 const style = {
   position: "absolute" as "absolute",
-  top: "50%",
+  top: "40%",
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 793,
   bgcolor: "white",
   boxShadow: 24,
   py: 2,
-  px: 8,
+  pl: 8,
+  pr: 6,
   borderRadius: "9.31292px",
 };
 
@@ -70,17 +71,18 @@ const JoinRoundButton = () => {
               </button>
             </div>
             <form onSubmit={handleSubmit} className="flex flex-col max-w-xl">
-              <label className="mb-2.5" htmlFor="code">
+              <label className="my-2" htmlFor="code">
                 Enter the unique round code:
                 <input
-                  className="appearance-none border rounded-lg w-full py-2 px-3 text-gray font-medium placeholder-gray-light focus:outline-none"
+                  className="appearance-none border rounded-lg w-full py-2 px-3 mt-3 text-gray font-medium placeholder-gray-light focus:outline-none"
                   type="text"
                   name="code"
+                  //@ts-ignore
                   value={inputs.code || ""}
                   onChange={handleChange}
                 />
               </label>
-              <label className="mb-2.5" htmlFor="email">
+              <label className="mb-2 mt-5" htmlFor="email">
                 Enter email address:
                 <br />
                 <p className="text-sm text-[#979797]">
@@ -88,16 +90,17 @@ const JoinRoundButton = () => {
                   the Impact Evaluator.
                 </p>
                 <input
-                  className="appearance-none border rounded-lg w-full py-2 px-3 text-gray font-medium placeholder-gray-light focus:outline-none"
+                  className="appearance-none border rounded-lg w-full py-2 px-3 mt-3 text-gray font-medium placeholder-gray-light focus:outline-none"
                   type="text"
                   name="email"
+                  //@ts-ignore
                   value={inputs.email || ""}
                   onChange={handleChange}
                 />
               </label>
               <input
                 className="transition-colors duration-200 ease-in-out transform outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold mx-auto
-                px-6 py-1 border border-[#156ff7] bg-[#156ff7] hover:bg-[#002256] hover:border-[#002256] focus:bg-[#002256] text-white text-lg cursor-pointer"
+                px-6 py-1 border border-[#156ff7] bg-[#156ff7] hover:bg-[#002256] hover:border-[#002256] focus:bg-[#002256] text-white text-lg cursor-pointer my-8"
                 type="submit"
                 value="Join"
               />
