@@ -8,6 +8,7 @@ import { createBrowserSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { SessionContextProvider } from "@supabase/auth-helpers-react";
 import AuthWrapper from "src/components/AuthWrapper";
 import Head from "next/head";
+import { useUserProfileStore } from "src/lib/UserProfileStore";
 
 const aileron = localFont({
   src: [
