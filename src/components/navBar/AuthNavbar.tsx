@@ -59,7 +59,7 @@ const AuthNavbar = () => {
                 className="inline-flex w-full justify-center px-4 py-2 text-sm font-medium text-gray-700 "
                 onClick={() => setToggle((prev) => !prev)}
               >
-                {username}
+                {username || "Signed in"}
                 <DownChevron />
               </button>
             </div>
