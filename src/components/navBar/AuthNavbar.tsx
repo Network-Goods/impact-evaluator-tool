@@ -59,7 +59,7 @@ const AuthNavbar = () => {
                 className="inline-flex w-full justify-center px-4 py-2 text-sm font-medium text-gray-700 "
                 onClick={() => setToggle((prev) => !prev)}
               >
-                User name
+                {username || "Signed in"}
                 <svg
                   className="-mr-1 ml-2 h-5 w-5"
                   xmlns="http://www.w3.org/2000/svg"
