@@ -3,5 +3,9 @@ type EvaluationCardProps = {
 };
 
 export const EvaluationCard = ({ children }: EvaluationCardProps) => {
-  return <div className="border py-4 px-8 rounded-lg bg-white">{children}</div>;
+  return (
+    <div className="border border-gray py-4 px-8 rounded-lg bg-white">
+      {children}
+    </div>
+  );
 };
