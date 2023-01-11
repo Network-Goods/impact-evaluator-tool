@@ -50,7 +50,7 @@ export default function Dashboard() {
                     (evaluation) => evaluation.status !== "closed"
                   ).length -
                     1 ? (
-                    <hr className="my-4" />
+                    <hr className="my-4 border-gray " />
                   ) : null}
                 </div>
               ))}
@@ -75,7 +75,7 @@ export default function Dashboard() {
                     (evaluation) => evaluation.status !== "closed"
                   ).length -
                     1 ? (
-                    <hr className="my-4" />
+                    <hr className="my-4 border-gray" />
                   ) : null}
                 </div>
               ))}
