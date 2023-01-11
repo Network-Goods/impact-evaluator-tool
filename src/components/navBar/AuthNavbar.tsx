@@ -20,7 +20,7 @@ const AuthNavbar = () => {
           </div>
           <div className="flex">
             <span className="items-center pr-4">{username}</span>
-            <LogoutButton />
+            {session ? <LogoutButton /> : ""}
           </div>
         </div>
       </div>
