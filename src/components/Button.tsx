@@ -22,7 +22,7 @@ const Button = ({
           ? "px-3 py-1 border border-[#dbdbdb] bg-[#e7eaf0] hover:bg-[#dbdbdb] hover:border-[#dbdbdb] focus:bg-[#dbdbdb] text-[#898888] text-lg"
           : `${
               small ? "px-3 py-1" : "px-4 py-3"
-            } border border-[#156ff7] bg-[#156ff7] hover:bg-[#002256] hover:border-[#002256] focus:bg-[#002256] text-white text-lg`
+            } border border-blue bg-blue hover:bg-blue-darkest hover:border-blue-darkest focus:bg-blue-darkest text-white text-lg`
       }}`}
       onClick={() => onClick()}
       disabled={disabled}

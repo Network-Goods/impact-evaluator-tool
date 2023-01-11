@@ -73,11 +73,14 @@ const JoinRoundModal = ({ handleClose, open }: JoinRoundModalProps) => {
               <Close className="fill-current" />{" "}
             </button>
           </div>
-          <form onSubmit={handleSubmit} className="flex flex-col max-w-xl">
+          <form
+            onSubmit={handleSubmit}
+            className="flex flex-col max-w-xl text-offblack"
+          >
             <label className="my-2" htmlFor="code">
               Enter the unique round code:
               <input
-                className="appearance-none border rounded-lg w-full py-2 px-3 mt-3 font-medium placeholder-gray-light focus:outline-none"
+                className="appearance-none border border-gray rounded-lg w-full py-2 px-3 mt-3 font-medium focus:outline-none"
                 type="text"
                 name="code"
                 //@ts-ignore
@@ -88,7 +91,7 @@ const JoinRoundModal = ({ handleClose, open }: JoinRoundModalProps) => {
             <label className="my-2 flex flex-col" htmlFor="emailCheck">
               Use email associated with Github account?
               <input
-                className="mr-auto mt-3 text-[#E5E7EB] border-[#E5E7EB] rounded-lg"
+                className="mr-auto mt-3 rounded-lg"
                 type="checkbox"
                 name="emailCheck"
                 checked={checked}
@@ -114,7 +117,7 @@ const JoinRoundModal = ({ handleClose, open }: JoinRoundModalProps) => {
                 />
               ) : (
                 <input
-                  className="appearance-none border rounded-lg w-full py-2 px-3 mt-3 font-medium  focus:outline-none"
+                  className="appearance-none border border-gray rounded-lg w-full py-2 px-3 mt-3 font-medium focus:outline-none"
                   type="text"
                   name="email"
                   //@ts-ignore
@@ -126,7 +129,7 @@ const JoinRoundModal = ({ handleClose, open }: JoinRoundModalProps) => {
 
             <input
               className="transition-colors duration-200 ease-in-out transform outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold mx-auto
-                px-6 py-1 border border-[#156ff7] bg-[#156ff7] hover:bg-[#002256] hover:border-[#002256] focus:bg-[#002256] text-white text-lg cursor-pointer my-8"
+                px-6 py-1 border border-blue bg-blue hover:bg-blue-darkest hover:border-blue-darkest focus:bg-blue-darkest text-white text-lg cursor-pointer my-8"
               type="submit"
               value="Join"
             />
