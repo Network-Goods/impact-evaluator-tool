@@ -9,7 +9,7 @@ const LinkButton = ({
 }: {
   text: string;
   link: string;
-  small: boolean;
+  small?: boolean;
 }) => {
   const [disabled, set_disabled] = useState(false);
   const router = useRouter();
