@@ -4,21 +4,17 @@ import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import PLLogo from "public/images/svg/PLLogo";
 import LogoutButton from "../LogoutButton";
 import Navbar from "./Navbar";
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
 
 type CapturedEvent = MouseEvent | TouchEvent;
 
 const AuthNavbar = () => {
-
   const [toggle, setToggle] = useState(false);
   const wrapperRef = useRef<HTMLInputElement>(null);
-    const supabase = useSupabaseClient();
-
-
+  const supabase = useSupabaseClient();
 
   const handleSignOut = () => {
     setToggle(false);
-   supabase.auth.signOut();
+    supabase.auth.signOut();
   };
 
   const handleToggleButton = () => {
@@ -44,7 +40,6 @@ const AuthNavbar = () => {
   const session = useSession();
 
   let username = session?.user.user_metadata.user_name;
-
 
   return (
     <Navbar>
@@ -92,9 +87,6 @@ const AuthNavbar = () => {
                 </div>
               </div>
             </Fade>
-
-          
-
           </div>
         </div>
       </div>
