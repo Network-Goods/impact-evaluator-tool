@@ -128,16 +128,16 @@ type Mutation {
     atMost: Int! = 1
   ): submissionDeleteResponse!
 
-  """Deletes zero or more records from the `user2` collection"""
-  deleteFromuser2Collection(
+  """Deletes zero or more records from the `user` collection"""
+  deleteFromuserCollection(
     """Restricts the mutation's impact to records matching the criteria"""
-    filter: user2Filter
+    filter: userFilter
 
     """
     The maximum number of records in the collection permitted to be affected
     """
     atMost: Int! = 1
-  ): user2DeleteResponse!
+  ): userDeleteResponse!
 
   """Adds one or more `evaluation` records to the collection"""
   insertIntoevaluationCollection(objects: [evaluationInsertInput!]!): evaluationInsertResponse
@@ -148,8 +148,8 @@ type Mutation {
   """Adds one or more `submission` records to the collection"""
   insertIntosubmissionCollection(objects: [submissionInsertInput!]!): submissionInsertResponse
 
-  """Adds one or more `user2` records to the collection"""
-  insertIntouser2Collection(objects: [user2InsertInput!]!): user2InsertResponse
+  """Adds one or more `user` records to the collection"""
+  insertIntouserCollection(objects: [userInsertInput!]!): userInsertResponse
 
   """Updates zero or more records in the `evaluation` collection"""
   updateevaluationCollection(
@@ -199,21 +199,21 @@ type Mutation {
     atMost: Int! = 1
   ): submissionUpdateResponse!
 
-  """Updates zero or more records in the `user2` collection"""
-  updateuser2Collection(
+  """Updates zero or more records in the `user` collection"""
+  updateuserCollection(
     """
     Fields that are set will be updated for all records matching the `filter`
     """
-    set: user2UpdateInput!
+    set: userUpdateInput!
 
     """Restricts the mutation's impact to records matching the criteria"""
-    filter: user2Filter
+    filter: userFilter
 
     """
     The maximum number of records in the collection permitted to be affected
     """
     atMost: Int! = 1
-  ): user2UpdateResponse!
+  ): userUpdateResponse!
 }
 
 interface Node {
@@ -314,8 +314,8 @@ type Query {
     orderBy: [submissionOrderBy!]
   ): submissionConnection
 
-  """A pagable collection of type `user2`"""
-  user2Collection(
+  """A pagable collection of type `user`"""
+  userCollection(
     """Query the first `n` records in the collection"""
     first: Int
 
@@ -329,11 +329,11 @@ type Query {
     after: Cursor
 
     """Filters to apply to the results set when querying from the collection"""
-    filter: user2Filter
+    filter: userFilter
 
     """Sort order to apply to the collection"""
-    orderBy: [user2OrderBy!]
-  ): user2Connection
+    orderBy: [userOrderBy!]
+  ): userConnection
 }
 
 """
@@ -493,7 +493,7 @@ type evaluator implements Node {
   voice_credits: Int
   id: UUID!
   evaluation: evaluation
-  user2: user2
+  user: user
 }
 
 type evaluatorConnection {
@@ -570,7 +570,7 @@ type submission implements Node {
   description: String!
   evaluation_id: UUID!
   evaluation: evaluation
-  user2: user2
+  user: user
 }
 
 type submissionConnection {
@@ -648,14 +648,16 @@ type submissionUpdateResponse {
   records: [submission!]!
 }
 
-type user2 implements Node {
+type user implements Node {
   """Globally Unique Record Identifier"""
   nodeId: ID!
   id: UUID!
   name: String!
-  email: String!
-  github_handle: String!
+  email: String
+  github_handle: String
   invite_status: String
+  preferred_email: UUID
+  github_user_id: UUID
   submissionCollection(
     """Query the first `n` records in the collection"""
     first: Int
@@ -696,69 +698,77 @@ type user2 implements Node {
   ): evaluatorConnection
 }
 
-type user2Connection {
-  edges: [user2Edge!]!
+type userConnection {
+  edges: [userEdge!]!
   pageInfo: PageInfo!
 }
 
-type user2DeleteResponse {
+type userDeleteResponse {
   """Count of the records impacted by the mutation"""
   affectedCount: Int!
 
   """Array of records impacted by the mutation"""
-  records: [user2!]!
+  records: [user!]!
 }
 
-type user2Edge {
+type userEdge {
   cursor: String!
-  node: user2!
+  node: user!
 }
 
-input user2Filter {
+input userFilter {
   id: UUIDFilter
   name: StringFilter
   email: StringFilter
   github_handle: StringFilter
   invite_status: StringFilter
+  preferred_email: UUIDFilter
+  github_user_id: UUIDFilter
   nodeId: IDFilter
 }
 
-input user2InsertInput {
+input userInsertInput {
   id: UUID
   name: String
   email: String
   github_handle: String
   invite_status: String
+  preferred_email: UUID
+  github_user_id: UUID
 }
 
-type user2InsertResponse {
+type userInsertResponse {
   """Count of the records impacted by the mutation"""
   affectedCount: Int!
 
   """Array of records impacted by the mutation"""
-  records: [user2!]!
+  records: [user!]!
 }
 
-input user2OrderBy {
+input userOrderBy {
   id: OrderByDirection
   name: OrderByDirection
   email: OrderByDirection
   github_handle: OrderByDirection
   invite_status: OrderByDirection
+  preferred_email: OrderByDirection
+  github_user_id: OrderByDirection
 }
 
-input user2UpdateInput {
+input userUpdateInput {
   id: UUID
   name: String
   email: String
   github_handle: String
   invite_status: String
+  preferred_email: UUID
+  github_user_id: UUID
 }
 
-type user2UpdateResponse {
+type userUpdateResponse {
   """Count of the records impacted by the mutation"""
   affectedCount: Int!
 
   """Array of records impacted by the mutation"""
-  records: [user2!]!
+  records: [user!]!
 }

@@ -7,6 +7,7 @@ import "../styles/globals.css";
 import { createBrowserSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { SessionContextProvider } from "@supabase/auth-helpers-react";
 import AuthWrapper from "src/components/AuthWrapper";
+import { useUserProfileStore } from "src/lib/UserProfileStore";
 
 const inter = Inter({ subsets: ["latin"] });
 
