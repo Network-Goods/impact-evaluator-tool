@@ -73,9 +73,8 @@ export default function Dashboard() {
             {store.evaluations
               .filter((evaluation) => evaluation.status !== "closed")
               .map((evaluation, idx) => (
-                <>
-                  <EvaluationItem key={evaluation.id} evaluation={evaluation} />
-
+                <div key={evaluation.id}>
+                  <EvaluationItem evaluation={evaluation} />
                   {idx <
                   store.evaluations.filter(
                     (evaluation) => evaluation.status !== "closed"
@@ -83,7 +82,7 @@ export default function Dashboard() {
                     1 ? (
                     <hr className="my-4" />
                   ) : null}
-                </>
+                </div>
               ))}
           </EvaluationCard>
         ) : (
@@ -99,8 +98,8 @@ export default function Dashboard() {
             {store.evaluations
               .filter((evaluation) => evaluation.status === "closed")
               .map((evaluation, idx) => (
-                <>
-                  <EvaluationItem key={evaluation.id} evaluation={evaluation} />
+                <div key={evaluation.id}>
+                  <EvaluationItem evaluation={evaluation} />
                   {idx <
                   store.evaluations.filter(
                     (evaluation) => evaluation.status !== "closed"
@@ -108,7 +107,7 @@ export default function Dashboard() {
                     1 ? (
                     <hr className="my-4" />
                   ) : null}
-                </>
+                </div>
               ))}
           </EvaluationCard>
         ) : (
