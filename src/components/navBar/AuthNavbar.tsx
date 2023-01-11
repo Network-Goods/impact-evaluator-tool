@@ -18,8 +18,8 @@ const AuthNavbar = () => {
               Impact Evaluator
             </span>
           </div>
-          <div className="flex">
-            <span className="items-center pr-4">{username}</span>
+          <div className="flex items-center">
+            <span className="pr-4">{username}</span>
             {session ? <LogoutButton /> : ""}
           </div>
         </div>
