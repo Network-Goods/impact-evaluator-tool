@@ -1,7 +1,7 @@
 import { FC, ReactNode, use, useEffect } from "react";
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
-import Login from "./Login";
 import { useUserProfileStore } from "src/lib/UserProfileStore";
+import LoginPage from "src/components/LoginPage";
 
 type Props = {
   children: ReactNode;
@@ -22,7 +22,7 @@ const AuthWrapper: FC<Props> = ({ children }) => {
   }, [session]);
 
   if (!session) {
-    return <Login />;
+    return <LoginPage />;
   }
 
   return <>{children}</>;

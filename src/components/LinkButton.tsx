@@ -1,9 +1,16 @@
-import { Button } from "@mui/material";
-
 import { useRouter } from "next/router";
 import { useState } from "react";
+import Button from "./Button";
 
-const LinkButton = ({ text, link }: { text: string; link: string }) => {
+const LinkButton = ({
+  text,
+  link,
+  small,
+}: {
+  text: string;
+  link: string;
+  small?: boolean;
+}) => {
   const [disabled, set_disabled] = useState(false);
   const router = useRouter();
 
@@ -16,13 +23,11 @@ const LinkButton = ({ text, link }: { text: string; link: string }) => {
 
   return (
     <Button
+      small={small}
+      text={text}
       disabled={disabled}
-      className=""
-      variant="contained"
       onClick={() => onClick()}
-    >
-      {text}
-    </Button>
+    />
   );
 };
 
