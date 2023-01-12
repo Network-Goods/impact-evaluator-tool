@@ -9,6 +9,17 @@ import SubmitEvaluationModal from "./SubmitEvaluationModal";
 import SmallTitle from "../SmallTitle";
 import DownChevron from "public/images/svg/DownChevron";
 
+const projects: any = [
+  { title: "Outcome 1", votes: 0, usedCredits: 0, open: false },
+  { title: "Outcome 2", votes: 0, usedCredits: 1, open: false },
+  { title: "Outcome 3", votes: 0, usedCredits: 4, open: false },
+  { title: "Outcome 4", votes: 0, usedCredits: 0, open: false },
+  { title: "Outcome 5", votes: 0, usedCredits: 16, open: false },
+  { title: "Outcome 6", votes: 0, usedCredits: 1, open: false },
+  { title: "Outcome 7", votes: 0, usedCredits: 0, open: false },
+  { title: "Outcome 8", votes: 0, usedCredits: 0, open: false },
+];
+
 export default function Voting() {
   const [openModal, setOpenModal] = useState(false);
   const handleOpenModal = () => setOpenModal(true);
@@ -93,72 +104,110 @@ export default function Voting() {
         </div>
       </div>
       <hr className="my-8 border-gray" />
+      <div className="flex">
+        <div className="flex-1 rounded-lg bg-[#f0f0f0] border border-gray">
+          <div className="flex py-2 px-6">
+            <div className="w-[60%] py-2 border-r border-gray ">
+              <SmallTitle text="PROJECTS" />
+            </div>
+            <div className="w-[23.5%] text-center py-2">
+              <SmallTitle text="VOTES" />
+            </div>
+            <div className="w-[16.5%] text-center py-2 border-l border-gray ">
+              <SmallTitle text="CREDITS" />
+            </div>
+          </div>
 
-      <div className="rounded-lg bg-[#f0f0f0] border border-gray">
-        <div className="flex py-2 px-6">
-          <div className="w-[60%] py-2 border-r border-gray ">
-            <SmallTitle text="PROJECTS" />
-          </div>
-          <div className="w-[23.5%] text-center py-2">
-            <SmallTitle text="VOTES" />
-          </div>
-          <div className="w-[16.5%] text-center py-2 border-l border-gray ">
-            <SmallTitle text="CREDITS" />
-          </div>
-        </div>
-        <div className="flex px-6 border border-gray border-x-0 bg-white">
-          <div className="w-[60%] flex justify-between border-r border-gray">
-            <div className="py-6 pl-6">Outcome title</div>
-            <button onClick={handleClick} className="p-4">
-              <DownChevron
-                className={`h-5 w-5 transform transition-all duration-300  ease-in-out
+          <div>
+            {projects.map((project: any, idx: number) => {
+              return (
+                <div key={idx}>
+                  <div>
+                    <div className="flex px-6 border border-gray border-x-0 bg-white">
+                      <div className="w-[60%] flex justify-between border-r border-gray">
+                        <div className="py-6 pl-6">{project.title}</div>
+                        <button
+                          onClick={() => setOpen((prev) => !prev)}
+                          className="p-4"
+                        >
+                          <DownChevron
+                            className={`h-5 w-5 transform transition-all duration-300  ease-in-out
               ${open ? "rotate-180 fill-blue" : "rotate-0"}
               
               `}
-              />
-            </button>
-          </div>
-          <div className="w-[23.5%] text-center">
-            <div className="py-6">
-              <div className="flex flex-row ">
-                {/* <button
-                  onClick={() => handleCount("decrement", role.id)}
-                  className={`h-full  rounded-l cursor-pointer outline-none ${
-                    decrementDisabled ? "bg-secondaryBg" : "bg-secondaryText "
-                  }`}
-                  disabled={decrementDisabled}
-                >
-                  <span className="m-auto text-2xl font-thin">−</span>
-                </button> */}
-                <span className="outline-none focus:outline-none text-center w-full bg-secondaryText font-semibold text-md  md:text-basecursor-default  text-primaryText">
-                  1
-                </span>
-                {/* <button
-                  onClick={() => handleCount("increment", role.id)}
-                  className={` h-full  rounded-r cursor-pointer
-          ${incrementDisabled ? "bg-secondaryBg" : "bg-secondaryText "}
-          `}
-                  disabled={incrementDisabled}
-                >
-                  <span className="m-auto text-2xl font-thin">+</span>
-                </button> */}
-              </div>
-            </div>
-          </div>
-          <div className="w-[16.5%] text-center">
-            <div className="py-4 ">
-              <div className="py-2 border-l border-gray">Used credits</div>
-            </div>
+                          />
+                        </button>
+                      </div>
+                      <div className="w-[23.5%] text-center">
+                        <div className="py-[22px]">
+                          <div className="flex flex-row  justify-evenly items-center">
+                            <button
+                              // onClick={() => handleCount("decrement", role.id)}
+                              className={`w-9 h-9 rounded cursor-pointer outline-none ${
+                                decrementDisabled
+                                  ? "bg-gray-lighter"
+                                  : "bg-blue-darkest bg-opacity-30"
+                              }`}
+                              disabled={decrementDisabled}
+                            >
+                              <span
+                                className={`m-auto text-2xl font-semibold ${
+                                  decrementDisabled
+                                    ? "text-[#B5B5B5]"
+                                    : "text-blue-darkest"
+                                }`}
+                              >
+                                −
+                              </span>
+                            </button>
+                            <span className="outline-none focus:outline-none text-center text-3xl text-blue-darkest">
+                              1
+                            </span>
+
+                            <button
+                              // onClick={() => handleCount("increment", role.id)}
+                              className={`w-9 h-9 rounded cursor-pointer outline-none
+                        ${
+                          incrementDisabled ? "bg-secondaryBg" : "bg-blue-light"
+                        }
+                    `}
+                              disabled={incrementDisabled}
+                            >
+                              <span className="m-auto text-2xl font-semibold text-blue">
+                                +
+                              </span>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="w-[16.5%] text-center">
+                        <div className="py-4 ">
+                          <div className="py-2 border-l border-gray">
+                            Used credits{" "}
+                            <span className="text-xl text-black">
+                              {project.usedCredits}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <Collapse in={open} timeout="auto" unmountOnExit>
+                    <div>hello</div>
+                  </Collapse>
+                </div>
+              );
+            })}
           </div>
         </div>
-        <Collapse in={open} timeout="auto" unmountOnExit>
-          <div>i love dihan</div>
-          <div>i love dihan</div>
-          <div>i love dihan</div>
-          <div>i love dihan</div>
-          <div>i love dihan</div>
-          <div>i love dihan</div>
-        </Collapse>
+
+        <div className="rounded-lg bg-white border border-gray p-12 ml-6">
+          <SmallTitle text="VOICE CREDITS" />
+          <span>
+            <b>78</b>/100
+          </span>
+          <div>button</div>
+        </div>
       </div>
 
       <div className="flex justify-between">
