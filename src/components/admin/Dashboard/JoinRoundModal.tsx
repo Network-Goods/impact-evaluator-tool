@@ -77,7 +77,7 @@ const JoinRoundModal = ({ handleClose, open }: JoinRoundModalProps) => {
             <label className="my-2" htmlFor="code">
               Enter the unique round code:
               <input
-                className="appearance-none border rounded-lg w-full py-2 px-3 mt-3 font-medium placeholder-gray-light focus:outline-none"
+                className="appearance-none border border-gray rounded-lg w-full py-2 px-3 mt-3 font-medium focus:outline-none"
                 type="text"
                 name="code"
                 //@ts-ignore
@@ -109,7 +109,7 @@ const JoinRoundModal = ({ handleClose, open }: JoinRoundModalProps) => {
               Enter email:
               {checked ? (
                 <input
-                  className="appearance-none border rounded-lg w-full py-2 px-3 mt-1 font-medium text-gray focus:outline-none"
+                  className="text-base appearance-none border border-gray rounded-lg w-full py-2 px-3 mt-1 font-medium text-gray focus:outline-none"
                   type="text"
                   name="email"
                   //@ts-ignore
@@ -118,7 +118,7 @@ const JoinRoundModal = ({ handleClose, open }: JoinRoundModalProps) => {
                 />
               ) : (
                 <input
-                  className="appearance-none border rounded-lg w-full py-2 px-3 mt-1 font-medium  focus:outline-none"
+                  className="text-base appearance-none border border-gray rounded-lg w-full py-2 px-3 mt-1 font-medium  focus:outline-none"
                   type="text"
                   name="email"
                   //@ts-ignore
