@@ -658,6 +658,7 @@ type user implements Node {
   invite_status: String
   preferred_email: UUID
   github_user_id: UUID
+  role: String!
   submissionCollection(
     """Query the first `n` records in the collection"""
     first: Int
@@ -724,6 +725,7 @@ input userFilter {
   invite_status: StringFilter
   preferred_email: UUIDFilter
   github_user_id: UUIDFilter
+  role: StringFilter
   nodeId: IDFilter
 }
 
@@ -735,6 +737,7 @@ input userInsertInput {
   invite_status: String
   preferred_email: UUID
   github_user_id: UUID
+  role: String
 }
 
 type userInsertResponse {
@@ -753,6 +756,7 @@ input userOrderBy {
   invite_status: OrderByDirection
   preferred_email: OrderByDirection
   github_user_id: OrderByDirection
+  role: OrderByDirection
 }
 
 input userUpdateInput {
@@ -763,6 +767,7 @@ input userUpdateInput {
   invite_status: String
   preferred_email: UUID
   github_user_id: UUID
+  role: String
 }
 
 type userUpdateResponse {

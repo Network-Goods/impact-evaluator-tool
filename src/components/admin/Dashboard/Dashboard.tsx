@@ -35,7 +35,6 @@ export default function Dashboard() {
           <SubTitle text="Ongoing evaluations" />
           <JoinRoundButton />
         </div>
-        {console.log("store.evaluations", store.evaluations)}
         {store.evaluations.filter(
           (evaluation) => evaluation.status !== "closed"
         ) ? (

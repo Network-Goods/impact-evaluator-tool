@@ -13,7 +13,6 @@ const AuthWrapper: FC<Props> = ({ children }) => {
   const userProfileStore = useUserProfileStore();
 
   useEffect(() => {
-    console.log(session);
     if (session) {
       userProfileStore.login(supabase, session);
     } else {
