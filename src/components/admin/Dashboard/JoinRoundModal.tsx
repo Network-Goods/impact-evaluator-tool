@@ -112,7 +112,7 @@ const JoinRoundModal = ({ handleClose, open }: JoinRoundModalProps) => {
               Enter email:
               {checked ? (
                 <input
-                  className="appearance-none border rounded-lg w-full py-2 px-3 mt-1 font-medium text-gray focus:outline-none"
+                  className="text-base appearance-none border border-gray rounded-lg w-full py-2 px-3 mt-1 font-medium text-gray focus:outline-none"
                   type="text"
                   name="email"
                   //@ts-ignore
@@ -121,7 +121,7 @@ const JoinRoundModal = ({ handleClose, open }: JoinRoundModalProps) => {
                 />
               ) : (
                 <input
-                  className="appearance-none border rounded-lg w-full py-2 px-3 mt-1 font-medium  focus:outline-none"
+                  className="text-base appearance-none border border-gray rounded-lg w-full py-2 px-3 mt-1 font-medium  focus:outline-none"
                   type="text"
                   name="email"
                   //@ts-ignore
