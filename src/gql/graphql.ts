@@ -589,6 +589,7 @@ export type User = Node & {
   /** Globally Unique Record Identifier */
   nodeId: Scalars["ID"];
   preferred_email?: Maybe<Scalars["UUID"]>;
+  role: Scalars["String"];
   submissionCollection?: Maybe<SubmissionConnection>;
 };
 
@@ -639,6 +640,7 @@ export type UserFilter = {
   name?: InputMaybe<StringFilter>;
   nodeId?: InputMaybe<IdFilter>;
   preferred_email?: InputMaybe<UuidFilter>;
+  role?: InputMaybe<StringFilter>;
 };
 
 export type UserInsertInput = {
@@ -649,6 +651,7 @@ export type UserInsertInput = {
   invite_status?: InputMaybe<Scalars["String"]>;
   name?: InputMaybe<Scalars["String"]>;
   preferred_email?: InputMaybe<Scalars["UUID"]>;
+  role?: InputMaybe<Scalars["String"]>;
 };
 
 export type UserInsertResponse = {
@@ -667,6 +670,7 @@ export type UserOrderBy = {
   invite_status?: InputMaybe<OrderByDirection>;
   name?: InputMaybe<OrderByDirection>;
   preferred_email?: InputMaybe<OrderByDirection>;
+  role?: InputMaybe<OrderByDirection>;
 };
 
 export type UserUpdateInput = {
@@ -677,6 +681,7 @@ export type UserUpdateInput = {
   invite_status?: InputMaybe<Scalars["String"]>;
   name?: InputMaybe<Scalars["String"]>;
   preferred_email?: InputMaybe<Scalars["UUID"]>;
+  role?: InputMaybe<Scalars["String"]>;
 };
 
 export type UserUpdateResponse = {
