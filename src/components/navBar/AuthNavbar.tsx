@@ -79,7 +79,7 @@ const AuthNavbar = () => {
               <div className="absolute px-4 right-0 z-10 mt-2 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                 <div className="py-1">
                   <button
-                    className="block w-full px-4 py-2 text-left text-sm"
+                    className="block w-full px-4 py-2 text-left text-sm min-w-[85px]"
                     onClick={() => handleSignOut()}
                   >
                     Sign out

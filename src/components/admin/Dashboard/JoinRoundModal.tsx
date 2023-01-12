@@ -11,12 +11,12 @@ const style = {
   top: "40%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 793,
+  width: 739,
   bgcolor: "white",
   boxShadow: 24,
   py: 2,
   pl: 8,
-  pr: 6,
+  pr: 2,
   borderRadius: "9.31292px",
 };
 
@@ -70,7 +70,7 @@ const JoinRoundModal = ({ handleClose, open }: JoinRoundModalProps) => {
               onClick={handleClose}
               className="p-6 text-offblack hover:text-[#979797] transition-colors duration-200 ease-in-out transform"
             >
-              <Close className="fill-current" />{" "}
+              <Close className="fill-current" />
             </button>
           </div>
           <form onSubmit={handleSubmit} className="flex flex-col max-w-xl">
@@ -85,27 +85,31 @@ const JoinRoundModal = ({ handleClose, open }: JoinRoundModalProps) => {
                 onChange={handleChange}
               />
             </label>
-            <label className="my-2 flex flex-col" htmlFor="emailCheck">
-              Use email associated with Github account?
-              <input
-                className="mr-auto mt-3 text-[#E5E7EB] border-[#E5E7EB] rounded-lg"
-                type="checkbox"
-                name="emailCheck"
-                checked={checked}
-                onChange={() => handleChecked()}
-              />
-            </label>
-
-            <label className="mb-2 mt-5" htmlFor="email">
-              Enter email address:
+            <label className="mt-2 flex flex-col" htmlFor="emailCheck">
+              Email address:
               <br />
               <p className="text-sm text-[#979797]">
                 Emails are used by round administrators to share details about
                 the Impact Evaluator.
               </p>
+              <div className="flex mt-2">
+                <input
+                  className=" text-[#E5E7EB] border-[#E5E7EB] rounded-lg"
+                  type="checkbox"
+                  name="emailCheck"
+                  checked={checked}
+                  onChange={() => handleChecked()}
+                />{" "}
+                <span className="ml-2">Use email from Github account.</span>
+              </div>
+            </label>
+
+            <label className="mb-2 text-sm" htmlFor="email">
+              <p className="text-[#979797] my-2">or</p>
+              Enter email:
               {checked ? (
                 <input
-                  className="appearance-none border rounded-lg w-full py-2 px-3 mt-3 font-medium text-gray focus:outline-none"
+                  className="appearance-none border rounded-lg w-full py-2 px-3 mt-1 font-medium text-gray focus:outline-none"
                   type="text"
                   name="email"
                   //@ts-ignore
@@ -114,7 +118,7 @@ const JoinRoundModal = ({ handleClose, open }: JoinRoundModalProps) => {
                 />
               ) : (
                 <input
-                  className="appearance-none border rounded-lg w-full py-2 px-3 mt-3 font-medium  focus:outline-none"
+                  className="appearance-none border rounded-lg w-full py-2 px-3 mt-1 font-medium  focus:outline-none"
                   type="text"
                   name="email"
                   //@ts-ignore
