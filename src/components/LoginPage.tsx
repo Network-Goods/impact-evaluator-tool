@@ -21,8 +21,8 @@ export default function Login() {
       <BasicNavbar />
       <main>
         <Container>
-          <div className="max-w-[404px] border p-4 flex flex-col justify-between rounded-lg bg-[#f5f5f5] mx-auto">
-            <h1 className="text-[#242424] text-2xl font-semibold text-center">
+          <div className="max-w-[404px] border border-gray p-4 flex flex-col justify-between rounded-lg bg-gray-light mx-auto">
+            <h1 className="text-charcoal text-2xl font-semibold text-center">
               Create or Join
               <br />
               Impact Evaluator Rounds

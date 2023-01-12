@@ -16,7 +16,7 @@ export const EvaluationItem = ({ evaluation }: EvaluationItemProps) => {
               EVAL
             </div>
           </div>
-          <div className="pl-10 border border-y-0 border-r-0">
+          <div className="pl-10 border border-gray  border-y-0 border-r-0">
             <LinkButton
               small
               text="Details"

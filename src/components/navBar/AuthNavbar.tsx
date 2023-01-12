@@ -47,7 +47,7 @@ const AuthNavbar = () => {
         <div className="flex flex-row items-center justify-between w-full max-w-[1600px] h-full px-8 mx-auto">
           <div className="flex">
             <PLLogo />
-            <span className="text-[#121212] font-bold text-xl">
+            <span className="text-black font-bold text-xl">
               Impact Evaluator
             </span>
           </div>
@@ -59,7 +59,7 @@ const AuthNavbar = () => {
                 className="inline-flex w-full justify-center px-4 py-2 text-sm font-medium text-gray-700 "
                 onClick={() => setToggle((prev) => !prev)}
               >
-                User name
+                {username || "Signed in"}
                 <svg
                   className="-mr-1 ml-2 h-5 w-5"
                   xmlns="http://www.w3.org/2000/svg"
@@ -79,7 +79,7 @@ const AuthNavbar = () => {
               <div className="absolute px-4 right-0 z-10 mt-2 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                 <div className="py-1">
                   <button
-                    className="text-gray-700 block w-full px-4 py-2 text-left text-sm"
+                    className="block w-full px-4 py-2 text-left text-sm min-w-[85px]"
                     onClick={() => handleSignOut()}
                   >
                     Sign out
