@@ -60,7 +60,7 @@ const AuthNavbar = () => {
                 onClick={() => setToggle((prev) => !prev)}
               >
                 {username || "Signed in"}
-                <DownChevron />
+                <DownChevron className="ml-2 h-5 w-5" />
               </button>
             </div>
             <Fade in={toggle}>

@@ -62,7 +62,7 @@ const JoinRoundModal = ({ handleClose, open }: JoinRoundModalProps) => {
       <Fade in={open}>
         <Box sx={style}>
           <div className="flex justify-between items-center text-offblack">
-            <h1 className="text-[28px] text-[#346dee] font-semibold">
+            <h1 className="text-[28px] text-blue-alt font-semibold">
               Join an Impact Evaluator Round
             </h1>
 

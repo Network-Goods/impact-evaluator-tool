@@ -8,7 +8,6 @@ const DownChevron = ({ ...props }: SVGProps<SVGSVGElement>) => (
     xmlnsXlink="http://www.w3.org/1999/xlink"
     viewBox="0 0 20 20"
     aria-labelledby="DownChevron"
-    className="-mr-1 ml-2 h-5 w-5"
     aria-hidden="true"
     {...props}
   >

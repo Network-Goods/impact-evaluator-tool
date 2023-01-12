@@ -5,6 +5,7 @@ module.exports = {
       black: "#121212",
       offblack: "#333333",
       blue: "#156FF7",
+      "blue-alt": "#346DEE",
       "blue-dark": "#102d70",
       "blue-darkest": "#002256",
       charcoal: "#242424",
