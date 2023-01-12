@@ -21,7 +21,7 @@ export default function Login() {
       <BasicNavbar />
       <main>
         <Container>
-          <div className="max-w-[404px] border border-gray p-4 flex flex-col justify-between rounded-lg bg-gray-light mx-auto">
+          <div className="max-w-[404px] border border-gray p-4 flex flex-col justify-between rounded-lg bg-gray-lighter mx-auto">
             <h1 className="text-charcoal text-2xl font-semibold text-center">
               Create or Join
               <br />

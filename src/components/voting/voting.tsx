@@ -1,23 +1,25 @@
 import Add from "public/images/svg/Add";
 import LeftArrow from "public/images/svg/LeftArrow";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import SubTitle from "src/components/SubTitle";
 import Title from "src/components/Title";
 import Button from "../Button";
 import Collapse from "@mui/material/Collapse";
 import SubmitEvaluationModal from "./SubmitEvaluationModal";
 import SmallTitle from "../SmallTitle";
+import { useClickOutside } from "../../hooks/useClickOutside";
 import DownChevron from "public/images/svg/DownChevron";
+import Reset from "public/images/svg/Reset";
 
 const projects: any = [
-  { title: "Outcome 1", votes: 0, usedCredits: 0, open: false },
-  { title: "Outcome 2", votes: 0, usedCredits: 1, open: false },
-  { title: "Outcome 3", votes: 0, usedCredits: 4, open: false },
-  { title: "Outcome 4", votes: 0, usedCredits: 0, open: false },
-  { title: "Outcome 5", votes: 0, usedCredits: 16, open: false },
-  { title: "Outcome 6", votes: 0, usedCredits: 1, open: false },
-  { title: "Outcome 7", votes: 0, usedCredits: 0, open: false },
-  { title: "Outcome 8", votes: 0, usedCredits: 0, open: false },
+  { title: "Outcome 1", votes: 0, usedCredits: 0 },
+  { title: "Outcome 2", votes: 0, usedCredits: 1 },
+  { title: "Outcome 3", votes: 0, usedCredits: 4 },
+  { title: "Outcome 4", votes: 0, usedCredits: 0 },
+  { title: "Outcome 5", votes: 0, usedCredits: 16 },
+  { title: "Outcome 6", votes: 0, usedCredits: 1 },
+  { title: "Outcome 7", votes: 0, usedCredits: 0 },
+  { title: "Outcome 8", votes: 0, usedCredits: 0 },
 ];
 
 export default function Voting() {
@@ -25,9 +27,14 @@ export default function Voting() {
   const handleOpenModal = () => setOpenModal(true);
   const handleCloseModal = () => setOpenModal(false);
   const [open, setOpen] = useState(false);
+  const [openProjectsView, setOpenProjectsView] = useState(false);
+
+  const projectsViewWrapperRef = useRef<HTMLInputElement>(null);
 
   const [decrementDisabled, setDecrementDisabled] = useState(false);
   const [incrementDisabled, setIncrementDisabled] = useState(false);
+
+  useClickOutside(projectsViewWrapperRef, () => setOpenProjectsView(false));
 
   const handleClick = () => {
     setOpen(!open);
@@ -105,6 +112,56 @@ export default function Voting() {
       </div>
       <hr className="my-8 border-gray" />
       <div className="flex">
+        <div className="mr-2">
+          <input
+            className={`z-20 inline-flex  justify-center px-7 py-2 text-lg font-medium bg-white rounded-lg border border-gray 
+             
+              
+          `}
+            placeholder=" Future Search Bar"
+          />
+        </div>
+        <div className="h-16">
+          <div className="absolute" ref={projectsViewWrapperRef}>
+            <div>
+              <button
+                type="button"
+                className={`relative z-20 inline-flex w-full justify-center px-7 py-2 text-lg font-medium rounded-lg border border-gray 
+              ${openProjectsView ? "bg-[#f0f0f0]" : "bg-white"}
+              
+              `}
+                onClick={() => setOpenProjectsView((prev) => !prev)}
+              >
+                Projects View
+                <DownChevron
+                  className={`h-5 w-5 ml-2 my-auto transform transition-all duration-300  ease-in-out
+                ${openProjectsView ? "rotate-180 fill-blue" : "rotate-0"}
+                `}
+                />
+              </button>
+            </div>
+            <Collapse in={openProjectsView} timeout="auto" unmountOnExit>
+              <div className="relative -mt-2 pt-2 px-7 z-10 rounded-b-md bg-white shadow-lg border border-gray focus:outline-none">
+                <div className="py-1">
+                  <button
+                    className="block w-full px-6 py-2 text-left text-lg border-b border-gray"
+                    onClick={() => console.log("yoyo")}
+                  >
+                    Expand All
+                  </button>
+                  <button
+                    className="block w-full px-4 py-2 text-left text-lg "
+                    onClick={() => console.log("yoyo")}
+                  >
+                    Collapse All
+                  </button>
+                </div>
+              </div>
+            </Collapse>
+          </div>
+        </div>
+      </div>
+      <div className="flex">
         <div className="flex-1 rounded-lg bg-[#f0f0f0] border border-gray">
           <div className="flex py-2 px-6">
             <div className="w-[60%] py-2 border-r border-gray ">
@@ -123,7 +180,11 @@ export default function Voting() {
               return (
                 <div key={idx}>
                   <div>
-                    <div className="flex px-6 border border-gray border-x-0 bg-white">
+                    <div
+                      className={`flex px-6 border border-gray border-x-0 border-b-0 ${
+                        idx % 2 === 0 ? "bg-white" : "bg-gray-lighter"
+                      }`}
+                    >
                       <div className="w-[60%] flex justify-between border-r border-gray">
                         <div className="py-6 pl-6">{project.title}</div>
                         <button
@@ -132,9 +193,8 @@ export default function Voting() {
                         >
                           <DownChevron
                             className={`h-5 w-5 transform transition-all duration-300  ease-in-out
-              ${open ? "rotate-180 fill-blue" : "rotate-0"}
-              
-              `}
+                            ${open ? "rotate-180 fill-blue" : "rotate-0"}
+                            `}
                           />
                         </button>
                       </div>
@@ -145,7 +205,7 @@ export default function Voting() {
                               // onClick={() => handleCount("decrement", role.id)}
                               className={`w-9 h-9 rounded cursor-pointer outline-none ${
                                 decrementDisabled
-                                  ? "bg-gray-lighter"
+                                  ? "bg-gray-light"
                                   : "bg-blue-darkest bg-opacity-30"
                               }`}
                               disabled={decrementDisabled}
@@ -167,10 +227,12 @@ export default function Voting() {
                             <button
                               // onClick={() => handleCount("increment", role.id)}
                               className={`w-9 h-9 rounded cursor-pointer outline-none
-                        ${
-                          incrementDisabled ? "bg-secondaryBg" : "bg-blue-light"
-                        }
-                    `}
+                                ${
+                                  incrementDisabled
+                                    ? "bg-secondaryBg"
+                                    : "bg-blue-light"
+                                }
+                            `}
                               disabled={incrementDisabled}
                             >
                               <span className="m-auto text-2xl font-semibold text-blue">
@@ -200,17 +262,26 @@ export default function Voting() {
             })}
           </div>
         </div>
-
-        <div className="rounded-lg bg-white border border-gray p-12 ml-6">
-          <SmallTitle text="VOICE CREDITS" />
-          <span>
-            <b>78</b>/100
-          </span>
-          <div>button</div>
+        <div>
+          <div className="rounded-lg bg-white border border-gray p-12 ml-6 text-center">
+            <SmallTitle text="VOICE CREDITS" />
+            <div className="text-4xl mt-2">
+              <span className="font-semibold">78</span>/100
+            </div>
+            <button
+              className={`transition-colors duration-200 ease-in-out transform  outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-semibold mx-auto border border-blue hover:bg-white focus:bg-white text-blue text-lg px-4 py-2 mt-5`}
+              onClick={() => console.log("reset")}
+            >
+              <span className="mr-3">
+                <Reset />
+              </span>
+              <span>Reset</span>
+            </button>
+          </div>
         </div>
       </div>
 
-      <div className="flex justify-between">
+      <div className="flex justify-between mt-10">
         <div>
           <Button alt text="Save and exit" onClick={() => console.log("hi")} />
         </div>

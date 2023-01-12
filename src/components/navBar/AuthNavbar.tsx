@@ -3,13 +3,14 @@ import Fade from "@mui/material/Fade";
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import PLLogo from "public/images/svg/PLLogo";
 import Navbar from "./Navbar";
+import { useClickOutside } from "src/hooks/useClickOutside";
 import DownChevron from "public/images/svg/DownChevron";
 
 type CapturedEvent = MouseEvent | TouchEvent;
 
 const AuthNavbar = () => {
   const [toggle, setToggle] = useState(false);
-  const wrapperRef = useRef<HTMLInputElement>(null);
+  const logoutWrapperRef = useRef<HTMLInputElement>(null);
   const supabase = useSupabaseClient();
 
   const handleSignOut = () => {
@@ -17,25 +18,7 @@ const AuthNavbar = () => {
     supabase.auth.signOut();
   };
 
-  const handleToggleButton = () => {
-    setToggle((prev) => !prev);
-  };
-  useEffect(() => {
-    const listener = (e: CapturedEvent) => {
-      const el = wrapperRef?.current;
-      if (!el || el.contains(e.target as Node) || !toggle) {
-        return;
-      }
-      handleToggleButton();
-    };
-
-    document.addEventListener("mousedown", listener);
-    document.addEventListener("touchstart", listener);
-    return () => {
-      document.removeEventListener("mousedown", listener);
-      document.addEventListener("touchstart", listener);
-    };
-  }, [handleToggleButton, wrapperRef]);
+  useClickOutside(logoutWrapperRef, () => setToggle(false));
 
   const session = useSession();
 
@@ -52,22 +35,25 @@ const AuthNavbar = () => {
             </span>
           </div>
 
-          <div className="relative inline-block text-left" ref={wrapperRef}>
+          <div
+            className="relative inline-block text-left"
+            ref={logoutWrapperRef}
+          >
             <div>
               <button
                 type="button"
-                className="inline-flex w-full justify-center px-4 py-2 text-sm font-medium text-gray-700 "
+                className="inline-flex w-full justify-center px-4 py-2 text-lg font-medium"
                 onClick={() => setToggle((prev) => !prev)}
               >
                 {username || "Signed in"}
-                <DownChevron className="ml-2 h-5 w-5" />
+                <DownChevron className="ml-2 my-auto h-6 w-6" />
               </button>
             </div>
             <Fade in={toggle}>
               <div className="absolute px-4 right-0 z-10 mt-2 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                 <div className="py-1">
                   <button
-                    className="block w-full px-4 py-2 text-left text-sm min-w-[85px]"
+                    className="block w-full px-4 py-2 text-left text-lg min-w-[100px]"
                     onClick={() => handleSignOut()}
                   >
                     Sign out
