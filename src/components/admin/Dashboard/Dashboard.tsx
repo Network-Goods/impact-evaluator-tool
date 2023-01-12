@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import SubTitle from "src/components/SubTitle";
 import Title from "src/components/Title";
+import { useUserProfileStore } from "src/lib/UserProfileStore";
 import CreateEvaluationButton from "./CreateEvaluationButton";
 import CreateRoundTooltip from "./CreateRoundTooltip";
 import { EvaluationCard } from "./EvaluationCard";
@@ -11,6 +12,7 @@ import { useDashboardStore } from "./store";
 
 export default function Dashboard() {
   const store = useDashboardStore();
+  const userProfileStore = useUserProfileStore();
 
   useEffect(() => {
     store.load();
@@ -26,7 +28,11 @@ export default function Dashboard() {
           <Title text="Dashboard" />
 
           <CreateRoundTooltip>
-            <div className="pointer-events-none">
+            <div
+              className={
+                userProfileStore.isAdmin() ? "" : "pointer-events-none"
+              }
+            >
               <CreateEvaluationButton />
             </div>
           </CreateRoundTooltip>

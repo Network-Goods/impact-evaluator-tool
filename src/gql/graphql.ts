@@ -764,7 +764,12 @@ export type UserProfileQueryQuery = {
     __typename?: "userConnection";
     edges: Array<{
       __typename?: "userEdge";
-      node: { __typename?: "user"; id: any; preferred_email?: any | null };
+      node: {
+        __typename?: "user";
+        id: any;
+        preferred_email?: any | null;
+        role: string;
+      };
     }>;
   } | null;
 };
@@ -1115,6 +1120,10 @@ export const UserProfileQueryDocument = {
                             {
                               kind: "Field",
                               name: { kind: "Name", value: "preferred_email" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "role" },
                             },
                           ],
                         },

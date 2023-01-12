@@ -4,12 +4,14 @@ import { useState } from "react";
 import Button from "src/components/Button";
 import { useDashboardStore } from "./store";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import { useUserProfileStore } from "src/lib/UserProfileStore";
 
 const CreateEvaluationButton = () => {
   const supabase = useSupabaseClient();
   const dashboardStore = useDashboardStore();
   const [disabled, set_disabled] = useState(false);
   const router = useRouter();
+  const userProfileStore = useUserProfileStore();
 
   async function onClick() {
     set_disabled(true);
@@ -22,7 +24,7 @@ const CreateEvaluationButton = () => {
       return;
     }
 
-    router.push(`/evaluation/${res.id}`);
+    router.push(`/admin/evaluation/${res.id}`);
     set_disabled(false);
   }
 
@@ -31,8 +33,8 @@ const CreateEvaluationButton = () => {
       <Button
         text="Create a Round"
         icon={<Add className="mb-1 fill-white" />}
-        onClick={() => console.log("Create a Round")}
-        disabled
+        onClick={onClick}
+        disabled={!userProfileStore.isAdmin()}
       />
     </div>
   );
