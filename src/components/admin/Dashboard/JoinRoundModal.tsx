@@ -62,7 +62,7 @@ const JoinRoundModal = ({ handleClose, open }: JoinRoundModalProps) => {
       <Fade in={open}>
         <Box sx={style}>
           <div className="flex justify-between items-center text-offblack">
-            <h1 className="text-[28px] text-[#346dee] font-semibold">
+            <h1 className="text-[28px] text-blue-alt font-semibold">
               Join an Impact Evaluator Round
             </h1>
 
@@ -73,7 +73,10 @@ const JoinRoundModal = ({ handleClose, open }: JoinRoundModalProps) => {
               <Close className="fill-current" />
             </button>
           </div>
-          <form onSubmit={handleSubmit} className="flex flex-col max-w-xl">
+          <form
+            onSubmit={handleSubmit}
+            className="flex flex-col max-w-xl text-offblack"
+          >
             <label className="my-2" htmlFor="code">
               Enter the unique round code:
               <input
@@ -130,7 +133,7 @@ const JoinRoundModal = ({ handleClose, open }: JoinRoundModalProps) => {
 
             <input
               className="transition-colors duration-200 ease-in-out transform outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold mx-auto
-                px-6 py-1 border border-[#156ff7] bg-[#156ff7] hover:bg-[#002256] hover:border-[#002256] focus:bg-[#002256] text-white text-lg cursor-pointer my-8"
+                px-6 py-1 border border-blue bg-blue hover:bg-blue-darkest hover:border-blue-darkest focus:bg-blue-darkest text-white text-lg cursor-pointer my-8"
               type="submit"
               value="Join"
             />

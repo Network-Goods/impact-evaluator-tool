@@ -71,7 +71,7 @@ export default function Dashboard() {
                   <EvaluationItem evaluation={evaluation} />
                   {idx <
                   store.evaluations.filter(
-                    (evaluation) => evaluation.status !== "closed"
+                    (evaluation) => evaluation.status === "closed"
                   ).length -
                     1 ? (
                     <hr className="my-4 border-gray" />
