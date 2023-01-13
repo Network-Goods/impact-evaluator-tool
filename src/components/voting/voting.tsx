@@ -11,68 +11,178 @@ import { useClickOutside } from "../../hooks/useClickOutside";
 import DownChevron from "public/images/svg/DownChevron";
 import Reset from "public/images/svg/Reset";
 
-const projects: any = [
-  { title: "Outcome 1", votes: 0, usedCredits: 0 },
-  { title: "Outcome 2", votes: 0, usedCredits: 1 },
-  { title: "Outcome 3", votes: 0, usedCredits: 4 },
-  { title: "Outcome 4", votes: 0, usedCredits: 0 },
-  { title: "Outcome 5", votes: 0, usedCredits: 16 },
-  { title: "Outcome 6", votes: 0, usedCredits: 1 },
-  { title: "Outcome 7", votes: 0, usedCredits: 0 },
-  { title: "Outcome 8", votes: 0, usedCredits: 0 },
+const projectsData: any = [
+  {
+    title: "Outcome 1",
+    votes: 0,
+    usedCredits: 0,
+    summary:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ",
+    specs:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ",
+    github: "github.com",
+    website: "facebook.com",
+  },
+  {
+    title: "Outcome 2",
+    votes: 1,
+    usedCredits: 1,
+    summary:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ",
+    specs:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ",
+    github: "github.com",
+    website: "facebook.com",
+  },
+  {
+    title: "Outcome 3",
+    votes: 2,
+    usedCredits: 4,
+    summary:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ",
+    specs:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ",
+    github: "github.com",
+    website: "facebook.com",
+  },
+  {
+    title: "Outcome 4",
+    votes: 0,
+    usedCredits: 0,
+    summary:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ",
+    specs:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ",
+    github: "github.com",
+    website: "facebook.com",
+  },
+  {
+    title: "Outcome 5",
+    votes: 4,
+    usedCredits: 16,
+    summary:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ",
+    specs:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ",
+    github: "github.com",
+    website: "facebook.com",
+  },
+  {
+    title: "Outcome 6",
+    votes: 1,
+    usedCredits: 1,
+    summary:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ",
+    specs:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ",
+    github: "github.com",
+    website: "facebook.com",
+  },
+  {
+    title: "Outcome 7",
+    votes: 0,
+    usedCredits: 0,
+    summary:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ",
+    specs:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ",
+    github: "github.com",
+    website: "facebook.com",
+  },
+  {
+    title: "Outcome 8",
+    votes: 0,
+    usedCredits: 0,
+    summary:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ",
+    specs:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ",
+    github: "github.com",
+    website: "facebook.com",
+  },
 ];
 
 export default function Voting() {
   const [openModal, setOpenModal] = useState(false);
-  const handleOpenModal = () => setOpenModal(true);
-  const handleCloseModal = () => setOpenModal(false);
   const [open, setOpen] = useState(false);
   const [openProjectsView, setOpenProjectsView] = useState(false);
-
-  const projectsViewWrapperRef = useRef<HTMLInputElement>(null);
-
-  const [decrementDisabled, setDecrementDisabled] = useState(false);
+  const [openArray, setOpenArray] = useState([]);
+  const [projects, setProjects] = useState(projectsData);
   const [incrementDisabled, setIncrementDisabled] = useState(false);
-
+  const projectsViewWrapperRef = useRef<HTMLInputElement>(null);
   useClickOutside(projectsViewWrapperRef, () => setOpenProjectsView(false));
 
-  const handleClick = () => {
-    setOpen(!open);
+  useEffect(() => {
+    let arr: any = [];
+
+    projects.forEach(() => {
+      arr.push(false);
+    });
+
+    setOpenArray(arr);
+  }, []);
+
+  const handleOpenModal = () => setOpenModal(true);
+  const handleCloseModal = () => setOpenModal(false);
+
+  const handleSetAllProjectsView = (action: boolean) => {
+    let arr: any = [];
+    setOpenProjectsView(false);
+    projects.forEach(() => {
+      arr.push(action);
+    });
+    setOpenArray(arr);
   };
 
-  const [totalCount, setTotalCount] = useState(0);
-
-  // const handleCount = (action: string, id: number) => {
-  //   const newArr = rolesArray.map((role) => {
-  //     if (role.id !== id) {
-  //       return role;
-  //     } else {
-  //       if (action === "increment") {
-  //         return {
-  //           ...role,
-  //           count: role.count + 1,
-  //         };
-  //       } else if (action === "decrement") {
-  //         return {
-  //           ...role,
-  //           count: role.count - 1,
-  //         };
-  //       } else {
-  //         return null;
-  //       }
+  // const handleVote = (index: number) => {
+  //   const newState = projects.map((obj: any, idx: any) => {
+  //     if (idx === index) {
+  //       return { ...obj, votes: obj.votes + 1 };
   //     }
+  //     return obj;
   //   });
-  //   //@ts-ignore
-  //   setRolesArray(newArr);
+  //   setProjects(newState);
   // };
 
-  useEffect(() => {
-    if ("role.count") {
-      setDecrementDisabled(true);
-    } else {
-      setDecrementDisabled(false);
-    }
-  }, []);
+  const handleVote = (action: string, id: number) => {
+    const newArr = projects.map((project: any, idx: number) => {
+      if (idx !== id) {
+        return project;
+      } else {
+        if (action === "increment") {
+          return {
+            ...project,
+            votes: project.votes + 1,
+          };
+        } else if (action === "decrement") {
+          return {
+            ...project,
+            votes: project.votes - 1,
+          };
+        } else {
+          return null;
+        }
+      }
+    });
+    setProjects(newArr);
+  };
+
   return (
     <div>
       <div className="flex">
@@ -141,17 +251,17 @@ export default function Voting() {
               </button>
             </div>
             <Collapse in={openProjectsView} timeout="auto" unmountOnExit>
-              <div className="relative -mt-2 pt-2 px-7 z-10 rounded-b-md bg-white shadow-lg border border-gray focus:outline-none">
+              <div className="relative -mt-2 pt-2 px-7 z-10 rounded-b-md bg-white border border-gray focus:outline-none">
                 <div className="py-1">
                   <button
                     className="block w-full px-6 py-2 text-left text-lg border-b border-gray"
-                    onClick={() => console.log("yoyo")}
+                    onClick={() => handleSetAllProjectsView(true)}
                   >
                     Expand All
                   </button>
                   <button
                     className="block w-full px-4 py-2 text-left text-lg "
-                    onClick={() => console.log("yoyo")}
+                    onClick={() => handleSetAllProjectsView(false)}
                   >
                     Collapse All
                   </button>
@@ -183,12 +293,33 @@ export default function Voting() {
                     <div
                       className={`flex px-6 border border-gray border-x-0 border-b-0 ${
                         idx % 2 === 0 ? "bg-white" : "bg-gray-lighter"
-                      }`}
+                      }
+                      ${
+                        idx === projects.length - 1
+                          ? !openArray[idx]
+                            ? "rounded-b-lg"
+                            : ""
+                          : ""
+                      }
+                      `}
                     >
-                      <div className="w-[60%] flex justify-between border-r border-gray">
+                      <div
+                        className={`w-[60%] flex justify-between ${
+                          open ? "" : "border-r border-gray"
+                        }`}
+                      >
                         <div className="py-6 pl-6">{project.title}</div>
                         <button
-                          onClick={() => setOpen((prev) => !prev)}
+                          onClick={() =>
+                            setOpenArray((prev: any) => {
+                              return prev.map((item: any, j: any) => {
+                                if (j === idx) {
+                                  return !item;
+                                }
+                                return item;
+                              });
+                            })
+                          }
                           className="p-4"
                         >
                           <DownChevron
@@ -202,17 +333,17 @@ export default function Voting() {
                         <div className="py-[22px]">
                           <div className="flex flex-row  justify-evenly items-center">
                             <button
-                              // onClick={() => handleCount("decrement", role.id)}
-                              className={`w-9 h-9 rounded cursor-pointer outline-none ${
-                                decrementDisabled
+                              onClick={() => handleVote("decrement", idx)}
+                              className={`w-9 h-9 rounded  outline-none ${
+                                project.votes === 0
                                   ? "bg-gray-light"
                                   : "bg-blue-darkest bg-opacity-30"
                               }`}
-                              disabled={decrementDisabled}
+                              disabled={project.votes === 0}
                             >
                               <span
                                 className={`m-auto text-2xl font-semibold ${
-                                  decrementDisabled
+                                  project.votes === 0
                                     ? "text-[#B5B5B5]"
                                     : "text-blue-darkest"
                                 }`}
@@ -221,12 +352,12 @@ export default function Voting() {
                               </span>
                             </button>
                             <span className="outline-none focus:outline-none text-center text-3xl text-blue-darkest">
-                              1
+                              {project.votes}
                             </span>
 
                             <button
-                              // onClick={() => handleCount("increment", role.id)}
-                              className={`w-9 h-9 rounded cursor-pointer outline-none
+                              onClick={() => handleVote("increment", idx)}
+                              className={`w-9 h-9 rounded outline-none
                                 ${
                                   incrementDisabled
                                     ? "bg-secondaryBg"
@@ -243,19 +374,49 @@ export default function Voting() {
                         </div>
                       </div>
                       <div className="w-[16.5%] text-center">
-                        <div className="py-4 ">
-                          <div className="py-2 border-l border-gray">
-                            Used credits{" "}
-                            <span className="text-xl text-black">
+                        <div className="py-4">
+                          <div className="flex items-center text-sm py-2 border-l border-gray">
+                            <span className="ml-5 mr-3">Used credits</span>
+                            <div className="text-xl text-black">
                               {project.usedCredits}
-                            </span>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <Collapse in={open} timeout="auto" unmountOnExit>
-                    <div>hello</div>
+                  <Collapse in={openArray[idx]} timeout="auto" unmountOnExit>
+                    <div
+                      className={`bg-white px-12 py-6
+                    ${idx === projects.length - 1 ? "rounded-b-lg" : ""}
+                    `}
+                    >
+                      <div className="border border-gray w-full h-[3px]"></div>
+                      <div className="flex pt-5">
+                        <div className="w-[70%] pr-12">
+                          <div className="font-bold">Project Summary</div>
+                          <p className="text-sm mb-3">{project.summary}</p>
+                          <div className="font-bold">Project Description</div>
+                          <p className="text-sm mb-3">{project.description}</p>
+                          <div className="font-bold">FVM Tech Specs</div>
+                          <p className="text-sm mb-3">{project.specs}</p>
+                        </div>
+                        <div className="w-[30%] border-l border-gray pl-6">
+                          <div className="font-bold">Project Links</div>
+                          <div className="flex flex-col">
+                            <a className="underline mt-3" href={project.github}>
+                              Github
+                            </a>
+                            <a
+                              className="underline mt-3"
+                              href={project.website}
+                            >
+                              Website
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </Collapse>
                 </div>
               );

@@ -6,8 +6,6 @@ import Navbar from "./Navbar";
 import { useClickOutside } from "src/hooks/useClickOutside";
 import DownChevron from "public/images/svg/DownChevron";
 
-type CapturedEvent = MouseEvent | TouchEvent;
-
 const AuthNavbar = () => {
   const [toggle, setToggle] = useState(false);
   const logoutWrapperRef = useRef<HTMLInputElement>(null);
