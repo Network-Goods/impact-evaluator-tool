@@ -31,26 +31,22 @@ const VotingTableItem = ({
       className={`flex px-6 border border-gray border-x-0 border-b-0 ${
         idx % 2 === 0 ? "bg-white" : "bg-gray-lighter"
       }
-                      ${
-                        idx ===
-                        submissions.filter((val: any) => {
-                          if (search === "") {
-                            return val;
-                          } else if (
-                            val.name
-                              .toLowerCase()
-                              .includes(search.toLowerCase())
-                          ) {
-                            return val;
-                          }
-                        }).length -
-                          1
-                          ? !openArray[idx]
-                            ? "rounded-b-lg"
-                            : ""
-                          : ""
-                      }
-                      `}
+        ${
+          idx ===
+          submissions.filter((val: any) => {
+            if (search === "") {
+              return val;
+            } else if (val.name.toLowerCase().includes(search.toLowerCase())) {
+              return val;
+            }
+          }).length -
+            1
+            ? !openArray[idx]
+              ? "rounded-b-lg"
+              : ""
+            : ""
+        }
+        `}
     >
       <div
         className={`w-[60%] flex justify-between ${
@@ -73,12 +69,8 @@ const VotingTableItem = ({
         >
           <DownChevron
             className={`h-5 w-5 transform transition-all duration-300  ease-in-out
-                            ${
-                              openArray[idx]
-                                ? "rotate-180 fill-blue"
-                                : "rotate-0"
-                            }
-                            `}
+              ${openArray[idx] ? "rotate-180 fill-blue" : "rotate-0"}
+              `}
           />
         </button>
       </div>
@@ -111,22 +103,22 @@ const VotingTableItem = ({
             <button
               onClick={() => votingStore.incrementVote(supabase, project.id)}
               className={`w-9 h-9 rounded outline-none
-                                ${
-                                  votingStore.canVoteAgain(project.id)
-                                    ? "bg-blue-light bg-opacity-50"
-                                    : "bg-blue-light"
-                                }
-                            `}
+                ${
+                  votingStore.canVoteAgain(project.id)
+                    ? "bg-blue-light bg-opacity-50"
+                    : "bg-blue-light"
+                }
+            `}
               disabled={votingStore.canVoteAgain(project.id)}
             >
               <span
                 className={`m-auto text-2xl font-semibold 
-                                    ${
-                                      votingStore.canVoteAgain(project.id)
-                                        ? "text-blue text-opacity-30"
-                                        : "text-blue"
-                                    }
-                                    `}
+                  ${
+                    votingStore.canVoteAgain(project.id)
+                      ? "text-blue text-opacity-30"
+                      : "text-blue"
+                  }
+                  `}
               >
                 +
               </span>

@@ -24,8 +24,10 @@ export default function Voting() {
 
   const router = useRouter();
   const { evaluation_id } = router.query;
-  const store = useSubmissionStore();
-
+  const store = useVotingStore();
+  {
+    console.log("store", store);
+  }
   useEffect(() => {
     if (!evaluation_id || Array.isArray(evaluation_id)) {
       return;
@@ -83,7 +85,7 @@ export default function Voting() {
     // setProjects(projectsData);
   };
 
-  if (store.fetching) return <p>Loading...</p>;
+  if (!store.loaded) return <p>Loading...</p>;
   if (store.error) return <p>Oh no... {store.error.message}</p>;
 
   return (

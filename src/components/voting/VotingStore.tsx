@@ -27,7 +27,6 @@ async function fetchData(
     console.error("fetchVotes returned no data");
     return null;
   }
-
   return data;
 }
 
@@ -37,6 +36,7 @@ export type VotingStore = {
   loaded: boolean;
   votes: SubmissionVotes;
   evaluator: { id: string; voice_credits: number } | null;
+  evaluation: any | null;
   submissions: FromGraphQL<Submission>[];
   expandedSubmissions: { [submissionId: string]: boolean };
   availableCredits: number;
@@ -63,6 +63,7 @@ export const useVotingStore = create<VotingStore>()((set, get) => ({
   loaded: false,
   votes: {},
   evaluator: null,
+  evaluation: null,
   submissions: [],
   expandedSubmissions: {},
   availableCredits: 0,
@@ -81,6 +82,7 @@ export const useVotingStore = create<VotingStore>()((set, get) => ({
       votes: data.votes,
       submissions: data.submissions,
       evaluator: data.evaluator,
+      evaluation: data.evaluation,
       loaded: true,
     });
   },
