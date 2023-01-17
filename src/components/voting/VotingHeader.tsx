@@ -42,7 +42,13 @@ const VotingHeader = ({ evaluation }: VotingHeaderProps) => {
         <div className="mt-2 font-bold tracking-wider">
           {evaluation &&
             evaluation.end_time &&
-            evaluation.end_time.slice(0, 10)}
+            `${
+              evaluation.end_time.slice(8, 10) +
+              "/" +
+              evaluation.end_time.slice(5, 7) +
+              "/" +
+              evaluation.end_time.slice(0, 4)
+            }`}
         </div>
       </div>
     </div>

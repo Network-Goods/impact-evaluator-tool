@@ -1,11 +1,11 @@
-import { useState, useEffect } from "react";
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
-import { useUserProfileStore } from "src/lib/UserProfileStore";
-
-import SmallTitle from "../SmallTitle";
-import DownChevron from "public/images/svg/DownChevron";
 import Collapse from "@mui/material/Collapse";
+<<<<<<< HEAD
 import { useVotingStore } from "./VotingStore";
+=======
+import VotingTableHeader from "./VotingTableHeader";
+import VotingTableItem from "./VotingTableItem";
+import VotingTableBody from "./VotingTableBody";
+>>>>>>> 6737e8179091abda3dd4225a0cd17d22a7caf024
 
 type VotingTableProps = {
   search: any;
@@ -22,6 +22,7 @@ const VotingTable = ({
   setOpenArray,
   evaluation_id,
 }: VotingTableProps) => {
+<<<<<<< HEAD
   const userProfileStore = useUserProfileStore();
   const supabase = useSupabaseClient();
   const votingStore = useVotingStore();
@@ -38,20 +39,12 @@ const VotingTable = ({
     votingStore.load(supabase, evaluation_id, userProfileStore.profile.id);
   }, [evaluation_id, userProfileStore.profile]);
 
+=======
+>>>>>>> 6737e8179091abda3dd4225a0cd17d22a7caf024
   return (
     <div className="flex-1">
       <div className="w-full rounded-lg bg-[#f0f0f0] border border-gray">
-        <div className="flex py-2 px-6">
-          <div className="w-[60%] py-2 border-r border-gray ">
-            <SmallTitle text="PROJECTS" />
-          </div>
-          <div className="w-[23.5%] text-center py-2">
-            <SmallTitle text="VOTES" />
-          </div>
-          <div className="w-[16.5%] text-center py-2 border-l border-gray ">
-            <SmallTitle text="CREDITS" />
-          </div>
-        </div>
+        <VotingTableHeader />
 
         <div>
           {submissions
@@ -68,6 +61,7 @@ const VotingTable = ({
               return (
                 <div key={idx}>
                   <div>
+<<<<<<< HEAD
                     <div
                       className={`flex px-6 border border-gray border-x-0 border-b-0 ${
                         idx % 2 === 0 ? "bg-white" : "bg-gray-lighter"
@@ -206,66 +200,26 @@ const VotingTable = ({
                         </div>
                       </div>
                     </div>
+=======
+                    <VotingTableItem
+                      project={project}
+                      idx={idx}
+                      search={search}
+                      submissions={submissions}
+                      openArray={openArray}
+                      setOpenArray={setOpenArray}
+                      evaluation_id={evaluation_id}
+                    />
+>>>>>>> 6737e8179091abda3dd4225a0cd17d22a7caf024
                   </div>
+
                   <Collapse in={openArray[idx]} timeout="auto" unmountOnExit>
-                    <div
-                      className={`bg-white px-12 py-6
-                    ${
-                      idx ===
-                      submissions.filter((val: any) => {
-                        if (search === "") {
-                          return val;
-                        } else if (
-                          val.name.toLowerCase().includes(search.toLowerCase())
-                        ) {
-                          return val;
-                        }
-                      }).length -
-                        1
-                        ? "rounded-b-lg"
-                        : ""
-                    }
-                    `}
-                    >
-                      <div className="border border-gray w-full h-[3px]"></div>
-                      <div className="flex pt-5">
-                        <div className="w-[70%] pr-12">
-                          <div className="font-bold">Project Summary</div>
-                          <p className="text-sm mb-3">
-                            {JSON.parse(project.description).summary}
-                          </p>
-                          <div className="font-bold">Project Description</div>
-                          <p className="text-sm mb-3">
-                            {JSON.parse(project.description).description}
-                          </p>
-                          <div className="font-bold">FVM Tech Specs</div>
-                          <p className="text-sm mb-3">
-                            {JSON.parse(project.description).specs}
-                          </p>
-                        </div>
-                        <div className="w-[30%] border-l border-gray pl-6">
-                          <div className="font-bold">Project Links</div>
-                          <div className="flex flex-col">
-                            <a
-                              className="underline mt-3"
-                              href={project.github_link}
-                              target="_blank"
-                              rel="noreferrer"
-                            >
-                              Github
-                            </a>
-                            <a
-                              className="underline mt-3"
-                              href={project.website_link}
-                              target="_blank"
-                              rel="noreferrer"
-                            >
-                              Website
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                    <VotingTableBody
+                      idx={idx}
+                      project={project}
+                      submissions={submissions}
+                      search={search}
+                    />
                   </Collapse>
                 </div>
               );
