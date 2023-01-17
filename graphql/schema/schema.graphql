@@ -382,6 +382,8 @@ type evaluation implements Node {
   name: String!
   status: String!
   description: String
+  start_time: Datetime
+  end_time: Datetime
   submissionCollection(
     """Query the first `n` records in the collection"""
     first: Int
@@ -445,6 +447,8 @@ input evaluationFilter {
   name: StringFilter
   status: StringFilter
   description: StringFilter
+  start_time: DatetimeFilter
+  end_time: DatetimeFilter
   nodeId: IDFilter
 }
 
@@ -453,6 +457,8 @@ input evaluationInsertInput {
   name: String
   status: String
   description: String
+  start_time: Datetime
+  end_time: Datetime
 }
 
 type evaluationInsertResponse {
@@ -468,6 +474,8 @@ input evaluationOrderBy {
   name: OrderByDirection
   status: OrderByDirection
   description: OrderByDirection
+  start_time: OrderByDirection
+  end_time: OrderByDirection
 }
 
 input evaluationUpdateInput {
@@ -475,6 +483,8 @@ input evaluationUpdateInput {
   name: String
   status: String
   description: String
+  start_time: Datetime
+  end_time: Datetime
 }
 
 type evaluationUpdateResponse {
@@ -567,8 +577,8 @@ type submission implements Node {
   name: String!
   github_link: String
   website_link: String!
-  description: String!
   evaluation_id: UUID!
+  description: JSON!
   evaluation: evaluation
   user: user
 }
@@ -597,7 +607,6 @@ input submissionFilter {
   name: StringFilter
   github_link: StringFilter
   website_link: StringFilter
-  description: StringFilter
   evaluation_id: UUIDFilter
   nodeId: IDFilter
 }
@@ -608,8 +617,8 @@ input submissionInsertInput {
   name: String
   github_link: String
   website_link: String
-  description: String
   evaluation_id: UUID
+  description: JSON
 }
 
 type submissionInsertResponse {
@@ -626,7 +635,6 @@ input submissionOrderBy {
   name: OrderByDirection
   github_link: OrderByDirection
   website_link: OrderByDirection
-  description: OrderByDirection
   evaluation_id: OrderByDirection
 }
 
@@ -636,8 +644,8 @@ input submissionUpdateInput {
   name: String
   github_link: String
   website_link: String
-  description: String
   evaluation_id: UUID
+  description: JSON
 }
 
 type submissionUpdateResponse {
@@ -652,7 +660,7 @@ type user implements Node {
   """Globally Unique Record Identifier"""
   nodeId: ID!
   id: UUID!
-  name: String!
+  name: String
   email: String
   github_handle: String
   invite_status: String

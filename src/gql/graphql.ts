@@ -316,11 +316,13 @@ export type UuidFilter = {
 export type Evaluation = Node & {
   __typename?: "evaluation";
   description?: Maybe<Scalars["String"]>;
+  end_time?: Maybe<Scalars["Datetime"]>;
   evaluatorCollection?: Maybe<EvaluatorConnection>;
   id: Scalars["UUID"];
   name: Scalars["String"];
   /** Globally Unique Record Identifier */
   nodeId: Scalars["ID"];
+  start_time?: Maybe<Scalars["Datetime"]>;
   status: Scalars["String"];
   submissionCollection?: Maybe<SubmissionConnection>;
 };
@@ -365,16 +367,20 @@ export type EvaluationEdge = {
 
 export type EvaluationFilter = {
   description?: InputMaybe<StringFilter>;
+  end_time?: InputMaybe<DatetimeFilter>;
   id?: InputMaybe<UuidFilter>;
   name?: InputMaybe<StringFilter>;
   nodeId?: InputMaybe<IdFilter>;
+  start_time?: InputMaybe<DatetimeFilter>;
   status?: InputMaybe<StringFilter>;
 };
 
 export type EvaluationInsertInput = {
   description?: InputMaybe<Scalars["String"]>;
+  end_time?: InputMaybe<Scalars["Datetime"]>;
   id?: InputMaybe<Scalars["UUID"]>;
   name?: InputMaybe<Scalars["String"]>;
+  start_time?: InputMaybe<Scalars["Datetime"]>;
   status?: InputMaybe<Scalars["String"]>;
 };
 
@@ -388,15 +394,19 @@ export type EvaluationInsertResponse = {
 
 export type EvaluationOrderBy = {
   description?: InputMaybe<OrderByDirection>;
+  end_time?: InputMaybe<OrderByDirection>;
   id?: InputMaybe<OrderByDirection>;
   name?: InputMaybe<OrderByDirection>;
+  start_time?: InputMaybe<OrderByDirection>;
   status?: InputMaybe<OrderByDirection>;
 };
 
 export type EvaluationUpdateInput = {
   description?: InputMaybe<Scalars["String"]>;
+  end_time?: InputMaybe<Scalars["Datetime"]>;
   id?: InputMaybe<Scalars["UUID"]>;
   name?: InputMaybe<Scalars["String"]>;
+  start_time?: InputMaybe<Scalars["Datetime"]>;
   status?: InputMaybe<Scalars["String"]>;
 };
 
@@ -487,7 +497,7 @@ export type EvaluatorUpdateResponse = {
 
 export type Submission = Node & {
   __typename?: "submission";
-  description: Scalars["String"];
+  description: Scalars["JSON"];
   evaluation?: Maybe<Evaluation>;
   evaluation_id: Scalars["UUID"];
   github_link?: Maybe<Scalars["String"]>;
@@ -521,7 +531,6 @@ export type SubmissionEdge = {
 };
 
 export type SubmissionFilter = {
-  description?: InputMaybe<StringFilter>;
   evaluation_id?: InputMaybe<UuidFilter>;
   github_link?: InputMaybe<StringFilter>;
   id?: InputMaybe<UuidFilter>;
@@ -532,7 +541,7 @@ export type SubmissionFilter = {
 };
 
 export type SubmissionInsertInput = {
-  description?: InputMaybe<Scalars["String"]>;
+  description?: InputMaybe<Scalars["JSON"]>;
   evaluation_id?: InputMaybe<Scalars["UUID"]>;
   github_link?: InputMaybe<Scalars["String"]>;
   id?: InputMaybe<Scalars["UUID"]>;
@@ -550,7 +559,6 @@ export type SubmissionInsertResponse = {
 };
 
 export type SubmissionOrderBy = {
-  description?: InputMaybe<OrderByDirection>;
   evaluation_id?: InputMaybe<OrderByDirection>;
   github_link?: InputMaybe<OrderByDirection>;
   id?: InputMaybe<OrderByDirection>;
@@ -560,7 +568,7 @@ export type SubmissionOrderBy = {
 };
 
 export type SubmissionUpdateInput = {
-  description?: InputMaybe<Scalars["String"]>;
+  description?: InputMaybe<Scalars["JSON"]>;
   evaluation_id?: InputMaybe<Scalars["UUID"]>;
   github_link?: InputMaybe<Scalars["String"]>;
   id?: InputMaybe<Scalars["UUID"]>;
@@ -585,7 +593,7 @@ export type User = Node & {
   github_user_id?: Maybe<Scalars["UUID"]>;
   id: Scalars["UUID"];
   invite_status?: Maybe<Scalars["String"]>;
-  name: Scalars["String"];
+  name?: Maybe<Scalars["String"]>;
   /** Globally Unique Record Identifier */
   nodeId: Scalars["ID"];
   preferred_email?: Maybe<Scalars["UUID"]>;
@@ -719,11 +727,11 @@ export type EvaluationStubFragmentFragment = {
   status: string;
 };
 
-export type EvaluationQueryQueryVariables = Exact<{
+export type OldEvaluationQueryQueryVariables = Exact<{
   evaluation_id: Scalars["UUID"];
 }>;
 
-export type EvaluationQueryQuery = {
+export type OldEvaluationQueryQuery = {
   __typename?: "Query";
   evaluation?: {
     __typename?: "evaluationConnection";
@@ -739,6 +747,26 @@ export type EvaluationQueryQuery = {
   } | null;
 };
 
+export type EvaluationQueryQueryVariables = Exact<{
+  evaluation_id: Scalars["UUID"];
+}>;
+
+export type EvaluationQueryQuery = {
+  __typename?: "Query";
+  evaluation?: {
+    __typename?: "evaluationConnection";
+    edges: Array<{
+      __typename?: "evaluationEdge";
+      node: {
+        __typename?: "evaluation";
+        id: any;
+        name: string;
+        end_time?: any | null;
+      };
+    }>;
+  } | null;
+};
+
 export type SubmissionsQueryQueryVariables = Exact<{
   evaluation_id: Scalars["UUID"];
 }>;
@@ -749,7 +777,14 @@ export type SubmissionsQueryQuery = {
     __typename?: "submissionConnection";
     edges: Array<{
       __typename?: "submissionEdge";
-      node: { __typename?: "submission"; id: any; name: string };
+      node: {
+        __typename?: "submission";
+        id: any;
+        name: string;
+        description: any;
+        github_link?: string | null;
+        website_link: string;
+      };
     }>;
   } | null;
 };
@@ -844,6 +879,105 @@ export const DashboardEvaluationsQueryDocument = {
   DashboardEvaluationsQueryQuery,
   DashboardEvaluationsQueryQueryVariables
 >;
+export const OldEvaluationQueryDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "OldEvaluationQuery" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "evaluation_id" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "UUID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "evaluation" },
+            name: { kind: "Name", value: "evaluationCollection" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "filter" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "id" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "eq" },
+                            value: {
+                              kind: "Variable",
+                              name: { kind: "Name", value: "evaluation_id" },
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "edges" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "node" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "name" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "status" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  OldEvaluationQueryQuery,
+  OldEvaluationQueryQueryVariables
+>;
 export const EvaluationQueryDocument = {
   kind: "Document",
   definitions: [
@@ -924,7 +1058,7 @@ export const EvaluationQueryDocument = {
                             },
                             {
                               kind: "Field",
-                              name: { kind: "Name", value: "status" },
+                              name: { kind: "Name", value: "end_time" },
                             },
                           ],
                         },
@@ -1020,6 +1154,18 @@ export const SubmissionsQueryDocument = {
                             {
                               kind: "Field",
                               name: { kind: "Name", value: "name" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "description" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "github_link" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "website_link" },
                             },
                           ],
                         },

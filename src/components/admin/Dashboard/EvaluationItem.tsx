@@ -16,12 +16,20 @@ export const EvaluationItem = ({ evaluation }: EvaluationItemProps) => {
               EVAL
             </div>
           </div>
-          <div className="pl-10 border border-gray  border-y-0 border-r-0">
-            <LinkButton
-              small
-              text="Details"
-              link={`/admin/evaluation/${evaluation.id}`}
-            />
+          <div className="pl-10 border border-gray  border-y-0 border-r-0 min-w-[137.67px]">
+            {evaluation.status === "started" ? (
+              <LinkButton
+                small
+                text="Evaluate"
+                link={`/evaluation/${evaluation.id}`}
+              />
+            ) : (
+              <LinkButton
+                small
+                text="Details"
+                link={`/admin/evaluation/${evaluation.id}`}
+              />
+            )}
           </div>
         </div>
       </div>

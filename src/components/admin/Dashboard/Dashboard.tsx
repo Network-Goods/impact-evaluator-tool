@@ -37,7 +37,7 @@ export default function Dashboard() {
         </div>
         {store.evaluations.filter(
           (evaluation) => evaluation.status !== "closed"
-        ) ? (
+        ).length !== 0 ? (
           <EvaluationCard>
             {store.evaluations
               .filter((evaluation) => evaluation.status !== "closed")
@@ -62,7 +62,7 @@ export default function Dashboard() {
         </div>
         {store.evaluations.filter(
           (evaluation) => evaluation.status === "closed"
-        ) ? (
+        ).length !== 0 ? (
           <EvaluationCard>
             {store.evaluations
               .filter((evaluation) => evaluation.status === "closed")
