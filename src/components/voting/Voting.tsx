@@ -21,17 +21,25 @@ export default function Voting() {
   const [openArray, setOpenArray] = useState([]);
   const projectsViewWrapperRef = useRef<HTMLInputElement>(null);
   useClickOutside(projectsViewWrapperRef, () => setOpenProjectsView(false));
-
+  const userProfileStore = useUserProfileStore();
   const router = useRouter();
   const { evaluation_id } = router.query;
   const store = useVotingStore();
+  const supabase = useSupabaseClient();
   {
     console.log("store", store);
   }
   useEffect(() => {
-    if (!evaluation_id || Array.isArray(evaluation_id)) {
+    if (
+      !evaluation_id ||
+      Array.isArray(evaluation_id) ||
+      !userProfileStore.profile ||
+      store.loaded
+    ) {
       return;
     }
+
+    store.load(supabase, evaluation_id, userProfileStore.profile.id);
   }, [evaluation_id]);
 
   useEffect(() => {
@@ -53,40 +61,6 @@ export default function Voting() {
     });
     setOpenArray(arr);
   };
-
-  // const handleVote = (action: string, id: number) => {
-  //   const newArr = projects.map((project: any, idx: number) => {
-  //     if (idx !== id) {
-  //       return project;
-  //     } else {
-  //       if (action === "increment") {
-  //         let updatedVote = project.votes + 1;
-  //         updateCredits(action, updatedVote);
-  //         return {
-  //           ...project,
-  //           votes: updatedVote,
-  //         };
-  //       } else if (action === "decrement") {
-  //         updateCredits(action, project.votes);
-  //         return {
-  //           ...project,
-  //           votes: project.votes - 1,
-  //         };
-  //       } else {
-  //         return null;
-  //       }
-  //     }
-  //   });
-  //   setProjects(newArr);
-  // };
-
-  const handleReset = () => {
-    // setCredits(100);
-    // setProjects(projectsData);
-  };
-
-  if (!store.loaded) return <p>Loading...</p>;
-  if (store.error) return <p>Oh no... {store.error.message}</p>;
 
   return (
     <div>

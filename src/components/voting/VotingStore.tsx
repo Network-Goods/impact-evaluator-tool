@@ -27,6 +27,8 @@ async function fetchData(
     console.error("fetchVotes returned no data");
     return null;
   }
+
+  console.log("fetch data", data);
   return data;
 }
 
