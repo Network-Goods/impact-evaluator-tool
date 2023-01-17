@@ -38,7 +38,7 @@ export default function Voting() {
       arr.push(false);
     });
     setOpenArray(arr);
-  }, []);
+  }, [store.submissions]);
 
   useEffect(() => {
     if (credits === 0) {
