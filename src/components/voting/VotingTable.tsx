@@ -5,6 +5,7 @@ import { useUserProfileStore } from "src/lib/UserProfileStore";
 import SmallTitle from "../SmallTitle";
 import DownChevron from "public/images/svg/DownChevron";
 import Collapse from "@mui/material/Collapse";
+import { useVotingStore } from "./VotingStore";
 
 type VotingTableProps = {
   search: any;
@@ -21,51 +22,21 @@ const VotingTable = ({
   setOpenArray,
   evaluation_id,
 }: VotingTableProps) => {
-  const [votes, setVotes] = useState();
-  const supabase = useSupabaseClient();
   const userProfileStore = useUserProfileStore();
+  const supabase = useSupabaseClient();
+  const votingStore = useVotingStore();
 
   useEffect(() => {
-    fetchVotes();
-  }, []);
-
-  async function fetchVotes() {
-    let { data, error } = await supabase.rpc("get_user_evaluation_votes", {
-      in_evaluation_id: evaluation_id,
-      in_user_id: userProfileStore.profile?.id,
-    });
-    if (error) console.error(error);
-    else {
-      console.log("rpc", data);
-      setVotes(data);
+    if (!evaluation_id || Array.isArray(evaluation_id)) {
+      return;
     }
-  }
 
-  async function incrementVotes(submission_id: string) {
-    let { data, error } = await supabase.rpc("increment", {
-      in_evaluator_id: "fd9a8f68-babd-4195-81f0-f34326c80fcb",
-      in_submission_id: submission_id,
-    });
-
-    if (error) console.error(error);
-    else {
-      console.log(data);
-      fetchVotes();
+    if (!userProfileStore.profile) {
+      return;
     }
-  }
 
-  async function decrementVotes(submission_id: string) {
-    let { data, error } = await supabase.rpc("decrement", {
-      in_evaluator_id: "fd9a8f68-babd-4195-81f0-f34326c80fcb",
-      in_submission_id: submission_id,
-    });
-
-    if (error) console.error(error);
-    else {
-      console.log(data);
-      fetchVotes();
-    }
-  }
+    votingStore.load(supabase, evaluation_id, userProfileStore.profile.id);
+  }, [evaluation_id, userProfileStore.profile]);
 
   return (
     <div className="flex-1">
@@ -158,7 +129,9 @@ const VotingTable = ({
                         <div className="py-[22px]">
                           <div className="flex flex-row  justify-evenly items-center">
                             <button
-                              onClick={() => decrementVotes(project.id)}
+                              onClick={() =>
+                                votingStore.decrementVote(supabase, project.id)
+                              }
                               // onClick={() => handleVote("decrement", idx)}
                               className={`w-9 h-9 rounded  outline-none ${
                                 project.votes === 0
@@ -178,12 +151,13 @@ const VotingTable = ({
                               </span>
                             </button>
                             <span className="outline-none focus:outline-none text-center text-3xl text-blue-darkest w-9">
-                              {/* {project.votes} */}
-                              {votes && votes[project.id]}
+                              {votingStore.getVotes(project.id)}
                             </span>
 
                             <button
-                              onClick={() => incrementVotes(project.id)}
+                              onClick={() =>
+                                votingStore.incrementVote(supabase, project.id)
+                              }
                               // onClick={() => handleVote("increment", idx)}
                               className={`w-9 h-9 rounded outline-none
                                 ${
@@ -226,8 +200,7 @@ const VotingTable = ({
                           <div className="flex items-center text-sm py-2 border-l border-gray">
                             <span className="ml-5 mr-3">Used credits</span>
                             <div className="text-xl text-black">
-                              {/* {project.votes * project.votes} */}
-                              {votes && votes[project.id] * votes[project.id]}
+                              {votingStore.getAllocatedVoiceCredits(project.id)}
                             </div>
                           </div>
                         </div>

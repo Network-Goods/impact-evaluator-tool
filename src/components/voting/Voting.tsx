@@ -10,6 +10,9 @@ import VotingHeader from "./VotingHeader";
 import VotingFilter from "./VotingFilter";
 import VotingTable from "./VotingTable";
 import VotingCreditCounter from "./VotingCreditCounter";
+import { useVotingStore } from "./VotingStore";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import { useUserProfileStore } from "src/lib/UserProfileStore";
 
 export default function Voting() {
   const [openModal, setOpenModal] = useState(false);
@@ -29,7 +32,6 @@ export default function Voting() {
     if (!evaluation_id || Array.isArray(evaluation_id)) {
       return;
     }
-    store.load(evaluation_id, { with_submissions: true });
   }, [evaluation_id]);
 
   useEffect(() => {
@@ -101,7 +103,6 @@ export default function Voting() {
 
   if (store.fetching) return <p>Loading...</p>;
   if (store.error) return <p>Oh no... {store.error.message}</p>;
-  console.log("store", store);
 
   return (
     <div>

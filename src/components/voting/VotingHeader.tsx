@@ -40,7 +40,9 @@ const VotingHeader = ({ evaluation }: VotingHeaderProps) => {
         </div>
         <SmallTitle text="DEADLINE" />
         <div className="mt-2 font-bold tracking-wider">
-          {evaluation && evaluation.end_time.slice(0, 10)}
+          {evaluation &&
+            evaluation.end_time &&
+            evaluation.end_time.slice(0, 10)}
         </div>
       </div>
     </div>
