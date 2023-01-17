@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useUserProfileStore } from "src/lib/UserProfileStore";
 import DownChevron from "public/images/svg/DownChevron";
+import { useVotingStore } from "./VotingStore";
 
 type VotingTableItemProps = {
   project: any;
@@ -22,48 +23,8 @@ const VotingTableItem = ({
   setOpenArray,
   evaluation_id,
 }: VotingTableItemProps) => {
-  const [votes, setVotes] = useState();
+  const votingStore = useVotingStore();
   const supabase = useSupabaseClient();
-  const userProfileStore = useUserProfileStore();
-
-  useEffect(() => {
-    fetchVotes();
-  }, []);
-
-  async function fetchVotes() {
-    let { data, error } = await supabase.rpc("get_user_evaluation_votes", {
-      in_evaluation_id: evaluation_id,
-      in_user_id: userProfileStore.profile?.id,
-    });
-    if (error) console.error(error);
-    else {
-      setVotes(data);
-    }
-  }
-
-  async function incrementVotes(submission_id: string) {
-    let { data, error } = await supabase.rpc("increment", {
-      in_evaluator_id: "fd9a8f68-babd-4195-81f0-f34326c80fcb",
-      in_submission_id: submission_id,
-    });
-
-    if (error) console.error(error);
-    else {
-      fetchVotes();
-    }
-  }
-
-  async function decrementVotes(submission_id: string) {
-    let { data, error } = await supabase.rpc("decrement", {
-      in_evaluator_id: "fd9a8f68-babd-4195-81f0-f34326c80fcb",
-      in_submission_id: submission_id,
-    });
-
-    if (error) console.error(error);
-    else {
-      fetchVotes();
-    }
-  }
 
   return (
     <div
@@ -125,56 +86,43 @@ const VotingTableItem = ({
         <div className="py-[22px]">
           <div className="flex flex-row  justify-evenly items-center">
             <button
-              onClick={() => decrementVotes(project.id)}
-              // onClick={() => handleVote("decrement", idx)}
+              onClick={() => votingStore.decrementVote(supabase, project.id)}
               className={`w-9 h-9 rounded  outline-none ${
-                project.votes === 0
+                votingStore.getVotes(project.id) === 0
                   ? "bg-gray-light"
                   : "bg-blue-darkest bg-opacity-30"
               }`}
-              disabled={project.votes === 0}
+              disabled={votingStore.getVotes(project.id) === 0}
             >
               <span
                 className={`m-auto text-2xl font-semibold ${
-                  project.votes === 0 ? "text-[#B5B5B5]" : "text-blue-darkest"
+                  votingStore.getVotes(project.id) === 0
+                    ? "text-[#B5B5B5]"
+                    : "text-blue-darkest"
                 }`}
               >
                 −
               </span>
             </button>
             <span className="outline-none focus:outline-none text-center text-3xl text-blue-darkest w-9">
-              {/* {project.votes} */}
-              {votes && votes[project.id]}
+              {votingStore.getVotes(project.id)}
             </span>
 
             <button
-              onClick={() => incrementVotes(project.id)}
-              // onClick={() => handleVote("increment", idx)}
+              onClick={() => votingStore.incrementVote(supabase, project.id)}
               className={`w-9 h-9 rounded outline-none
                                 ${
-                                  // credits +
-                                  (project.votes - 1) * (project.votes - 1) -
-                                    project.votes * project.votes <=
-                                  1
+                                  votingStore.canVoteAgain(project.id)
                                     ? "bg-blue-light bg-opacity-50"
                                     : "bg-blue-light"
                                 }
                             `}
-              disabled={
-                // credits +
-                (project.votes - 1) * (project.votes - 1) -
-                  project.votes * project.votes <=
-                1
-              }
+              disabled={votingStore.canVoteAgain(project.id)}
             >
               <span
                 className={`m-auto text-2xl font-semibold 
                                     ${
-                                      // credits +
-                                      (project.votes - 1) *
-                                        (project.votes - 1) -
-                                        project.votes * project.votes <=
-                                      1
+                                      votingStore.canVoteAgain(project.id)
                                         ? "text-blue text-opacity-30"
                                         : "text-blue"
                                     }
@@ -191,8 +139,7 @@ const VotingTableItem = ({
           <div className="flex items-center text-sm py-2 border-l border-gray">
             <span className="ml-5 mr-3">Used credits</span>
             <div className="text-xl text-black">
-              {/* {project.votes * project.votes} */}
-              {votes && votes[project.id] * votes[project.id]}
+              {votingStore.getAllocatedVoiceCredits(project.id)}
             </div>
           </div>
         </div>

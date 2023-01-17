@@ -19,8 +19,6 @@ export default function Voting() {
   const [search, setSearch] = useState("");
   const [openProjectsView, setOpenProjectsView] = useState(false);
   const [openArray, setOpenArray] = useState([]);
-  const [credits, setCredits] = useState(100);
-  const [incrementDisabled, setIncrementDisabled] = useState(false);
   const projectsViewWrapperRef = useRef<HTMLInputElement>(null);
   useClickOutside(projectsViewWrapperRef, () => setOpenProjectsView(false));
 
@@ -42,14 +40,6 @@ export default function Voting() {
     setOpenArray(arr);
   }, [store.submissions]);
 
-  useEffect(() => {
-    if (credits === 0) {
-      setIncrementDisabled(true);
-    } else {
-      setIncrementDisabled(false);
-    }
-  }, [credits]);
-
   const handleOpenModal = () => setOpenModal(true);
   const handleCloseModal = () => setOpenModal(false);
 
@@ -60,14 +50,6 @@ export default function Voting() {
       arr.push(action);
     });
     setOpenArray(arr);
-  };
-
-  const updateCredits = (action: string, vote: number) => {
-    if (action === "increment") {
-      setCredits(credits + (vote - 1) * (vote - 1) - vote * vote);
-    } else if (action === "decrement") {
-      setCredits(credits + vote * vote - (vote - 1) * (vote - 1));
-    }
   };
 
   // const handleVote = (action: string, id: number) => {
@@ -97,7 +79,7 @@ export default function Voting() {
   // };
 
   const handleReset = () => {
-    setCredits(100);
+    // setCredits(100);
     // setProjects(projectsData);
   };
 
@@ -125,7 +107,7 @@ export default function Voting() {
           evaluation_id={evaluation_id}
         />
         <div>
-          <VotingCreditCounter handleReset={handleReset} credits={credits} />
+          {/* <VotingCreditCounter handleReset={handleReset} credits={credits} /> */}
         </div>
       </div>
 

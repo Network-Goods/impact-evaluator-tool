@@ -38,6 +38,8 @@ export type VotingStore = {
   votes: SubmissionVotes;
   evaluator: { id: string; voice_credits: number } | null;
   submissions: FromGraphQL<Submission>[];
+  expandedSubmissions: { [submissionId: string]: boolean };
+  availableCredits: number;
   load: (
     supabase: SupabaseClient,
     evaluation_id: string,
@@ -54,6 +56,7 @@ export type VotingStore = {
   ) => Promise<void>;
   getVotes: (submission_id: string) => number;
   getAllocatedVoiceCredits: (submission_id: string) => number;
+  canVoteAgain: (submission_id: string) => boolean;
 };
 
 export const useVotingStore = create<VotingStore>()((set, get) => ({
@@ -61,6 +64,8 @@ export const useVotingStore = create<VotingStore>()((set, get) => ({
   votes: {},
   evaluator: null,
   submissions: [],
+  expandedSubmissions: {},
+  availableCredits: 0,
 
   load: async (
     supabase: SupabaseClient,
@@ -148,5 +153,11 @@ export const useVotingStore = create<VotingStore>()((set, get) => ({
     // TODO: should call getVotes instead of duplicating the code
     const votes = get().votes[submission_id] || 0;
     return votes * votes;
+  },
+
+  canVoteAgain: (submission_id: string): boolean => {
+    const votes = get().votes[submission_id] || 0;
+
+    return (votes - 1) * (votes - 1) - votes * votes <= 1;
   },
 }));
