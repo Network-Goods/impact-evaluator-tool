@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import Link from "next/link";
 import Fade from "@mui/material/Fade";
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import PLLogo from "public/images/svg/PLLogo";
@@ -26,12 +27,14 @@ const AuthNavbar = () => {
     <Navbar>
       <div className="h-full w-full bg-white shadow-sm">
         <div className="flex flex-row items-center justify-between w-full max-w-[1600px] h-full px-8 mx-auto">
-          <div className="flex">
-            <PLLogo />
-            <span className="text-black font-bold text-xl">
-              Impact Evaluator
-            </span>
-          </div>
+          <Link href="/">
+            <div className="flex">
+              <PLLogo />
+              <span className="text-black font-bold text-xl">
+                Impact Evaluator
+              </span>
+            </div>
+          </Link>
 
           <div
             className="relative inline-block text-left"
