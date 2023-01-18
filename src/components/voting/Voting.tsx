@@ -10,6 +10,7 @@ import VotingCreditCounter from "./VotingCreditCounter";
 import { useVotingStore } from "./VotingStore";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useUserProfileStore } from "src/lib/UserProfileStore";
+import Link from "next/link";
 
 export default function Voting() {
   const [openModal, setOpenModal] = useState(false);
@@ -23,20 +24,18 @@ export default function Voting() {
   const { evaluation_id } = router.query;
   const store = useVotingStore();
   const supabase = useSupabaseClient();
-  {
-    console.log("store", store);
-  }
+
   useEffect(() => {
     if (
       !evaluation_id ||
       Array.isArray(evaluation_id) ||
-      !userProfileStore.profile
+      !userProfileStore.profile ||
+      store.loaded
     ) {
       return;
     }
-
     store.load(supabase, evaluation_id, userProfileStore.profile.id);
-  }, [evaluation_id]);
+  }, [evaluation_id, userProfileStore.profile]);
 
   useEffect(() => {
     let arr: any = [];
@@ -59,7 +58,7 @@ export default function Voting() {
   };
 
   if (!store.loaded) return <p>Loading...</p>;
-  if (store.error) return <p>Oh no... {store.error.message}</p>;
+  // if (store.error) return <p>Oh no... {store.error.message}</p>;
 
   return (
     <div>
@@ -92,7 +91,11 @@ export default function Voting() {
 
       <div className="flex justify-between mt-10">
         <div>
-          <Button alt text="Save and exit" onClick={() => console.log("hi")} />
+          <Link href="/">
+            <div className="transition-colors duration-200 ease-in-out transform  outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold mx-auto border border-[#dbdbdb] bg-[#e7eaf0] hover:bg-[#dbdbdb] hover:border-[#dbdbdb] focus:bg-[#dbdbdb] text-[#898888] text-lg px-4 py-3">
+              Save and exit
+            </div>
+          </Link>
         </div>
         <div>
           <Button text="Submit" onClick={handleOpenModal} />

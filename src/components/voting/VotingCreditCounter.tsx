@@ -22,7 +22,7 @@ const VotingCreditCounter = ({
         onClick={() => handleReset(supabase)}
       >
         <span className="mr-3">
-          <Reset />
+          <Reset className="fill-blue w-4 h-4" />
         </span>
         <span>Reset</span>
       </button>

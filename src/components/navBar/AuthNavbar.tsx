@@ -1,19 +1,22 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import Link from "next/link";
 import Fade from "@mui/material/Fade";
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import PLLogo from "public/images/svg/PLLogo";
 import Navbar from "./Navbar";
 import { useClickOutside } from "src/hooks/useClickOutside";
+import { useRouter } from "next/router";
 import DownChevron from "public/images/svg/DownChevron";
 
 const AuthNavbar = () => {
   const [toggle, setToggle] = useState(false);
   const logoutWrapperRef = useRef<HTMLInputElement>(null);
   const supabase = useSupabaseClient();
+  const router = useRouter();
 
   const handleSignOut = () => {
     setToggle(false);
+    router.push("/");
     supabase.auth.signOut();
   };
 
