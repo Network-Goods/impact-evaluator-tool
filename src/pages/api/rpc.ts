@@ -1,12 +1,6 @@
-import {
-  createServerSupabaseClient,
-  SupabaseClient,
-} from "@supabase/auth-helpers-nextjs";
+import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { RPC } from "src/lib";
-// import type { Database } from "types_db";
-import axios from "axios";
-import { SupabaseAuthClient } from "@supabase/supabase-js/dist/module/lib/SupabaseAuthClient";
+import { rpc } from "src/lib";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== "POST") {
@@ -21,95 +15,40 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   const {
     data: { user },
-  } = (await supabaseServerClient.auth.getUser()) as any;
-  const user_id = user.id;
+  } = await supabaseServerClient.auth.getUser();
 
-  let role = await getUserRole(supabaseServerClient, user_id);
-  let uid = await getUserID(supabaseServerClient, user_id);
+  if (!user) {
+    console.error(
+      "ERROR -- supabaseServerClient.auth.getUser did not return user. "
+    );
+    res.status(405).send({ error: "Not logged in" });
+    return;
+  }
 
-  let result = await dispatchRPC(
-    supabaseServerClient,
-    uid,
-    role,
+  const auth = await rpc.getUserProfileAuth(supabaseServerClient, user.id);
+  if (auth instanceof Error) {
+    console.error("ERROR -- rpc.getUserProfileAuth failed. ", auth);
+    res.status(405).send({ error: auth });
+    return;
+  }
+
+  const result = await rpc.execute(
     req.body.method,
-    req.body.params
+    req.body.params,
+    supabaseServerClient,
+    auth
   );
 
-  console.log("rpc resul ", result);
+  if (result instanceof Error) {
+    console.error(
+      `ERROR -- rpc.getUserProfileAuth failed. method: ${req.body.method} `,
+      result
+    );
+    res.status(405).send({ error: result });
+    return;
+  }
 
   res.status(200).json({
     result: result,
   });
 };
-
-async function dispatchRPC<M extends RPC.Method>(
-  supabase: SupabaseClient,
-  user_id: string,
-  role: string,
-  method: M,
-  params: RPC.Param<M>
-): Promise<RPC.Result<M>> {
-  switch (method) {
-    // case "getEvaluation":
-    //   return getEvaluation(supabase, user_id, role, params);
-    case "getEvaluationStubs":
-      return getEvaluationStubs(supabase, user_id, role, params);
-  }
-}
-// EvaluatorsFirstCode;
-async function getEvaluationStubs(
-  supabase: SupabaseClient,
-  user_id: string,
-  role: string,
-  params: RPC.Param<"getEvaluationStubs">
-): Promise<RPC.Result<"getEvaluationStubs">> {
-  // supabase.from('evaluation').select().in()
-  let { data, error } = await supabase.rpc("get_user_evaluations", {
-    in_user_id: user_id,
-  });
-
-  console.log("server data", data, user_id);
-
-  return (data as any) || [];
-}
-
-// function getEvaluation(
-//   supabase: SupabaseClient,
-//   user_id: string,
-//   role: string,
-//   params: RPC.Param<"getEvaluation">
-// ): RPC.Result<"getEvaluation"> {}
-
-async function getUserRole(
-  supabase: SupabaseClient,
-  userID: string
-): Promise<string> {
-  const { data, error } = await supabase
-    .from("user")
-    .select("role")
-    .eq("id", userID)
-    .single();
-
-  if (error) {
-    return "user";
-  }
-
-  return data.role;
-}
-
-async function getUserID(
-  supabase: SupabaseClient,
-  userID: string
-): Promise<string> {
-  const { data, error } = await supabase
-    .from("user")
-    .select("id")
-    .eq("github_user_id", userID)
-    .single();
-
-  if (error) {
-    return "user";
-  }
-
-  return data.id;
-}

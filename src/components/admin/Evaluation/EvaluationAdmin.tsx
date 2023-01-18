@@ -2,11 +2,10 @@ import { Button } from "@mui/material";
 import { useRouter } from "next/router";
 import { ComponentType, FC, ReactNode, useEffect } from "react";
 import LinkButton from "src/components/LinkButton";
-import { LoadOptions, useEvaluationStore } from "./EvaluationStore";
+import { useEvaluationStore } from "./EvaluationStore";
 
 type Props = {
   evaluation_id: string | string[] | undefined;
-  loadOptions: LoadOptions;
   page: "details" | "submissions";
   children: ReactNode;
 };
@@ -14,7 +13,6 @@ type Props = {
 export const EvaluationAdmin: FC<Props> = ({
   evaluation_id,
   page,
-  loadOptions,
   children,
 }) => {
   const store = useEvaluationStore();
@@ -23,7 +21,7 @@ export const EvaluationAdmin: FC<Props> = ({
     if (!evaluation_id || Array.isArray(evaluation_id)) {
       return;
     }
-    store.load(evaluation_id, loadOptions);
+    store.load(evaluation_id);
   }, [evaluation_id]);
 
   if (!evaluation_id) {
@@ -35,7 +33,7 @@ export const EvaluationAdmin: FC<Props> = ({
   }
 
   if (store.fetching) return <p>Loading...</p>;
-  if (store.error) return <p>Oh no... {store.error.message}</p>;
+  // if (store.error) return <p>Oh no... {store.error.message}</p>;
   if (!store.evaluation) return <p>no evaluation</p>;
 
   return (

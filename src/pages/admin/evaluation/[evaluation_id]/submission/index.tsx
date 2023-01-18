@@ -8,11 +8,7 @@ const Home: FC = () => {
   const { evaluation_id } = router.query;
 
   return (
-    <EvaluationAdmin
-      evaluation_id={evaluation_id}
-      page="submissions"
-      loadOptions={{ with_submissions: true }}
-    >
+    <EvaluationAdmin evaluation_id={evaluation_id} page="submissions">
       <SubmissionsPage />
     </EvaluationAdmin>
   );

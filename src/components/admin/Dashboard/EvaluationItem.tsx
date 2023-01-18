@@ -1,10 +1,9 @@
-import { DocumentType } from "src/gql";
+import { Evaluation } from "src/lib";
 import LinkButton from "../../LinkButton";
-import { EvaluationStubFragment } from "./queries";
 
 type EvaluationItemProps = {
-  evaluation: DocumentType<typeof EvaluationStubFragment>;
   last: boolean;
+  evaluation: Evaluation;
 };
 export const EvaluationItem = ({ evaluation, last }: EvaluationItemProps) => {
   return (

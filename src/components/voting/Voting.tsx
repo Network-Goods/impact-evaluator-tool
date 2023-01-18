@@ -34,7 +34,7 @@ export default function Voting() {
     ) {
       return;
     }
-    store.load(supabase, evaluation_id, userProfileStore.profile.id);
+    store.load(evaluation_id);
   }, [evaluation_id, userProfileStore.profile]);
 
   useEffect(() => {

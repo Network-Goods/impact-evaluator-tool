@@ -1,8 +1,8 @@
 import { FC, ReactNode, use, useEffect } from "react";
 import {
   useSession,
-  useSupabaseClient,
   useSessionContext,
+  useSupabaseClient,
 } from "@supabase/auth-helpers-react";
 import { useUserProfileStore } from "src/lib/UserProfileStore";
 import LoginPage from "src/components/LoginPage";
@@ -14,17 +14,20 @@ type Props = {
 
 const AuthWrapper: FC<Props> = ({ children }) => {
   const session = useSession();
-  const supabase = useSupabaseClient();
   const userProfileStore = useUserProfileStore();
   const sessionContext = useSessionContext();
 
   useEffect(() => {
-    if (session) {
-      userProfileStore.login(supabase, session);
+    if (session && !sessionContext.isLoading) {
+      userProfileStore.login();
     } else {
       userProfileStore.logout();
     }
-  }, [session]);
+  }, [session, sessionContext.isLoading]);
+
+  if (sessionContext.isLoading) {
+    return <div>Loading</div>;
+  }
 
   if (sessionContext.isLoading) {
     return <LoadingSpinner />;

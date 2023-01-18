@@ -1,82 +1,32 @@
-import { getHeaders, graphQLClient, newClient } from "src/lib/graphqlClient";
-import { cleanPostgresGraphQLResult } from "src/lib/cleanPostgresGraphQLResult";
 import create from "zustand";
-import {
-  OldEvaluationQuery,
-  //  SubmissionsQuery
-} from "./queries";
 import { v4 as uuid } from "uuid";
+import { Evaluation, rpc, Submission } from "src/lib";
 
-import { Evaluation, Submission } from "src/gql/graphql";
-import {
-  createEvaluationSubmission,
-  deleteEvaluation,
-  FromGraphQL,
-  setEvaluationName,
-  setEvaluationStatus,
-} from "src/lib/dbUtils";
-import { SupabaseClient } from "@supabase/supabase-js";
-
-export type LoadOptions = {
-  with_submissions?: boolean;
-  with_evaluators?: boolean;
-};
-
-export interface DetailsStore {
+export interface EvaluationStore {
   fetching: boolean;
-  error?: any;
-  data?: any;
   evaluation?: Evaluation;
-  submissions: FromGraphQL<Submission>[];
-  load: (evaluation_id: string, options: LoadOptions) => void;
-  setEvaluationName: (supabase: SupabaseClient, name: string) => void;
-  setEvaluationStatus: (supabase: SupabaseClient, name: string) => void;
-  deleteEvaluation: (supabase: SupabaseClient) => void;
-  createSubmission: (
-    supabase: SupabaseClient
-  ) => Promise<FromGraphQL<Submission> | Error>;
+  submissions: Submission[];
+  load: (evaluation_id: string) => void;
+  setEvaluationName: (name: string) => void;
+  setEvaluationStatus: (status: string) => void;
+  deleteEvaluation: () => void;
+  createSubmission: () => Promise<Submission | Error>;
 }
 
-export const useEvaluationStore = create<DetailsStore>()((set, get) => ({
+export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
   fetching: true,
   submissions: [],
-  load: (evaluation_id: string, loadOptions: LoadOptions) => {
-    const variables = {
-      evaluation_id: evaluation_id,
-    };
+  load: (evaluation_id: string) => {
+    if (get().fetching) {
+      return;
+    }
 
-    // Supabase GraphQL does not yet support directives, so we have to perform multiple requests when selectively loading data
-    // https://github.com/supabase/pg_graphql/issues/125
-
-    graphQLClient.request(OldEvaluationQuery, variables).then((data) => {
-      const evaluation: any = data.evaluation?.edges[0].node;
-      if (!evaluation) {
-        return;
-      }
-
-      set({
-        evaluation: evaluation,
-        fetching: false,
-        data: data,
-      });
+    set({
+      fetching: false,
     });
-
-    // if (loadOptions.with_submissions) {
-    //   graphQLClient.request(SubmissionsQuery, variables).then((data) => {
-    //     cleanPostgresGraphQLResult(data);
-
-    //     console.log(data);
-
-    //     set({
-    //       submissions: data.submissions as any,
-    //       fetching: false,
-    //       data: data,
-    //     });
-    //   });
-    // }
   },
 
-  setEvaluationName: (supabase: SupabaseClient, name: string) => {
+  setEvaluationName: (name: string) => {
     const evaluation = get().evaluation;
 
     if (!evaluation) {
@@ -90,10 +40,17 @@ export const useEvaluationStore = create<DetailsStore>()((set, get) => ({
       },
     });
 
-    setEvaluationName(supabase, evaluation, name);
+    rpc
+      .call("setEvaluationName", { name: name, id: evaluation.id })
+      .then((data) => {
+        if (data instanceof Error) {
+          console.error(`ERROR -- rpc call setEvaluationName failed`, data);
+          return;
+        }
+      });
   },
 
-  setEvaluationStatus: (supabase: SupabaseClient, status: string) => {
+  setEvaluationStatus: (status: string) => {
     const evaluation = get().evaluation;
 
     if (!evaluation) {
@@ -107,48 +64,55 @@ export const useEvaluationStore = create<DetailsStore>()((set, get) => ({
       },
     });
 
-    setEvaluationStatus(supabase, evaluation, status);
+    rpc
+      .call("setEvaluationStatus", { status: status, id: evaluation.id })
+      .then((data) => {
+        if (data instanceof Error) {
+          console.error(`ERROR -- rpc call setEvaluationName failed`, data);
+          return;
+        }
+      });
   },
 
-  deleteEvaluation: (supabase: SupabaseClient) => {
+  deleteEvaluation: () => {
     const evaluation = get().evaluation;
 
     if (!evaluation) {
       return;
     }
 
-    deleteEvaluation(supabase, evaluation);
+    rpc.call("deleteEvaluation", { id: evaluation.id }).then((data) => {
+      if (data instanceof Error) {
+        console.error(`ERROR -- rpc call deleteEvaluation failed`, data);
+        return;
+      }
+    });
   },
 
-  createSubmission: async (
-    supabase: SupabaseClient
-  ): Promise<Error | FromGraphQL<Submission>> => {
+  createSubmission: async (): Promise<Error | Submission> => {
     const evaluation = get().evaluation;
 
     if (!evaluation) {
       return new Error("Evaluation not loaded");
     }
 
-    let newSubmission: FromGraphQL<Submission> = {
+    let newSubmission = Submission.init({
       description: "",
       evaluation_id: evaluation.id,
-      id: uuid(),
       website_link: "",
       name: "",
       user_id: "",
-    };
+      github_link: "",
+    });
 
     set({
       submissions: [...get().submissions, newSubmission],
     });
 
-    let res = await createEvaluationSubmission(
-      supabase,
-      evaluation,
-      newSubmission
-    );
-    if (res instanceof Error) {
-      return res;
+    const data = await rpc.call("deleteEvaluation", { id: evaluation.id });
+
+    if (data instanceof Error) {
+      console.error(`ERROR -- rpc call deleteEvaluation failed`, data);
     }
 
     return newSubmission;
