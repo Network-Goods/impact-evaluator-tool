@@ -12,7 +12,7 @@ const VotingCreditCounter = ({
   credits,
 }: VotingCreditCounterProps) => {
   return (
-    <div className="rounded-lg bg-white border border-gray p-12 ml-6 text-center">
+    <div className="rounded-lg bg-white border border-gray p-12 mt-4 lg:mt-0 lg:ml-6 text-center">
       <SmallTitle text="VOICE CREDITS" />
       <div className="text-4xl mt-2 min-w-[141.08px]">
         <span className="font-semibold">{credits}</span>/100

@@ -72,7 +72,7 @@ export default function Voting() {
         handleSetAllProjectsView={handleSetAllProjectsView}
       />
 
-      <div className="flex">
+      <div className="flex flex-col lg:flex-row">
         <VotingTable
           search={search}
           submissions={store.submissions}

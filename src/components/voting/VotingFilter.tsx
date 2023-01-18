@@ -27,7 +27,7 @@ const VotingFilter = ({
           type="text"
           placeholder="Search"
           onChange={(e) => setSearch(e.target.value)}
-          className="w-[550px] z-20 inline-flex justify-center px-14 py-2 text-[20px] font-medium bg-white rounded-lg border border-gray 
+          className="lg:w-[550px] z-20 inline-flex justify-center px-14 py-2 text-[20px] font-medium bg-white rounded-lg border border-gray 
           "
         />
       </div>
