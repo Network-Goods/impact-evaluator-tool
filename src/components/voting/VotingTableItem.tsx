@@ -1,6 +1,4 @@
-import { useState, useEffect } from "react";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
-import { useUserProfileStore } from "src/lib/UserProfileStore";
 import DownChevron from "public/images/svg/DownChevron";
 import { useVotingStore } from "./VotingStore";
 
@@ -11,7 +9,6 @@ type VotingTableItemProps = {
   submissions: any;
   openArray: any;
   setOpenArray: any;
-  evaluation_id: any;
 };
 
 const VotingTableItem = ({
@@ -21,7 +18,6 @@ const VotingTableItem = ({
   submissions,
   openArray,
   setOpenArray,
-  evaluation_id,
 }: VotingTableItemProps) => {
   const votingStore = useVotingStore();
   const supabase = useSupabaseClient();
@@ -97,7 +93,7 @@ const VotingTableItem = ({
               </span>
             </button>
             <span className="outline-none focus:outline-none text-center text-3xl text-blue-darkest w-9">
-              {votingStore.getVotes(project.id)}
+              {votingStore.getVotes(project.id) || 0}
             </span>
 
             <button
@@ -131,7 +127,7 @@ const VotingTableItem = ({
           <div className="flex items-center text-sm py-2 border-l border-gray">
             <span className="ml-5 mr-3">Used credits</span>
             <div className="text-xl text-black">
-              {votingStore.getAllocatedVoiceCredits(project.id)}
+              {votingStore.getAllocatedVoiceCredits(project.id) || 0}
             </div>
           </div>
         </div>

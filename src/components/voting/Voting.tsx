@@ -1,10 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import Button from "../Button";
 import SubmitEvaluationModal from "./SubmitEvaluationModal";
-import SmallTitle from "../SmallTitle";
 import { useClickOutside } from "../../hooks/useClickOutside";
-import Reset from "public/images/svg/Reset";
-import { useSubmissionStore } from "./store";
 import { useRouter } from "next/router";
 import VotingHeader from "./VotingHeader";
 import VotingFilter from "./VotingFilter";
@@ -13,6 +10,7 @@ import VotingCreditCounter from "./VotingCreditCounter";
 import { useVotingStore } from "./VotingStore";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useUserProfileStore } from "src/lib/UserProfileStore";
+import Link from "next/link";
 
 export default function Voting() {
   const [openModal, setOpenModal] = useState(false);
@@ -26,9 +24,7 @@ export default function Voting() {
   const { evaluation_id } = router.query;
   const store = useVotingStore();
   const supabase = useSupabaseClient();
-  {
-    console.log("store", store);
-  }
+
   useEffect(() => {
     if (
       !evaluation_id ||
@@ -38,7 +34,6 @@ export default function Voting() {
     ) {
       return;
     }
-
     store.load(supabase, evaluation_id, userProfileStore.profile.id);
   }, [evaluation_id, userProfileStore.profile]);
 
@@ -62,6 +57,9 @@ export default function Voting() {
     setOpenArray(arr);
   };
 
+  if (!store.loaded) return <p>Loading...</p>;
+  // if (store.error) return <p>Oh no... {store.error.message}</p>;
+
   return (
     <div>
       <VotingHeader evaluation={store.evaluation} />
@@ -74,7 +72,7 @@ export default function Voting() {
         handleSetAllProjectsView={handleSetAllProjectsView}
       />
 
-      <div className="flex">
+      <div className="flex flex-col lg:flex-row">
         <VotingTable
           search={search}
           submissions={store.submissions}
@@ -83,13 +81,21 @@ export default function Voting() {
           evaluation_id={evaluation_id}
         />
         <div>
-          {/* <VotingCreditCounter handleReset={handleReset} credits={credits} /> */}
+          <VotingCreditCounter
+            supabase={supabase}
+            handleReset={store.reset}
+            credits={store.availableCredits}
+          />
         </div>
       </div>
 
       <div className="flex justify-between mt-10">
         <div>
-          <Button alt text="Save and exit" onClick={() => console.log("hi")} />
+          <Link href="/">
+            <div className="transition-colors duration-200 ease-in-out transform  outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold mx-auto border border-[#dbdbdb] bg-[#e7eaf0] hover:bg-[#dbdbdb] hover:border-[#dbdbdb] focus:bg-[#dbdbdb] text-[#898888] text-lg px-4 py-3">
+              Save and exit
+            </div>
+          </Link>
         </div>
         <div>
           <Button text="Submit" onClick={handleOpenModal} />

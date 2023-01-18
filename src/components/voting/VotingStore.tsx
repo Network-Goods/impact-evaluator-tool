@@ -32,6 +32,14 @@ async function fetchData(
   return data;
 }
 
+function calculateAvailableCredits(votes: SubmissionVotes) {
+  let usedCredits = 0;
+  for (let submission_id in votes) {
+    usedCredits += votes[submission_id] * votes[submission_id];
+  }
+  return usedCredits;
+}
+
 type SubmissionVotes = { [submission_id: string]: number };
 
 export type VotingStore = {
@@ -42,6 +50,7 @@ export type VotingStore = {
   submissions: FromGraphQL<Submission>[];
   expandedSubmissions: { [submissionId: string]: boolean };
   availableCredits: number;
+  allocatedCredits: number;
   load: (
     supabase: SupabaseClient,
     evaluation_id: string,
@@ -59,6 +68,7 @@ export type VotingStore = {
   getVotes: (submission_id: string) => number;
   getAllocatedVoiceCredits: (submission_id: string) => number;
   canVoteAgain: (submission_id: string) => boolean;
+  reset: (supabase: SupabaseClient) => Promise<void>;
 };
 
 export const useVotingStore = create<VotingStore>()((set, get) => ({
@@ -69,6 +79,7 @@ export const useVotingStore = create<VotingStore>()((set, get) => ({
   submissions: [],
   expandedSubmissions: {},
   availableCredits: 0,
+  allocatedCredits: 0,
 
   load: async (
     supabase: SupabaseClient,
@@ -84,6 +95,9 @@ export const useVotingStore = create<VotingStore>()((set, get) => ({
       votes: data.votes || {},
       submissions: data.submissions,
       evaluator: data.evaluator,
+      availableCredits:
+        data.evaluator.voice_credits - calculateAvailableCredits(data.votes),
+      allocatedCredits: data.evaluator.voice_credits,
       evaluation: data.evaluation,
       loaded: true,
     });
@@ -99,16 +113,29 @@ export const useVotingStore = create<VotingStore>()((set, get) => ({
     const current_votes = get().votes[submission_id] || 0;
 
     set({
+      availableCredits:
+        get().availableCredits +
+        current_votes * current_votes -
+        (current_votes + 1) * (current_votes + 1),
       votes: {
         ...get().votes,
         [submission_id]: current_votes + 1,
       },
     });
 
-    let { data, error } = await supabase.rpc("increment", {
-      in_evaluator_id: evaluator.id,
-      in_submission_id: submission_id,
-    });
+    let { data, error } = await supabase.rpc(
+      "upsertvote",
+      {
+        in_evaluator_id: evaluator.id,
+        in_submission_id: submission_id,
+        vote_count: current_votes + 1,
+      }
+
+      // let { data, error } = await supabase.rpc("increment", {
+      //   in_evaluator_id: evaluator.id,
+      //   in_submission_id: submission_id,
+      // }
+    );
 
     if (error) {
       console.error(error);
@@ -131,6 +158,10 @@ export const useVotingStore = create<VotingStore>()((set, get) => ({
     }
 
     set({
+      availableCredits:
+        get().availableCredits +
+        current_votes * current_votes -
+        (current_votes - 1) * (current_votes - 1),
       votes: {
         ...get().votes,
         [submission_id]: current_votes - 1,
@@ -162,6 +193,37 @@ export const useVotingStore = create<VotingStore>()((set, get) => ({
   canVoteAgain: (submission_id: string): boolean => {
     const votes = get().votes[submission_id] || 0;
 
-    return (votes - 1) * (votes - 1) - votes * votes <= 1;
+    return (
+      get().availableCredits + (votes - 1) * (votes - 1) - votes * votes <= 1
+    );
+  },
+  reset: async (supabase: SupabaseClient) => {
+    const evaluator = get().evaluator;
+    if (!evaluator) {
+      console.error("Cannot reset without an evaluator");
+      return;
+    }
+
+    function resetVotes(votes: SubmissionVotes) {
+      for (let submission_id in votes) {
+        votes[submission_id] = 0;
+      }
+      return votes;
+    }
+
+    set({
+      availableCredits: get().allocatedCredits,
+      votes: resetVotes(get().votes),
+    });
+
+    let { data, error } = await supabase.rpc("reset", {
+      in_evaluator_id: evaluator.id,
+    });
+
+    if (error) {
+      console.error(error);
+    } else {
+      console.log("reset result data: ", data);
+    }
   },
 }));

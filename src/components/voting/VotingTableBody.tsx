@@ -1,7 +1,4 @@
-import Collapse from "@mui/material/Collapse";
 import VotingTableLink from "./VotingTableLink";
-import VotingTableHeader from "./VotingTableHeader";
-import VotingTableItem from "./VotingTableItem";
 
 type VotingTableBodyProps = {
   idx: any;
@@ -38,17 +35,11 @@ const VotingTableBody = ({
       <div className="flex pt-5">
         <div className="w-[70%] pr-12">
           <div className="font-bold">Project Summary</div>
-          <p className="text-sm mb-3">
-            {JSON.parse(project.description).summary}
-          </p>
+          <p className="text-sm mb-3">{project.description.summary}</p>
           <div className="font-bold">Project Description</div>
-          <p className="text-sm mb-3">
-            {JSON.parse(project.description).description}
-          </p>
+          <p className="text-sm mb-3">{project.description.description}</p>
           <div className="font-bold">FVM Tech Specs</div>
-          <p className="text-sm mb-3">
-            {JSON.parse(project.description).specs}
-          </p>
+          <p className="text-sm mb-3">{project.description.specs}</p>
         </div>
         <div className="w-[30%] border-l border-gray pl-6">
           <div className="font-bold">Project Links</div>
