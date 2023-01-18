@@ -13,7 +13,7 @@ async function fetchData(
   evaluation_id: string,
   user_id: string
 ) {
-  let { data, error } = await supabase.rpc("get_user_evaluation_votes2", {
+  let { data, error } = await supabase.rpc("get_user_evaluation_votes", {
     in_evaluation_id: evaluation_id,
     in_user_id: user_id,
   });
