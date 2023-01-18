@@ -14,6 +14,7 @@ export const UserProfileQuery = gql(/* GraphQL */ `
         node {
           id
           preferred_email
+          role
         }
       }
     }
@@ -26,9 +27,11 @@ export type UserProfileStore = {
     prefferedEmail?: string;
     userName: string;
     githubHandle: string;
+    role: string;
   };
   login: (supabase: SupabaseClient, session: Session) => void;
   logout: () => void;
+  isAdmin: () => boolean;
 };
 
 export const useUserProfileStore = create<UserProfileStore>()((set, get) => ({
@@ -55,6 +58,7 @@ export const useUserProfileStore = create<UserProfileStore>()((set, get) => ({
             id: userId,
             userName: userName,
             githubHandle: githubHandle,
+            role: user.role,
           },
         });
       });
@@ -63,5 +67,8 @@ export const useUserProfileStore = create<UserProfileStore>()((set, get) => ({
     set({
       profile: undefined,
     });
+  },
+  isAdmin: () => {
+    return get().profile?.role == "admin" ? true : false;
   },
 }));

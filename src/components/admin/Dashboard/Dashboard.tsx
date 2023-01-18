@@ -1,6 +1,8 @@
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useEffect } from "react";
 import SubTitle from "src/components/SubTitle";
 import Title from "src/components/Title";
+import { useUserProfileStore } from "src/lib/UserProfileStore";
 import CreateEvaluationButton from "./CreateEvaluationButton";
 import CreateRoundTooltip from "./CreateRoundTooltip";
 import { EvaluationCard } from "./EvaluationCard";
@@ -11,9 +13,11 @@ import { useDashboardStore } from "./store";
 
 export default function Dashboard() {
   const store = useDashboardStore();
+  const supabase = useSupabaseClient();
+  const userProfileStore = useUserProfileStore();
 
   useEffect(() => {
-    store.load();
+    store.load(supabase, userProfileStore.profile?.id!);
   }, []);
 
   if (store.fetching) return <p>Loading...</p>;
@@ -24,12 +28,15 @@ export default function Dashboard() {
       <>
         <div className="flex justify-between pb-10">
           <Title text="Dashboard" />
-
-          <CreateRoundTooltip>
-            <div className="pointer-events-none">
-              <CreateEvaluationButton />
-            </div>
-          </CreateRoundTooltip>
+          {userProfileStore.isAdmin() ? (
+            <CreateRoundTooltip>
+              <div className="pointer-events-none">
+                <CreateEvaluationButton />
+              </div>
+            </CreateRoundTooltip>
+          ) : (
+            ""
+          )}
         </div>
         <div className="flex justify-between pb-6">
           <SubTitle text="Ongoing evaluations" />
@@ -37,7 +44,7 @@ export default function Dashboard() {
         </div>
         {store.evaluations.filter(
           (evaluation) => evaluation.status !== "closed"
-        ) ? (
+        ).length !== 0 ? (
           <EvaluationCard>
             {store.evaluations
               .filter((evaluation) => evaluation.status !== "closed")
@@ -62,7 +69,7 @@ export default function Dashboard() {
         </div>
         {store.evaluations.filter(
           (evaluation) => evaluation.status === "closed"
-        ) ? (
+        ).length !== 0 ? (
           <EvaluationCard>
             {store.evaluations
               .filter((evaluation) => evaluation.status === "closed")
