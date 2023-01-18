@@ -1,4 +1,3 @@
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useEffect } from "react";
 import SubTitle from "src/components/SubTitle";
 import Title from "src/components/Title";
@@ -13,11 +12,10 @@ import { useDashboardStore } from "./store";
 
 export default function Dashboard() {
   const store = useDashboardStore();
-  const supabase = useSupabaseClient();
   const userProfileStore = useUserProfileStore();
 
   useEffect(() => {
-    store.load(supabase, userProfileStore.profile?.id!);
+    store.load();
   }, []);
 
   if (store.fetching) return <p>Loading...</p>;

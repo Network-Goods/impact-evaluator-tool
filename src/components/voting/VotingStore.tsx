@@ -1,36 +1,7 @@
 import create from "zustand";
-import { v4 as uuid } from "uuid";
 
-import { DocumentType, gql } from "src/gql";
-import { graphQLClient } from "../../lib/graphqlClient";
-import { createUser, FromGraphQL } from "../../lib/dbUtils";
-import { supabase } from "@supabase/auth-ui-react/dist/esm/common/theming";
 import { Session, SupabaseClient } from "@supabase/supabase-js";
-import { Submission } from "src/gql/graphql";
-
-async function fetchData(
-  supabase: SupabaseClient,
-  evaluation_id: string,
-  user_id: string
-) {
-  let { data, error } = await supabase.rpc("get_user_evaluation_votes", {
-    in_evaluation_id: evaluation_id,
-    in_user_id: user_id,
-  });
-
-  if (error) {
-    console.error("Failed to fetch votes", error);
-    return null;
-  }
-
-  if (!data) {
-    console.error("fetchVotes returned no data");
-    return null;
-  }
-
-  console.log("fetch data", data);
-  return data;
-}
+import { Submission, rpc } from "src/lib";
 
 function calculateAvailableCredits(votes: SubmissionVotes) {
   let usedCredits = 0;
@@ -47,15 +18,11 @@ export type VotingStore = {
   votes: SubmissionVotes;
   evaluator: { id: string; voice_credits: number } | null;
   evaluation: any | null;
-  submissions: FromGraphQL<Submission>[];
+  submissions: Submission[];
   expandedSubmissions: { [submissionId: string]: boolean };
   availableCredits: number;
   allocatedCredits: number;
-  load: (
-    supabase: SupabaseClient,
-    evaluation_id: string,
-    user_id: string
-  ) => Promise<void>;
+  load: (evaluation_id: string) => Promise<void>;
   incrementVote: (
     supabase: SupabaseClient,
     submission_id: string
@@ -81,18 +48,21 @@ export const useVotingStore = create<VotingStore>()((set, get) => ({
   availableCredits: 0,
   allocatedCredits: 0,
 
-  load: async (
-    supabase: SupabaseClient,
-    evaluation_id: string,
-    user_id: string
-  ): Promise<void> => {
-    let data = (await fetchData(supabase, evaluation_id, user_id)) as any;
-    if (!data) {
+  load: async (evaluation_id: string): Promise<void> => {
+    let data = await rpc.call("getVotingStore", {
+      evaluation_id: evaluation_id,
+    });
+
+    if (data instanceof Error) {
+      console.error(
+        `ERROR -- rpc call getVotingStore failed. evaluation_id: ${evaluation_id}`,
+        data
+      );
       return;
     }
 
     set({
-      votes: data.votes || {},
+      votes: data.votes,
       submissions: data.submissions,
       evaluator: data.evaluator,
       availableCredits:

@@ -19,7 +19,7 @@ export const DetailsPage: FC = () => {
   const [name, setName] = useState(store.evaluation.name);
 
   const onBlur = (event: any) => {
-    store.setEvaluationName(supabase, event.target.value);
+    store.setEvaluationName(event.target.value);
   };
 
   const onChange = (event: any) => {
@@ -27,14 +27,11 @@ export const DetailsPage: FC = () => {
   };
 
   const handleChange = (event: any) => {
-    store.setEvaluationStatus(supabase, event.target.value);
+    store.setEvaluationStatus(event.target.value);
   };
 
   return (
     <div className="flex flex-col pb-4">
-      <div className="flex flex-col p-10">
-        <div>Create unique code for Impact Evaluator round</div>
-      </div>
       <div className="flex w-[295px] pb-2">
         <span className="pr-4 leading-8">Title:</span>
         <TextField

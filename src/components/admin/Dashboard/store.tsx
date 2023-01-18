@@ -1,76 +1,47 @@
-import { DocumentType } from "src/gql";
-import { graphQLClient } from "src/lib/graphqlClient";
-import { cleanPostgresGraphQLResult } from "src/lib/cleanPostgresGraphQLResult";
 import create from "zustand";
-import { DashboardEvaluationsQuery, EvaluationStubFragment } from "./queries";
-import { createEvaluation, FromGraphQL } from "src/lib/dbUtils";
-import { Evaluation } from "src/gql/graphql";
-import { v4 as uuid } from "uuid";
-import { SupabaseClient } from "@supabase/supabase-js";
-import { rpc } from "src/lib/RPC";
-
-async function fetchEvaluations(supabase: SupabaseClient, user_id: string) {
-  // let { data, error } = await supabase.rpc("get_user_evaluations2", {
-  //   in_user_id: user_id,
-  // });
-
-  const res = await rpc("getEvaluationStubs", { user_id: user_id });
-  console.log("rpc res", res);
-
-  // if (error) {
-  //   console.error("Failed to fetch evaluations", error);
-  //   return null;
-  // }
-
-  // console.log("fetchEvaluations data", data);
-  return res as any;
-}
+import { Evaluation, rpc } from "src/lib";
 
 export interface DashboardStore {
   fetching: boolean;
   error?: any;
-  evaluations: FromGraphQL<Evaluation>[];
-  load: (supabase: SupabaseClient, user_id: string) => void;
-  createEvaluation: (
-    supabase: SupabaseClient
-  ) => Promise<FromGraphQL<Evaluation>>;
+  evaluations: Evaluation[];
+  load: () => void;
+  createEvaluation: () => Promise<Evaluation | Error>;
 }
 
 export const useDashboardStore = create<DashboardStore>()((set, get) => ({
   fetching: true,
   evaluations: [],
 
-  load: async (supabase: SupabaseClient, user_id: string) => {
-    // graphQLClient.request(DashboardEvaluationsQuery).then((data: any) => {
-    //   cleanPostgresGraphQLResult(data);
-    fetchEvaluations(supabase, user_id).then((data: any) => {
-      if (!data) {
+  load: async () => {
+    rpc.call("getUserEvaluations", null).then((data) => {
+      if (data instanceof Error) {
+        console.error(`ERROR -- rpc call getUserEvaluations failed`, data);
         return;
       }
 
-      console.log("graph data", data);
-
       set({
         fetching: false,
-        evaluations: data || [],
+        evaluations: data,
       });
     });
   },
 
-  createEvaluation: async (
-    supabase: SupabaseClient
-  ): Promise<FromGraphQL<Evaluation>> => {
-    let newEvaluation: FromGraphQL<Evaluation> = {
-      id: uuid(),
-      name: "New Evaluation",
-      status: "draft",
-    };
+  createEvaluation: async (): Promise<Evaluation | Error> => {
+    const newEvaluation = Evaluation.init();
 
     set({
       evaluations: [...get().evaluations, newEvaluation],
     });
 
-    await createEvaluation(supabase, newEvaluation);
+    const res = await rpc.call("createEvaluation", {
+      evaluation: newEvaluation,
+    });
+
+    if (res instanceof Error) {
+      return res;
+    }
+
     return newEvaluation;
   },
 }));

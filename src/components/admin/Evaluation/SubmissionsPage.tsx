@@ -1,7 +1,6 @@
 import { FC } from "react";
 import LinkButton from "src/components/LinkButton";
-import { Evaluation, Submission } from "src/gql/graphql";
-import { FromGraphQL } from "src/lib/dbUtils";
+import { Submission } from "src/lib";
 import { useEvaluationStore } from "./EvaluationStore";
 
 export const SubmissionsPage: FC = () => {
@@ -25,7 +24,7 @@ export const SubmissionsPage: FC = () => {
 };
 
 type Props = {
-  submission: FromGraphQL<Submission>;
+  submission: Submission;
   evaluationId: string;
 };
 
