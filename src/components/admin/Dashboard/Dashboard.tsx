@@ -1,5 +1,6 @@
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useEffect } from "react";
+import LoadingSpinner from "src/components/LoadingSpinner";
 import SubTitle from "src/components/SubTitle";
 import Title from "src/components/Title";
 import { useUserProfileStore } from "src/lib/UserProfileStore";
@@ -20,7 +21,7 @@ export default function Dashboard() {
     store.load(supabase, userProfileStore.profile?.id!);
   }, []);
 
-  if (store.fetching) return <p>Loading...</p>;
+  if (store.fetching) return <LoadingSpinner />;
   if (store.error) return <p>Oh no... {store.error.message}</p>;
 
   return (

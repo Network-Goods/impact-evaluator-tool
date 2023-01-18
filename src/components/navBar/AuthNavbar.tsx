@@ -16,8 +16,8 @@ const AuthNavbar = () => {
 
   const handleSignOut = () => {
     setToggle(false);
-    router.push("/");
     supabase.auth.signOut();
+    router.push("/");
   };
 
   useClickOutside(logoutWrapperRef, () => setToggle(false));
