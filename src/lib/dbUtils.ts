@@ -82,6 +82,7 @@ export async function createUser(
     name: name,
     github_handle: githubHandle,
     github_user_id: githubUserId,
+    role: "user",
   };
 
   let res = await supabase.from("user").insert([newUser]);

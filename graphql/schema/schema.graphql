@@ -117,6 +117,17 @@ type Mutation {
     atMost: Int! = 1
   ): evaluatorDeleteResponse!
 
+  """Deletes zero or more records from the `invitation` collection"""
+  deleteFrominvitationCollection(
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: invitationFilter
+
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+  ): invitationDeleteResponse!
+
   """Deletes zero or more records from the `submission` collection"""
   deleteFromsubmissionCollection(
     """Restricts the mutation's impact to records matching the criteria"""
@@ -139,17 +150,34 @@ type Mutation {
     atMost: Int! = 1
   ): userDeleteResponse!
 
+  """Deletes zero or more records from the `votes` collection"""
+  deleteFromvotesCollection(
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: votesFilter
+
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+  ): votesDeleteResponse!
+
   """Adds one or more `evaluation` records to the collection"""
   insertIntoevaluationCollection(objects: [evaluationInsertInput!]!): evaluationInsertResponse
 
   """Adds one or more `evaluator` records to the collection"""
   insertIntoevaluatorCollection(objects: [evaluatorInsertInput!]!): evaluatorInsertResponse
 
+  """Adds one or more `invitation` records to the collection"""
+  insertIntoinvitationCollection(objects: [invitationInsertInput!]!): invitationInsertResponse
+
   """Adds one or more `submission` records to the collection"""
   insertIntosubmissionCollection(objects: [submissionInsertInput!]!): submissionInsertResponse
 
   """Adds one or more `user` records to the collection"""
   insertIntouserCollection(objects: [userInsertInput!]!): userInsertResponse
+
+  """Adds one or more `votes` records to the collection"""
+  insertIntovotesCollection(objects: [votesInsertInput!]!): votesInsertResponse
 
   """Updates zero or more records in the `evaluation` collection"""
   updateevaluationCollection(
@@ -183,6 +211,22 @@ type Mutation {
     atMost: Int! = 1
   ): evaluatorUpdateResponse!
 
+  """Updates zero or more records in the `invitation` collection"""
+  updateinvitationCollection(
+    """
+    Fields that are set will be updated for all records matching the `filter`
+    """
+    set: invitationUpdateInput!
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: invitationFilter
+
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+  ): invitationUpdateResponse!
+
   """Updates zero or more records in the `submission` collection"""
   updatesubmissionCollection(
     """
@@ -214,6 +258,22 @@ type Mutation {
     """
     atMost: Int! = 1
   ): userUpdateResponse!
+
+  """Updates zero or more records in the `votes` collection"""
+  updatevotesCollection(
+    """
+    Fields that are set will be updated for all records matching the `filter`
+    """
+    set: votesUpdateInput!
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: votesFilter
+
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+  ): votesUpdateResponse!
 }
 
 interface Node {
@@ -287,6 +347,27 @@ type Query {
     orderBy: [evaluatorOrderBy!]
   ): evaluatorConnection
 
+  """A pagable collection of type `invitation`"""
+  invitationCollection(
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: invitationFilter
+
+    """Sort order to apply to the collection"""
+    orderBy: [invitationOrderBy!]
+  ): invitationConnection
+
   """Retrieve a record by its `ID`"""
   node(
     """The record's `ID`"""
@@ -334,6 +415,27 @@ type Query {
     """Sort order to apply to the collection"""
     orderBy: [userOrderBy!]
   ): userConnection
+
+  """A pagable collection of type `votes`"""
+  votesCollection(
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: votesFilter
+
+    """Sort order to apply to the collection"""
+    orderBy: [votesOrderBy!]
+  ): votesConnection
 }
 
 """
@@ -382,6 +484,8 @@ type evaluation implements Node {
   name: String!
   status: String!
   description: String
+  start_time: Datetime
+  end_time: Datetime
   submissionCollection(
     """Query the first `n` records in the collection"""
     first: Int
@@ -401,6 +505,25 @@ type evaluation implements Node {
     """Sort order to apply to the collection"""
     orderBy: [submissionOrderBy!]
   ): submissionConnection
+  invitationCollection(
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: invitationFilter
+
+    """Sort order to apply to the collection"""
+    orderBy: [invitationOrderBy!]
+  ): invitationConnection
   evaluatorCollection(
     """Query the first `n` records in the collection"""
     first: Int
@@ -445,6 +568,8 @@ input evaluationFilter {
   name: StringFilter
   status: StringFilter
   description: StringFilter
+  start_time: DatetimeFilter
+  end_time: DatetimeFilter
   nodeId: IDFilter
 }
 
@@ -453,6 +578,8 @@ input evaluationInsertInput {
   name: String
   status: String
   description: String
+  start_time: Datetime
+  end_time: Datetime
 }
 
 type evaluationInsertResponse {
@@ -468,6 +595,8 @@ input evaluationOrderBy {
   name: OrderByDirection
   status: OrderByDirection
   description: OrderByDirection
+  start_time: OrderByDirection
+  end_time: OrderByDirection
 }
 
 input evaluationUpdateInput {
@@ -475,6 +604,8 @@ input evaluationUpdateInput {
   name: String
   status: String
   description: String
+  start_time: Datetime
+  end_time: Datetime
 }
 
 type evaluationUpdateResponse {
@@ -494,6 +625,25 @@ type evaluator implements Node {
   id: UUID!
   evaluation: evaluation
   user: user
+  votesCollection(
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: votesFilter
+
+    """Sort order to apply to the collection"""
+    orderBy: [votesOrderBy!]
+  ): votesConnection
 }
 
 type evaluatorConnection {
@@ -559,6 +709,79 @@ type evaluatorUpdateResponse {
   records: [evaluator!]!
 }
 
+type invitation implements Node {
+  """Globally Unique Record Identifier"""
+  nodeId: ID!
+  evaluation_id: UUID!
+  id: UUID!
+  code: String!
+  voice_credits: Int!
+  evaluation: evaluation
+}
+
+type invitationConnection {
+  edges: [invitationEdge!]!
+  pageInfo: PageInfo!
+}
+
+type invitationDeleteResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [invitation!]!
+}
+
+type invitationEdge {
+  cursor: String!
+  node: invitation!
+}
+
+input invitationFilter {
+  evaluation_id: UUIDFilter
+  id: UUIDFilter
+  code: StringFilter
+  voice_credits: IntFilter
+  nodeId: IDFilter
+}
+
+input invitationInsertInput {
+  evaluation_id: UUID
+  id: UUID
+  code: String
+  voice_credits: Int
+}
+
+type invitationInsertResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [invitation!]!
+}
+
+input invitationOrderBy {
+  evaluation_id: OrderByDirection
+  id: OrderByDirection
+  code: OrderByDirection
+  voice_credits: OrderByDirection
+}
+
+input invitationUpdateInput {
+  evaluation_id: UUID
+  id: UUID
+  code: String
+  voice_credits: Int
+}
+
+type invitationUpdateResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [invitation!]!
+}
+
 type submission implements Node {
   """Globally Unique Record Identifier"""
   nodeId: ID!
@@ -567,10 +790,29 @@ type submission implements Node {
   name: String!
   github_link: String
   website_link: String!
-  description: String!
   evaluation_id: UUID!
+  description: JSON!
   evaluation: evaluation
   user: user
+  votesCollection(
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: votesFilter
+
+    """Sort order to apply to the collection"""
+    orderBy: [votesOrderBy!]
+  ): votesConnection
 }
 
 type submissionConnection {
@@ -597,7 +839,6 @@ input submissionFilter {
   name: StringFilter
   github_link: StringFilter
   website_link: StringFilter
-  description: StringFilter
   evaluation_id: UUIDFilter
   nodeId: IDFilter
 }
@@ -608,8 +849,8 @@ input submissionInsertInput {
   name: String
   github_link: String
   website_link: String
-  description: String
   evaluation_id: UUID
+  description: JSON
 }
 
 type submissionInsertResponse {
@@ -626,7 +867,6 @@ input submissionOrderBy {
   name: OrderByDirection
   github_link: OrderByDirection
   website_link: OrderByDirection
-  description: OrderByDirection
   evaluation_id: OrderByDirection
 }
 
@@ -636,8 +876,8 @@ input submissionUpdateInput {
   name: String
   github_link: String
   website_link: String
-  description: String
   evaluation_id: UUID
+  description: JSON
 }
 
 type submissionUpdateResponse {
@@ -652,12 +892,13 @@ type user implements Node {
   """Globally Unique Record Identifier"""
   nodeId: ID!
   id: UUID!
-  name: String!
+  name: String
   email: String
   github_handle: String
   invite_status: String
-  preferred_email: UUID
+  preferred_email: String
   github_user_id: UUID
+  role: String!
   submissionCollection(
     """Query the first `n` records in the collection"""
     first: Int
@@ -722,8 +963,9 @@ input userFilter {
   email: StringFilter
   github_handle: StringFilter
   invite_status: StringFilter
-  preferred_email: UUIDFilter
+  preferred_email: StringFilter
   github_user_id: UUIDFilter
+  role: StringFilter
   nodeId: IDFilter
 }
 
@@ -733,8 +975,9 @@ input userInsertInput {
   email: String
   github_handle: String
   invite_status: String
-  preferred_email: UUID
+  preferred_email: String
   github_user_id: UUID
+  role: String
 }
 
 type userInsertResponse {
@@ -753,6 +996,7 @@ input userOrderBy {
   invite_status: OrderByDirection
   preferred_email: OrderByDirection
   github_user_id: OrderByDirection
+  role: OrderByDirection
 }
 
 input userUpdateInput {
@@ -761,8 +1005,9 @@ input userUpdateInput {
   email: String
   github_handle: String
   invite_status: String
-  preferred_email: UUID
+  preferred_email: String
   github_user_id: UUID
+  role: String
 }
 
 type userUpdateResponse {
@@ -771,4 +1016,73 @@ type userUpdateResponse {
 
   """Array of records impacted by the mutation"""
   records: [user!]!
+}
+
+type votes implements Node {
+  """Globally Unique Record Identifier"""
+  nodeId: ID!
+  evaluator_id: UUID!
+  submission_id: UUID!
+  votes: Int!
+  evaluator: evaluator
+  submission: submission
+}
+
+type votesConnection {
+  edges: [votesEdge!]!
+  pageInfo: PageInfo!
+}
+
+type votesDeleteResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [votes!]!
+}
+
+type votesEdge {
+  cursor: String!
+  node: votes!
+}
+
+input votesFilter {
+  evaluator_id: UUIDFilter
+  submission_id: UUIDFilter
+  votes: IntFilter
+  nodeId: IDFilter
+}
+
+input votesInsertInput {
+  evaluator_id: UUID
+  submission_id: UUID
+  votes: Int
+}
+
+type votesInsertResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [votes!]!
+}
+
+input votesOrderBy {
+  evaluator_id: OrderByDirection
+  submission_id: OrderByDirection
+  votes: OrderByDirection
+}
+
+input votesUpdateInput {
+  evaluator_id: UUID
+  submission_id: UUID
+  votes: Int
+}
+
+type votesUpdateResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [votes!]!
 }

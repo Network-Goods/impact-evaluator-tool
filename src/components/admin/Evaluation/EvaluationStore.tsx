@@ -1,7 +1,10 @@
 import { getHeaders, graphQLClient, newClient } from "src/lib/graphqlClient";
 import { cleanPostgresGraphQLResult } from "src/lib/cleanPostgresGraphQLResult";
 import create from "zustand";
-import { EvaluationQuery, SubmissionsQuery } from "./queries";
+import {
+  OldEvaluationQuery,
+  //  SubmissionsQuery
+} from "./queries";
 import { v4 as uuid } from "uuid";
 
 import { Evaluation, Submission } from "src/gql/graphql";
@@ -45,7 +48,7 @@ export const useEvaluationStore = create<DetailsStore>()((set, get) => ({
     // Supabase GraphQL does not yet support directives, so we have to perform multiple requests when selectively loading data
     // https://github.com/supabase/pg_graphql/issues/125
 
-    graphQLClient.request(EvaluationQuery, variables).then((data) => {
+    graphQLClient.request(OldEvaluationQuery, variables).then((data) => {
       const evaluation: any = data.evaluation?.edges[0].node;
       if (!evaluation) {
         return;
@@ -58,19 +61,19 @@ export const useEvaluationStore = create<DetailsStore>()((set, get) => ({
       });
     });
 
-    if (loadOptions.with_submissions) {
-      graphQLClient.request(SubmissionsQuery, variables).then((data) => {
-        cleanPostgresGraphQLResult(data);
+    // if (loadOptions.with_submissions) {
+    //   graphQLClient.request(SubmissionsQuery, variables).then((data) => {
+    //     cleanPostgresGraphQLResult(data);
 
-        console.log(data);
+    //     console.log(data);
 
-        set({
-          submissions: data.submissions as any,
-          fetching: false,
-          data: data,
-        });
-      });
-    }
+    //     set({
+    //       submissions: data.submissions as any,
+    //       fetching: false,
+    //       data: data,
+    //     });
+    //   });
+    // }
   },
 
   setEvaluationName: (supabase: SupabaseClient, name: string) => {

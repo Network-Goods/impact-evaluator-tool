@@ -2,7 +2,7 @@ import { useState, FC } from "react";
 import Container from "src/components/layout/Container";
 import Layout from "src/components/layout/Layout";
 import AuthNavbar from "src/components/navBar/AuthNavbar";
-import Voting from "src/components/voting/voting";
+import Voting from "src/components/voting/Voting";
 
 const Index: FC = () => {
   return (

@@ -105,26 +105,38 @@ export type Mutation = {
   deleteFromevaluationCollection: EvaluationDeleteResponse;
   /** Deletes zero or more records from the `evaluator` collection */
   deleteFromevaluatorCollection: EvaluatorDeleteResponse;
+  /** Deletes zero or more records from the `invitation` collection */
+  deleteFrominvitationCollection: InvitationDeleteResponse;
   /** Deletes zero or more records from the `submission` collection */
   deleteFromsubmissionCollection: SubmissionDeleteResponse;
   /** Deletes zero or more records from the `user` collection */
   deleteFromuserCollection: UserDeleteResponse;
+  /** Deletes zero or more records from the `votes` collection */
+  deleteFromvotesCollection: VotesDeleteResponse;
   /** Adds one or more `evaluation` records to the collection */
   insertIntoevaluationCollection?: Maybe<EvaluationInsertResponse>;
   /** Adds one or more `evaluator` records to the collection */
   insertIntoevaluatorCollection?: Maybe<EvaluatorInsertResponse>;
+  /** Adds one or more `invitation` records to the collection */
+  insertIntoinvitationCollection?: Maybe<InvitationInsertResponse>;
   /** Adds one or more `submission` records to the collection */
   insertIntosubmissionCollection?: Maybe<SubmissionInsertResponse>;
   /** Adds one or more `user` records to the collection */
   insertIntouserCollection?: Maybe<UserInsertResponse>;
+  /** Adds one or more `votes` records to the collection */
+  insertIntovotesCollection?: Maybe<VotesInsertResponse>;
   /** Updates zero or more records in the `evaluation` collection */
   updateevaluationCollection: EvaluationUpdateResponse;
   /** Updates zero or more records in the `evaluator` collection */
   updateevaluatorCollection: EvaluatorUpdateResponse;
+  /** Updates zero or more records in the `invitation` collection */
+  updateinvitationCollection: InvitationUpdateResponse;
   /** Updates zero or more records in the `submission` collection */
   updatesubmissionCollection: SubmissionUpdateResponse;
   /** Updates zero or more records in the `user` collection */
   updateuserCollection: UserUpdateResponse;
+  /** Updates zero or more records in the `votes` collection */
+  updatevotesCollection: VotesUpdateResponse;
 };
 
 /** The root type for creating and mutating data */
@@ -140,6 +152,12 @@ export type MutationDeleteFromevaluatorCollectionArgs = {
 };
 
 /** The root type for creating and mutating data */
+export type MutationDeleteFrominvitationCollectionArgs = {
+  atMost?: Scalars["Int"];
+  filter?: InputMaybe<InvitationFilter>;
+};
+
+/** The root type for creating and mutating data */
 export type MutationDeleteFromsubmissionCollectionArgs = {
   atMost?: Scalars["Int"];
   filter?: InputMaybe<SubmissionFilter>;
@@ -149,6 +167,12 @@ export type MutationDeleteFromsubmissionCollectionArgs = {
 export type MutationDeleteFromuserCollectionArgs = {
   atMost?: Scalars["Int"];
   filter?: InputMaybe<UserFilter>;
+};
+
+/** The root type for creating and mutating data */
+export type MutationDeleteFromvotesCollectionArgs = {
+  atMost?: Scalars["Int"];
+  filter?: InputMaybe<VotesFilter>;
 };
 
 /** The root type for creating and mutating data */
@@ -162,6 +186,11 @@ export type MutationInsertIntoevaluatorCollectionArgs = {
 };
 
 /** The root type for creating and mutating data */
+export type MutationInsertIntoinvitationCollectionArgs = {
+  objects: Array<InvitationInsertInput>;
+};
+
+/** The root type for creating and mutating data */
 export type MutationInsertIntosubmissionCollectionArgs = {
   objects: Array<SubmissionInsertInput>;
 };
@@ -169,6 +198,11 @@ export type MutationInsertIntosubmissionCollectionArgs = {
 /** The root type for creating and mutating data */
 export type MutationInsertIntouserCollectionArgs = {
   objects: Array<UserInsertInput>;
+};
+
+/** The root type for creating and mutating data */
+export type MutationInsertIntovotesCollectionArgs = {
+  objects: Array<VotesInsertInput>;
 };
 
 /** The root type for creating and mutating data */
@@ -186,6 +220,13 @@ export type MutationUpdateevaluatorCollectionArgs = {
 };
 
 /** The root type for creating and mutating data */
+export type MutationUpdateinvitationCollectionArgs = {
+  atMost?: Scalars["Int"];
+  filter?: InputMaybe<InvitationFilter>;
+  set: InvitationUpdateInput;
+};
+
+/** The root type for creating and mutating data */
 export type MutationUpdatesubmissionCollectionArgs = {
   atMost?: Scalars["Int"];
   filter?: InputMaybe<SubmissionFilter>;
@@ -197,6 +238,13 @@ export type MutationUpdateuserCollectionArgs = {
   atMost?: Scalars["Int"];
   filter?: InputMaybe<UserFilter>;
   set: UserUpdateInput;
+};
+
+/** The root type for creating and mutating data */
+export type MutationUpdatevotesCollectionArgs = {
+  atMost?: Scalars["Int"];
+  filter?: InputMaybe<VotesFilter>;
+  set: VotesUpdateInput;
 };
 
 export type Node = {
@@ -231,12 +279,16 @@ export type Query = {
   evaluationCollection?: Maybe<EvaluationConnection>;
   /** A pagable collection of type `evaluator` */
   evaluatorCollection?: Maybe<EvaluatorConnection>;
+  /** A pagable collection of type `invitation` */
+  invitationCollection?: Maybe<InvitationConnection>;
   /** Retrieve a record by its `ID` */
   node?: Maybe<Node>;
   /** A pagable collection of type `submission` */
   submissionCollection?: Maybe<SubmissionConnection>;
   /** A pagable collection of type `user` */
   userCollection?: Maybe<UserConnection>;
+  /** A pagable collection of type `votes` */
+  votesCollection?: Maybe<VotesConnection>;
 };
 
 /** The root type for querying data */
@@ -257,6 +309,16 @@ export type QueryEvaluatorCollectionArgs = {
   first?: InputMaybe<Scalars["Int"]>;
   last?: InputMaybe<Scalars["Int"]>;
   orderBy?: InputMaybe<Array<EvaluatorOrderBy>>;
+};
+
+/** The root type for querying data */
+export type QueryInvitationCollectionArgs = {
+  after?: InputMaybe<Scalars["Cursor"]>;
+  before?: InputMaybe<Scalars["Cursor"]>;
+  filter?: InputMaybe<InvitationFilter>;
+  first?: InputMaybe<Scalars["Int"]>;
+  last?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<Array<InvitationOrderBy>>;
 };
 
 /** The root type for querying data */
@@ -282,6 +344,16 @@ export type QueryUserCollectionArgs = {
   first?: InputMaybe<Scalars["Int"]>;
   last?: InputMaybe<Scalars["Int"]>;
   orderBy?: InputMaybe<Array<UserOrderBy>>;
+};
+
+/** The root type for querying data */
+export type QueryVotesCollectionArgs = {
+  after?: InputMaybe<Scalars["Cursor"]>;
+  before?: InputMaybe<Scalars["Cursor"]>;
+  filter?: InputMaybe<VotesFilter>;
+  first?: InputMaybe<Scalars["Int"]>;
+  last?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<Array<VotesOrderBy>>;
 };
 
 /** Boolean expression comparing fields on type "String" */
@@ -316,11 +388,14 @@ export type UuidFilter = {
 export type Evaluation = Node & {
   __typename?: "evaluation";
   description?: Maybe<Scalars["String"]>;
+  end_time?: Maybe<Scalars["Datetime"]>;
   evaluatorCollection?: Maybe<EvaluatorConnection>;
   id: Scalars["UUID"];
+  invitationCollection?: Maybe<InvitationConnection>;
   name: Scalars["String"];
   /** Globally Unique Record Identifier */
   nodeId: Scalars["ID"];
+  start_time?: Maybe<Scalars["Datetime"]>;
   status: Scalars["String"];
   submissionCollection?: Maybe<SubmissionConnection>;
 };
@@ -332,6 +407,15 @@ export type EvaluationEvaluatorCollectionArgs = {
   first?: InputMaybe<Scalars["Int"]>;
   last?: InputMaybe<Scalars["Int"]>;
   orderBy?: InputMaybe<Array<EvaluatorOrderBy>>;
+};
+
+export type EvaluationInvitationCollectionArgs = {
+  after?: InputMaybe<Scalars["Cursor"]>;
+  before?: InputMaybe<Scalars["Cursor"]>;
+  filter?: InputMaybe<InvitationFilter>;
+  first?: InputMaybe<Scalars["Int"]>;
+  last?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<Array<InvitationOrderBy>>;
 };
 
 export type EvaluationSubmissionCollectionArgs = {
@@ -365,16 +449,20 @@ export type EvaluationEdge = {
 
 export type EvaluationFilter = {
   description?: InputMaybe<StringFilter>;
+  end_time?: InputMaybe<DatetimeFilter>;
   id?: InputMaybe<UuidFilter>;
   name?: InputMaybe<StringFilter>;
   nodeId?: InputMaybe<IdFilter>;
+  start_time?: InputMaybe<DatetimeFilter>;
   status?: InputMaybe<StringFilter>;
 };
 
 export type EvaluationInsertInput = {
   description?: InputMaybe<Scalars["String"]>;
+  end_time?: InputMaybe<Scalars["Datetime"]>;
   id?: InputMaybe<Scalars["UUID"]>;
   name?: InputMaybe<Scalars["String"]>;
+  start_time?: InputMaybe<Scalars["Datetime"]>;
   status?: InputMaybe<Scalars["String"]>;
 };
 
@@ -388,15 +476,19 @@ export type EvaluationInsertResponse = {
 
 export type EvaluationOrderBy = {
   description?: InputMaybe<OrderByDirection>;
+  end_time?: InputMaybe<OrderByDirection>;
   id?: InputMaybe<OrderByDirection>;
   name?: InputMaybe<OrderByDirection>;
+  start_time?: InputMaybe<OrderByDirection>;
   status?: InputMaybe<OrderByDirection>;
 };
 
 export type EvaluationUpdateInput = {
   description?: InputMaybe<Scalars["String"]>;
+  end_time?: InputMaybe<Scalars["Datetime"]>;
   id?: InputMaybe<Scalars["UUID"]>;
   name?: InputMaybe<Scalars["String"]>;
+  start_time?: InputMaybe<Scalars["Datetime"]>;
   status?: InputMaybe<Scalars["String"]>;
 };
 
@@ -418,6 +510,16 @@ export type Evaluator = Node & {
   user?: Maybe<User>;
   user_id: Scalars["UUID"];
   voice_credits?: Maybe<Scalars["Int"]>;
+  votesCollection?: Maybe<VotesConnection>;
+};
+
+export type EvaluatorVotesCollectionArgs = {
+  after?: InputMaybe<Scalars["Cursor"]>;
+  before?: InputMaybe<Scalars["Cursor"]>;
+  filter?: InputMaybe<VotesFilter>;
+  first?: InputMaybe<Scalars["Int"]>;
+  last?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<Array<VotesOrderBy>>;
 };
 
 export type EvaluatorConnection = {
@@ -485,9 +587,85 @@ export type EvaluatorUpdateResponse = {
   records: Array<Evaluator>;
 };
 
+export type Invitation = Node & {
+  __typename?: "invitation";
+  code: Scalars["String"];
+  evaluation?: Maybe<Evaluation>;
+  evaluation_id: Scalars["UUID"];
+  id: Scalars["UUID"];
+  /** Globally Unique Record Identifier */
+  nodeId: Scalars["ID"];
+  voice_credits: Scalars["Int"];
+};
+
+export type InvitationConnection = {
+  __typename?: "invitationConnection";
+  edges: Array<InvitationEdge>;
+  pageInfo: PageInfo;
+};
+
+export type InvitationDeleteResponse = {
+  __typename?: "invitationDeleteResponse";
+  /** Count of the records impacted by the mutation */
+  affectedCount: Scalars["Int"];
+  /** Array of records impacted by the mutation */
+  records: Array<Invitation>;
+};
+
+export type InvitationEdge = {
+  __typename?: "invitationEdge";
+  cursor: Scalars["String"];
+  node: Invitation;
+};
+
+export type InvitationFilter = {
+  code?: InputMaybe<StringFilter>;
+  evaluation_id?: InputMaybe<UuidFilter>;
+  id?: InputMaybe<UuidFilter>;
+  nodeId?: InputMaybe<IdFilter>;
+  voice_credits?: InputMaybe<IntFilter>;
+};
+
+export type InvitationInsertInput = {
+  code?: InputMaybe<Scalars["String"]>;
+  evaluation_id?: InputMaybe<Scalars["UUID"]>;
+  id?: InputMaybe<Scalars["UUID"]>;
+  voice_credits?: InputMaybe<Scalars["Int"]>;
+};
+
+export type InvitationInsertResponse = {
+  __typename?: "invitationInsertResponse";
+  /** Count of the records impacted by the mutation */
+  affectedCount: Scalars["Int"];
+  /** Array of records impacted by the mutation */
+  records: Array<Invitation>;
+};
+
+export type InvitationOrderBy = {
+  code?: InputMaybe<OrderByDirection>;
+  evaluation_id?: InputMaybe<OrderByDirection>;
+  id?: InputMaybe<OrderByDirection>;
+  voice_credits?: InputMaybe<OrderByDirection>;
+};
+
+export type InvitationUpdateInput = {
+  code?: InputMaybe<Scalars["String"]>;
+  evaluation_id?: InputMaybe<Scalars["UUID"]>;
+  id?: InputMaybe<Scalars["UUID"]>;
+  voice_credits?: InputMaybe<Scalars["Int"]>;
+};
+
+export type InvitationUpdateResponse = {
+  __typename?: "invitationUpdateResponse";
+  /** Count of the records impacted by the mutation */
+  affectedCount: Scalars["Int"];
+  /** Array of records impacted by the mutation */
+  records: Array<Invitation>;
+};
+
 export type Submission = Node & {
   __typename?: "submission";
-  description: Scalars["String"];
+  description: Scalars["JSON"];
   evaluation?: Maybe<Evaluation>;
   evaluation_id: Scalars["UUID"];
   github_link?: Maybe<Scalars["String"]>;
@@ -497,7 +675,17 @@ export type Submission = Node & {
   nodeId: Scalars["ID"];
   user?: Maybe<User>;
   user_id: Scalars["UUID"];
+  votesCollection?: Maybe<VotesConnection>;
   website_link: Scalars["String"];
+};
+
+export type SubmissionVotesCollectionArgs = {
+  after?: InputMaybe<Scalars["Cursor"]>;
+  before?: InputMaybe<Scalars["Cursor"]>;
+  filter?: InputMaybe<VotesFilter>;
+  first?: InputMaybe<Scalars["Int"]>;
+  last?: InputMaybe<Scalars["Int"]>;
+  orderBy?: InputMaybe<Array<VotesOrderBy>>;
 };
 
 export type SubmissionConnection = {
@@ -521,7 +709,6 @@ export type SubmissionEdge = {
 };
 
 export type SubmissionFilter = {
-  description?: InputMaybe<StringFilter>;
   evaluation_id?: InputMaybe<UuidFilter>;
   github_link?: InputMaybe<StringFilter>;
   id?: InputMaybe<UuidFilter>;
@@ -532,7 +719,7 @@ export type SubmissionFilter = {
 };
 
 export type SubmissionInsertInput = {
-  description?: InputMaybe<Scalars["String"]>;
+  description?: InputMaybe<Scalars["JSON"]>;
   evaluation_id?: InputMaybe<Scalars["UUID"]>;
   github_link?: InputMaybe<Scalars["String"]>;
   id?: InputMaybe<Scalars["UUID"]>;
@@ -550,7 +737,6 @@ export type SubmissionInsertResponse = {
 };
 
 export type SubmissionOrderBy = {
-  description?: InputMaybe<OrderByDirection>;
   evaluation_id?: InputMaybe<OrderByDirection>;
   github_link?: InputMaybe<OrderByDirection>;
   id?: InputMaybe<OrderByDirection>;
@@ -560,7 +746,7 @@ export type SubmissionOrderBy = {
 };
 
 export type SubmissionUpdateInput = {
-  description?: InputMaybe<Scalars["String"]>;
+  description?: InputMaybe<Scalars["JSON"]>;
   evaluation_id?: InputMaybe<Scalars["UUID"]>;
   github_link?: InputMaybe<Scalars["String"]>;
   id?: InputMaybe<Scalars["UUID"]>;
@@ -585,10 +771,11 @@ export type User = Node & {
   github_user_id?: Maybe<Scalars["UUID"]>;
   id: Scalars["UUID"];
   invite_status?: Maybe<Scalars["String"]>;
-  name: Scalars["String"];
+  name?: Maybe<Scalars["String"]>;
   /** Globally Unique Record Identifier */
   nodeId: Scalars["ID"];
-  preferred_email?: Maybe<Scalars["UUID"]>;
+  preferred_email?: Maybe<Scalars["String"]>;
+  role: Scalars["String"];
   submissionCollection?: Maybe<SubmissionConnection>;
 };
 
@@ -638,7 +825,8 @@ export type UserFilter = {
   invite_status?: InputMaybe<StringFilter>;
   name?: InputMaybe<StringFilter>;
   nodeId?: InputMaybe<IdFilter>;
-  preferred_email?: InputMaybe<UuidFilter>;
+  preferred_email?: InputMaybe<StringFilter>;
+  role?: InputMaybe<StringFilter>;
 };
 
 export type UserInsertInput = {
@@ -648,7 +836,8 @@ export type UserInsertInput = {
   id?: InputMaybe<Scalars["UUID"]>;
   invite_status?: InputMaybe<Scalars["String"]>;
   name?: InputMaybe<Scalars["String"]>;
-  preferred_email?: InputMaybe<Scalars["UUID"]>;
+  preferred_email?: InputMaybe<Scalars["String"]>;
+  role?: InputMaybe<Scalars["String"]>;
 };
 
 export type UserInsertResponse = {
@@ -667,6 +856,7 @@ export type UserOrderBy = {
   invite_status?: InputMaybe<OrderByDirection>;
   name?: InputMaybe<OrderByDirection>;
   preferred_email?: InputMaybe<OrderByDirection>;
+  role?: InputMaybe<OrderByDirection>;
 };
 
 export type UserUpdateInput = {
@@ -676,7 +866,8 @@ export type UserUpdateInput = {
   id?: InputMaybe<Scalars["UUID"]>;
   invite_status?: InputMaybe<Scalars["String"]>;
   name?: InputMaybe<Scalars["String"]>;
-  preferred_email?: InputMaybe<Scalars["UUID"]>;
+  preferred_email?: InputMaybe<Scalars["String"]>;
+  role?: InputMaybe<Scalars["String"]>;
 };
 
 export type UserUpdateResponse = {
@@ -685,6 +876,78 @@ export type UserUpdateResponse = {
   affectedCount: Scalars["Int"];
   /** Array of records impacted by the mutation */
   records: Array<User>;
+};
+
+export type Votes = Node & {
+  __typename?: "votes";
+  evaluator?: Maybe<Evaluator>;
+  evaluator_id: Scalars["UUID"];
+  /** Globally Unique Record Identifier */
+  nodeId: Scalars["ID"];
+  submission?: Maybe<Submission>;
+  submission_id: Scalars["UUID"];
+  votes: Scalars["Int"];
+};
+
+export type VotesConnection = {
+  __typename?: "votesConnection";
+  edges: Array<VotesEdge>;
+  pageInfo: PageInfo;
+};
+
+export type VotesDeleteResponse = {
+  __typename?: "votesDeleteResponse";
+  /** Count of the records impacted by the mutation */
+  affectedCount: Scalars["Int"];
+  /** Array of records impacted by the mutation */
+  records: Array<Votes>;
+};
+
+export type VotesEdge = {
+  __typename?: "votesEdge";
+  cursor: Scalars["String"];
+  node: Votes;
+};
+
+export type VotesFilter = {
+  evaluator_id?: InputMaybe<UuidFilter>;
+  nodeId?: InputMaybe<IdFilter>;
+  submission_id?: InputMaybe<UuidFilter>;
+  votes?: InputMaybe<IntFilter>;
+};
+
+export type VotesInsertInput = {
+  evaluator_id?: InputMaybe<Scalars["UUID"]>;
+  submission_id?: InputMaybe<Scalars["UUID"]>;
+  votes?: InputMaybe<Scalars["Int"]>;
+};
+
+export type VotesInsertResponse = {
+  __typename?: "votesInsertResponse";
+  /** Count of the records impacted by the mutation */
+  affectedCount: Scalars["Int"];
+  /** Array of records impacted by the mutation */
+  records: Array<Votes>;
+};
+
+export type VotesOrderBy = {
+  evaluator_id?: InputMaybe<OrderByDirection>;
+  submission_id?: InputMaybe<OrderByDirection>;
+  votes?: InputMaybe<OrderByDirection>;
+};
+
+export type VotesUpdateInput = {
+  evaluator_id?: InputMaybe<Scalars["UUID"]>;
+  submission_id?: InputMaybe<Scalars["UUID"]>;
+  votes?: InputMaybe<Scalars["Int"]>;
+};
+
+export type VotesUpdateResponse = {
+  __typename?: "votesUpdateResponse";
+  /** Count of the records impacted by the mutation */
+  affectedCount: Scalars["Int"];
+  /** Array of records impacted by the mutation */
+  records: Array<Votes>;
 };
 
 export type DashboardEvaluationsQueryQueryVariables = Exact<{
@@ -714,11 +977,11 @@ export type EvaluationStubFragmentFragment = {
   status: string;
 };
 
-export type EvaluationQueryQueryVariables = Exact<{
+export type OldEvaluationQueryQueryVariables = Exact<{
   evaluation_id: Scalars["UUID"];
 }>;
 
-export type EvaluationQueryQuery = {
+export type OldEvaluationQueryQuery = {
   __typename?: "Query";
   evaluation?: {
     __typename?: "evaluationConnection";
@@ -734,6 +997,26 @@ export type EvaluationQueryQuery = {
   } | null;
 };
 
+export type EvaluationQueryQueryVariables = Exact<{
+  evaluation_id: Scalars["UUID"];
+}>;
+
+export type EvaluationQueryQuery = {
+  __typename?: "Query";
+  evaluation?: {
+    __typename?: "evaluationConnection";
+    edges: Array<{
+      __typename?: "evaluationEdge";
+      node: {
+        __typename?: "evaluation";
+        id: any;
+        name: string;
+        end_time?: any | null;
+      };
+    }>;
+  } | null;
+};
+
 export type SubmissionsQueryQueryVariables = Exact<{
   evaluation_id: Scalars["UUID"];
 }>;
@@ -744,7 +1027,14 @@ export type SubmissionsQueryQuery = {
     __typename?: "submissionConnection";
     edges: Array<{
       __typename?: "submissionEdge";
-      node: { __typename?: "submission"; id: any; name: string };
+      node: {
+        __typename?: "submission";
+        id: any;
+        name: string;
+        description: any;
+        github_link?: string | null;
+        website_link: string;
+      };
     }>;
   } | null;
 };
@@ -759,7 +1049,12 @@ export type UserProfileQueryQuery = {
     __typename?: "userConnection";
     edges: Array<{
       __typename?: "userEdge";
-      node: { __typename?: "user"; id: any; preferred_email?: any | null };
+      node: {
+        __typename?: "user";
+        id: any;
+        preferred_email?: string | null;
+        role: string;
+      };
     }>;
   } | null;
 };
@@ -838,6 +1133,105 @@ export const DashboardEvaluationsQueryDocument = {
 } as unknown as DocumentNode<
   DashboardEvaluationsQueryQuery,
   DashboardEvaluationsQueryQueryVariables
+>;
+export const OldEvaluationQueryDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "OldEvaluationQuery" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "evaluation_id" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "UUID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            alias: { kind: "Name", value: "evaluation" },
+            name: { kind: "Name", value: "evaluationCollection" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "filter" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "id" },
+                      value: {
+                        kind: "ObjectValue",
+                        fields: [
+                          {
+                            kind: "ObjectField",
+                            name: { kind: "Name", value: "eq" },
+                            value: {
+                              kind: "Variable",
+                              name: { kind: "Name", value: "evaluation_id" },
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "edges" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "node" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "name" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "status" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  OldEvaluationQueryQuery,
+  OldEvaluationQueryQueryVariables
 >;
 export const EvaluationQueryDocument = {
   kind: "Document",
@@ -919,7 +1313,7 @@ export const EvaluationQueryDocument = {
                             },
                             {
                               kind: "Field",
-                              name: { kind: "Name", value: "status" },
+                              name: { kind: "Name", value: "end_time" },
                             },
                           ],
                         },
@@ -1016,6 +1410,18 @@ export const SubmissionsQueryDocument = {
                               kind: "Field",
                               name: { kind: "Name", value: "name" },
                             },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "description" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "github_link" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "website_link" },
+                            },
                           ],
                         },
                       },
@@ -1110,6 +1516,10 @@ export const UserProfileQueryDocument = {
                             {
                               kind: "Field",
                               name: { kind: "Name", value: "preferred_email" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "role" },
                             },
                           ],
                         },

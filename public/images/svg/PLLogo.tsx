@@ -12,7 +12,7 @@ const PLLogo = ({ ...props }: SVGProps<SVGSVGElement>) => (
     aria-labelledby="PLLogo"
     {...props}
   >
-    <title id="PLLogo">PLLogo Icon</title>
+    <title id="PLLogo">PL Logo Icon</title>
 
     <rect
       x="0.994141"
