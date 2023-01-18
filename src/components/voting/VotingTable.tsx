@@ -61,7 +61,6 @@ const VotingTable = ({
                       submissions={submissions}
                       openArray={openArray}
                       setOpenArray={setOpenArray}
-                      evaluation_id={evaluation_id}
                     />
                   </div>
 

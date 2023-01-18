@@ -1,11 +1,13 @@
 import SmallTitle from "../SmallTitle";
 import Reset from "public/images/svg/Reset";
 type VotingCreditCounterProps = {
+  supabase: any;
   handleReset: any;
   credits: any;
 };
 
 const VotingCreditCounter = ({
+  supabase,
   handleReset,
   credits,
 }: VotingCreditCounterProps) => {
@@ -17,7 +19,7 @@ const VotingCreditCounter = ({
       </div>
       <button
         className={`transition-colors duration-200 ease-in-out transform  outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-semibold mx-auto border border-blue hover:bg-white focus:bg-white text-blue text-lg px-4 py-2 mt-5`}
-        onClick={() => handleReset()}
+        onClick={() => handleReset(supabase)}
       >
         <span className="mr-3">
           <Reset />
