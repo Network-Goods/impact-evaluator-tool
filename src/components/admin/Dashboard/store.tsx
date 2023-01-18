@@ -14,7 +14,7 @@ async function fetchEvaluations(supabase: SupabaseClient, user_id: string) {
   //   in_user_id: user_id,
   // });
 
-  const res = await rpc("getEvaluationStubs", { user_id: user_id });
+  const res = await rpc("get_evaluations_auth", { user_id: user_id });
   console.log("rpc res", res);
 
   // if (error) {
