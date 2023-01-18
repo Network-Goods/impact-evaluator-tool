@@ -1,10 +1,44 @@
 import { useState } from "react";
-import { useSession } from "@supabase/auth-helpers-react";
+import {
+  SupabaseClient,
+  useSession,
+  useSupabaseClient,
+} from "@supabase/auth-helpers-react";
 import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 import Close from "public/images/svg/Close";
+import { Evaluator } from "src/gql/graphql";
+import { FromGraphQL } from "src/lib/dbUtils";
+import { useUserProfileStore } from "src/lib/UserProfileStore";
+import { useRouter } from "next/router";
+
+async function joinRoundWithCode(
+  supabase: SupabaseClient,
+  user_id: string,
+  code: string,
+  preffered_email: string
+): Promise<FromGraphQL<Evaluator> | void> {
+  let { data, error } = await supabase.rpc("join_with_code", {
+    in_user_id: user_id,
+    in_code: code,
+    in_preffered_email: preffered_email,
+  });
+
+  if (error) {
+    console.error("Failed to join round", error);
+    return;
+  }
+
+  if (!data) {
+    console.error("joinRoundWithCode returned no data");
+    return;
+  }
+
+  console.log("joinRoundWithCode data", data);
+  return data as any;
+}
 
 const style = {
   position: "absolute" as "absolute",
@@ -26,27 +60,42 @@ type JoinRoundModalProps = {
 };
 
 const JoinRoundModal = ({ handleClose, open }: JoinRoundModalProps) => {
-  const [inputs, setInputs] = useState({});
+  const [inputs, setInputs] = useState<any>({});
   const [checked, setChecked] = useState(false);
   const session = useSession();
+  const supabase = useSupabaseClient();
+  const userProfileStore = useUserProfileStore();
+  const router = useRouter();
 
   let githubEmail = session?.user.email;
 
   const handleChange = (event: any) => {
     const name = event.target.name;
     const value = event.target.value;
-    setInputs((values) => ({ ...values, [name]: value }));
+    setInputs((values: any) => ({ ...values, [name]: value }));
   };
 
   const handleChecked = () => {
     setChecked((prev) => !prev);
-    setInputs((values) => ({ ...values, email: githubEmail }));
+    setInputs((values: any) => ({ ...values, email: githubEmail }));
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log("inputs", inputs);
+    const evaluator = await joinRoundWithCode(
+      supabase,
+      userProfileStore.profile?.id!,
+      inputs.code,
+      inputs.email
+    );
+
+    if (!evaluator) {
+      return;
+    }
+
+    router.push(`/evaluation/${evaluator.evaluation_id}`);
   };
+
   return (
     <Modal
       aria-labelledby="transition-modal-title"

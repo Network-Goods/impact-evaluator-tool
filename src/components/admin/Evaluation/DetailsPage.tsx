@@ -32,6 +32,9 @@ export const DetailsPage: FC = () => {
 
   return (
     <div className="flex flex-col pb-4">
+      <div className="flex flex-col p-10">
+        <div>Create unique code for Impact Evaluator round</div>
+      </div>
       <div className="flex w-[295px] pb-2">
         <span className="pr-4 leading-8">Title:</span>
         <TextField

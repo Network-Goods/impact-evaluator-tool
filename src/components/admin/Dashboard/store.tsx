@@ -7,12 +7,30 @@ import { createEvaluation, FromGraphQL } from "src/lib/dbUtils";
 import { Evaluation } from "src/gql/graphql";
 import { v4 as uuid } from "uuid";
 import { SupabaseClient } from "@supabase/supabase-js";
+import { rpc } from "src/lib/RPC";
+
+async function fetchEvaluations(supabase: SupabaseClient, user_id: string) {
+  // let { data, error } = await supabase.rpc("get_user_evaluations2", {
+  //   in_user_id: user_id,
+  // });
+
+  const res = await rpc("getEvaluationStubs", { user_id: user_id });
+  console.log("rpc res", res);
+
+  // if (error) {
+  //   console.error("Failed to fetch evaluations", error);
+  //   return null;
+  // }
+
+  // console.log("fetchEvaluations data", data);
+  return res as any;
+}
 
 export interface DashboardStore {
   fetching: boolean;
   error?: any;
   evaluations: FromGraphQL<Evaluation>[];
-  load: () => void;
+  load: (supabase: SupabaseClient, user_id: string) => void;
   createEvaluation: (
     supabase: SupabaseClient
   ) => Promise<FromGraphQL<Evaluation>>;
@@ -22,13 +40,19 @@ export const useDashboardStore = create<DashboardStore>()((set, get) => ({
   fetching: true,
   evaluations: [],
 
-  load: async () => {
-    graphQLClient.request(DashboardEvaluationsQuery).then((data: any) => {
-      cleanPostgresGraphQLResult(data);
+  load: async (supabase: SupabaseClient, user_id: string) => {
+    // graphQLClient.request(DashboardEvaluationsQuery).then((data: any) => {
+    //   cleanPostgresGraphQLResult(data);
+    fetchEvaluations(supabase, user_id).then((data: any) => {
+      if (!data) {
+        return;
+      }
+
+      console.log("graph data", data);
 
       set({
         fetching: false,
-        evaluations: data.evaluations || [],
+        evaluations: data || [],
       });
     });
   },

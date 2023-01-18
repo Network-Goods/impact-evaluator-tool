@@ -40,7 +40,7 @@ export default function Voting() {
     }
 
     store.load(supabase, evaluation_id, userProfileStore.profile.id);
-  }, [evaluation_id]);
+  }, [evaluation_id, userProfileStore.profile]);
 
   useEffect(() => {
     let arr: any = [];
