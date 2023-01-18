@@ -85,6 +85,7 @@ export default function Voting() {
             supabase={supabase}
             handleReset={store.reset}
             credits={store.availableCredits}
+            allocatedCredits={store.allocatedCredits}
           />
         </div>
       </div>
@@ -92,7 +93,7 @@ export default function Voting() {
       <div className="flex justify-between mt-10">
         <div>
           <Link href="/">
-            <div className="transition-colors duration-200 ease-in-out transform  outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold mx-auto border border-[#dbdbdb] bg-[#e7eaf0] hover:bg-[#dbdbdb] hover:border-[#dbdbdb] focus:bg-[#dbdbdb] text-[#898888] text-lg px-4 py-3">
+            <div className="transition-colors duration-200 ease-in-out transform  outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-semibold mx-auto bg-[#ededed] hover:bg-[#dbdbdb] focus:bg-[#dbdbdb] text-charcoal text-[20px] px-4 py-3">
               Save and exit
             </div>
           </Link>

@@ -4,18 +4,20 @@ type VotingCreditCounterProps = {
   supabase: any;
   handleReset: any;
   credits: any;
+  allocatedCredits: any;
 };
 
 const VotingCreditCounter = ({
   supabase,
   handleReset,
   credits,
+  allocatedCredits,
 }: VotingCreditCounterProps) => {
   return (
     <div className="rounded-lg bg-white border border-gray p-12 mt-4 lg:mt-0 lg:ml-6 text-center">
       <SmallTitle text="VOICE CREDITS" />
       <div className="text-4xl mt-2 min-w-[141.08px]">
-        <span className="font-semibold">{credits}</span>/100
+        <span className="font-semibold">{credits}</span>/{allocatedCredits}
       </div>
       <button
         className={`transition-colors duration-200 ease-in-out transform  outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-semibold mx-auto border border-blue hover:bg-white focus:bg-white text-blue text-lg px-4 py-2 mt-5`}
