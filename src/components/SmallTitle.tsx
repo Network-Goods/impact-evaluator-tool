@@ -3,7 +3,7 @@ type SmallTitleProps = {
 };
 
 const SmallTitle = ({ text }: SmallTitleProps) => {
-  return <h4 className="text-xs text-offblack">{text}</h4>;
+  return <h4 className="text-xs text-offblack tracking-widest">{text}</h4>;
 };
 
 export default SmallTitle;

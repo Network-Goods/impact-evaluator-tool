@@ -1,4 +1,3 @@
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useEffect } from "react";
 import LoadingSpinner from "src/components/LoadingSpinner";
 import SubTitle from "src/components/SubTitle";
@@ -14,11 +13,10 @@ import { useDashboardStore } from "./store";
 
 export default function Dashboard() {
   const store = useDashboardStore();
-  const supabase = useSupabaseClient();
   const userProfileStore = useUserProfileStore();
 
   useEffect(() => {
-    store.load(supabase, userProfileStore.profile?.id!);
+    store.load();
   }, []);
 
   if (store.fetching) return <LoadingSpinner />;
@@ -27,7 +25,7 @@ export default function Dashboard() {
   return (
     <div>
       <>
-        <div className="flex justify-between pb-10">
+        <div className="flex justify-between pb-14">
           <Title text="Dashboard" />
           {userProfileStore.isAdmin() ? (
             <CreateRoundTooltip>
@@ -39,7 +37,7 @@ export default function Dashboard() {
             ""
           )}
         </div>
-        <div className="flex justify-between pb-6">
+        <div className="flex justify-between pb-5">
           <SubTitle text="Ongoing evaluations" />
           <JoinRoundButton />
         </div>
@@ -51,14 +49,16 @@ export default function Dashboard() {
               .filter((evaluation) => evaluation.status !== "closed")
               .map((evaluation, idx) => (
                 <div key={evaluation.id}>
-                  <EvaluationItem evaluation={evaluation} />
-                  {idx <
-                  store.evaluations.filter(
-                    (evaluation) => evaluation.status !== "closed"
-                  ).length -
-                    1 ? (
-                    <hr className="my-4 border-gray " />
-                  ) : null}
+                  <EvaluationItem
+                    evaluation={evaluation}
+                    last={
+                      idx ===
+                      store.evaluations.filter(
+                        (evaluation) => evaluation.status !== "closed"
+                      ).length -
+                        1
+                    }
+                  />
                 </div>
               ))}
           </EvaluationCard>
@@ -76,14 +76,16 @@ export default function Dashboard() {
               .filter((evaluation) => evaluation.status === "closed")
               .map((evaluation, idx) => (
                 <div key={evaluation.id}>
-                  <EvaluationItem evaluation={evaluation} />
-                  {idx <
-                  store.evaluations.filter(
-                    (evaluation) => evaluation.status === "closed"
-                  ).length -
-                    1 ? (
-                    <hr className="my-4 border-gray" />
-                  ) : null}
+                  <EvaluationItem
+                    evaluation={evaluation}
+                    last={
+                      idx ===
+                      store.evaluations.filter(
+                        (evaluation) => evaluation.status === "closed"
+                      ).length -
+                        1
+                    }
+                  />
                 </div>
               ))}
           </EvaluationCard>

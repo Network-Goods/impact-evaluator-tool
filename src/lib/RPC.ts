@@ -1,7 +1,7 @@
 import axios from "axios";
 
 type Definition = {
-  getEvaluationStubs: {
+  get_evaluations_auth: {
     params: { user_id: string };
     result: void;
   };
