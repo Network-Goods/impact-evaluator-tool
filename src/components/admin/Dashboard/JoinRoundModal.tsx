@@ -9,17 +9,16 @@ import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 import Close from "public/images/svg/Close";
-import { Evaluator } from "src/gql/graphql";
-import { FromGraphQL } from "src/lib/dbUtils";
 import { useUserProfileStore } from "src/lib/UserProfileStore";
 import { useRouter } from "next/router";
+import { Evaluator } from "src/lib";
 
 async function joinRoundWithCode(
   supabase: SupabaseClient,
   user_id: string,
   code: string,
   preffered_email: string
-): Promise<FromGraphQL<Evaluator> | void> {
+): Promise<Evaluator | void> {
   let { data, error } = await supabase.rpc("join_with_code", {
     in_user_id: user_id,
     in_code: code,
@@ -36,7 +35,6 @@ async function joinRoundWithCode(
     return;
   }
 
-  console.log("joinRoundWithCode data", data);
   return data as any;
 }
 

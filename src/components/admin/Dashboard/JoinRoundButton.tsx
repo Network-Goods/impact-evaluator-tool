@@ -11,10 +11,10 @@ const JoinRoundButton = () => {
   return (
     <div>
       <Button
-        alt
+        secondary
         small
         text="Join Round"
-        icon={<Add className="mb-1 fill-[#898888]" />}
+        icon={<Add className="mb-1 fill-blue" />}
         onClick={handleOpen}
       />
       <JoinRoundModal handleClose={handleClose} open={open} />

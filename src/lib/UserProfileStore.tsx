@@ -1,67 +1,29 @@
 import create from "zustand";
-import { v4 as uuid } from "uuid";
-
-import { DocumentType, gql } from "src/gql";
-import { graphQLClient } from "./graphqlClient";
-import { createUser } from "./dbUtils";
-import { supabase } from "@supabase/auth-ui-react/dist/esm/common/theming";
-import { Session, SupabaseClient } from "@supabase/supabase-js";
-
-export const UserProfileQuery = gql(/* GraphQL */ `
-  query UserProfileQuery($github_user_id: UUID!) {
-    user: userCollection(filter: { github_user_id: { eq: $github_user_id } }) {
-      edges {
-        node {
-          id
-          preferred_email
-          role
-        }
-      }
-    }
-  }
-`);
+import { rpc, UserProfile } from "../lib";
 
 export type UserProfileStore = {
-  profile?: {
-    id: string;
-    prefferedEmail?: string;
-    userName: string;
-    githubHandle: string;
-    role: string;
-  };
-  login: (supabase: SupabaseClient, session: Session) => void;
+  profile?: UserProfile;
+  login: () => void;
   logout: () => void;
   isAdmin: () => boolean;
 };
 
 export const useUserProfileStore = create<UserProfileStore>()((set, get) => ({
-  login: (supabase: SupabaseClient, session: Session) => {
-    const githhubUserId = session.user.id;
-    const userName = session.user.user_metadata.full_name;
-    const githubHandle = session.user.user_metadata.user_name;
+  login: () => {
+    rpc.call("getUserProfile", null).then((profile) => {
+      if (profile instanceof Error) {
+        console.error(`ERROR -- rpc call getUserProfile failed.`, profile);
+        return;
+      }
 
-    graphQLClient
-      .request(UserProfileQuery, { github_user_id: githhubUserId })
-      .then((data) => {
-        let userId;
-        const user = data.user?.edges[0]?.node;
-        if (!user) {
-          userId = uuid();
-          createUser(supabase, userId, githhubUserId, userName, githubHandle);
-          return;
-        } else {
-          userId = user.id;
-        }
+      if (!profile) {
+        return;
+      }
 
-        set({
-          profile: {
-            id: userId,
-            userName: userName,
-            githubHandle: githubHandle,
-            role: user.role,
-          },
-        });
+      set({
+        profile: profile,
       });
+    });
   },
   logout: () => {
     set({

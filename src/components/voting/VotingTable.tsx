@@ -31,7 +31,7 @@ const VotingTable = ({
       return;
     }
 
-    votingStore.load(supabase, evaluation_id, userProfileStore.profile.id);
+    votingStore.load(evaluation_id);
   }, [evaluation_id, userProfileStore.profile]);
 
   return (
