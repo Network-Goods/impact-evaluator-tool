@@ -1,5 +1,6 @@
 import { Evaluation } from "src/lib";
 import LinkButton from "../../LinkButton";
+import EvaluationLinkButton from "./EvaluationLinkButton";
 
 type EvaluationItemProps = {
   last: boolean;
@@ -14,29 +15,28 @@ export const EvaluationItem = ({ evaluation, last }: EvaluationItemProps) => {
     >
       <div className="w-[80%] flex justify-between items-center">
         <div className="text-[20px] text-charcoal">{evaluation.name}</div>
-        <div>in progess</div>
-      </div>
-      <div className="flex items-center">
-        <div className="pr-10">
-          <div className="inline-flex flex-row w-auto items-center justify-start font-bold rounded uppercase text-sm px-4 py-2 bg-gray-light text-blue">
-            EVAL
+        <div className="pr-7">
+          <div className="w-16 text-blue text-xs italic text-center">
+            In Progress
           </div>
         </div>
-        <div className="pl-10 border border-gray border-y-0 border-r-0">
-          {evaluation.status === "started" ? (
-            <LinkButton
-              small
-              text="Evaluate"
-              link={`/evaluation/${evaluation.id}`}
-            />
-          ) : (
-            <LinkButton
-              small
-              text="Details"
-              link={`/admin/evaluation/${evaluation.id}`}
-            />
-          )}
-        </div>
+      </div>
+      <div className="w-[8%] text-center py-[9px] font-bold text-sm text-gray-dark border-l border-gray">
+        EVAL
+      </div>
+
+      <div className="w-[12%] pl-10 border-l border-gray">
+        {evaluation.status === "started" ? (
+          <EvaluationLinkButton
+            text="Evaluate"
+            link={`/evaluation/${evaluation.id}`}
+          />
+        ) : (
+          <EvaluationLinkButton
+            text="Details"
+            link={`/evaluation/${evaluation.id}`}
+          />
+        )}
       </div>
     </div>
   );
