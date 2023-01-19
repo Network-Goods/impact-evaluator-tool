@@ -11,6 +11,7 @@ import { useVotingStore } from "./VotingStore";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useUserProfileStore } from "src/lib/UserProfileStore";
 import Link from "next/link";
+import LoadingSpinner from "../LoadingSpinner";
 
 export default function Voting() {
   const [openModal, setOpenModal] = useState(false);
@@ -57,7 +58,7 @@ export default function Voting() {
     setOpenArray(arr);
   };
 
-  if (!store.loaded) return <p>Loading...</p>;
+  if (!store.loaded) return <LoadingSpinner />;
   // if (store.error) return <p>Oh no... {store.error.message}</p>;
 
   return (
