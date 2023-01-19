@@ -11,7 +11,6 @@ import { useEvaluationStore } from "./EvaluationStore";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 
 export const DetailsPage: FC = () => {
-  const supabase = useSupabaseClient();
   const store = useEvaluationStore();
   if (!store.evaluation) {
     return <div>Error: Evaluation not defined</div>;
