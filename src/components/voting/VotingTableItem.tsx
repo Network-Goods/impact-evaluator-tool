@@ -24,7 +24,7 @@ const VotingTableItem = ({
 
   return (
     <div
-      className={`flex px-6 border border-gray border-x-0 border-b-0 ${
+      className={`flex items-center pl-4 md:px-6 border border-gray border-x-0 border-b-0 ${
         idx % 2 === 0 ? "bg-white" : "bg-gray-lighter"
       }
         ${
@@ -45,11 +45,11 @@ const VotingTableItem = ({
         `}
     >
       <div
-        className={`w-[60%] flex justify-between ${
+        className={`w-[45%] md:w-[60%] flex justify-between ${
           openArray[idx] ? "" : "border-r border-gray"
         }`}
       >
-        <div className="py-6 pl-6 text-[20px]">{project.name}</div>
+        <div className="py-6 md:pl-6 md:text-[20px]">{project.name}</div>
         <button
           onClick={() =>
             setOpenArray((prev: any) => {
@@ -70,12 +70,12 @@ const VotingTableItem = ({
           />
         </button>
       </div>
-      <div className="w-[23.5%] text-center">
+      <div className="w-[33%] md:w-[23.5%] text-center">
         <div className="py-[22px]">
           <div className="flex flex-row  justify-evenly items-center">
             <button
               onClick={() => votingStore.decrementVote(supabase, project.id)}
-              className={`w-9 h-9 rounded  outline-none ${
+              className={`w-6 h-6 md:w-9 md:h-9 rounded  outline-none ${
                 votingStore.getVotes(project.id) === 0
                   ? "bg-gray-light"
                   : "bg-blue-darkest bg-opacity-30"
@@ -83,7 +83,7 @@ const VotingTableItem = ({
               disabled={votingStore.getVotes(project.id) === 0}
             >
               <span
-                className={`m-auto text-2xl font-semibold ${
+                className={`m-auto md:text-2xl font-semibold ${
                   votingStore.getVotes(project.id) === 0
                     ? "text-[#B5B5B5]"
                     : "text-blue-darkest"
@@ -92,13 +92,13 @@ const VotingTableItem = ({
                 −
               </span>
             </button>
-            <span className="outline-none focus:outline-none text-center text-3xl text-blue-darkest w-9">
+            <span className="outline-none focus:outline-none text-center text-xl md:text-3xl text-blue-darkest md:w-9">
               {votingStore.getVotes(project.id) || 0}
             </span>
 
             <button
               onClick={() => votingStore.incrementVote(supabase, project.id)}
-              className={`w-9 h-9 rounded outline-none
+              className={`w-6 h-6 md:w-9 md:h-9 rounded outline-none
                 ${
                   votingStore.canVoteAgain(project.id)
                     ? "bg-blue-light bg-opacity-50"
@@ -108,7 +108,7 @@ const VotingTableItem = ({
               disabled={votingStore.canVoteAgain(project.id)}
             >
               <span
-                className={`m-auto text-2xl font-semibold 
+                className={`m-auto md:text-2xl font-semibold 
                   ${
                     votingStore.canVoteAgain(project.id)
                       ? "text-blue text-opacity-30"
@@ -122,11 +122,11 @@ const VotingTableItem = ({
           </div>
         </div>
       </div>
-      <div className="w-[16.5%] text-center">
+      <div className="w-[22%] md:w-[16.5%] text-center">
         <div className="py-4">
           <div className="flex items-center text-sm py-2 border-l border-gray">
-            <span className="ml-5 mr-3">Used credits</span>
-            <div className="text-xl text-black">
+            <span className="hidden md:flex ml-5 mr-3">Used credits</span>
+            <div className="text-xl text-black mx-auto md:mx-0">
               {votingStore.getAllocatedVoiceCredits(project.id) || 0}
             </div>
           </div>

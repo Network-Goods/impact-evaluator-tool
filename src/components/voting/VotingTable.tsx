@@ -36,7 +36,6 @@ const VotingTable = ({
     <div className="flex-1">
       <div className="w-full rounded-lg bg-[#f0f0f0] border border-gray">
         <VotingTableHeader />
-
         <div>
           {submissions
             .filter((val: any) => {
