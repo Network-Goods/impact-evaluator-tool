@@ -9,3 +9,5 @@ export * from "./setSubmissionName";
 export * from "./createSubmission";
 export * from "./getVotingStore";
 export * from "./getEvaluationStore";
+export * from "./upsertVote";
+export * from "./resetVotes";

@@ -10,6 +10,8 @@ import {
   createSubmission,
   getVotingStore,
   getEvaluationStore,
+  upsertVote,
+  resetVotes,
 } from "./methods";
 
 export const MethodLookup = {
@@ -24,4 +26,6 @@ export const MethodLookup = {
   createSubmission,
   getVotingStore,
   getEvaluationStore,
+  upsertVote,
+  resetVotes,
 };
