@@ -1,6 +1,4 @@
-import SmallTitle from "src/components/SmallTitle";
 import { Evaluation } from "src/lib";
-import CreateRoundTooltip from "./CreateRoundTooltip";
 import DetailsTooltip from "./DetailsTooltip";
 import EvaluationLinkButton from "./EvaluationLinkButton";
 
@@ -86,7 +84,7 @@ export const EvaluationItem = ({
             />
           ) : null}
           {evaluation.status === "closed" ? (
-            <div className="transition-colors duration-200 ease-in-out transform  outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold mx-auto border border-[#DADADA] bg-[#DADADA] text-gray-dark text-sm md:text-lg py-1 w-16 md:w-20">
+            <div className="transition-colors duration-200 ease-in-out transform  outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold mx-auto border border-[#DADADA] bg-[#DADADA] text-gray-dark text-sm md:text-base py-1 w-16 md:w-20">
               Done
             </div>
           ) : null}

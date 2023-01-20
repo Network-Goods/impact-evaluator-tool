@@ -4,7 +4,7 @@ type Params = {
   in_evaluator_id: any;
 };
 
-export async function resetVotes({
+export async function setResetVotes({
   supabase,
   params: { in_evaluator_id },
 }: ServerParams<Params>): Promise<void | Error> {
