@@ -1,4 +1,3 @@
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import DownChevron from "public/images/svg/DownChevron";
 import { useVotingStore } from "./VotingStore";
 
@@ -20,7 +19,6 @@ const VotingTableItem = ({
   setOpenArray,
 }: VotingTableItemProps) => {
   const votingStore = useVotingStore();
-  const supabase = useSupabaseClient();
 
   return (
     <div
@@ -74,7 +72,7 @@ const VotingTableItem = ({
         <div className="py-[22px]">
           <div className="flex flex-row  justify-evenly items-center">
             <button
-              onClick={() => votingStore.decrementVote(supabase, project.id)}
+              onClick={() => votingStore.decrementVote(project.id)}
               className={`w-6 h-6 md:w-9 md:h-9 rounded  outline-none ${
                 votingStore.getVotes(project.id) === 0
                   ? "bg-gray-light"
@@ -97,7 +95,7 @@ const VotingTableItem = ({
             </span>
 
             <button
-              onClick={() => votingStore.incrementVote(supabase, project.id)}
+              onClick={() => votingStore.incrementVote(project.id)}
               className={`w-6 h-6 md:w-9 md:h-9 rounded outline-none
                 ${
                   votingStore.canVoteAgain(project.id)

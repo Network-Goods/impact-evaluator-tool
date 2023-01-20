@@ -8,7 +8,6 @@ import VotingFilter from "./VotingFilter";
 import VotingTable from "./VotingTable";
 import VotingCreditCounter from "./VotingCreditCounter";
 import { useVotingStore } from "./VotingStore";
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useUserProfileStore } from "src/lib/UserProfileStore";
 import Link from "next/link";
 import LoadingSpinner from "../LoadingSpinner";
@@ -24,7 +23,6 @@ export default function Voting() {
   const router = useRouter();
   const { evaluation_id } = router.query;
   const store = useVotingStore();
-  const supabase = useSupabaseClient();
 
   useEffect(() => {
     if (
@@ -83,8 +81,7 @@ export default function Voting() {
         />
         <div>
           <VotingCreditCounter
-            supabase={supabase}
-            handleReset={store.reset}
+            handleReset={store.resetVotes}
             credits={store.availableCredits}
             allocatedCredits={store.allocatedCredits}
           />
