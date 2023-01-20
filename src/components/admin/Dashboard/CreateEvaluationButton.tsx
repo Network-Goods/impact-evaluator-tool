@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import Add from "public/images/svg/Add";
 import { useState } from "react";
 import Button from "src/components/Button";
-import { useDashboardStore } from "./store";
+import { useDashboardStore } from "./DashboardStore";
 
 const CreateEvaluationButton = () => {
   const dashboardStore = useDashboardStore();
