@@ -100,7 +100,7 @@ export const useVotingStore = create<VotingStore>()((set, get) => ({
       });
   },
 
-  decrementVote: async (submission_id: string) => {
+  decrementVote: (submission_id: string) => {
     const evaluator = get().evaluator;
     if (!evaluator) {
       console.error("Cannot vote without an evaluator");
@@ -155,7 +155,7 @@ export const useVotingStore = create<VotingStore>()((set, get) => ({
       get().availableCredits + (votes - 1) * (votes - 1) - votes * votes <= 1
     );
   },
-  resetVotes: async () => {
+  resetVotes: () => {
     const evaluator = get().evaluator;
     if (!evaluator) {
       console.error("Cannot reset without an evaluator");
