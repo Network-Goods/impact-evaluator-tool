@@ -1,6 +1,4 @@
-import SmallTitle from "src/components/SmallTitle";
-import { Evaluation } from "src/lib";
-import CreateRoundTooltip from "./CreateRoundTooltip";
+import { DashboardEvaluation } from "src/lib";
 import DetailsTooltip from "./DetailsTooltip";
 import EvaluationLinkButton from "./EvaluationLinkButton";
 
@@ -19,7 +17,7 @@ enum RoundTiming {
 type EvaluationItemProps = {
   first: boolean;
   last: boolean;
-  evaluation: Evaluation;
+  evaluation: DashboardEvaluation;
 };
 export const EvaluationItem = ({
   evaluation,
@@ -70,23 +68,23 @@ export const EvaluationItem = ({
 
         <div className="pl-4 md:pl-10 border-l border-gray">
           {evaluation.status === "staging" ? (
-            <DetailsTooltip>
-              <div className="pointer-events-none">
-                <EvaluationLinkButton
-                  text="Details"
-                  link={`/evaluation/${evaluation.id}`}
-                />
-              </div>
-            </DetailsTooltip>
-          ) : null}
-          {evaluation.status === "started" ? (
             <EvaluationLinkButton
-              text="Evaluate"
-              link={`/evaluation/${evaluation.id}`}
+              text="Details"
+              link="https://network-goods.notion.site/Impact-Evaluators-Builders-Leaderboard-602ea6755b5642e1ad6f9da59a47fa62"
+              external
             />
           ) : null}
-          {evaluation.status === "closed" ? (
-            <div className="transition-colors duration-200 ease-in-out transform  outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold mx-auto border border-[#DADADA] bg-[#DADADA] text-gray-dark text-sm md:text-lg py-1 w-16 md:w-20">
+          {evaluation.status === "started" && !evaluation.is_submitted ? (
+            <>
+              <EvaluationLinkButton
+                text="Evaluate"
+                link={`/evaluation/${evaluation.id}`}
+              />
+            </>
+          ) : null}
+          {(evaluation.status === "started" && evaluation.is_submitted) ||
+          evaluation.status === "closed" ? (
+            <div className="transition-colors duration-200 ease-in-out transform  outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold mx-auto border border-[#DADADA] bg-[#DADADA] text-gray-dark text-sm md:text-base py-1 w-16 md:w-20">
               Done
             </div>
           ) : null}

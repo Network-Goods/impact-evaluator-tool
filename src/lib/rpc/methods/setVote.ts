@@ -6,7 +6,7 @@ type Params = {
   vote_count: any;
 };
 
-export async function upsertVote({
+export async function setVote({
   supabase,
   params: { in_evaluator_id, in_submission_id, vote_count },
 }: ServerParams<Params>): Promise<void | Error> {

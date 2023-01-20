@@ -29,6 +29,7 @@ export type VotingStore = {
   getAllocatedVoiceCredits: (submission_id: string) => number;
   canVoteAgain: (submission_id: string) => boolean;
   resetVotes: () => void;
+  setEvaluatorSubmission: () => void;
 };
 
 export const useVotingStore = create<VotingStore>()((set, get) => ({
@@ -87,14 +88,14 @@ export const useVotingStore = create<VotingStore>()((set, get) => ({
     });
 
     rpc
-      .call("upsertVote", {
+      .call("setVote", {
         in_evaluator_id: evaluator.id,
         in_submission_id: submission_id,
         vote_count: current_votes + 1,
       })
       .then((data) => {
         if (data instanceof Error) {
-          console.error(`ERROR -- rpc call upsertvote failed`, data);
+          console.error(`ERROR -- rpc call setVote failed`, data);
           return;
         }
       });
@@ -125,14 +126,14 @@ export const useVotingStore = create<VotingStore>()((set, get) => ({
     });
 
     rpc
-      .call("upsertVote", {
+      .call("setVote", {
         in_evaluator_id: evaluator.id,
         in_submission_id: submission_id,
         vote_count: current_votes - 1,
       })
       .then((data) => {
         if (data instanceof Error) {
-          console.error(`ERROR -- rpc call upsertvote failed`, data);
+          console.error(`ERROR -- rpc call setVote failed`, data);
           return;
         }
       });
@@ -175,14 +176,36 @@ export const useVotingStore = create<VotingStore>()((set, get) => ({
     });
 
     rpc
-      .call("resetVotes", {
+      .call("setResetVotes", {
         in_evaluator_id: evaluator.id,
       })
       .then((data) => {
         if (data instanceof Error) {
-          console.error(`ERROR -- rpc call resetVotes failed`, data);
+          console.error(`ERROR -- rpc call setResetVotes failed`, data);
           return;
         }
       });
+  },
+  setEvaluatorSubmission: () => {
+    const evaluator = get().evaluator;
+
+    if (!evaluator) {
+      return;
+    }
+    console.log("evaluator", evaluator);
+
+    // set({
+    //   evaluation: {
+    //     ...evaluation,
+    //     name: name,
+    //   },
+    // });
+
+    rpc.call("setEvaluatorSubmission", { id: evaluator.id }).then((data) => {
+      if (data instanceof Error) {
+        console.error(`ERROR -- rpc call setEvaluatorSubmission failed`, data);
+        return;
+      }
+    });
   },
 }));
