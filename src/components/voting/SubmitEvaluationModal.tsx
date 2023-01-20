@@ -33,7 +33,7 @@ const SubmitEvaluationModal = ({
 
   const submit = () => {
     handleSubmit();
-    router.replace("/");
+    window.location.replace("/");
   };
   return (
     <Modal
