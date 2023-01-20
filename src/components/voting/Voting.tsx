@@ -100,7 +100,11 @@ export default function Voting() {
           <Button text="Submit" onClick={handleOpenModal} />
         </div>
       </div>
-      <SubmitEvaluationModal handleClose={handleCloseModal} open={openModal} />
+      <SubmitEvaluationModal
+        handleSubmit={store.setEvaluatorSubmission}
+        handleClose={handleCloseModal}
+        open={openModal}
+      />
     </div>
   );
 }
