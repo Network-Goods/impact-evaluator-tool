@@ -1,12 +1,12 @@
 import create from "zustand";
-import { Evaluation, rpc } from "src/lib";
+import { Evaluation, rpc, DashboardEvaluation } from "src/lib";
 
 export interface DashboardStore {
   fetching: boolean;
   error?: any;
-  evaluations: Evaluation[];
+  evaluations: DashboardEvaluation[];
   load: () => void;
-  createEvaluation: () => Promise<Evaluation | Error>;
+  createEvaluation: () => Promise<DashboardEvaluation | Error>;
 }
 
 export const useDashboardStore = create<DashboardStore>()((set, get) => ({
@@ -14,11 +14,13 @@ export const useDashboardStore = create<DashboardStore>()((set, get) => ({
   evaluations: [],
 
   load: async () => {
-    rpc.call("getUserEvaluations", null).then((data) => {
+    rpc.call("getDashboardStore", null).then((data) => {
       if (data instanceof Error) {
         console.error(`ERROR -- rpc call getUserEvaluations failed`, data);
         return;
       }
+
+      console.log("dashboard evaluations", data);
 
       set({
         fetching: false,
@@ -27,8 +29,11 @@ export const useDashboardStore = create<DashboardStore>()((set, get) => ({
     });
   },
 
-  createEvaluation: async (): Promise<Evaluation | Error> => {
-    const newEvaluation = Evaluation.init();
+  createEvaluation: async (): Promise<DashboardEvaluation | Error> => {
+    const newEvaluation: DashboardEvaluation = {
+      ...Evaluation.init(),
+      is_submitted: false,
+    };
 
     set({
       evaluations: [...get().evaluations, newEvaluation],
