@@ -1,4 +1,4 @@
-export * from "./getUserEvaluations";
+export * from "./getDashboardStore";
 export * from "./getUserProfile";
 export * from "./createEvaluation";
 export * from "./deleteEvaluation";

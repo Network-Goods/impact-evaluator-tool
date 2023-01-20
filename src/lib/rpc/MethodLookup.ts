@@ -1,5 +1,5 @@
 import {
-  getUserEvaluations,
+  getDashboardStore,
   getUserProfile,
   createEvaluation,
   deleteEvaluation,
@@ -15,7 +15,7 @@ import {
 } from "./methods";
 
 export const MethodLookup = {
-  getUserEvaluations,
+  getDashboardStore,
   getUserProfile,
   createEvaluation,
   deleteEvaluation,
