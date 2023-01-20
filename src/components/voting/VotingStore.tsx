@@ -23,19 +23,13 @@ export type VotingStore = {
   availableCredits: number;
   allocatedCredits: number;
   load: (evaluation_id: string) => Promise<void>;
-  incrementVote: (
-    supabase: SupabaseClient,
-    submission_id: string
-  ) => Promise<void>;
-
-  decrementVote: (
-    supabase: SupabaseClient,
-    submission_id: string
-  ) => Promise<void>;
+  incrementVote: (submission_id: string) => void;
+  decrementVote: (submission_id: string) => void;
   getVotes: (submission_id: string) => number;
   getAllocatedVoiceCredits: (submission_id: string) => number;
   canVoteAgain: (submission_id: string) => boolean;
-  reset: (supabase: SupabaseClient) => Promise<void>;
+  resetVotes: () => void;
+  setEvaluatorSubmission: () => void;
 };
 
 export const useVotingStore = create<VotingStore>()((set, get) => ({
@@ -73,7 +67,7 @@ export const useVotingStore = create<VotingStore>()((set, get) => ({
     });
   },
 
-  incrementVote: async (supabase: SupabaseClient, submission_id: string) => {
+  incrementVote: (submission_id: string) => {
     const evaluator = get().evaluator;
     if (!evaluator) {
       console.error("Cannot vote without an evaluator");
@@ -93,28 +87,21 @@ export const useVotingStore = create<VotingStore>()((set, get) => ({
       },
     });
 
-    let { data, error } = await supabase.rpc(
-      "upsertvote",
-      {
+    rpc
+      .call("setVote", {
         in_evaluator_id: evaluator.id,
         in_submission_id: submission_id,
         vote_count: current_votes + 1,
-      }
-
-      // let { data, error } = await supabase.rpc("increment", {
-      //   in_evaluator_id: evaluator.id,
-      //   in_submission_id: submission_id,
-      // }
-    );
-
-    if (error) {
-      console.error(error);
-    } else {
-      console.log("increment result data: ", data);
-    }
+      })
+      .then((data) => {
+        if (data instanceof Error) {
+          console.error(`ERROR -- rpc call setVote failed`, data);
+          return;
+        }
+      });
   },
 
-  decrementVote: async (supabase: SupabaseClient, submission_id: string) => {
+  decrementVote: (submission_id: string) => {
     const evaluator = get().evaluator;
     if (!evaluator) {
       console.error("Cannot vote without an evaluator");
@@ -138,16 +125,18 @@ export const useVotingStore = create<VotingStore>()((set, get) => ({
       },
     });
 
-    let { data, error } = await supabase.rpc("decrement", {
-      in_evaluator_id: evaluator.id,
-      in_submission_id: submission_id,
-    });
-
-    if (error) {
-      console.error(error);
-    } else {
-      console.log("decrement result data: ", data);
-    }
+    rpc
+      .call("setVote", {
+        in_evaluator_id: evaluator.id,
+        in_submission_id: submission_id,
+        vote_count: current_votes - 1,
+      })
+      .then((data) => {
+        if (data instanceof Error) {
+          console.error(`ERROR -- rpc call setVote failed`, data);
+          return;
+        }
+      });
   },
 
   getVotes: (submission_id: string): number => {
@@ -167,7 +156,7 @@ export const useVotingStore = create<VotingStore>()((set, get) => ({
       get().availableCredits + (votes - 1) * (votes - 1) - votes * votes <= 1
     );
   },
-  reset: async (supabase: SupabaseClient) => {
+  resetVotes: () => {
     const evaluator = get().evaluator;
     if (!evaluator) {
       console.error("Cannot reset without an evaluator");
@@ -186,14 +175,37 @@ export const useVotingStore = create<VotingStore>()((set, get) => ({
       votes: resetVotes(get().votes),
     });
 
-    let { data, error } = await supabase.rpc("reset", {
-      in_evaluator_id: evaluator.id,
-    });
+    rpc
+      .call("setResetVotes", {
+        in_evaluator_id: evaluator.id,
+      })
+      .then((data) => {
+        if (data instanceof Error) {
+          console.error(`ERROR -- rpc call setResetVotes failed`, data);
+          return;
+        }
+      });
+  },
+  setEvaluatorSubmission: () => {
+    const evaluator = get().evaluator;
 
-    if (error) {
-      console.error(error);
-    } else {
-      console.log("reset result data: ", data);
+    if (!evaluator) {
+      return;
     }
+    console.log("evaluator", evaluator);
+
+    // set({
+    //   evaluation: {
+    //     ...evaluation,
+    //     name: name,
+    //   },
+    // });
+
+    rpc.call("setEvaluatorSubmission", { id: evaluator.id }).then((data) => {
+      if (data instanceof Error) {
+        console.error(`ERROR -- rpc call setEvaluatorSubmission failed`, data);
+        return;
+      }
+    });
   },
 }));

@@ -20,6 +20,10 @@ export interface Evaluation {
   end_time: string;
 }
 
+export interface DashboardEvaluation extends Evaluation {
+  is_submitted: boolean;
+}
+
 export namespace Evaluation {
   export function init(): Evaluation {
     return {

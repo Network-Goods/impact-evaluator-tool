@@ -1,19 +1,14 @@
 import { useEffect } from "react";
 import LoadingSpinner from "src/components/LoadingSpinner";
 import SubTitle from "src/components/SubTitle";
-import Title from "src/components/Title";
-import { useUserProfileStore } from "src/lib/UserProfileStore";
-import CreateEvaluationButton from "./CreateEvaluationButton";
-import CreateRoundTooltip from "./CreateRoundTooltip";
+import DashboardHeader from "./DashboardHeader";
 import { EvaluationCard } from "./EvaluationCard";
 import { EvaluationEmptyCard } from "./EvaluationEmptyCard";
 import { EvaluationItem } from "./EvaluationItem";
-import JoinRoundButton from "./JoinRoundButton";
 import { useDashboardStore } from "./store";
 
 export default function Dashboard() {
   const store = useDashboardStore();
-  const userProfileStore = useUserProfileStore();
 
   useEffect(() => {
     store.load();
@@ -23,76 +18,66 @@ export default function Dashboard() {
   if (store.error) return <p>Oh no... {store.error.message}</p>;
 
   return (
-    <div>
-      <>
-        <div className="flex justify-between pb-14">
-          <Title text="Dashboard" />
-          {userProfileStore.isAdmin() ? (
-            <CreateRoundTooltip>
-              <div className="pointer-events-none">
-                <CreateEvaluationButton />
+    <>
+      <DashboardHeader />
+      {store.evaluations.filter(
+        (evaluation) =>
+          evaluation.status !== "closed" && evaluation.status !== "draft"
+      ).length !== 0 ? (
+        <EvaluationCard>
+          {store.evaluations
+            .filter(
+              (evaluation) =>
+                evaluation.status !== "closed" && evaluation.status !== "draft"
+            )
+            .map((evaluation, idx) => (
+              <div key={evaluation.id}>
+                <EvaluationItem
+                  evaluation={evaluation}
+                  first={idx === 0}
+                  last={
+                    idx ===
+                    store.evaluations.filter(
+                      (evaluation) =>
+                        evaluation.status !== "closed" &&
+                        evaluation.status !== "draft"
+                    ).length -
+                      1
+                  }
+                />
               </div>
-            </CreateRoundTooltip>
-          ) : (
-            ""
-          )}
-        </div>
-        <div className="flex justify-between pb-5">
-          <SubTitle text="Ongoing evaluations" />
-          <JoinRoundButton />
-        </div>
-        {store.evaluations.filter(
-          (evaluation) => evaluation.status !== "closed"
-        ).length !== 0 ? (
-          <EvaluationCard>
-            {store.evaluations
-              .filter((evaluation) => evaluation.status !== "closed")
-              .map((evaluation, idx) => (
-                <div key={evaluation.id}>
-                  <EvaluationItem
-                    evaluation={evaluation}
-                    last={
-                      idx ===
-                      store.evaluations.filter(
-                        (evaluation) => evaluation.status !== "closed"
-                      ).length -
-                        1
-                    }
-                  />
-                </div>
-              ))}
-          </EvaluationCard>
-        ) : (
-          <EvaluationEmptyCard text="You don’t have any ongoing evaluations." />
-        )}
-        <div className="pt-14 pb-6">
-          <SubTitle text="Past evaluations" />
-        </div>
-        {store.evaluations.filter(
-          (evaluation) => evaluation.status === "closed"
-        ).length !== 0 ? (
-          <EvaluationCard>
-            {store.evaluations
-              .filter((evaluation) => evaluation.status === "closed")
-              .map((evaluation, idx) => (
-                <div key={evaluation.id}>
-                  <EvaluationItem
-                    evaluation={evaluation}
-                    last={
-                      idx ===
-                      store.evaluations.filter(
-                        (evaluation) => evaluation.status === "closed"
-                      ).length -
-                        1
-                    }
-                  />
-                </div>
-              ))}
-          </EvaluationCard>
-        ) : (
-          <EvaluationEmptyCard text="You don’t have any past evaluations." />
-        )}
-      </>
-    </div>
+            ))}
+        </EvaluationCard>
+      ) : (
+        <EvaluationEmptyCard text="You don’t have any ongoing evaluations." />
+      )}
+      <div className="pt-14 pb-6">
+        <SubTitle text="Past evaluations" />
+      </div>
+      {store.evaluations.filter((evaluation) => evaluation.status === "closed")
+        .length !== 0 ? (
+        <EvaluationCard>
+          {store.evaluations
+            .filter((evaluation) => evaluation.status === "closed")
+            .map((evaluation, idx) => (
+              <div key={evaluation.id}>
+                <EvaluationItem
+                  evaluation={evaluation}
+                  first={idx === 0}
+                  last={
+                    idx ===
+                    store.evaluations.filter(
+                      (evaluation) => evaluation.status === "closed"
+                    ).length -
+                      1
+                  }
+                />
+              </div>
+            ))}
+        </EvaluationCard>
+      ) : (
+        <EvaluationEmptyCard text="You don’t have any past evaluations." />
+      )}
+    </>
   );
 }

@@ -26,10 +26,6 @@ const AuthWrapper: FC<Props> = ({ children }) => {
   }, [session, sessionContext.isLoading]);
 
   if (sessionContext.isLoading) {
-    return <div>Loading</div>;
-  }
-
-  if (sessionContext.isLoading) {
     return <LoadingSpinner />;
   }
 

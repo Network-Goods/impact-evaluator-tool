@@ -8,9 +8,9 @@ import VotingFilter from "./VotingFilter";
 import VotingTable from "./VotingTable";
 import VotingCreditCounter from "./VotingCreditCounter";
 import { useVotingStore } from "./VotingStore";
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useUserProfileStore } from "src/lib/UserProfileStore";
 import Link from "next/link";
+import LoadingSpinner from "../LoadingSpinner";
 
 export default function Voting() {
   const [openModal, setOpenModal] = useState(false);
@@ -23,7 +23,6 @@ export default function Voting() {
   const router = useRouter();
   const { evaluation_id } = router.query;
   const store = useVotingStore();
-  const supabase = useSupabaseClient();
 
   useEffect(() => {
     if (
@@ -57,7 +56,7 @@ export default function Voting() {
     setOpenArray(arr);
   };
 
-  if (!store.loaded) return <p>Loading...</p>;
+  if (!store.loaded) return <LoadingSpinner />;
   // if (store.error) return <p>Oh no... {store.error.message}</p>;
 
   return (
@@ -82,8 +81,7 @@ export default function Voting() {
         />
         <div>
           <VotingCreditCounter
-            supabase={supabase}
-            handleReset={store.reset}
+            handleReset={store.resetVotes}
             credits={store.availableCredits}
             allocatedCredits={store.allocatedCredits}
           />
@@ -102,7 +100,11 @@ export default function Voting() {
           <Button text="Submit" onClick={handleOpenModal} />
         </div>
       </div>
-      <SubmitEvaluationModal handleClose={handleCloseModal} open={openModal} />
+      <SubmitEvaluationModal
+        handleSubmit={store.setEvaluatorSubmission}
+        handleClose={handleCloseModal}
+        open={openModal}
+      />
     </div>
   );
 }

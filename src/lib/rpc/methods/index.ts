@@ -1,4 +1,4 @@
-export * from "./getUserEvaluations";
+export * from "./getDashboardStore";
 export * from "./getUserProfile";
 export * from "./createEvaluation";
 export * from "./deleteEvaluation";
@@ -9,3 +9,6 @@ export * from "./setSubmissionName";
 export * from "./createSubmission";
 export * from "./getVotingStore";
 export * from "./getEvaluationStore";
+export * from "./setVote";
+export * from "./setResetVotes";
+export * from "./setEvaluatorSubmission";

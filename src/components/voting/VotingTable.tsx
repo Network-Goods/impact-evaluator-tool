@@ -2,7 +2,6 @@ import Collapse from "@mui/material/Collapse";
 import VotingTableHeader from "./VotingTableHeader";
 import VotingTableItem from "./VotingTableItem";
 import VotingTableBody from "./VotingTableBody";
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useUserProfileStore } from "src/lib/UserProfileStore";
 import { useVotingStore } from "./VotingStore";
 import { useEffect } from "react";
@@ -22,7 +21,6 @@ const VotingTable = ({
   setOpenArray,
   evaluation_id,
 }: VotingTableProps) => {
-  const supabase = useSupabaseClient();
   const userProfileStore = useUserProfileStore();
   const votingStore = useVotingStore();
 
@@ -38,7 +36,6 @@ const VotingTable = ({
     <div className="flex-1">
       <div className="w-full rounded-lg bg-[#f0f0f0] border border-gray">
         <VotingTableHeader />
-
         <div>
           {submissions
             .filter((val: any) => {

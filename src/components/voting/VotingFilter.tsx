@@ -18,8 +18,8 @@ const VotingFilter = ({
   handleSetAllProjectsView,
 }: VotingFilter) => {
   return (
-    <div className="flex">
-      <div className="mr-2">
+    <div className="flex flex-col md:flex-row">
+      <div className="mb-1 md:mr-2">
         <div className="absolute pl-6">
           <Search className="mt-[14px]" />
         </div>
@@ -27,11 +27,11 @@ const VotingFilter = ({
           type="text"
           placeholder="Search"
           onChange={(e) => setSearch(e.target.value)}
-          className="lg:w-[550px] z-20 inline-flex justify-center px-14 py-2 text-[20px] font-medium bg-white rounded-lg border border-gray 
+          className="w-full lg:w-[550px] z-20 inline-flex justify-center px-14 py-2 text-[20px] font-medium bg-white rounded-lg border border-gray 
           "
         />
       </div>
-      <div className="h-16">
+      <div className="h-16 flex justify-center md:block">
         <div className="absolute" ref={projectsViewWrapperRef}>
           <div>
             <button

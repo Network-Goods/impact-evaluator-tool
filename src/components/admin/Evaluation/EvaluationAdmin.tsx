@@ -2,6 +2,7 @@ import { Button } from "@mui/material";
 import { useRouter } from "next/router";
 import { ComponentType, FC, ReactNode, useEffect } from "react";
 import LinkButton from "src/components/LinkButton";
+import LoadingSpinner from "src/components/LoadingSpinner";
 import { useEvaluationStore } from "./EvaluationStore";
 
 type Props = {
@@ -32,7 +33,7 @@ export const EvaluationAdmin: FC<Props> = ({
     return <div>Error: evaluationId is array</div>;
   }
 
-  if (store.fetching) return <p>Loading...</p>;
+  if (store.fetching) return <LoadingSpinner />;
   // if (store.error) return <p>Oh no... {store.error.message}</p>;
   if (!store.evaluation) return <p>no evaluation</p>;
 
