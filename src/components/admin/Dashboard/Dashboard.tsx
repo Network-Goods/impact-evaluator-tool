@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import LoadingSpinner from "src/components/LoadingSpinner";
-import SubTitle from "src/components/SubTitle";
+import LoadingSpinner from "src/components/shared/LoadingSpinner";
+import SubTitle from "src/components/shared/SubTitle";
 import DashboardHeader from "./DashboardHeader";
 import { EvaluationCard } from "./EvaluationCard";
 import { EvaluationEmptyCard } from "./EvaluationEmptyCard";
@@ -12,7 +12,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     store.load();
-  }, []);
+  }, [store]);
 
   if (store.fetching) return <LoadingSpinner />;
   if (store.error) return <p>Oh no... {store.error.message}</p>;
@@ -20,16 +20,11 @@ export default function Dashboard() {
   return (
     <>
       <DashboardHeader />
-      {store.evaluations.filter(
-        (evaluation) =>
-          evaluation.status !== "closed" && evaluation.status !== "draft"
-      ).length !== 0 ? (
+      {store.evaluations.filter((evaluation) => evaluation.status !== "closed" && evaluation.status !== "draft")
+        .length !== 0 ? (
         <EvaluationCard>
           {store.evaluations
-            .filter(
-              (evaluation) =>
-                evaluation.status !== "closed" && evaluation.status !== "draft"
-            )
+            .filter((evaluation) => evaluation.status !== "closed" && evaluation.status !== "draft")
             .map((evaluation, idx) => (
               <div key={evaluation.id}>
                 <EvaluationItem
@@ -38,9 +33,7 @@ export default function Dashboard() {
                   last={
                     idx ===
                     store.evaluations.filter(
-                      (evaluation) =>
-                        evaluation.status !== "closed" &&
-                        evaluation.status !== "draft"
+                      (evaluation) => evaluation.status !== "closed" && evaluation.status !== "draft",
                     ).length -
                       1
                   }
@@ -54,8 +47,7 @@ export default function Dashboard() {
       <div className="pt-14 pb-6">
         <SubTitle text="Past evaluations" />
       </div>
-      {store.evaluations.filter((evaluation) => evaluation.status === "closed")
-        .length !== 0 ? (
+      {store.evaluations.filter((evaluation) => evaluation.status === "closed").length !== 0 ? (
         <EvaluationCard>
           {store.evaluations
             .filter((evaluation) => evaluation.status === "closed")
@@ -64,13 +56,7 @@ export default function Dashboard() {
                 <EvaluationItem
                   evaluation={evaluation}
                   first={idx === 0}
-                  last={
-                    idx ===
-                    store.evaluations.filter(
-                      (evaluation) => evaluation.status === "closed"
-                    ).length -
-                      1
-                  }
+                  last={idx === store.evaluations.filter((evaluation) => evaluation.status === "closed").length - 1}
                 />
               </div>
             ))}

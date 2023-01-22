@@ -17,10 +17,7 @@ type Awaited<T> = T extends PromiseLike<infer U> ? U : T;
 type PromisedMethodReturn<T extends Method> = Awaited<ReturnType<Lookup[T]>>;
 type MethodReturn<T extends Method> = Promise<PromisedMethodReturn<T>>;
 
-export async function call<M extends Method>(
-  method: M,
-  params: MethodParams<M>
-): MethodReturn<M> {
+export async function call<M extends Method>(method: M, params: MethodParams<M>): MethodReturn<M> {
   const res = await axios.post("/api/rpc", {
     method: method,
     params: params,
@@ -37,7 +34,7 @@ export async function execute<M extends Method>(
   method: M,
   params: MethodParams<M>,
   supabase: SupabaseClient,
-  auth: Auth
+  auth: Auth,
 ): MethodReturn<M> {
   const serverParams: ServerParams<MethodParams<M>> = {
     params,

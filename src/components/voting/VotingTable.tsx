@@ -7,20 +7,14 @@ import { useVotingStore } from "./VotingStore";
 import { useEffect } from "react";
 
 type VotingTableProps = {
-  search: any;
+  search: string;
   submissions: any;
-  openArray: any;
+  openArray: boolean[];
   setOpenArray: any;
   evaluation_id: any;
 };
 
-const VotingTable = ({
-  search,
-  submissions,
-  openArray,
-  setOpenArray,
-  evaluation_id,
-}: VotingTableProps) => {
+const VotingTable = ({ search, submissions, openArray, setOpenArray, evaluation_id }: VotingTableProps) => {
   const userProfileStore = useUserProfileStore();
   const votingStore = useVotingStore();
 
@@ -41,9 +35,7 @@ const VotingTable = ({
             .filter((val: any) => {
               if (search === "") {
                 return val;
-              } else if (
-                val.name.toLowerCase().includes(search.toLowerCase())
-              ) {
+              } else if (val.name.toLowerCase().includes(search.toLowerCase())) {
                 return val;
               }
             })
@@ -62,12 +54,7 @@ const VotingTable = ({
                   </div>
 
                   <Collapse in={openArray[idx]} timeout="auto" unmountOnExit>
-                    <VotingTableBody
-                      idx={idx}
-                      project={project}
-                      submissions={submissions}
-                      search={search}
-                    />
+                    <VotingTableBody idx={idx} project={project} submissions={submissions} search={search} />
                   </Collapse>
                 </div>
               );

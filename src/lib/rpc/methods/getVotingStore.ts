@@ -29,9 +29,7 @@ export async function getVotingStore({
 
   if (error) {
     console.error(error);
-    return new Error(
-      `ERROR -- get_voting_store failed. user_id: ${user_id}, evaluation_id: ${evaluation_id}`
-    );
+    return new Error(`ERROR -- get_voting_store failed. user_id: ${user_id}, evaluation_id: ${evaluation_id}`);
   }
 
   return {

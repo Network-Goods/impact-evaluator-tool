@@ -13,9 +13,7 @@ export async function getDashboardStore({
 
   if (error) {
     console.error(error);
-    return new Error(
-      `ERROR -- get_dashboard_store failed. user_id: ${auth.user_id}`
-    );
+    return new Error(`ERROR -- get_dashboard_store failed. user_id: ${auth.user_id}`);
   }
 
   return data || [];

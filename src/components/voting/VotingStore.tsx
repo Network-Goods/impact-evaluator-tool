@@ -1,11 +1,9 @@
 import create from "zustand";
-
-import { Session, SupabaseClient } from "@supabase/supabase-js";
 import { Submission, rpc } from "src/lib";
 
 function calculateAvailableCredits(votes: SubmissionVotes) {
   let usedCredits = 0;
-  for (let submission_id in votes) {
+  for (const submission_id in votes) {
     usedCredits += votes[submission_id] * votes[submission_id];
   }
   return usedCredits;
@@ -43,15 +41,12 @@ export const useVotingStore = create<VotingStore>()((set, get) => ({
   allocatedCredits: 0,
 
   load: async (evaluation_id: string): Promise<void> => {
-    let data = await rpc.call("getVotingStore", {
+    const data = await rpc.call("getVotingStore", {
       evaluation_id: evaluation_id,
     });
 
     if (data instanceof Error) {
-      console.error(
-        `ERROR -- rpc call getVotingStore failed. evaluation_id: ${evaluation_id}`,
-        data
-      );
+      console.error(`ERROR -- rpc call getVotingStore failed. evaluation_id: ${evaluation_id}`, data);
       return;
     }
 
@@ -59,8 +54,7 @@ export const useVotingStore = create<VotingStore>()((set, get) => ({
       votes: data.votes,
       submissions: data.submissions,
       evaluator: data.evaluator,
-      availableCredits:
-        data.evaluator.voice_credits - calculateAvailableCredits(data.votes),
+      availableCredits: data.evaluator.voice_credits - calculateAvailableCredits(data.votes),
       allocatedCredits: data.evaluator.voice_credits,
       evaluation: data.evaluation,
       loaded: true,
@@ -78,9 +72,7 @@ export const useVotingStore = create<VotingStore>()((set, get) => ({
 
     set({
       availableCredits:
-        get().availableCredits +
-        current_votes * current_votes -
-        (current_votes + 1) * (current_votes + 1),
+        get().availableCredits + current_votes * current_votes - (current_votes + 1) * (current_votes + 1),
       votes: {
         ...get().votes,
         [submission_id]: current_votes + 1,
@@ -116,9 +108,7 @@ export const useVotingStore = create<VotingStore>()((set, get) => ({
 
     set({
       availableCredits:
-        get().availableCredits +
-        current_votes * current_votes -
-        (current_votes - 1) * (current_votes - 1),
+        get().availableCredits + current_votes * current_votes - (current_votes - 1) * (current_votes - 1),
       votes: {
         ...get().votes,
         [submission_id]: current_votes - 1,
@@ -152,9 +142,7 @@ export const useVotingStore = create<VotingStore>()((set, get) => ({
   canVoteAgain: (submission_id: string): boolean => {
     const votes = get().votes[submission_id] || 0;
 
-    return (
-      get().availableCredits + (votes - 1) * (votes - 1) - votes * votes <= 1
-    );
+    return get().availableCredits + (votes - 1) * (votes - 1) - votes * votes <= 1;
   },
   resetVotes: () => {
     const evaluator = get().evaluator;
@@ -164,7 +152,7 @@ export const useVotingStore = create<VotingStore>()((set, get) => ({
     }
 
     function resetVotes(votes: SubmissionVotes) {
-      for (let submission_id in votes) {
+      for (const submission_id in votes) {
         votes[submission_id] = 0;
       }
       return votes;

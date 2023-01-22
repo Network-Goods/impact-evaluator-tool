@@ -15,10 +15,7 @@ export type Method = keyof Definition;
 export type Param<T extends Method> = Definition[T]["params"];
 export type Result<T extends Method> = Definition[T]["result"];
 
-export async function rpc<M extends Method>(
-  method: M,
-  params: Param<M>
-): Promise<Result<M>> {
+export async function rpc<M extends Method>(method: M, params: Param<M>): Promise<Result<M>> {
   const res = await axios.post("/api/rpc", {
     method: method,
     params: params,

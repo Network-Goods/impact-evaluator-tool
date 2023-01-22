@@ -8,15 +8,7 @@ type ButtonProps = {
   disabled?: boolean;
 };
 
-const Button = ({
-  text,
-  onClick,
-  secondary,
-  alt,
-  small,
-  icon,
-  disabled,
-}: ButtonProps) => {
+const Button = ({ text, onClick, secondary, alt, small, icon, disabled }: ButtonProps) => {
   return (
     <button
       className={`transition-colors duration-200 ease-in-out transform  outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold mx-auto 
