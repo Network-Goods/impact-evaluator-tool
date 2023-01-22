@@ -1,14 +1,6 @@
 import Link from "next/link";
 
-const EvaluationLinkButton = ({
-  text,
-  link,
-  external,
-}: {
-  text: string;
-  link: string;
-  external?: boolean;
-}) => {
+const EvaluationLinkButton = ({ text, link, external }: { text: string; link: string; external?: boolean }) => {
   return (
     <>
       {external ? (

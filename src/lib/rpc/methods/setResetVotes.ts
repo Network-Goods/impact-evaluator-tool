@@ -8,7 +8,7 @@ export async function setResetVotes({
   supabase,
   params: { in_evaluator_id },
 }: ServerParams<Params>): Promise<void | Error> {
-  const { data, error } = await supabase.rpc("reset", {
+  const { error } = await supabase.rpc("reset", {
     in_evaluator_id,
   });
 

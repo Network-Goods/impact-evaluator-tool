@@ -25,19 +25,14 @@ export default function Voting() {
   const store = useVotingStore();
 
   useEffect(() => {
-    if (
-      !evaluation_id ||
-      Array.isArray(evaluation_id) ||
-      !userProfileStore.profile ||
-      store.loaded
-    ) {
+    if (!evaluation_id || Array.isArray(evaluation_id) || !userProfileStore.profile || store.loaded) {
       return;
     }
     store.load(evaluation_id);
-  }, [evaluation_id, userProfileStore.profile]);
+  }, [evaluation_id, userProfileStore.profile, store.loaded]);
 
   useEffect(() => {
-    let arr: any = [];
+    const arr: any = [];
     store.submissions.forEach(() => {
       arr.push(false);
     });
@@ -48,7 +43,7 @@ export default function Voting() {
   const handleCloseModal = () => setOpenModal(false);
 
   const handleSetAllProjectsView = (action: boolean) => {
-    let arr: any = [];
+    const arr: any = [];
     setOpenProjectsView(false);
     store.submissions.forEach(() => {
       arr.push(action);

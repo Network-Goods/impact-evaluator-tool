@@ -1,4 +1,4 @@
-import { FC, ReactNode, use, useEffect } from "react";
+import { FC, ReactNode, useEffect } from "react";
 import { useSession, useSessionContext } from "@supabase/auth-helpers-react";
 import { useUserProfileStore } from "src/lib/UserProfileStore";
 import LoginPage from "src/components/login/LoginPage";

@@ -1,4 +1,4 @@
-import { useState, FC } from "react";
+import { FC } from "react";
 import Dashboard from "src/components/admin/Dashboard/Dashboard";
 import Container from "src/components/layout/Container";
 import Layout from "src/components/layout/Layout";

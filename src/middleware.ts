@@ -25,11 +25,7 @@ export async function middleware(req: NextRequest) {
     return redirect();
   }
 
-  let user = await supabase
-    .from("user")
-    .select()
-    .eq("github_user_id", session.user.id)
-    .single();
+  const user = await supabase.from("user").select().eq("github_user_id", session.user.id).single();
 
   if (!user.data) {
     return redirect();

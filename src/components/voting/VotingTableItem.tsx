@@ -10,14 +10,7 @@ type VotingTableItemProps = {
   setOpenArray: any;
 };
 
-const VotingTableItem = ({
-  project,
-  idx,
-  search,
-  submissions,
-  openArray,
-  setOpenArray,
-}: VotingTableItemProps) => {
+const VotingTableItem = ({ project, idx, search, submissions, openArray, setOpenArray }: VotingTableItemProps) => {
   const votingStore = useVotingStore();
 
   return (
@@ -42,11 +35,7 @@ const VotingTableItem = ({
         }
         `}
     >
-      <div
-        className={`w-[45%] md:w-[60%] flex justify-between ${
-          openArray[idx] ? "" : "border-r border-gray"
-        }`}
-      >
+      <div className={`w-[45%] md:w-[60%] flex justify-between ${openArray[idx] ? "" : "border-r border-gray"}`}>
         <div className="py-6 md:pl-6 md:text-[20px]">{project.name}</div>
         <button
           onClick={() =>
@@ -74,17 +63,13 @@ const VotingTableItem = ({
             <button
               onClick={() => votingStore.decrementVote(project.id)}
               className={`w-6 h-6 md:w-9 md:h-9 rounded  outline-none ${
-                votingStore.getVotes(project.id) === 0
-                  ? "bg-gray-light"
-                  : "bg-blue-darkest bg-opacity-30"
+                votingStore.getVotes(project.id) === 0 ? "bg-gray-light" : "bg-blue-darkest bg-opacity-30"
               }`}
               disabled={votingStore.getVotes(project.id) === 0}
             >
               <span
                 className={`m-auto md:text-2xl font-semibold ${
-                  votingStore.getVotes(project.id) === 0
-                    ? "text-[#B5B5B5]"
-                    : "text-blue-darkest"
+                  votingStore.getVotes(project.id) === 0 ? "text-[#B5B5B5]" : "text-blue-darkest"
                 }`}
               >
                 −
@@ -97,21 +82,13 @@ const VotingTableItem = ({
             <button
               onClick={() => votingStore.incrementVote(project.id)}
               className={`w-6 h-6 md:w-9 md:h-9 rounded outline-none
-                ${
-                  votingStore.canVoteAgain(project.id)
-                    ? "bg-blue-light bg-opacity-50"
-                    : "bg-blue-light"
-                }
+                ${votingStore.canVoteAgain(project.id) ? "bg-blue-light bg-opacity-50" : "bg-blue-light"}
             `}
               disabled={votingStore.canVoteAgain(project.id)}
             >
               <span
                 className={`m-auto md:text-2xl font-semibold 
-                  ${
-                    votingStore.canVoteAgain(project.id)
-                      ? "text-blue text-opacity-30"
-                      : "text-blue"
-                  }
+                  ${votingStore.canVoteAgain(project.id) ? "text-blue text-opacity-30" : "text-blue"}
                   `}
               >
                 +

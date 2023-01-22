@@ -1,7 +1,11 @@
 import { styled } from "@mui/material/styles";
 import Tooltip, { TooltipProps, tooltipClasses } from "@mui/material/Tooltip";
 
-export default function CreateRoundTooltip({ children }: any) {
+type CreateRoundTooltipProps = {
+  children: React.ReactNode;
+};
+
+export default function CreateRoundTooltip({ children }: CreateRoundTooltipProps) {
   const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
     <Tooltip {...props} arrow classes={{ popper: className }} placement="top" />
   ))(({ theme }) => ({

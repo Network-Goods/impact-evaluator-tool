@@ -20,12 +20,8 @@ const VotingHeader = ({ evaluation }: VotingHeaderProps) => {
       <div className="flex-1">
         <div className="flex flex-col md:flex-row md:justify-between pb-6">
           <div className="pb-6 md:pb-0">
-            <h1 className="text-4xl text-offblack pb-2">
-              {evaluation && evaluation.name}
-            </h1>
-            <h3 className="text-2xl text-blue-alt font-bold">
-              Quadratic voting
-            </h3>
+            <h1 className="text-4xl text-offblack pb-2">{evaluation && evaluation.name}</h1>
+            <h3 className="text-2xl text-blue-alt font-bold">Quadratic voting</h3>
           </div>
           <div>
             <div className="md:flex md:justify-end pb-2">

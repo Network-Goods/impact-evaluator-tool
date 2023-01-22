@@ -12,8 +12,7 @@ export default function Login() {
   // window is only defined on the client
   let redirectTo: string | undefined;
   if (typeof window !== "undefined") {
-    redirectTo =
-      window.location.protocol + "//" + window.location.host + router.route;
+    redirectTo = window.location.protocol + "//" + window.location.host + router.route;
   }
 
   return (

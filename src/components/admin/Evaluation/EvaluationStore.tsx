@@ -40,14 +40,12 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
       },
     });
 
-    rpc
-      .call("setEvaluationName", { name: name, id: evaluation.id })
-      .then((data) => {
-        if (data instanceof Error) {
-          console.error(`ERROR -- rpc call setEvaluationName failed`, data);
-          return;
-        }
-      });
+    rpc.call("setEvaluationName", { name: name, id: evaluation.id }).then((data) => {
+      if (data instanceof Error) {
+        console.error(`ERROR -- rpc call setEvaluationName failed`, data);
+        return;
+      }
+    });
   },
 
   setEvaluationStatus: (status: string) => {
@@ -64,14 +62,12 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
       },
     });
 
-    rpc
-      .call("setEvaluationStatus", { status: status, id: evaluation.id })
-      .then((data) => {
-        if (data instanceof Error) {
-          console.error(`ERROR -- rpc call setEvaluationName failed`, data);
-          return;
-        }
-      });
+    rpc.call("setEvaluationStatus", { status: status, id: evaluation.id }).then((data) => {
+      if (data instanceof Error) {
+        console.error(`ERROR -- rpc call setEvaluationName failed`, data);
+        return;
+      }
+    });
   },
 
   deleteEvaluation: () => {
@@ -96,7 +92,7 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
       return new Error("Evaluation not loaded");
     }
 
-    let newSubmission = Submission.init({
+    const newSubmission = Submission.init({
       description: "",
       evaluation_id: evaluation.id,
       website_link: "",

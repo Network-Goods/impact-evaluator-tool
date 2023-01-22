@@ -7,12 +7,7 @@ type VotingTableBodyProps = {
   search: string;
 };
 
-const VotingTableBody = ({
-  idx,
-  project,
-  submissions,
-  search,
-}: VotingTableBodyProps) => {
+const VotingTableBody = ({ idx, project, submissions, search }: VotingTableBodyProps) => {
   return (
     <div
       className={`px-4 md:px-12 pb-4 md:pb-6
@@ -43,14 +38,10 @@ const VotingTableBody = ({
           <p className="text-sm mb-3">{project.description.specs}</p>
         </div>
         <div className="md:w-[30%] md:border-l md:border-gray md:pl-6">
-          <div className="font-bold">{`Project Link${
-            project.website_link ? "s" : ""
-          }`}</div>
+          <div className="font-bold">{`Project Link${project.website_link ? "s" : ""}`}</div>
           <div className="flex flex-col">
             <VotingTableLink title="Github" link={project.github_link} />
-            {project.website_link ? (
-              <VotingTableLink title="Website" link={project.website_link} />
-            ) : null}
+            {project.website_link ? <VotingTableLink title="Website" link={project.website_link} /> : null}
           </div>
         </div>
       </div>
