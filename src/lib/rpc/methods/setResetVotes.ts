@@ -1,7 +1,7 @@
 import { ServerParams } from "..";
 
 type Params = {
-  in_evaluator_id: any;
+  in_evaluator_id: string;
 };
 
 export async function setResetVotes({

@@ -16,17 +16,15 @@ export default function DashboardHeader() {
         </div>
         <SubTitle text="Ongoing evaluations" />
       </div>
-      <div>
-        <div className="md:flex md:justify-end pb-2 md:pb-14">
+      <div className="md:flex md:flex-col md:justify-between">
+        <div className="md:flex md:justify-end pb-2 md:pb-0">
           {userProfileStore.isAdmin() ? (
             <CreateRoundTooltip>
               <div className="pointer-events-none">
                 <CreateEvaluationButton />
               </div>
             </CreateRoundTooltip>
-          ) : (
-            ""
-          )}
+          ) : null}
         </div>
         <div className="flex justify-center md:justify-end">
           <JoinRoundButton />

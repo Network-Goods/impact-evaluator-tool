@@ -1,6 +1,4 @@
 import create from "zustand";
-
-import { Session, SupabaseClient } from "@supabase/supabase-js";
 import { Submission, rpc } from "src/lib";
 
 function calculateAvailableCredits(votes: SubmissionVotes) {

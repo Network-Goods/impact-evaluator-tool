@@ -16,7 +16,7 @@ export default function Voting() {
   const [openModal, setOpenModal] = useState(false);
   const [search, setSearch] = useState("");
   const [openProjectsView, setOpenProjectsView] = useState(false);
-  const [openArray, setOpenArray] = useState([]);
+  const [openArray, setOpenArray] = useState<boolean[]>([]);
   const projectsViewWrapperRef = useRef<HTMLInputElement>(null);
   useClickOutside(projectsViewWrapperRef, () => setOpenProjectsView(false));
   const userProfileStore = useUserProfileStore();

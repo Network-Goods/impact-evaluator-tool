@@ -3,10 +3,10 @@ import { useVotingStore } from "./VotingStore";
 
 type VotingTableItemProps = {
   project: any;
-  idx: any;
-  search: any;
+  idx: number;
+  search: string;
   submissions: any;
-  openArray: any;
+  openArray: boolean[];
   setOpenArray: any;
 };
 
@@ -51,7 +51,7 @@ const VotingTableItem = ({
         <button
           onClick={() =>
             setOpenArray((prev: any) => {
-              return prev.map((item: any, j: any) => {
+              return prev.map((item: boolean, j: number) => {
                 if (j === idx) {
                   return !item;
                 }

@@ -7,9 +7,9 @@ import { useVotingStore } from "./VotingStore";
 import { useEffect } from "react";
 
 type VotingTableProps = {
-  search: any;
+  search: string;
   submissions: any;
-  openArray: any;
+  openArray: boolean[];
   setOpenArray: any;
   evaluation_id: any;
 };

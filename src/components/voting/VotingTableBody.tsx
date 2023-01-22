@@ -1,10 +1,10 @@
 import VotingTableLink from "./VotingTableLink";
 
 type VotingTableBodyProps = {
-  idx: any;
+  idx: number;
   project: any;
   submissions: any;
-  search: any;
+  search: string;
 };
 
 const VotingTableBody = ({

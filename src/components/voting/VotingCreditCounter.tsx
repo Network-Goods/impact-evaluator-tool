@@ -1,9 +1,9 @@
 import SmallTitle from "../SmallTitle";
 import Reset from "public/images/svg/Reset";
 type VotingCreditCounterProps = {
-  handleReset: any;
-  credits: any;
-  allocatedCredits: any;
+  handleReset: () => void;
+  credits: number;
+  allocatedCredits: number;
 };
 
 const VotingCreditCounter = ({

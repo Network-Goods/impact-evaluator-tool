@@ -10,7 +10,7 @@ type VotingHeaderProps = {
 const VotingHeader = ({ evaluation }: VotingHeaderProps) => {
   return (
     <div className="flex">
-      <div className="mr-6">
+      <div className="hidden md:flex mr-6">
         <Link href="/">
           <div className="rounded-lg bg-gray-light h-12 w-12 flex justify-center items-center">
             <LeftArrow />

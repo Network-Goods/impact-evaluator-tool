@@ -13,31 +13,6 @@ import { useUserProfileStore } from "src/lib/UserProfileStore";
 import { useRouter } from "next/router";
 import { Evaluator } from "src/lib";
 
-async function joinRoundWithCode(
-  supabase: SupabaseClient,
-  user_id: string,
-  code: string,
-  preffered_email: string
-): Promise<Evaluator | void> {
-  let { data, error } = await supabase.rpc("join_with_code", {
-    in_user_id: user_id,
-    in_code: code,
-    in_preffered_email: preffered_email,
-  });
-
-  if (error) {
-    console.error("Failed to join round", error);
-    return;
-  }
-
-  if (!data) {
-    console.error("joinRoundWithCode returned no data");
-    return;
-  }
-
-  return data as any;
-}
-
 const style = {
   position: "absolute" as "absolute",
   top: "40%",
@@ -60,12 +35,41 @@ type JoinRoundModalProps = {
 const JoinRoundModal = ({ handleClose, open }: JoinRoundModalProps) => {
   const [inputs, setInputs] = useState<any>({});
   const [checked, setChecked] = useState(false);
+  const [error, setError] = useState("");
   const session = useSession();
   const supabase = useSupabaseClient();
   const userProfileStore = useUserProfileStore();
   const router = useRouter();
 
   let githubEmail = session?.user.email;
+
+  async function joinRoundWithCode(
+    supabase: SupabaseClient,
+    user_id: string,
+    code: string,
+    preffered_email: string
+  ): Promise<Evaluator | void> {
+    let { data, error } = await supabase.rpc("join_with_code", {
+      in_user_id: user_id,
+      in_code: code,
+      in_preffered_email: preffered_email,
+    });
+
+    if (error) {
+      console.error("Failed to join round", error);
+      if (error.code === "P0001") {
+        setError("You have already joined this round");
+      }
+      return;
+    }
+
+    if (!data) {
+      console.error("joinRoundWithCode returned no data");
+      return;
+    }
+
+    return data as any;
+  }
 
   const handleChange = (event: any) => {
     const name = event.target.name;
@@ -177,12 +181,21 @@ const JoinRoundModal = ({ handleClose, open }: JoinRoundModalProps) => {
                 />
               )}
             </label>
-
+            {error ? (
+              <span className="text-red text-center">{error}</span>
+            ) : null}
             <input
-              className="transition-colors duration-200 ease-in-out transform outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold mx-auto
-                px-6 py-1 border border-blue bg-blue hover:bg-blue-darkest hover:border-blue-darkest focus:bg-blue-darkest text-white text-lg cursor-pointer my-8"
+              className={`transition-colors duration-200 ease-in-out transform outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold mx-auto
+                px-6 py-1 border border-blue bg-blue text-white text-lg ${
+                  error ? "mt-2 mb-8" : "my-8"
+                } ${
+                inputs.code && inputs.email
+                  ? "cursor-pointer hover:bg-blue-darkest hover:border-blue-darkest"
+                  : "opacity-50 cursor-not-allowed"
+              }`}
               type="submit"
               value="Join"
+              disabled={inputs.code && inputs.email ? false : true}
             />
           </form>
         </Box>

@@ -36,7 +36,7 @@ const VotingFilter = ({
           <div>
             <button
               type="button"
-              className={`relative z-20 inline-flex w-full justify-center px-7 py-2 text-[20px] font-medium rounded-lg border border-gray 
+              className={`relative z-20 inline-flex w-full justify-center pl-4 pr-3 py-2 text-[20px] font-medium rounded-lg border border-gray 
               ${openProjectsView ? "bg-[#f0f0f0]" : "bg-white"}
               
               `}
@@ -44,14 +44,14 @@ const VotingFilter = ({
             >
               Projects View
               <DownChevron
-                className={`h-5 w-5 ml-2 my-auto transform transition-all duration-300  ease-in-out
+                className={`h-5 w-5 ml-[10px] my-auto transform transition-all duration-300  ease-in-out
                 ${openProjectsView ? "rotate-180 fill-blue" : "rotate-0"}
                 `}
               />
             </button>
           </div>
           <Collapse in={openProjectsView} timeout="auto" unmountOnExit>
-            <div className="relative -mt-2 pt-2 px-7 z-10 rounded-b-md bg-white border border-gray focus:outline-none">
+            <div className="relative -mt-2 pt-2 px-3 z-10 rounded-b-md bg-white border border-gray focus:outline-none">
               <div className="py-1">
                 <button
                   className="block w-full px-6 py-2 text-center text-lg border-b border-gray"

@@ -1,9 +1,9 @@
 import { ServerParams } from "..";
 
 type Params = {
-  in_evaluator_id: any;
-  in_submission_id: any;
-  vote_count: any;
+  in_evaluator_id: string;
+  in_submission_id: string;
+  vote_count: number;
 };
 
 export async function setVote({

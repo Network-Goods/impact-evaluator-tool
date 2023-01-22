@@ -14,7 +14,7 @@ const VotingHeaderButton = ({ title, link }: VotingHeaderButtonProps) => {
       rel="noreferrer"
     >
       <span className="mr-3">
-        <Add className="mb-1 fill-blue" />
+        <Add className=" fill-blue" />
       </span>
       <span>{title}</span>
     </a>

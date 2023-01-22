@@ -28,14 +28,32 @@ export default function Login() {
               Impact Evaluator Rounds
             </h1>
             <div className="py-8">
-              <Auth
-                onlyThirdPartyProviders={true}
-                redirectTo={redirectTo}
-                appearance={{ theme: ThemeSupa }}
-                supabaseClient={supabase}
-                providers={["github"]}
-                socialLayout="vertical"
-              />
+              <div className="max-w-[190px] mx-auto">
+                <Auth
+                  onlyThirdPartyProviders={true}
+                  redirectTo={redirectTo}
+                  appearance={{
+                    style: {
+                      button: {
+                        background: "white",
+                        color: "#156FF7",
+                        border: "1px solid #156FF7",
+                        // background: "#346DEE",
+                        // color: "white",
+                        // border: "none",
+                        borderRadius: "8px",
+                        fontWeight: "600",
+                        fontSize: "16px",
+                        paddingTop: "8px",
+                        paddingBottom: "8px",
+                      },
+                    },
+                  }}
+                  supabaseClient={supabase}
+                  providers={["github"]}
+                  socialLayout="vertical"
+                />
+              </div>
             </div>
           </div>
         </Container>
