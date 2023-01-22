@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Add from "public/images/svg/Add";
-import Button from "src/components/Button";
+import Button from "src/components/shared/Button";
 import JoinRoundModal from "./JoinRoundModal";
 
 const JoinRoundButton = () => {

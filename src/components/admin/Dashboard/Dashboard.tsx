@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import LoadingSpinner from "src/components/LoadingSpinner";
-import SubTitle from "src/components/SubTitle";
+import LoadingSpinner from "src/components/shared/LoadingSpinner";
+import SubTitle from "src/components/shared/SubTitle";
 import DashboardHeader from "./DashboardHeader";
 import { EvaluationCard } from "./EvaluationCard";
 import { EvaluationEmptyCard } from "./EvaluationEmptyCard";

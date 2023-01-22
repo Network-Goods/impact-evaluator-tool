@@ -16,7 +16,6 @@ const VotingTableBody = ({
   return (
     <div
       className={`px-4 md:px-12 pb-4 md:pb-6
-
       ${idx % 2 === 0 ? "bg-white" : "bg-gray-lighter"}
         ${
           idx ===

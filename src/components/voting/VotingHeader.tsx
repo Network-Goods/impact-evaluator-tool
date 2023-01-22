@@ -1,5 +1,5 @@
 import Link from "next/link";
-import SmallTitle from "../SmallTitle";
+import SmallTitle from "../shared/SmallTitle";
 import LeftArrow from "public/images/svg/LeftArrow";
 import VotingHeaderButton from "./VotingHeaderButton";
 

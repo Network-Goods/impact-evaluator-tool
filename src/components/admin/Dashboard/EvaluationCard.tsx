@@ -1,4 +1,4 @@
-import SmallTitle from "src/components/SmallTitle";
+import SmallTitle from "src/components/shared/SmallTitle";
 type EvaluationCardProps = {
   children?: React.ReactNode;
 };

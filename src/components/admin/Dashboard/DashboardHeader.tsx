@@ -1,5 +1,5 @@
-import SubTitle from "src/components/SubTitle";
-import Title from "src/components/Title";
+import SubTitle from "src/components/shared/SubTitle";
+import Title from "src/components/shared/Title";
 import { useUserProfileStore } from "src/lib/UserProfileStore";
 import CreateEvaluationButton from "./CreateEvaluationButton";
 import CreateRoundTooltip from "./CreateRoundTooltip";

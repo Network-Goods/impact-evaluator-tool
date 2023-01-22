@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import Button from "../Button";
+import Button from "../shared/Button";
 import SubmitEvaluationModal from "./SubmitEvaluationModal";
 import { useClickOutside } from "../../hooks/useClickOutside";
 import { useRouter } from "next/router";
@@ -10,7 +10,7 @@ import VotingCreditCounter from "./VotingCreditCounter";
 import { useVotingStore } from "./VotingStore";
 import { useUserProfileStore } from "src/lib/UserProfileStore";
 import Link from "next/link";
-import LoadingSpinner from "../LoadingSpinner";
+import LoadingSpinner from "../shared/LoadingSpinner";
 
 export default function Voting() {
   const [openModal, setOpenModal] = useState(false);

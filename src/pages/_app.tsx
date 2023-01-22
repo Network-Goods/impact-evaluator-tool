@@ -9,9 +9,8 @@ import {
   SessionContextProvider,
   useSessionContext,
 } from "@supabase/auth-helpers-react";
-import AuthWrapper from "src/components/AuthWrapper";
+import AuthWrapper from "src/components/layout/AuthWrapper";
 import Head from "next/head";
-import { useUserProfileStore } from "src/lib/UserProfileStore";
 
 const aileron = localFont({
   src: [

@@ -1,4 +1,4 @@
-import SmallTitle from "../SmallTitle";
+import SmallTitle from "../shared/SmallTitle";
 import Reset from "public/images/svg/Reset";
 type VotingCreditCounterProps = {
   handleReset: () => void;
