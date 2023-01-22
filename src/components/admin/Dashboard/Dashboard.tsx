@@ -5,7 +5,7 @@ import DashboardHeader from "./DashboardHeader";
 import { EvaluationCard } from "./EvaluationCard";
 import { EvaluationEmptyCard } from "./EvaluationEmptyCard";
 import { EvaluationItem } from "./EvaluationItem";
-import { useDashboardStore } from "./store";
+import { useDashboardStore } from "./DashboardStore";
 
 export default function Dashboard() {
   const store = useDashboardStore();
