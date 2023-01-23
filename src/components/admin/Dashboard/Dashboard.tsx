@@ -12,7 +12,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     store.load();
-  }, [store]);
+  }, [store.fetching]);
 
   if (store.fetching) return <LoadingSpinner />;
   if (store.error) return <p>Oh no... {store.error.message}</p>;
