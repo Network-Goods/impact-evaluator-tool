@@ -7,10 +7,7 @@ import { useRouter } from "next/router";
 
 const style = {
   position: "absolute",
-  top: "40%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 473,
+  maxWidth: 473,
   bgcolor: "white",
   boxShadow: 24,
   py: 4,
@@ -44,7 +41,10 @@ const SubmitEvaluationModal = ({ handleSubmit, handleClose, open }: SubmitEvalua
       }}
     >
       <Fade in={open}>
-        <Box sx={style}>
+        <Box
+          sx={style}
+          className="translate-x-[-5%] md:-translate-x-1/2 -translate-y-1/2 top-[40%] left-[10%] md:left-1/2"
+        >
           <h1 className="text-[28px] text-blue-alt font-semibold text-center">Submit Evaluation</h1>
           <p className="text-center py-6">
             Are you sure you would like to submit your evaluation for this Impact Evaluator round? This action cannot be
