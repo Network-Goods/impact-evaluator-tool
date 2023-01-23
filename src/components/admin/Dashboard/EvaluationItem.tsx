@@ -1,5 +1,6 @@
 import { DashboardEvaluation } from "src/lib";
 import EvaluationLinkButton from "./EvaluationLinkButton";
+import { returnLocalTime } from "src/lib/utils";
 
 enum RoundStatus {
   "staging" = "Staging",
@@ -19,10 +20,6 @@ type EvaluationItemProps = {
   evaluation: DashboardEvaluation;
 };
 export const EvaluationItem = ({ evaluation, first, last }: EvaluationItemProps) => {
-  function returnLocalTime(date: string) {
-    return new Date(date).toLocaleDateString();
-  }
-
   return (
     <div
       className={`flex flex-col md:flex-row justify-between items-center px-9 bg-white border border-gray py-4 md:py-0 ${
