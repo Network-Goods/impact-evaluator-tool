@@ -1,4 +1,4 @@
-import { ServerParams } from "..";
+import { isAdmin, ServerParams } from "..";
 import { UserProfile } from "../..";
 
 type Params = {
@@ -8,7 +8,7 @@ type Params = {
 export async function getUserProfile({ supabase, params, auth }: ServerParams<Params>): Promise<UserProfile | Error> {
   const user_id = params ? params.user_id : auth.user_id;
 
-  if (user_id != auth.user_id && auth.role != "admin") {
+  if (user_id != auth.user_id && !isAdmin(auth)) {
     return new Error("Not authorized");
   }
 
@@ -16,7 +16,7 @@ export async function getUserProfile({ supabase, params, auth }: ServerParams<Pa
 
   if (error) {
     console.error(error);
-    return new Error(`ERROR -- get_user_evaluations failed. user_id: ${user_id}, message: ${error.message}`);
+    return new Error(`ERROR -- getUserProfile failed. user_id: ${user_id}, message: ${error.message}`);
   }
 
   return data;

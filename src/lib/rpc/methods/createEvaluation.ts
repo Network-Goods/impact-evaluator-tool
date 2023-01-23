@@ -1,4 +1,4 @@
-import { ServerParams } from "..";
+import { isAdmin, ServerParams } from "..";
 import { Evaluation } from "../..";
 
 type Params = {
@@ -8,7 +8,12 @@ type Params = {
 export async function createEvaluation({
   supabase,
   params: { evaluation },
+  auth,
 }: ServerParams<Params>): Promise<void | Error> {
+  if (!isAdmin(auth)) {
+    return new Error(`Unauthorized`);
+  }
+
   const { data, error } = await supabase.from("evaluation").insert([evaluation]);
 
   if (error) {
