@@ -180,14 +180,6 @@ export const useVotingStore = create<VotingStore>()((set, get) => ({
     if (!evaluator) {
       return;
     }
-    console.log("evaluator", evaluator);
-
-    // set({
-    //   evaluation: {
-    //     ...evaluation,
-    //     name: name,
-    //   },
-    // });
 
     rpc.call("setEvaluatorSubmission", { id: evaluator.id }).then((data) => {
       if (data instanceof Error) {
