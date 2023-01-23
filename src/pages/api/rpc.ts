@@ -49,7 +49,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const result = await rpc.execute(req.body.method, req.body.params, supabaseServerClient, auth);
 
   if (result instanceof Error) {
-    console.error(`ERROR -- rpc.getUserProfileAuth failed. method: ${req.body.method} `, result);
+    console.error(`ERROR -- rpc.execute failed. method: ${req.body.method} `, result);
     res.status(405).send({ error: result });
     return;
   }
