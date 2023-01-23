@@ -1,14 +1,26 @@
+import { useState } from "react";
 import Link from "next/link";
 import SmallTitle from "../shared/SmallTitle";
 import LeftArrow from "public/images/svg/LeftArrow";
+import Add from "public/images/svg/Add";
 import VotingHeaderButton from "./VotingHeaderButton";
 import { returnLocalTime } from "src/lib/utils";
+import QuadraticVotingModal from "./QuadraticVotingModal";
+import RoundDetailsModal from "./RoundDetailsModal";
 
 type VotingHeaderProps = {
   evaluation: any;
 };
 
 const VotingHeader = ({ evaluation }: VotingHeaderProps) => {
+  const [openQuadraticModal, setOpenQuadraticModal] = useState(false);
+  const [openDetailsModal, setOpenDetailsModal] = useState(false);
+
+  const handleOpenQuadraticModal = () => setOpenQuadraticModal(true);
+  const handleCloseQuadraticModal = () => setOpenQuadraticModal(false);
+
+  const handleOpenDetailsModal = () => setOpenDetailsModal(true);
+  const handleCloseDetailsModal = () => setOpenDetailsModal(false);
   return (
     <div className="flex">
       <div className="hidden md:flex mr-6">
@@ -27,17 +39,27 @@ const VotingHeader = ({ evaluation }: VotingHeaderProps) => {
           <div>
             <div className="md:flex md:justify-end pb-2">
               <div>
-                <VotingHeaderButton
-                  title="Round details"
-                  link="https://network-goods.notion.site/Impact-Evaluators-Builders-Leaderboard-602ea6755b5642e1ad6f9da59a47fa62"
-                />
+                <button
+                  className="transition-colors duration-200 ease-in-out transform outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold mx-auto border border-blue hover:bg-white focus:bg-white text-blue text-lg px-3 py-1 cursor-pointer"
+                  onClick={handleOpenDetailsModal}
+                >
+                  <span className="mr-3">
+                    <Add className=" fill-blue" />
+                  </span>
+                  <span>Round Details</span>
+                </button>
               </div>
             </div>
             <div>
-              <VotingHeaderButton
-                title="Quadratic voting"
-                link="https://www.radicalxchange.org/concepts/plural-voting/"
-              />
+              <button
+                className="transition-colors duration-200 ease-in-out transform outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold mx-auto border border-blue hover:bg-white focus:bg-white text-blue text-lg px-3 py-1 cursor-pointer"
+                onClick={handleOpenQuadraticModal}
+              >
+                <span className="mr-3">
+                  <Add className=" fill-blue" />
+                </span>
+                <span>Quadratic voting</span>
+              </button>
             </div>
           </div>
         </div>
@@ -47,6 +69,8 @@ const VotingHeader = ({ evaluation }: VotingHeaderProps) => {
           {evaluation && evaluation.end_time && returnLocalTime(evaluation.end_time)}
         </div>
       </div>
+      <QuadraticVotingModal open={openQuadraticModal} handleClose={handleCloseQuadraticModal} />
+      <RoundDetailsModal open={openDetailsModal} handleClose={handleCloseDetailsModal} />
     </div>
   );
 };
