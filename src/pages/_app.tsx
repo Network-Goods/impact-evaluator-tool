@@ -2,10 +2,10 @@ import { AppProps } from "next/app";
 import "../styles/globals.css";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import localFont from "@next/font/local";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "../styles/globals.css";
 import { createBrowserSupabaseClient } from "@supabase/auth-helpers-nextjs";
-import { SessionContextProvider, useSessionContext } from "@supabase/auth-helpers-react";
+import { SessionContextProvider } from "@supabase/auth-helpers-react";
 import AuthWrapper from "src/components/layout/AuthWrapper";
 import Head from "next/head";
 
@@ -40,12 +40,6 @@ const theme = createTheme({
 
 const App = ({ Component, pageProps }: AppProps) => {
   const [supabase] = useState(() => createBrowserSupabaseClient());
-
-  const sesh = useSessionContext();
-
-  useEffect(() => {
-    console.log(sesh);
-  }, [sesh]);
 
   return (
     <SessionContextProvider supabaseClient={supabase} initialSession={pageProps.initialSession}>
