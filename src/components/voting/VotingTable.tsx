@@ -2,9 +2,6 @@ import Collapse from "@mui/material/Collapse";
 import VotingTableHeader from "./VotingTableHeader";
 import VotingTableItem from "./VotingTableItem";
 import VotingTableBody from "./VotingTableBody";
-import { useUserProfileStore } from "src/lib/UserProfileStore";
-import { useVotingStore } from "./VotingStore";
-import { useEffect } from "react";
 
 type VotingTableProps = {
   search: string;
@@ -14,18 +11,7 @@ type VotingTableProps = {
   evaluation_id: any;
 };
 
-const VotingTable = ({ search, submissions, openArray, setOpenArray, evaluation_id }: VotingTableProps) => {
-  const userProfileStore = useUserProfileStore();
-  const votingStore = useVotingStore();
-
-  useEffect(() => {
-    if (!evaluation_id || !userProfileStore.profile || votingStore.loaded) {
-      return;
-    }
-
-    votingStore.load(evaluation_id);
-  }, [evaluation_id, userProfileStore.profile]);
-
+const VotingTable = ({ search, submissions, openArray, setOpenArray }: VotingTableProps) => {
   return (
     <div className="flex-1">
       <div className="w-full rounded-lg bg-[#f0f0f0] border border-gray">

@@ -11,10 +11,7 @@ import { Evaluator } from "src/lib";
 
 const style = {
   position: "absolute",
-  top: "40%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 739,
+
   bgcolor: "white",
   boxShadow: 24,
   py: 2,
@@ -104,7 +101,10 @@ const JoinRoundModal = ({ handleClose, open }: JoinRoundModalProps) => {
       }}
     >
       <Fade in={open}>
-        <Box sx={style}>
+        <Box
+          sx={style}
+          className="translate-x-[-5%] md:-translate-x-1/2 -translate-y-1/2 top-[40%] left-[10%] md:left-1/2 md:w-[739px]"
+        >
           <div className="flex justify-between items-center text-offblack">
             <h1 className="text-[28px] text-blue-alt font-semibold">Join an Impact Evaluator Round</h1>
 
