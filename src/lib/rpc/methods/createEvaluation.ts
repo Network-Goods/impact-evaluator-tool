@@ -9,9 +9,7 @@ export async function createEvaluation({
   supabase,
   params: { evaluation },
 }: ServerParams<Params>): Promise<void | Error> {
-  const { data, error } = await supabase
-    .from("evaluation")
-    .insert([evaluation]);
+  const { data, error } = await supabase.from("evaluation").insert([evaluation]);
 
   if (error) {
     console.error(error);

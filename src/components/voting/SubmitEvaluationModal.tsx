@@ -2,11 +2,11 @@ import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
-import Button from "../Button";
+import Button from "../shared/Button";
 import { useRouter } from "next/router";
 
 const style = {
-  position: "absolute" as "absolute",
+  position: "absolute",
   top: "40%",
   left: "50%",
   transform: "translate(-50%, -50%)",
@@ -24,11 +24,7 @@ type SubmitEvaluationModalProps = {
   open: boolean;
 };
 
-const SubmitEvaluationModal = ({
-  handleSubmit,
-  handleClose,
-  open,
-}: SubmitEvaluationModalProps) => {
+const SubmitEvaluationModal = ({ handleSubmit, handleClose, open }: SubmitEvaluationModalProps) => {
   const router = useRouter();
 
   const submit = () => {
@@ -49,13 +45,10 @@ const SubmitEvaluationModal = ({
     >
       <Fade in={open}>
         <Box sx={style}>
-          <h1 className="text-[28px] text-blue-alt font-semibold text-center">
-            Submit Evaluation
-          </h1>
+          <h1 className="text-[28px] text-blue-alt font-semibold text-center">Submit Evaluation</h1>
           <p className="text-center py-6">
-            Are you sure you would like to submit your evaluation for this
-            Impact Evaluator round? This action cannot be undone, and your
-            assessment will be final.
+            Are you sure you would like to submit your evaluation for this Impact Evaluator round? This action cannot be
+            undone, and your assessment will be final.
           </p>
           <div className="flex justify-evenly">
             <div>

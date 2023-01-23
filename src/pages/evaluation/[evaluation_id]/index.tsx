@@ -1,4 +1,4 @@
-import { useState, FC } from "react";
+import { FC } from "react";
 import Container from "src/components/layout/Container";
 import Layout from "src/components/layout/Layout";
 import AuthNavbar from "src/components/navBar/AuthNavbar";

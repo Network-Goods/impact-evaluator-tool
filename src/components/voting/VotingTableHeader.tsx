@@ -1,4 +1,4 @@
-import SmallTitle from "../SmallTitle";
+import SmallTitle from "../shared/SmallTitle";
 
 const VotingTableHeader = () => {
   return (

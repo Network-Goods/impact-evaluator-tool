@@ -1,16 +1,12 @@
-import SmallTitle from "../SmallTitle";
+import SmallTitle from "../shared/SmallTitle";
 import Reset from "public/images/svg/Reset";
 type VotingCreditCounterProps = {
-  handleReset: any;
-  credits: any;
-  allocatedCredits: any;
+  handleReset: () => void;
+  credits: number;
+  allocatedCredits: number;
 };
 
-const VotingCreditCounter = ({
-  handleReset,
-  credits,
-  allocatedCredits,
-}: VotingCreditCounterProps) => {
+const VotingCreditCounter = ({ handleReset, credits, allocatedCredits }: VotingCreditCounterProps) => {
   return (
     <div className="rounded-lg bg-white border border-gray p-12 mt-4 lg:mt-0 lg:ml-6 text-center">
       <SmallTitle text="VOICE CREDITS" />

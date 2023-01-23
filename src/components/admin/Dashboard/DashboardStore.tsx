@@ -20,8 +20,6 @@ export const useDashboardStore = create<DashboardStore>()((set, get) => ({
         return;
       }
 
-      console.log("dashboard evaluations", data);
-
       set({
         fetching: false,
         evaluations: data,

@@ -8,9 +8,7 @@ const BasicNavbar = () => {
         <div className="w-full max-w-[1600px] px-8 mx-auto">
           <div className="flex">
             <PLLogoWhite />
-            <span className="text-white font-semibold text-2xl pl-2">
-              Impact Evaluator
-            </span>
+            <span className="text-white font-semibold text-2xl pl-2">Impact Evaluator</span>
           </div>
         </div>
       </div>

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import Button from "../Button";
+import Button from "../shared/Button";
 import SubmitEvaluationModal from "./SubmitEvaluationModal";
 import { useClickOutside } from "../../hooks/useClickOutside";
 import { useRouter } from "next/router";
@@ -10,13 +10,13 @@ import VotingCreditCounter from "./VotingCreditCounter";
 import { useVotingStore } from "./VotingStore";
 import { useUserProfileStore } from "src/lib/UserProfileStore";
 import Link from "next/link";
-import LoadingSpinner from "../LoadingSpinner";
+import LoadingSpinner from "../shared/LoadingSpinner";
 
 export default function Voting() {
   const [openModal, setOpenModal] = useState(false);
   const [search, setSearch] = useState("");
   const [openProjectsView, setOpenProjectsView] = useState(false);
-  const [openArray, setOpenArray] = useState([]);
+  const [openArray, setOpenArray] = useState<boolean[]>([]);
   const projectsViewWrapperRef = useRef<HTMLInputElement>(null);
   useClickOutside(projectsViewWrapperRef, () => setOpenProjectsView(false));
   const userProfileStore = useUserProfileStore();
@@ -25,19 +25,14 @@ export default function Voting() {
   const store = useVotingStore();
 
   useEffect(() => {
-    if (
-      !evaluation_id ||
-      Array.isArray(evaluation_id) ||
-      !userProfileStore.profile ||
-      store.loaded
-    ) {
+    if (!evaluation_id || Array.isArray(evaluation_id) || !userProfileStore.profile || store.loaded) {
       return;
     }
     store.load(evaluation_id);
-  }, [evaluation_id, userProfileStore.profile]);
+  }, [evaluation_id, userProfileStore.profile, store.loaded]);
 
   useEffect(() => {
-    let arr: any = [];
+    const arr: any = [];
     store.submissions.forEach(() => {
       arr.push(false);
     });
@@ -48,7 +43,7 @@ export default function Voting() {
   const handleCloseModal = () => setOpenModal(false);
 
   const handleSetAllProjectsView = (action: boolean) => {
-    let arr: any = [];
+    const arr: any = [];
     setOpenProjectsView(false);
     store.submissions.forEach(() => {
       arr.push(action);

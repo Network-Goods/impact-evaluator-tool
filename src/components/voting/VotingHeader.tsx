@@ -1,7 +1,8 @@
 import Link from "next/link";
-import SmallTitle from "../SmallTitle";
+import SmallTitle from "../shared/SmallTitle";
 import LeftArrow from "public/images/svg/LeftArrow";
 import VotingHeaderButton from "./VotingHeaderButton";
+import { returnLocalTime } from "src/lib/utils";
 
 type VotingHeaderProps = {
   evaluation: any;
@@ -10,7 +11,7 @@ type VotingHeaderProps = {
 const VotingHeader = ({ evaluation }: VotingHeaderProps) => {
   return (
     <div className="flex">
-      <div className="mr-6">
+      <div className="hidden md:flex mr-6">
         <Link href="/">
           <div className="rounded-lg bg-gray-light h-12 w-12 flex justify-center items-center">
             <LeftArrow />
@@ -20,12 +21,8 @@ const VotingHeader = ({ evaluation }: VotingHeaderProps) => {
       <div className="flex-1">
         <div className="flex flex-col md:flex-row md:justify-between pb-6">
           <div className="pb-6 md:pb-0">
-            <h1 className="text-4xl text-offblack pb-2">
-              {evaluation && evaluation.name}
-            </h1>
-            <h3 className="text-2xl text-blue-alt font-bold">
-              Quadratic voting
-            </h3>
+            <h1 className="text-4xl text-offblack pb-2">{evaluation && evaluation.name}</h1>
+            <h3 className="text-2xl text-blue-alt font-bold">Quadratic voting</h3>
           </div>
           <div>
             <div className="md:flex md:justify-end pb-2">
@@ -47,15 +44,7 @@ const VotingHeader = ({ evaluation }: VotingHeaderProps) => {
 
         <SmallTitle text="DEADLINE" />
         <div className="mt-2 font-bold tracking-wider">
-          {evaluation &&
-            evaluation.end_time &&
-            `${
-              evaluation.end_time.slice(8, 10) +
-              "/" +
-              evaluation.end_time.slice(5, 7) +
-              "/" +
-              evaluation.end_time.slice(0, 4)
-            }`}
+          {evaluation && evaluation.end_time && returnLocalTime(evaluation.end_time)}
         </div>
       </div>
     </div>

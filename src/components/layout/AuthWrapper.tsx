@@ -1,12 +1,8 @@
-import { FC, ReactNode, use, useEffect } from "react";
-import {
-  useSession,
-  useSessionContext,
-  useSupabaseClient,
-} from "@supabase/auth-helpers-react";
+import { FC, ReactNode, useEffect } from "react";
+import { useSession, useSessionContext } from "@supabase/auth-helpers-react";
 import { useUserProfileStore } from "src/lib/UserProfileStore";
-import LoginPage from "src/components/LoginPage";
-import LoadingSpinner from "./LoadingSpinner";
+import LoginPage from "src/components/login/LoginPage";
+import LoadingSpinner from "../shared/LoadingSpinner";
 
 type Props = {
   children: ReactNode;

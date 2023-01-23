@@ -24,7 +24,7 @@ const AuthNavbar = () => {
 
   const session = useSession();
 
-  let username = session?.user.user_metadata.user_name;
+  const username = session?.user.user_metadata.user_name;
 
   return (
     <Navbar>
@@ -33,16 +33,11 @@ const AuthNavbar = () => {
           <Link href="/">
             <div className="flex">
               <PLLogo />
-              <span className="text-black font-bold text-xl">
-                Impact Evaluator
-              </span>
+              <span className="text-black font-bold text-xl">Impact Evaluator</span>
             </div>
           </Link>
 
-          <div
-            className="relative inline-block text-left"
-            ref={logoutWrapperRef}
-          >
+          <div className="relative inline-block text-left" ref={logoutWrapperRef}>
             <div>
               <button
                 type="button"

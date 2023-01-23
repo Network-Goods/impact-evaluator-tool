@@ -28,15 +28,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       // supabaseServerClient.auth.signOut();
 
       console.error(
-        "ERROR -- supabaseServerClient.auth.getUser did not return user, but the user still has an active session"
+        "ERROR -- supabaseServerClient.auth.getUser did not return user, but the user still has an active session",
       );
       res.status(405).send({ error: "An error occurred, try logging out" });
       return;
     }
 
-    console.error(
-      "ERROR -- supabaseServerClient.auth.getUser did not return user. "
-    );
+    console.error("ERROR -- supabaseServerClient.auth.getUser did not return user. ");
     res.status(405).send({ error: "Not logged in" });
     return;
   }
@@ -48,18 +46,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     return;
   }
 
-  const result = await rpc.execute(
-    req.body.method,
-    req.body.params,
-    supabaseServerClient,
-    auth
-  );
+  const result = await rpc.execute(req.body.method, req.body.params, supabaseServerClient, auth);
 
   if (result instanceof Error) {
-    console.error(
-      `ERROR -- rpc.getUserProfileAuth failed. method: ${req.body.method} `,
-      result
-    );
+    console.error(`ERROR -- rpc.getUserProfileAuth failed. method: ${req.body.method} `, result);
     res.status(405).send({ error: result });
     return;
   }
