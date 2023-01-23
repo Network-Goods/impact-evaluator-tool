@@ -2,6 +2,7 @@ import Link from "next/link";
 import SmallTitle from "../shared/SmallTitle";
 import LeftArrow from "public/images/svg/LeftArrow";
 import VotingHeaderButton from "./VotingHeaderButton";
+import { returnLocalTime } from "src/lib/utils";
 
 type VotingHeaderProps = {
   evaluation: any;
@@ -43,15 +44,7 @@ const VotingHeader = ({ evaluation }: VotingHeaderProps) => {
 
         <SmallTitle text="DEADLINE" />
         <div className="mt-2 font-bold tracking-wider">
-          {evaluation &&
-            evaluation.end_time &&
-            `${
-              evaluation.end_time.slice(8, 10) +
-              "/" +
-              evaluation.end_time.slice(5, 7) +
-              "/" +
-              evaluation.end_time.slice(0, 4)
-            }`}
+          {evaluation && evaluation.end_time && returnLocalTime(evaluation.end_time)}
         </div>
       </div>
     </div>
