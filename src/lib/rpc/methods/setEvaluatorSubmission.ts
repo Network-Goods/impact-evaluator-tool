@@ -1,17 +1,24 @@
-import { ServerParams } from "..";
+import { getIsUserEvaluator, isAdmin, ServerParams } from "..";
 
 type Params = {
-  id: string;
+  evaluator_id: string;
 };
 
 export async function setEvaluatorSubmission({
   supabase,
-  params: { id },
+  params: { evaluator_id },
+  auth,
 }: ServerParams<Params>): Promise<void | Error> {
-  const { error } = await supabase.from("evaluator").update({ is_submitted: true }).eq("id", id);
+  const isUserEvaluator = await getIsUserEvaluator(supabase, auth.user_id, evaluator_id);
+
+  if (!isAdmin(auth) && !isUserEvaluator) {
+    return new Error(`Unauthorized`);
+  }
+
+  const { error } = await supabase.from("evaluator").update({ is_submitted: true }).eq("id", evaluator_id);
 
   if (error) {
     console.error(error);
-    return new Error(`ERROR -- failed to set evaluator submission. evaluator id: ${id}`);
+    return new Error(`ERROR -- failed to set evaluator submission. evaluator id: ${evaluator_id}`);
   }
 }

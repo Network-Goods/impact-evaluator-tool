@@ -1,4 +1,4 @@
-import { ServerParams } from "..";
+import { isAdmin, ServerParams } from "..";
 import { Submission } from "../..";
 
 type Params = {
@@ -8,7 +8,12 @@ type Params = {
 export async function createSubmission({
   supabase,
   params: { submission },
+  auth,
 }: ServerParams<Params>): Promise<void | Error> {
+  if (!isAdmin(auth)) {
+    return new Error(`Unauthorized`);
+  }
+
   const { data, error } = await supabase.from("submission").insert([submission]);
 
   if (error) {

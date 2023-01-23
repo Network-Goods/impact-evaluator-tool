@@ -1,4 +1,4 @@
-import { ServerParams } from "..";
+import { isAdmin, ServerParams } from "..";
 
 type Params = {
   id: string;
@@ -8,7 +8,12 @@ type Params = {
 export async function setSubmissionName({
   supabase,
   params: { id, name },
+  auth,
 }: ServerParams<Params>): Promise<void | Error> {
+  if (!isAdmin(auth)) {
+    return new Error("Unauthorized");
+  }
+
   const { error } = await supabase.from("submission").update({ name: name }).eq("id", id);
 
   if (error) {
