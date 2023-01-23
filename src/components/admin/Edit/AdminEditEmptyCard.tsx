@@ -1,7 +1,7 @@
 type EvaluationEmptyCardProps = {
   text: string;
 };
-export const EvaluationEmptyCard = ({ text }: EvaluationEmptyCardProps) => {
+export const AdminEditEmptyCard = ({ text }: EvaluationEmptyCardProps) => {
   return (
     <div className="border border-gray rounded-lg bg-gray-lighter">
       <div className="w-full min-h-[165px] flex justify-center items-center">

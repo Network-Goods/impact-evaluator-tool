@@ -3,7 +3,7 @@ type EvaluationCardProps = {
   children?: React.ReactNode;
 };
 
-export const EvaluationCard = ({ children }: EvaluationCardProps) => {
+export const AdminEditCard = ({ children }: EvaluationCardProps) => {
   return (
     <>
       <div className="hidden md:flex justify-between items-center py-2 px-9 bg-[#f0f0f0] border border-gray rounded-t-lg">

@@ -19,7 +19,7 @@ type EvaluationItemProps = {
   last: boolean;
   evaluation: DashboardEvaluation;
 };
-export const EvaluationItem = ({ evaluation, first, last }: EvaluationItemProps) => {
+export const AdminEditItem = ({ evaluation, first, last }: EvaluationItemProps) => {
   return (
     <div
       className={`flex flex-col md:flex-row justify-between items-center px-9 bg-white border border-gray py-4 md:py-0 ${

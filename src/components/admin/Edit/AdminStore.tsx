@@ -1,7 +1,7 @@
 import create from "zustand";
 import { Evaluation, rpc, DashboardEvaluation } from "src/lib";
 
-export interface DashboardStore {
+export interface AdminStore {
   fetching: boolean;
   error?: any;
   evaluations: DashboardEvaluation[];
@@ -9,7 +9,7 @@ export interface DashboardStore {
   createEvaluation: () => Promise<DashboardEvaluation | Error>;
 }
 
-export const useDashboardStore = create<DashboardStore>()((set, get) => ({
+export const useAdminStore = create<AdminStore>()((set, get) => ({
   fetching: true,
   evaluations: [],
 
