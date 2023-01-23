@@ -1,4 +1,4 @@
-import { ServerParams } from "..";
+import { getIsUserEvaluator, isAdmin, ServerParams } from "..";
 import { Evaluation, Evaluator, Submission } from "../..";
 
 type Params = {
@@ -19,6 +19,12 @@ export async function getVotingStore({
   params: { evaluation_id, user_id },
 }: ServerParams<Params>): Promise<Return | Error> {
   user_id = user_id ? user_id : auth.user_id;
+
+  if (!isAdmin(auth) && user_id != auth.user_id) {
+    return new Error(`Unauthorized`);
+  }
+
+  // User has to be evaluator for the evaluation for get_voting_store to work
 
   const { data, error } = await supabase
     .rpc("get_voting_store", {

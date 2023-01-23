@@ -5,6 +5,10 @@ export interface Auth {
   role: string;
 }
 
+export function isAdmin(auth: Auth): boolean {
+  return auth.role == "admin";
+}
+
 export type ServerParams<T> = {
   params: T;
   supabase: SupabaseClient;
@@ -22,4 +26,23 @@ export async function getUserProfileAuth(supabase: SupabaseClient, userID: strin
     user_id: data.id,
     role: data.role,
   };
+}
+
+export async function getIsUserEvaluator(
+  supabase: SupabaseClient,
+  userID: string,
+  evaluatorID: string,
+): Promise<any | Error> {
+  const { data, error } = await supabase.rpc("is_user_evaluator", {
+    in_user_id: userID,
+    in_evaluator_id: evaluatorID,
+  });
+
+  if (error) {
+    return new Error(`DB query failed: ${error.message}`);
+  }
+
+  console.log("result from, isUserEvaluator", data);
+
+  return data;
 }

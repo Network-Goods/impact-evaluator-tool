@@ -1,10 +1,18 @@
-import { ServerParams } from "..";
+import { isAdmin, ServerParams } from "..";
 
 type Params = {
   id: string;
 };
 
-export async function deleteSubmission({ supabase, params: { id } }: ServerParams<Params>): Promise<void | Error> {
+export async function deleteSubmission({
+  supabase,
+  params: { id },
+  auth,
+}: ServerParams<Params>): Promise<void | Error> {
+  if (!isAdmin(auth)) {
+    return new Error(`Unauthorized`);
+  }
+
   const { error } = await supabase.from("submission").delete().eq("id", id);
 
   if (error) {
