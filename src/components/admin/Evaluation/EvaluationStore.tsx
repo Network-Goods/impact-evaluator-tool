@@ -1,4 +1,4 @@
-import create from "zustand";
+import { create } from "zustand";
 import { v4 as uuid } from "uuid";
 import { Evaluation, rpc, Submission } from "src/lib";
 

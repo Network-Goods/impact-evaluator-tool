@@ -1,4 +1,4 @@
-import create from "zustand";
+import { create } from "zustand";
 import { Evaluation, rpc, DashboardEvaluation } from "src/lib";
 
 export interface AdminStore {
