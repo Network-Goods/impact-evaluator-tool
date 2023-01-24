@@ -84,7 +84,7 @@ const JoinRoundModal = ({ handleClose, open }: JoinRoundModalProps) => {
         return;
       }
 
-      router.push(`/evaluation/${evaluator.evaluation_id}`);
+      window.location.replace("/");
     }
   };
 
