@@ -1,11 +1,9 @@
-import { useState } from "react";
 import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 import Close from "public/images/svg/Close";
 import SubTitle from "src/components/shared/SubTitle";
-import SmallTitle from "src/components/shared/SmallTitle";
 
 const style = {
   position: "absolute",
@@ -14,19 +12,13 @@ const style = {
   borderRadius: "9.31292px",
 };
 
-type EvaluatorEditModalProps = {
+type ConfirmResetModalProps = {
   handleClose: () => void;
   open: boolean;
-  evaluator: any;
+  submission: any;
 };
 
-const EvaluatorEditModal = ({ handleClose, open, evaluator }: EvaluatorEditModalProps) => {
-  const [openConfirmResetModal, setOpenConfirmResetModal] = useState(false);
-
-  const handleConfirmResetModal = () => {
-    setOpenConfirmResetModal(true);
-  };
-
+const ConfirmResetModal = ({ handleClose, open, submission }: ConfirmResetModalProps) => {
   return (
     <Modal
       aria-labelledby="transition-modal-title"
@@ -45,7 +37,7 @@ const EvaluatorEditModal = ({ handleClose, open, evaluator }: EvaluatorEditModal
           className="translate-x-[-5%] md:-translate-x-1/2 -translate-y-1/2 top-1/2 left-[10%] md:left-1/2 py-3 px-5 md:py-10 md:px-14 lg:w-[860px]"
         >
           <div className="flex justify-between items-center text-offblack">
-            <h1 className="text-xl md:text-[28px] text-blue-alt font-semibold">Edit Evaluator</h1>
+            <h1 className="text-xl md:text-[28px] text-blue-alt font-semibold">Reset Votes</h1>
 
             <button
               onClick={handleClose}
@@ -54,14 +46,10 @@ const EvaluatorEditModal = ({ handleClose, open, evaluator }: EvaluatorEditModal
               <Close className="fill-current" />
             </button>
           </div>
-          <div className="">
-            <SmallTitle text="Github" />
-            <p className="py-1">{evaluator.user?.github_handle}</p>
-            <SmallTitle text="Email" />
-            <p className="py-1">{evaluator.user?.preferred_email}</p>
-            <SubTitle text="Voice Credits" />
-            <p className="py-1">{evaluator.voice_credits}</p>
-            <button onClick={() => handleConfirmResetModal()}>Reset votes</button>
+          <div className="md:text-lg">
+            <p className="py-3">Are you sure you would like to reset this users votes?</p>
+
+            <p className="py-3">This action cannot be undone.</p>
           </div>
         </Box>
       </Fade>
@@ -69,4 +57,4 @@ const EvaluatorEditModal = ({ handleClose, open, evaluator }: EvaluatorEditModal
   );
 };
 
-export default EvaluatorEditModal;
+export default ConfirmResetModal;
