@@ -58,7 +58,7 @@ const QuadraticVotingModal = ({ handleClose, open }: QuadraticVotingModalProps) 
             </p>
             <p className="py-3">
               To learn more about Quadratic Voting, see:
-              <ul className="list-disc list-inside">
+              <ul className="list-disc ml-6">
                 <li>
                   <a
                     className="text-blue hover:text-blue-dark font-bold underline"
