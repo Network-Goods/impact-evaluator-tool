@@ -1,4 +1,14 @@
 export function returnLocalTime(date: string) {
+  const localTime = new Date(date).toLocaleTimeString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+    timeZoneName: "short",
+  });
+  return localTime;
+}
+
+export function returnLocalDate(date: string) {
   const localDate = new Date(date).toLocaleDateString("en-US", {
     day: "2-digit",
     month: "2-digit",
