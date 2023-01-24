@@ -59,7 +59,7 @@ const RoundDetailsModal = ({ handleClose, open }: RoundDetailsModalProps) => {
             </p>
             <p className="py-3">
               To learn more about Space Warp’s Impact Evaluator Rounds, see:
-              <ul className="list-disc list-inside">
+              <ul className="list-disc ml-6">
                 <li>
                   <a
                     className="text-blue hover:text-blue-dark font-bold underline"
@@ -79,7 +79,7 @@ const RoundDetailsModal = ({ handleClose, open }: RoundDetailsModalProps) => {
                   >
                     Space Warp Website
                   </a>
-                  , featuring the FVM Builders Leaderboard
+                  , which will feature Round 1 results of FVM Builders Leaderboard once the round is complete
                 </li>
               </ul>
             </p>
