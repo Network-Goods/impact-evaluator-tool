@@ -13,7 +13,7 @@ export const useAdminStore = create<AdminStore>()((set, get) => ({
   evaluations: [],
 
   load: async () => {
-    rpc.call("getEvaluationStore", null).then((data) => {
+    rpc.call("getAllEvaluations", null).then((data) => {
       if (data instanceof Error) {
         console.error(`ERROR -- rpc call getUserEvaluations failed`, data);
         return;

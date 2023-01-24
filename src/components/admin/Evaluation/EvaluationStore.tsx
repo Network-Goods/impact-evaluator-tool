@@ -4,8 +4,8 @@ import { Evaluation, rpc, Submission } from "src/lib";
 
 export interface EvaluationStore {
   fetching: boolean;
-  evaluation?: Evaluation;
-  submissions: Submission[];
+  evaluation?: any;
+  // submissions: Submission[];
   load: (evaluation_id: string) => void;
   setEvaluationName: (name: string) => void;
   setEvaluationStatus: (status: string) => void;
@@ -16,15 +16,33 @@ export interface EvaluationStore {
 export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
   fetching: true,
   submissions: [],
-  load: (evaluation_id: string) => {
-    if (get().fetching) {
+  evaluation: null,
+
+  load: async (evaluation_id: string): Promise<void> => {
+    const data = await rpc.call("getEvaluationStore", {
+      evaluation_id: evaluation_id,
+    });
+
+    if (data instanceof Error) {
+      console.error(`ERROR -- rpc call getEvaluation failed. evaluation_id: ${evaluation_id}`, data);
       return;
     }
 
     set({
+      evaluation: data[0],
       fetching: false,
     });
   },
+
+  // load: (evaluation_id: string) => {
+  //   if (get().fetching) {
+  //     return;
+  //   }
+
+  //   set({
+  //     fetching: false,
+  //   });
+  // },
 
   setEvaluationName: (name: string) => {
     const evaluation = get().evaluation;
@@ -101,9 +119,9 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
       github_link: "",
     });
 
-    set({
-      submissions: [...get().submissions, newSubmission],
-    });
+    // set({
+    //   submissions: [...get().submissions, newSubmission],
+    // });
 
     const data = await rpc.call("deleteEvaluation", { id: evaluation.id });
 

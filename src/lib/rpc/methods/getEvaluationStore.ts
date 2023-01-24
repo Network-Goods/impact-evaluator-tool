@@ -1,13 +1,18 @@
 import { ServerParams } from "..";
 import { DashboardEvaluation } from "../..";
 
-type Params = null;
+type Params = {
+  evaluation_id: string;
+};
 
 export async function getEvaluationStore({
   supabase,
-  auth,
+  params: { evaluation_id },
 }: ServerParams<Params>): Promise<DashboardEvaluation[] | Error> {
-  const { error, data } = await supabase.from("evaluation").select("*");
+  const { error, data } = await supabase
+    .from("evaluation")
+    .select("*, submission(*), evaluator(*, user(*)), invitation(*)")
+    .eq("id", evaluation_id);
 
   if (error) {
     console.error(error);
@@ -16,18 +21,3 @@ export async function getEvaluationStore({
 
   return data || [];
 }
-// export async function getDashboardStore({
-//   supabase,
-//   auth,
-// }: ServerParams<Params>): Promise<DashboardEvaluation[] | Error> {
-//   const { data, error } = await supabase.rpc("get_dashboard_store", {
-//     in_user_id: auth.user_id,
-//   });
-
-//   if (error) {
-//     console.error(error);
-//     return new Error(`ERROR -- get_dashboard_store failed. user_id: ${auth.user_id}`);
-//   }
-
-//   return data || [];
-// }

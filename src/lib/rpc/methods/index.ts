@@ -11,4 +11,5 @@ export * from "./getVotingStore";
 export * from "./setVote";
 export * from "./setResetVotes";
 export * from "./setEvaluatorSubmission";
+export * from "./getAllEvaluations";
 export * from "./getEvaluationStore";

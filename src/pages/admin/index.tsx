@@ -1,5 +1,5 @@
 import { FC } from "react";
-import AdminEdit from "src/components/admin/AdminEdit/AdminEdit";
+import AdminEditDashboard from "src/components/admin/AdminEditDashboard/AdminEditDashboard";
 import Container from "src/components/layout/Container";
 import Layout from "src/components/layout/Layout";
 import AuthNavbar from "src/components/navBar/AuthNavbar";
@@ -10,7 +10,7 @@ const Index: FC = () => {
       <AuthNavbar />
       <main>
         <Container>
-          <AdminEdit />
+          <AdminEditDashboard />
         </Container>
       </main>
     </Layout>

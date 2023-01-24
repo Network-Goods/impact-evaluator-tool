@@ -6,7 +6,7 @@ import { AdminEditItem } from "./AdminEditItem";
 import { useAdminStore } from "./AdminStore";
 import Title from "src/components/shared/Title";
 
-export default function AdminEdit() {
+export default function AdminEditDashboard() {
   const store = useAdminStore();
 
   useEffect(() => {
