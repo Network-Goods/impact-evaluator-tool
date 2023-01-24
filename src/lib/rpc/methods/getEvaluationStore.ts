@@ -1,48 +1,33 @@
 import { ServerParams } from "..";
-import { Evaluation, Evaluator, Submission } from "../..";
+import { DashboardEvaluation } from "../..";
 
-type Params = {
-  evaluation_id: string;
-  user_id?: string;
-};
-
-type Return = null;
-
-// type Return = {
-//   submissions: Submission[];
-//   evaluator: Evaluator;
-//   evaluation: Evaluation;
-//   votes: { [submission_id: string]: number };
-// };
+type Params = null;
 
 export async function getEvaluationStore({
   supabase,
   auth,
-  params: { evaluation_id, user_id },
-}: ServerParams<Params>): Promise<Return | Error> {
-  console.error("unimplemented");
-  return null;
+}: ServerParams<Params>): Promise<DashboardEvaluation[] | Error> {
+  const { error, data } = await supabase.from("evaluation").select("*");
 
-  // user_id = user_id ? user_id : auth.user_id;
+  if (error) {
+    console.error(error);
+    return new Error(`ERROR -- failed to get Admin Store`);
+  }
 
-  // const { data, error } = await supabase
-  //   .rpc("get_voting_store", {
-  //     in_evaluation_id: evaluation_id,
-  //     in_user_id: user_id,
-  //   })
-  //   .single();
-
-  // if (error) {
-  //   console.error(error);
-  //   return new Error(
-  //     `ERROR -- get_voting_store failed. user_id: ${user_id}, evaluation_id: ${evaluation_id}`
-  //   );
-  // }
-
-  // return {
-  //   submissions: data.submissions || [],
-  //   evaluator: data.evaluator,
-  //   evaluation: data.evaluation,
-  //   votes: data.votes || {},
-  // };
+  return data || [];
 }
+// export async function getDashboardStore({
+//   supabase,
+//   auth,
+// }: ServerParams<Params>): Promise<DashboardEvaluation[] | Error> {
+//   const { data, error } = await supabase.rpc("get_dashboard_store", {
+//     in_user_id: auth.user_id,
+//   });
+
+//   if (error) {
+//     console.error(error);
+//     return new Error(`ERROR -- get_dashboard_store failed. user_id: ${auth.user_id}`);
+//   }
+
+//   return data || [];
+// }

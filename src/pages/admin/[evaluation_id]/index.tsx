@@ -1,8 +1,8 @@
 import { FC } from "react";
-import AdminEdit from "src/components/admin/AdminEdit/AdminEdit";
 import Container from "src/components/layout/Container";
 import Layout from "src/components/layout/Layout";
 import AuthNavbar from "src/components/navBar/AuthNavbar";
+import Voting from "src/components/voting/Voting";
 
 const Index: FC = () => {
   return (
@@ -10,7 +10,7 @@ const Index: FC = () => {
       <AuthNavbar />
       <main>
         <Container>
-          <AdminEdit />
+          <Voting />
         </Container>
       </main>
     </Layout>

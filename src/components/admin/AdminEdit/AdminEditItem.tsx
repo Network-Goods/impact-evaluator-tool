@@ -1,14 +1,17 @@
 import { DashboardEvaluation } from "src/lib";
-import EvaluationLinkButton from "./EvaluationLinkButton";
+import Link from "next/link";
+
 import { returnLocalTime } from "src/lib/utils";
 
 enum RoundStatus {
+  "draft" = "Draft",
   "staging" = "Staging",
   "started" = "In Progress",
   "closed" = "Closed",
 }
 
 enum RoundTiming {
+  "draft" = "BEGINS",
   "staging" = "BEGINS",
   "started" = "ENDS",
   "closed" = "ENDED",
@@ -41,33 +44,17 @@ export const AdminEditItem = ({ evaluation, first, last }: EvaluationItemProps) 
             {`ROUND ${RoundTiming[evaluation.status as keyof typeof RoundTiming]}`}
           </div>
           <div className="text-[9px] text-offblack tracking-widest">
-            {evaluation.status === "staging"
+            {evaluation.status === "staging" || evaluation.status === "draft"
               ? returnLocalTime(evaluation.start_time)
               : returnLocalTime(evaluation.end_time)}
           </div>
         </div>
-        <div className="text-center py-[9px] font-bold text-sm text-gray-dark border-l border-gray px-4 min-w-[79px] md:min-w-[100px]">
-          EVAL
-        </div>
-
         <div className="pl-4 md:pl-10 border-l border-gray">
-          {evaluation.status === "staging" ? (
-            <EvaluationLinkButton
-              text="Details"
-              link="https://network-goods.notion.site/Impact-Evaluators-Builders-Leaderboard-602ea6755b5642e1ad6f9da59a47fa62"
-              external
-            />
-          ) : null}
-          {evaluation.status === "started" && !evaluation.is_submitted ? (
-            <>
-              <EvaluationLinkButton text="Evaluate" link={`/evaluation/${evaluation.id}`} />
-            </>
-          ) : null}
-          {(evaluation.status === "started" && evaluation.is_submitted) || evaluation.status === "closed" ? (
-            <div className="transition-colors duration-200 ease-in-out transform  outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold mx-auto border border-[#DADADA] bg-[#DADADA] text-gray-dark text-sm md:text-base py-1 w-16 md:w-20">
-              Done
+          <Link href={`/admin/${evaluation.id}`}>
+            <div className="transition-colors duration-200 ease-in-out transform  outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold mx-auto  border border-blue bg-blue hover:bg-blue-darkest hover:border-blue-darkest  text-white text-sm md:text-base py-1 w-16 md:w-20">
+              Edit
             </div>
-          ) : null}
+          </Link>
         </div>
       </div>
     </div>

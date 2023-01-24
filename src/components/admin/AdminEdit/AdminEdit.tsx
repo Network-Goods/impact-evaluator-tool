@@ -18,11 +18,13 @@ export default function AdminEdit() {
 
   return (
     <>
-      <Title text="Admin Edit Dashboard" />
+      <div className="pb-20">
+        <Title text="Admin Edit Dashboard" />
+      </div>
 
       {store.evaluations.length !== 0 ? (
         <AdminEditCard>
-          {store.evaluations.map((evaluation, idx) => (
+          {store.evaluations.map((evaluation: any, idx: number) => (
             <div key={evaluation.id}>
               <AdminEditItem evaluation={evaluation} first={idx === 0} last={idx === store.evaluations.length - 1} />
             </div>

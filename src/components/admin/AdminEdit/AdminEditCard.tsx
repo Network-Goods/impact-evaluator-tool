@@ -14,9 +14,7 @@ export const AdminEditCard = ({ children }: EvaluationCardProps) => {
           <div className="pr-7 py-2 text-center min-w-[109px]">
             <SmallTitle text="STATUS" />
           </div>
-          <div className="text-center py-2 border-l border-gray min-w-[100px]">
-            <SmallTitle text="ROLE" />
-          </div>
+
           <div className="text-center py-2 border-l border-gray pl-9 min-w-[121px]">
             <SmallTitle text="ACTION" />
           </div>

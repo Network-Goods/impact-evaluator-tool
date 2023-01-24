@@ -8,7 +8,7 @@ export * from "./setEvaluationStatus";
 export * from "./setSubmissionName";
 export * from "./createSubmission";
 export * from "./getVotingStore";
-export * from "./getEvaluationStore";
 export * from "./setVote";
 export * from "./setResetVotes";
 export * from "./setEvaluatorSubmission";
+export * from "./getEvaluationStore";
