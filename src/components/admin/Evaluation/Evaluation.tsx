@@ -49,21 +49,23 @@ export default function Evaluation() {
           {store.evaluation.evaluator.map((evaluator: any) => {
             return (
               <div className="flex justify-between" key={evaluator.id}>
-                <div>{evaluator.user.github_handle}</div>
-                <div>{evaluator.user.preferred_email}</div>
+                <div>@{evaluator.user.github_handle}</div>
+                <div className="underline">{evaluator.user.preferred_email}</div>
                 <div>{evaluator.voice_credits}</div>
               </div>
             );
           })}
           <hr className="my-8 border-gray" />
           <SubTitle text="Outcomes" />
-          {store.evaluation.submission.map((submission: any) => {
-            return (
-              <div className="flex justify-between" key={submission.id}>
-                <div>{submission.name}</div>
-              </div>
-            );
-          })}
+          <ol className="list-inside list-decimal">
+            {store.evaluation.submission.map((submission: any) => {
+              return (
+                <li className="flex justify-between" key={submission.id}>
+                  {submission.name}
+                </li>
+              );
+            })}
+          </ol>
         </div>
       </div>
     </>
