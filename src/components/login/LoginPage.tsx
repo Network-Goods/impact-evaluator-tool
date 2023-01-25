@@ -13,6 +13,7 @@ export default function Login() {
   let redirectTo: string | undefined;
   if (typeof window !== "undefined") {
     redirectTo = window.location.protocol + "//" + window.location.host + router.route;
+    console.log("redirectTo: ", redirectTo);
   }
 
   return (
