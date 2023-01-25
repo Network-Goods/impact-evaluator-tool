@@ -7,6 +7,7 @@ import EvaluationSubTitle from "./EvaluationSubTitle";
 import Edit from "public/images/svg/Edit";
 import OutcomeEditModal from "./OutcomeEditModal";
 import EvaluatorEditModal from "./EvaluatorEditModal";
+import { Test } from "./Test";
 
 export default function Evaluation() {
   const [openOutcomeModal, setOpenOutcomeModal] = useState(false);
@@ -58,6 +59,7 @@ export default function Evaluation() {
           </div>
         </div>
         <div>{store.evaluation.name}</div>
+        <Test />
         <hr className="my-10 border-gray" />
         <div className="flex justify-between mb-4">
           <EvaluationSubTitle text="Evaluation Period" />
