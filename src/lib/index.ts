@@ -54,6 +54,13 @@ export interface Submission {
   description: any;
 }
 
+export interface RoundStatus {
+  name: string;
+  num_evaluators: number;
+  num_submitted: number;
+  status: string;
+}
+
 export namespace Submission {
   export function init(params: Omit<Submission, "id">): Submission {
     return {
