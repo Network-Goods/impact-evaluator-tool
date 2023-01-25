@@ -4,7 +4,7 @@ import SmallTitle from "../shared/SmallTitle";
 import LeftArrow from "public/images/svg/LeftArrow";
 import Add from "public/images/svg/Add";
 import VotingHeaderButton from "./VotingHeaderButton";
-import { returnLocalTime } from "src/lib/utils";
+import { returnLocalDate, returnLocalTime } from "src/lib/utils";
 import QuadraticVotingModal from "./QuadraticVotingModal";
 import RoundDetailsModal from "./RoundDetailsModal";
 
@@ -66,6 +66,7 @@ const VotingHeader = ({ evaluation }: VotingHeaderProps) => {
 
         <SmallTitle text="DEADLINE" />
         <div className="mt-2 font-bold tracking-wider">
+          {evaluation && evaluation.end_time && returnLocalDate(evaluation.end_time)}{" "}
           {evaluation && evaluation.end_time && returnLocalTime(evaluation.end_time)}
         </div>
       </div>

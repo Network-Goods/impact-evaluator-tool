@@ -50,9 +50,7 @@ const JoinRoundModal = ({ handleClose, open }: JoinRoundModalProps) => {
 
     if (error) {
       console.error("Failed to join round", error);
-      if (error.code === "P0001") {
-        setError("You have already joined this round");
-      }
+      setError("Error: Please contact round administrator for support.");
       return;
     }
 
@@ -84,7 +82,7 @@ const JoinRoundModal = ({ handleClose, open }: JoinRoundModalProps) => {
         return;
       }
 
-      router.push(`/evaluation/${evaluator.evaluation_id}`);
+      window.location.replace("/");
     }
   };
 
