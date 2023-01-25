@@ -1,9 +1,9 @@
-import { AppProps } from "next/app";
 import "../styles/globals.css";
+
+import { AppProps } from "next/app";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import localFont from "@next/font/local";
 import { useState } from "react";
-import "../styles/globals.css";
 import { createBrowserSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { SessionContextProvider } from "@supabase/auth-helpers-react";
 import AuthWrapper from "src/components/layout/AuthWrapper";

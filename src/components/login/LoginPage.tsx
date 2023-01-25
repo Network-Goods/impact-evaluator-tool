@@ -1,4 +1,4 @@
-import { Auth, ThemeSupa } from "@supabase/auth-ui-react";
+import { Auth } from "@supabase/auth-ui-react";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/router";
 import Layout from "../layout/Layout";
