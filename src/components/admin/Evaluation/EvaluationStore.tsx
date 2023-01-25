@@ -29,7 +29,7 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
     }
 
     set({
-      evaluation: data[0],
+      evaluation: data,
       fetching: false,
     });
   },

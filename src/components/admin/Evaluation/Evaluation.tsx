@@ -3,8 +3,7 @@ import { useRouter } from "next/router";
 import LoadingSpinner from "src/components/shared/LoadingSpinner";
 import { useEvaluationStore } from "./EvaluationStore";
 import Title from "src/components/shared/Title";
-import SmallTitle from "src/components/shared/SmallTitle";
-import SubTitle from "src/components/shared/SubTitle";
+import EvaluationSubTitle from "./EvaluationSubTitle";
 import Edit from "public/images/svg/Edit";
 import OutcomeEditModal from "./OutcomeEditModal";
 import EvaluatorEditModal from "./EvaluatorEditModal";
@@ -47,28 +46,46 @@ export default function Evaluation() {
   // if (store.error) return <p>Oh no... {store.error.message}</p>;
 
   return (
-    <div className="pb-20">
+    <div className="max-w-3xl mx-auto">
       <Title text="Admin Edit Dashboard" />
-      <div className="bg-white rounded-lg py-10 px-14">
-        <SubTitle text="Title" />
+      <div className="bg-white text-lg font-semibold rounded-lg py-10 px-14 mt-7 mb-20">
+        <div className="flex justify-between mb-4">
+          <EvaluationSubTitle text="Title" />
+          <div>
+            <button onClick={() => console.log("name")} className="border border-blue rounded p-1">
+              <Edit />
+            </button>
+          </div>
+        </div>
         <div>{store.evaluation.name}</div>
-        <hr className="my-8 border-gray" />
-        <SubTitle text="Evaluation Period" />
+        <hr className="my-10 border-gray" />
+        <div className="flex justify-between mb-4">
+          <EvaluationSubTitle text="Evaluation Period" />
+          <div>
+            <button onClick={() => console.log("period")} className="border border-blue rounded p-1">
+              <Edit />
+            </button>
+          </div>
+        </div>
         <div>
           {store.evaluation.start_time} to {store.evaluation.end_time}
         </div>
-        <hr className="my-8 border-gray" />
-        <SubTitle text="Evaluators and voice credits" />
-        <SubTitle text="Codes:" />
+        <hr className="my-10 border-gray" />
+        <div className="pb-4">
+          <EvaluationSubTitle text="Evaluators and voice credits" />
+        </div>
+        <EvaluationSubTitle small text="Codes:" />
         {store.evaluation.invitation.map((invitation: any) => {
           return (
             <div className="flex justify-between" key={invitation.id}>
               <div>{invitation.code}</div>
-              <div>{invitation.voice_credits}</div>
+              <div className="inline-flex flex-row w-auto items-center justify-center font-bold rounded-lg text-xs py-2 bg-gray-lighter text-blue min-w-[45px]">
+                {invitation.voice_credits}
+              </div>
             </div>
           );
         })}
-        <SubTitle text="Evaluators:" />
+        <EvaluationSubTitle small text="Evaluators:" />
         {store.evaluation.evaluator.map((evaluator: any) => {
           return (
             <div className="flex justify-between" key={evaluator.id}>
@@ -88,24 +105,21 @@ export default function Evaluation() {
             </div>
           );
         })}
-        <hr className="my-8 border-gray" />
-        <SubTitle text="Outcomes" />
-        <ol className="list-inside list-decimal">
+        <hr className="my-10 border-gray" />
+        <EvaluationSubTitle text="Outcomes" />
+        <ol className="list-decimal ml-5">
           {store.evaluation.submission.map((submission: any) => {
             return (
-              <li key={submission.id}>
-                <div className="flex justify-between">
-                  <div>{submission.name}</div>
-                  <div>
-                    <button
-                      onClick={() => handleOpenOutcomeModal(submission)}
-                      className="border border-blue rounded p-1"
-                    >
-                      <Edit />
-                    </button>
-                  </div>
+              <div className="flex justify-between py-1" key={submission.id}>
+                <li className="text-blue font-bold">
+                  <div className="inline-block text-offblack font-semibold">{submission.name}</div>
+                </li>
+                <div>
+                  <button onClick={() => handleOpenOutcomeModal(submission)} className="border border-blue rounded p-1">
+                    <Edit />
+                  </button>
                 </div>
-              </li>
+              </div>
             );
           })}
         </ol>

@@ -12,7 +12,8 @@ export async function getEvaluationStore({
   const { error, data } = await supabase
     .from("evaluation")
     .select("*, submission(*), evaluator(*, user(*)), invitation(*)")
-    .eq("id", evaluation_id);
+    .eq("id", evaluation_id)
+    .single();
 
   if (error) {
     console.error(error);

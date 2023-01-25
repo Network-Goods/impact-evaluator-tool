@@ -4,6 +4,7 @@ import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 import Close from "public/images/svg/Close";
 import SubTitle from "src/components/shared/SubTitle";
+import Button from "src/components/shared/Button";
 
 const style = {
   position: "absolute",
@@ -62,6 +63,19 @@ const OutcomeEditModal = ({ handleClose, open, submission }: OutcomeEditModalPro
             ) : (
               <p className="py-1">Website: N/A</p>
             )}
+          </div>
+          <div className="flex justify-evenly">
+            <div>
+              <Button small alt text="Cancel" onClick={handleClose} />
+            </div>
+            <div>
+              <button
+                onClick={() => console.log("save")}
+                className="transition-colors duration-200 ease-in-out transform  outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold mx-auto border border-blue bg-blue hover:bg-blue-darkest hover:border-blue-darkest focus:bg-blue-darkest text-white text-lg px-3 py-1"
+              >
+                Save
+              </button>
+            </div>
           </div>
         </Box>
       </Fade>

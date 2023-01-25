@@ -6,6 +6,8 @@ import Fade from "@mui/material/Fade";
 import Close from "public/images/svg/Close";
 import SubTitle from "src/components/shared/SubTitle";
 import SmallTitle from "src/components/shared/SmallTitle";
+import ConfirmResetModal from "./ConfirmResetModal";
+import Button from "src/components/shared/Button";
 
 const style = {
   position: "absolute",
@@ -25,6 +27,10 @@ const EvaluatorEditModal = ({ handleClose, open, evaluator }: EvaluatorEditModal
 
   const handleConfirmResetModal = () => {
     setOpenConfirmResetModal(true);
+  };
+
+  const reset = () => {
+    console.log("reset");
   };
 
   return (
@@ -63,6 +69,24 @@ const EvaluatorEditModal = ({ handleClose, open, evaluator }: EvaluatorEditModal
             <p className="py-1">{evaluator.voice_credits}</p>
             <button onClick={() => handleConfirmResetModal()}>Reset votes</button>
           </div>
+          <div className="flex justify-evenly">
+            <div>
+              <Button small alt text="Cancel" onClick={handleClose} />
+            </div>
+            <div>
+              <button
+                onClick={() => console.log("save")}
+                className="transition-colors duration-200 ease-in-out transform  outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold mx-auto border border-blue bg-blue hover:bg-blue-darkest hover:border-blue-darkest focus:bg-blue-darkest text-white text-lg px-3 py-1"
+              >
+                Save
+              </button>
+            </div>
+          </div>
+          <ConfirmResetModal
+            open={openConfirmResetModal}
+            handleClose={() => setOpenConfirmResetModal(false)}
+            handleReset={reset}
+          />
         </Box>
       </Fade>
     </Modal>

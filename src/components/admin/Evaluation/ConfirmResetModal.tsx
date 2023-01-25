@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 import Close from "public/images/svg/Close";
-import SubTitle from "src/components/shared/SubTitle";
+import Button from "src/components/shared/Button";
 
 const style = {
   position: "absolute",
@@ -14,11 +14,11 @@ const style = {
 
 type ConfirmResetModalProps = {
   handleClose: () => void;
+  handleReset: () => void;
   open: boolean;
-  submission: any;
 };
 
-const ConfirmResetModal = ({ handleClose, open, submission }: ConfirmResetModalProps) => {
+const ConfirmResetModal = ({ handleClose, handleReset, open }: ConfirmResetModalProps) => {
   return (
     <Modal
       aria-labelledby="transition-modal-title"
@@ -34,7 +34,7 @@ const ConfirmResetModal = ({ handleClose, open, submission }: ConfirmResetModalP
       <Fade in={open}>
         <Box
           sx={style}
-          className="translate-x-[-5%] md:-translate-x-1/2 -translate-y-1/2 top-1/2 left-[10%] md:left-1/2 py-3 px-5 md:py-10 md:px-14 lg:w-[860px]"
+          className="translate-x-[-5%] md:-translate-x-1/2 -translate-y-1/2 top-1/2 left-[10%] md:left-1/2 py-3 px-5 md:py-10 md:px-14 lg:w-[500px]"
         >
           <div className="flex justify-between items-center text-offblack">
             <h1 className="text-xl md:text-[28px] text-blue-alt font-semibold">Reset Votes</h1>
@@ -50,6 +50,19 @@ const ConfirmResetModal = ({ handleClose, open, submission }: ConfirmResetModalP
             <p className="py-3">Are you sure you would like to reset this users votes?</p>
 
             <p className="py-3">This action cannot be undone.</p>
+          </div>
+          <div className="flex justify-evenly">
+            <div>
+              <Button small alt text="Cancel" onClick={handleClose} />
+            </div>
+            <div>
+              <button
+                onClick={() => handleReset()}
+                className="transition-colors duration-200 ease-in-out transform  outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold mx-auto border border-blue bg-blue hover:bg-blue-darkest hover:border-blue-darkest focus:bg-blue-darkest text-white text-lg px-3 py-1"
+              >
+                Reset
+              </button>
+            </div>
           </div>
         </Box>
       </Fade>
