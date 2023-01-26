@@ -31,11 +31,11 @@ const VotingTableBody = ({ idx, project, submissions, search }: VotingTableBodyP
       <div className="flex flex-col md:flex-row pt-5">
         <div className="md:w-[70%] pr-12">
           <div className="font-bold">Project Summary</div>
-          <p className="text-sm mb-3">{project.description.description}</p>
+          <p className="text-sm mb-3">{project.description.specs}</p>
           <div className="font-bold">Progress Description</div>
           <p className="text-sm mb-3">{project.description.summary}</p>
           <div className="font-bold">FVM Tech Specs</div>
-          <p className="text-sm mb-3">{project.description.specs}</p>
+          <p className="text-sm mb-3">{project.description.description}</p>
         </div>
         <div className="md:w-[30%] md:border-l md:border-gray md:pl-6">
           <div className="font-bold">{`Project Link${project.website_link ? "s" : ""}`}</div>
