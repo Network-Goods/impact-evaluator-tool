@@ -5,12 +5,15 @@ import { Evaluation, rpc, Submission } from "src/lib";
 export interface EvaluationStore {
   fetching: boolean;
   evaluation?: any;
-  // submissions: Submission[];
   load: (evaluation_id: string) => void;
   setEvaluationName: (name: string) => void;
   setEvaluationStatus: (status: string) => void;
   deleteEvaluation: () => void;
   createSubmission: () => Promise<Submission | Error>;
+  deleteInvitation: (id: string) => void;
+  resetVotes: (id: string) => void;
+  setVoiceCredits: (id: string, amount: number) => void;
+  setEmail: (evalId: string, userId: string, email: number) => void;
 }
 
 export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
@@ -34,23 +37,12 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
     });
   },
 
-  // load: (evaluation_id: string) => {
-  //   if (get().fetching) {
-  //     return;
-  //   }
-
-  //   set({
-  //     fetching: false,
-  //   });
-  // },
-
   setEvaluationName: (name: string) => {
     const evaluation = get().evaluation;
 
     if (!evaluation) {
       return;
     }
-
     set({
       evaluation: {
         ...evaluation,
@@ -130,5 +122,115 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
     }
 
     return newSubmission;
+  },
+
+  deleteInvitation: (id: string) => {
+    const evaluation = get().evaluation;
+
+    if (!evaluation) {
+      return new Error("Evaluation not loaded");
+    }
+
+    set({
+      evaluation: {
+        ...evaluation,
+        invitation: evaluation.invitation.filter((i: any) => i.id !== id),
+      },
+    });
+
+    rpc.call("deleteInvitation", { id: id }).then((data) => {
+      if (data instanceof Error) {
+        console.error(`ERROR -- rpc call deleteInvitation failed`, data);
+        return;
+      }
+    });
+  },
+
+  resetVotes: (id: string) => {
+    rpc
+      .call("setResetVotes", {
+        in_evaluator_id: id,
+      })
+      .then((data) => {
+        if (data instanceof Error) {
+          console.error(`ERROR -- rpc call setResetVotes failed`, data);
+          return;
+        }
+        console.log("hello?????", data);
+      });
+  },
+
+  setVoiceCredits: (id: string, amount: number) => {
+    const evaluation = get().evaluation;
+
+    if (!evaluation) {
+      return new Error("Evaluation not loaded");
+    }
+
+    set({
+      evaluation: {
+        ...evaluation,
+        evaluator: evaluation.evaluator.map((e: any) => {
+          if (e.id === id) {
+            return {
+              ...e,
+              voice_credits: amount,
+            };
+          }
+          return e;
+        }),
+      },
+    });
+
+    rpc
+      .call("setVoiceCredits", {
+        id: id,
+        amount: amount,
+      })
+      .then((data) => {
+        if (data instanceof Error) {
+          console.error(`ERROR -- rpc call setResetVotes failed`, data);
+          return;
+        }
+      });
+  },
+  setEmail: (evalId: string, userId: string, email: number) => {
+    const evaluation = get().evaluation;
+
+    if (!evaluation) {
+      return new Error("Evaluation not loaded");
+    }
+
+    set({
+      evaluation: {
+        ...evaluation,
+        evaluator: evaluation.evaluator.map((e: any) => {
+          if (e.id === evalId) {
+            return {
+              ...e,
+              user: {
+                ...e.user,
+                preferred_email: email,
+              },
+            };
+          }
+          return e;
+        }),
+      },
+    });
+
+    console.log("eval", evaluation);
+
+    rpc
+      .call("setEmail", {
+        id: userId,
+        email: email,
+      })
+      .then((data) => {
+        if (data instanceof Error) {
+          console.error(`ERROR -- rpc call setResetVotes failed`, data);
+          return;
+        }
+      });
   },
 }));

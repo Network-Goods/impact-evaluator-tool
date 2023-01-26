@@ -15,6 +15,9 @@ import {
   setResetVotes,
   setEvaluatorSubmission,
   getStatusStore,
+  deleteInvitation,
+  setVoiceCredits,
+  setEmail,
 } from "./methods";
 
 export const MethodLookup = {
@@ -34,4 +37,7 @@ export const MethodLookup = {
   setResetVotes,
   setEvaluatorSubmission,
   getStatusStore,
+  deleteInvitation,
+  setVoiceCredits,
+  setEmail,
 };

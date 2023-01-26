@@ -1,13 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
-import Close from "public/images/svg/Close";
-import SubTitle from "src/components/shared/SubTitle";
-import SmallTitle from "src/components/shared/SmallTitle";
 import ConfirmResetModal from "./ConfirmResetModal";
 import Button from "src/components/shared/Button";
+import EvaluationSubTitle from "./EvaluationSubTitle";
+import Reset from "public/images/svg/Reset";
+import Edit from "public/images/svg/Edit";
 
 const style = {
   position: "absolute",
@@ -18,20 +18,27 @@ const style = {
 
 type EvaluatorEditModalProps = {
   handleClose: () => void;
+  handleReset: (id: string) => void;
   open: boolean;
   evaluator: any;
+  store: any;
 };
 
-const EvaluatorEditModal = ({ handleClose, open, evaluator }: EvaluatorEditModalProps) => {
+const EvaluatorEditModal = ({ handleClose, handleReset, open, evaluator, store }: EvaluatorEditModalProps) => {
+  const creditsRef = useRef<HTMLInputElement | null>(null);
+  const emailRef = useRef<HTMLInputElement | null>(null);
   const [openConfirmResetModal, setOpenConfirmResetModal] = useState(false);
-
-  const handleConfirmResetModal = () => {
-    setOpenConfirmResetModal(true);
-  };
+  const [credits, setCredits] = useState(evaluator.voice_credits);
+  const [emailState, setEmailState] = useState(evaluator.user?.preferred_email);
 
   const reset = () => {
-    console.log("reset");
+    handleReset(evaluator.id);
   };
+
+  useEffect(() => {
+    setCredits(evaluator.voice_credits);
+    setEmailState(evaluator.user?.preferred_email);
+  }, [evaluator]);
 
   return (
     <Modal
@@ -48,26 +55,52 @@ const EvaluatorEditModal = ({ handleClose, open, evaluator }: EvaluatorEditModal
       <Fade in={open}>
         <Box
           sx={style}
-          className="translate-x-[-5%] md:-translate-x-1/2 -translate-y-1/2 top-1/2 left-[10%] md:left-1/2 py-3 px-5 md:py-10 md:px-14 lg:w-[860px]"
+          className="translate-x-[-5%] md:-translate-x-1/2 -translate-y-1/2 top-1/2 left-[10%] md:left-1/2 py-3 px-5 md:py-10 md:px-14 lg:w-[450px]"
         >
-          <div className="flex justify-between items-center text-offblack">
-            <h1 className="text-xl md:text-[28px] text-blue-alt font-semibold">Edit Evaluator</h1>
-
-            <button
-              onClick={handleClose}
-              className="p-4 md:p-6 text-offblack hover:text-[#979797] transition-colors duration-200 ease-in-out transform"
-            >
-              <Close className="fill-current" />
+          <h1 className="text-xl md:text-[28px] text-blue-alt font-semibold text-center">Edit Evaluator</h1>
+          <div className="pb-10">
+            <EvaluationSubTitle small text="Github:" />
+            <p className="py-1 mb-2">@{evaluator.user?.github_handle}</p>
+            <EvaluationSubTitle small text="Email:" />
+            <div className="py-1 mb-2">
+              <div className="flex items-center justify-between">
+                <input
+                  ref={emailRef}
+                  type="text"
+                  className="appearance-none w-full focus:px-4 py-2 rounded-lg border border-transparent focus:border-gray focus:outline-none mr-4"
+                  value={emailState || ""}
+                  onChange={(e) => setEmailState(e.target.value)}
+                  onBlur={(e) => store.setEmail(evaluator.id, evaluator.user.id, e.target.value)}
+                />
+                <div>
+                  <button onClick={() => emailRef.current?.focus()} className="border border-blue rounded p-1">
+                    <Edit />
+                  </button>
+                </div>
+              </div>
+            </div>
+            <span className="font-bold">Voice Credits</span>
+            <div className="py-1">
+              <div className="flex items-center justify-between">
+                <input
+                  ref={creditsRef}
+                  type="number"
+                  className="appearance-none w-full focus:px-4 py-2 rounded-lg border border-transparent focus:border-gray focus:outline-none mr-4"
+                  value={credits || 0}
+                  onChange={(e) => setCredits(e.target.value)}
+                  onBlur={(e) => store.setVoiceCredits(evaluator.id, e.target.value)}
+                />
+                <div>
+                  <button onClick={() => creditsRef.current?.focus()} className="border border-blue rounded p-1">
+                    <Edit />
+                  </button>
+                </div>
+              </div>
+            </div>
+            <button onClick={() => setOpenConfirmResetModal(true)} className="border border-[#898888] rounded p-1">
+              <Reset className="fill-[#898888] w-3 h-3" />
             </button>
-          </div>
-          <div className="">
-            <SmallTitle text="Github" />
-            <p className="py-1">{evaluator.user?.github_handle}</p>
-            <SmallTitle text="Email" />
-            <p className="py-1">{evaluator.user?.preferred_email}</p>
-            <SubTitle text="Voice Credits" />
-            <p className="py-1">{evaluator.voice_credits}</p>
-            <button onClick={() => handleConfirmResetModal()}>Reset votes</button>
+            <span className="font-bold ml-2">Reset user's votes</span>
           </div>
           <div className="flex justify-evenly">
             <div>
@@ -75,7 +108,7 @@ const EvaluatorEditModal = ({ handleClose, open, evaluator }: EvaluatorEditModal
             </div>
             <div>
               <button
-                onClick={() => console.log("save")}
+                onClick={handleClose}
                 className="transition-colors duration-200 ease-in-out transform  outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold mx-auto border border-blue bg-blue hover:bg-blue-darkest hover:border-blue-darkest focus:bg-blue-darkest text-white text-lg px-3 py-1"
               >
                 Save

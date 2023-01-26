@@ -19,6 +19,10 @@ type ConfirmResetModalProps = {
 };
 
 const ConfirmResetModal = ({ handleClose, handleReset, open }: ConfirmResetModalProps) => {
+  const handleResetAndClose = () => {
+    handleReset();
+    handleClose();
+  };
   return (
     <Modal
       aria-labelledby="transition-modal-title"
@@ -57,7 +61,7 @@ const ConfirmResetModal = ({ handleClose, handleReset, open }: ConfirmResetModal
             </div>
             <div>
               <button
-                onClick={() => handleReset()}
+                onClick={() => handleResetAndClose()}
                 className="transition-colors duration-200 ease-in-out transform  outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold mx-auto border border-blue bg-blue hover:bg-blue-darkest hover:border-blue-darkest focus:bg-blue-darkest text-white text-lg px-3 py-1"
               >
                 Reset

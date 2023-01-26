@@ -18,6 +18,8 @@ module.exports = {
       "gray-subtitle": "#B5B5B5",
       red: "#FF0000",
       white: "#FFFFFF",
+      transparent: "transparent",
+      current: "currentColor",
     },
     screens: {
       sm: "640px",
