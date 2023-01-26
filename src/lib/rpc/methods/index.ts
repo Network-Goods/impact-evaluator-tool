@@ -17,3 +17,4 @@ export * from "./getStatusStore";
 export * from "./deleteInvitation";
 export * from "./setVoiceCredits";
 export * from "./setEmail";
+export * from "./createInvitation";

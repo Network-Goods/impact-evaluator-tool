@@ -8,14 +8,17 @@ import EvaluationSubTitle from "./EvaluationSubTitle";
 import Edit from "public/images/svg/Edit";
 import OutcomeEditModal from "./OutcomeEditModal";
 import EvaluatorEditModal from "./EvaluatorEditModal";
+import CreateInvitationModal from "./CreateInvitationModal";
 import EditTitle from "./Edit/EditTitle";
 import Delete from "public/images/svg/Delete";
+import Plus from "public/images/svg/Plus";
 
 export default function Evaluation() {
   const [openOutcomeModal, setOpenOutcomeModal] = useState(false);
   const [outcomeModalContent, setOutcomeModalContent] = useState({});
   const [openEvaluatorModal, setOpenEvaluatorModal] = useState(false);
   const [evaluatorModalContent, setEvaluatorModalContent] = useState({});
+  const [openInvitationModal, setOpenInvitationModal] = useState(false);
   const router = useRouter();
   const { evaluation_id } = router.query;
   const store = useEvaluationStore();
@@ -43,10 +46,6 @@ export default function Evaluation() {
   const handleCloseEvaluatorModal = () => {
     setOpenEvaluatorModal(false);
     setEvaluatorModalContent({});
-  };
-
-  const handleDeleteInvitation = (id: string) => {
-    store.deleteInvitation(id);
   };
 
   if (store.fetching) return <LoadingSpinner />;
@@ -86,7 +85,17 @@ export default function Evaluation() {
           <div className="pb-4">
             <EvaluationSubTitle text="Evaluators and voice credits" />
           </div>
-          <EvaluationSubTitle small text="Codes:" />
+          <div className="flex justify-between items-center">
+            <EvaluationSubTitle small text="Codes:" />
+            <div>
+              <button
+                onClick={() => setOpenInvitationModal(true)}
+                className="flex items-center justify-center border border-blue rounded w-[19px] h-5"
+              >
+                <Plus className="stroke-blue w-3 h-3" />
+              </button>
+            </div>
+          </div>
           {store.evaluation.invitation.map((invitation: any) => {
             return (
               <div className="grid md:grid-cols-2 py-1" key={invitation.id}>
@@ -97,7 +106,7 @@ export default function Evaluation() {
                   </div>
                   <div>
                     <button
-                      onClick={() => handleDeleteInvitation(invitation.id)}
+                      onClick={() => store.deleteInvitation(invitation.id)}
                       className="border border-blue rounded p-1"
                     >
                       <Delete />
@@ -160,6 +169,13 @@ export default function Evaluation() {
           store={store}
           open={openEvaluatorModal}
           handleClose={handleCloseEvaluatorModal}
+          evaluator={evaluatorModalContent}
+          handleReset={store.resetVotes}
+        />
+        <CreateInvitationModal
+          store={store}
+          open={openInvitationModal}
+          handleClose={() => setOpenInvitationModal(false)}
           evaluator={evaluatorModalContent}
           handleReset={store.resetVotes}
         />

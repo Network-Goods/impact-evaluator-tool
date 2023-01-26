@@ -14,6 +14,7 @@ export interface EvaluationStore {
   resetVotes: (id: string) => void;
   setVoiceCredits: (id: string, amount: number) => void;
   setEmail: (evalId: string, userId: string, email: number) => void;
+  createInvitation: (invitation: any) => void;
 }
 
 export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
@@ -156,7 +157,6 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
           console.error(`ERROR -- rpc call setResetVotes failed`, data);
           return;
         }
-        console.log("hello?????", data);
       });
   },
 
@@ -219,12 +219,41 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
       },
     });
 
-    console.log("eval", evaluation);
-
     rpc
       .call("setEmail", {
         id: userId,
         email: email,
+      })
+      .then((data) => {
+        if (data instanceof Error) {
+          console.error(`ERROR -- rpc call setResetVotes failed`, data);
+          return;
+        }
+      });
+  },
+
+  createInvitation: async () => {
+    const evaluation = get().evaluation;
+
+    if (!evaluation) {
+      return new Error("Evaluation not loaded");
+    }
+
+    const newInvitation = {
+      id: uuid(),
+      evaluation_id: evaluation.id,
+      code: "",
+      voice_credits: "",
+      remaining_uses: "",
+    };
+
+    // set({
+    //   submissions: [...get().submissions, newSubmission],
+    // });
+
+    rpc
+      .call("setEmail", {
+        invitation: newInvitation,
       })
       .then((data) => {
         if (data instanceof Error) {

@@ -18,6 +18,7 @@ import {
   deleteInvitation,
   setVoiceCredits,
   setEmail,
+  createInvitation,
 } from "./methods";
 
 export const MethodLookup = {
@@ -40,4 +41,5 @@ export const MethodLookup = {
   deleteInvitation,
   setVoiceCredits,
   setEmail,
+  createInvitation,
 };

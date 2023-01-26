@@ -42,7 +42,5 @@ export async function getIsUserEvaluator(
     return new Error(`DB query failed: ${error.message}`);
   }
 
-  console.log("result from, isUserEvaluator", data);
-
   return data;
 }

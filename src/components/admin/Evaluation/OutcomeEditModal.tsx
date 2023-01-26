@@ -70,7 +70,7 @@ const OutcomeEditModal = ({ handleClose, open, submission }: OutcomeEditModalPro
             </div>
             <div>
               <button
-                onClick={() => console.log("save")}
+                onClick={handleClose}
                 className="transition-colors duration-200 ease-in-out transform  outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold mx-auto border border-blue bg-blue hover:bg-blue-darkest hover:border-blue-darkest focus:bg-blue-darkest text-white text-lg px-3 py-1"
               >
                 Save
