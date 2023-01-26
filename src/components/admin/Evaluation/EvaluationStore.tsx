@@ -13,7 +13,7 @@ export interface EvaluationStore {
   deleteInvitation: (id: string) => void;
   resetVotes: (id: string) => void;
   setVoiceCredits: (id: string, amount: number) => void;
-  setEmail: (evalId: string, userId: string, email: number) => void;
+  setEmail: (evalId: string, userId: string, email: string) => void;
   createInvitation: (invitation: any) => void;
 }
 
@@ -194,7 +194,7 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
         }
       });
   },
-  setEmail: (evalId: string, userId: string, email: number) => {
+  setEmail: (evalId: string, userId: string, email: string) => {
     const evaluation = get().evaluation;
 
     if (!evaluation) {
@@ -232,7 +232,7 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
       });
   },
 
-  createInvitation: async () => {
+  createInvitation: async (inputs: any) => {
     const evaluation = get().evaluation;
 
     if (!evaluation) {
@@ -240,19 +240,20 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
     }
 
     const newInvitation = {
+      ...inputs,
       id: uuid(),
       evaluation_id: evaluation.id,
-      code: "",
-      voice_credits: "",
-      remaining_uses: "",
     };
 
-    // set({
-    //   submissions: [...get().submissions, newSubmission],
-    // });
+    set({
+      evaluation: {
+        ...evaluation,
+        invitation: [...evaluation.invitation, newInvitation],
+      },
+    });
 
     rpc
-      .call("setEmail", {
+      .call("createInvitation", {
         invitation: newInvitation,
       })
       .then((data) => {

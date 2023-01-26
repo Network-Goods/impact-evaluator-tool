@@ -3,11 +3,8 @@ import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
-import ConfirmResetModal from "./ConfirmResetModal";
 import Button from "src/components/shared/Button";
 import EvaluationSubTitle from "./EvaluationSubTitle";
-import Reset from "public/images/svg/Reset";
-import Edit from "public/images/svg/Edit";
 
 const style = {
   position: "absolute",
@@ -25,20 +22,19 @@ type CreateInvitationModalProps = {
 };
 
 const CreateInvitationModal = ({ handleClose, handleReset, open, evaluator, store }: CreateInvitationModalProps) => {
-  const creditsRef = useRef<HTMLInputElement | null>(null);
-  const emailRef = useRef<HTMLInputElement | null>(null);
-  const [openConfirmResetModal, setOpenConfirmResetModal] = useState(false);
-  const [credits, setCredits] = useState(evaluator.voice_credits);
-  const [emailState, setEmailState] = useState(evaluator.user?.preferred_email);
+  const [inputs, setInputs] = useState<any>({});
 
-  const reset = () => {
-    handleReset(evaluator.id);
+  const handleChange = (event: any) => {
+    const name = event.target.name;
+    const value = event.target.value;
+    setInputs((values: any) => ({ ...values, [name]: value }));
   };
 
-  useEffect(() => {
-    setCredits(evaluator.voice_credits);
-    setEmailState(evaluator.user?.preferred_email);
-  }, [evaluator]);
+  const handleSubmit = () => {
+    store.createInvitation(inputs);
+    handleClose();
+    setInputs({});
+  };
 
   return (
     <Modal
@@ -65,21 +61,31 @@ const CreateInvitationModal = ({ handleClose, handleReset, open, evaluator, stor
                 <EvaluationSubTitle small text="Round code" />
                 <input
                   type="text"
+                  name="code"
                   className="appearance-none w-full px-4 py-2 rounded-lg border border-gray focus:outline-none"
+                  placeholder="ExampleCode123"
+                  value={inputs.code || ""}
+                  onChange={handleChange}
                 />
               </div>
-              <div>
+              <div className="mr-4 lg:mr-0">
                 <EvaluationSubTitle small text="Voice Credits" />
                 <input
                   type="number"
+                  name="voice_credits"
                   className="appearance-none w-full px-4 py-2 rounded-lg border border-gray focus:outline-none"
+                  value={inputs.voice_credits || 0}
+                  onChange={handleChange}
                 />
               </div>
               <div>
                 <EvaluationSubTitle small text="Code Limit" />
                 <input
                   type="number"
+                  name="remaining_uses"
                   className="appearance-none w-full px-4 py-2 rounded-lg border border-gray focus:outline-none"
+                  value={inputs.remaining_uses || 0}
+                  onChange={handleChange}
                 />
               </div>
             </div>
@@ -90,18 +96,13 @@ const CreateInvitationModal = ({ handleClose, handleReset, open, evaluator, stor
             </div>
             <div>
               <button
-                onClick={handleClose}
+                onClick={() => handleSubmit()}
                 className="transition-colors duration-200 ease-in-out transform  outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold mx-auto border border-blue bg-blue hover:bg-blue-darkest hover:border-blue-darkest focus:bg-blue-darkest text-white text-lg px-3 py-1"
               >
-                Save
+                Create
               </button>
             </div>
           </div>
-          <ConfirmResetModal
-            open={openConfirmResetModal}
-            handleClose={() => setOpenConfirmResetModal(false)}
-            handleReset={reset}
-          />
         </Box>
       </Fade>
     </Modal>
