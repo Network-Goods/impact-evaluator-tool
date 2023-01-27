@@ -6,8 +6,8 @@ import LoadingSpinner from "src/components/shared/LoadingSpinner";
 import { useEvaluationStore } from "./EvaluationStore";
 import EvaluationSubTitle from "./EvaluationSubTitle";
 import Edit from "public/images/svg/Edit";
-import OutcomeEditModal from "./OutcomeEditModal";
-import EvaluatorEditModal from "./EvaluatorEditModal";
+import OutcomeModal from "./OutcomeModal";
+import EvaluatorModal from "./EvaluatorModal";
 import CreateInvitationModal from "./CreateInvitationModal";
 import EditTitle from "./Edit/EditTitle";
 import Delete from "public/images/svg/Delete";
@@ -31,16 +31,16 @@ export default function Evaluation() {
     console.log("store", store);
   }, [evaluation_id, store.fetching]);
 
-  const handleOpenOutcomeModal = (submission: any) => {
-    setOutcomeModalContent(submission);
+  const handleOpenOutcomeModal = (submission?: any) => {
+    setOutcomeModalContent(submission ? submission : null);
     setOpenOutcomeModal(true);
   };
   const handleCloseOutcomeModal = () => {
     setOpenOutcomeModal(false);
     setOutcomeModalContent({});
   };
-  const handleOpenEvaluatorModal = (evaluator: any) => {
-    setEvaluatorModalContent(evaluator);
+  const handleOpenEvaluatorModal = (evaluator?: any) => {
+    setEvaluatorModalContent(evaluator ? evaluator : null);
     setOpenEvaluatorModal(true);
   };
   const handleCloseEvaluatorModal = () => {
@@ -55,7 +55,7 @@ export default function Evaluation() {
     <>
       <div className="flex items-center pb-10">
         <div className="hidden md:flex mr-6">
-          <Link href="/">
+          <Link href="/admin">
             <div className="rounded-lg bg-gray-light h-12 w-12 flex justify-center items-center">
               <LeftArrow />
             </div>
@@ -116,7 +116,18 @@ export default function Evaluation() {
               </div>
             );
           })}
-          <EvaluationSubTitle small text="Evaluators:" />
+          <div className="flex justify-between items-center">
+            <EvaluationSubTitle small text="Evaluators:" />
+
+            <div>
+              <button
+                onClick={() => handleOpenEvaluatorModal()}
+                className="flex items-center justify-center border border-blue rounded w-[19px] h-5"
+              >
+                <Plus className="stroke-blue w-3 h-3" />
+              </button>
+            </div>
+          </div>
           {store.evaluation.evaluator.map((evaluator: any) => {
             return (
               <div className="grid md:grid-cols-3 py-1" key={evaluator.id}>
@@ -139,7 +150,18 @@ export default function Evaluation() {
             );
           })}
           <hr className="my-10 border-gray" />
-          <EvaluationSubTitle text="Outcomes" />
+          <div className="flex justify-between items-center">
+            <EvaluationSubTitle text="Outcomes" />
+            <div>
+              <button
+                onClick={() => handleOpenOutcomeModal()}
+                className="flex items-center justify-center border border-blue rounded w-[19px] h-5"
+              >
+                <Plus className="stroke-blue w-3 h-3" />
+              </button>
+            </div>
+          </div>
+
           <ol className="list-decimal ml-5">
             {store.evaluation.submission.map((submission: any) => {
               return (
@@ -160,12 +182,8 @@ export default function Evaluation() {
             })}
           </ol>
         </div>
-        <OutcomeEditModal
-          open={openOutcomeModal}
-          handleClose={handleCloseOutcomeModal}
-          submission={outcomeModalContent}
-        />
-        <EvaluatorEditModal
+        <OutcomeModal open={openOutcomeModal} handleClose={handleCloseOutcomeModal} submission={outcomeModalContent} />
+        <EvaluatorModal
           store={store}
           open={openEvaluatorModal}
           handleClose={handleCloseEvaluatorModal}

@@ -28,7 +28,7 @@ const CreateEvaluationButton = () => {
     <div>
       <Button
         text="Create a Round"
-        icon={<Add className="mb-1 fill-white" />}
+        icon={<Add className="fill-white" />}
         onClick={() => console.log("Create a Round")}
         disabled
       />

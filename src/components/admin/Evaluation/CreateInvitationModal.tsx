@@ -48,63 +48,68 @@ const CreateInvitationModal = ({ handleClose, handleReset, open, evaluator, stor
         timeout: 500,
       }}
     >
-      <Fade in={open}>
-        <Box
-          sx={style}
-          className="translate-x-[-5%] md:-translate-x-1/2 -translate-y-1/2 top-1/2 left-[10%] md:left-1/2 py-3 px-5 md:py-10 md:px-14 lg:w-[750px]"
-        >
-          <h1 className="text-xl md:text-[28px] text-blue-alt font-semibold text-center">Create Code</h1>
-          <div className="pb-10">
-            <h4 className="font-bold pt-5 pb-3">Create unique code for Impact Evaluator round.</h4>
-            <div className="grid lg:grid-cols-6 lg:gap-[18px]">
-              <div className="col-span-4">
-                <EvaluationSubTitle small text="Round code" />
-                <input
-                  type="text"
-                  name="code"
-                  className="appearance-none w-full px-4 py-2 rounded-lg border border-gray focus:outline-none"
-                  placeholder="ExampleCode123"
-                  value={inputs.code || ""}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="mr-4 lg:mr-0">
-                <EvaluationSubTitle small text="Voice Credits" />
-                <input
-                  type="number"
-                  name="voice_credits"
-                  className="appearance-none w-full px-4 py-2 rounded-lg border border-gray focus:outline-none"
-                  value={inputs.voice_credits || 0}
-                  onChange={handleChange}
-                />
-              </div>
-              <div>
-                <EvaluationSubTitle small text="Code Limit" />
-                <input
-                  type="number"
-                  name="remaining_uses"
-                  className="appearance-none w-full px-4 py-2 rounded-lg border border-gray focus:outline-none"
-                  value={inputs.remaining_uses || 0}
-                  onChange={handleChange}
-                />
-              </div>
+      <Box
+        sx={style}
+        className="translate-x-[-5%] md:-translate-x-1/2 -translate-y-1/2 top-1/2 left-[10%] md:left-1/2 py-3 px-5 md:py-10 md:px-14 lg:w-[750px]"
+      >
+        <h1 className="text-xl md:text-[28px] text-blue-alt font-semibold text-center">Create Code</h1>
+        <div className="pb-10">
+          <h4 className="font-bold pt-5 pb-3">Create unique code for Impact Evaluator round.</h4>
+          <div className="grid lg:grid-cols-6 lg:gap-[18px]">
+            <div className="col-span-4">
+              <EvaluationSubTitle small text="Round code" />
+              <input
+                type="text"
+                name="code"
+                className="appearance-none w-full px-4 py-2 rounded-lg border border-gray focus:outline-none"
+                placeholder="ExampleCode123"
+                value={inputs.code || ""}
+                onChange={handleChange}
+              />
             </div>
-          </div>
-          <div className="flex justify-evenly">
-            <div>
-              <Button small alt text="Cancel" onClick={handleClose} />
+            <div className="mr-4 lg:mr-0">
+              <EvaluationSubTitle small text="Voice Credits" />
+              <input
+                type="number"
+                name="voice_credits"
+                className="appearance-none w-full px-4 py-2 rounded-lg border border-gray focus:outline-none"
+                value={inputs.voice_credits || 0}
+                onChange={handleChange}
+              />
             </div>
             <div>
-              <button
-                onClick={() => handleSubmit()}
-                className="transition-colors duration-200 ease-in-out transform  outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold mx-auto border border-blue bg-blue hover:bg-blue-darkest hover:border-blue-darkest focus:bg-blue-darkest text-white text-lg px-3 py-1"
-              >
-                Create
-              </button>
+              <EvaluationSubTitle small text="Code Limit" />
+              <input
+                type="number"
+                name="remaining_uses"
+                className="appearance-none w-full px-4 py-2 rounded-lg border border-gray focus:outline-none"
+                value={inputs.remaining_uses || 0}
+                onChange={handleChange}
+              />
             </div>
           </div>
-        </Box>
-      </Fade>
+        </div>
+        <div className="flex justify-evenly">
+          <div>
+            <Button small alt text="Cancel" onClick={handleClose} />
+          </div>
+          <div>
+            <button
+              onClick={() => handleSubmit()}
+              className={`transition-colors duration-200 ease-in-out transform  outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold mx-auto border border-blue bg-blue text-white text-lg px-3 py-1
+                ${
+                  inputs.code && inputs.voice_credits && inputs.remaining_uses
+                    ? "cursor-pointer hover:bg-blue-darkest hover:border-blue-darkest"
+                    : "opacity-50 cursor-not-allowed"
+                }
+                `}
+              disabled={inputs.code && inputs.voice_credits && inputs.remaining_uses ? false : true}
+            >
+              Create
+            </button>
+          </div>
+        </div>
+      </Box>
     </Modal>
   );
 };
