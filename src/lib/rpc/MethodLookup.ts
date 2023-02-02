@@ -19,6 +19,9 @@ import {
   setVoiceCredits,
   setEmail,
   createInvitation,
+  setSubmissionTitle,
+  setLink,
+  setSubmissionDescription,
 } from "./methods";
 
 export const MethodLookup = {
@@ -42,4 +45,7 @@ export const MethodLookup = {
   setVoiceCredits,
   setEmail,
   createInvitation,
+  setSubmissionTitle,
+  setLink,
+  setSubmissionDescription,
 };

@@ -1,10 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
-import Fade from "@mui/material/Fade";
 import Close from "public/images/svg/Close";
-import SubTitle from "src/components/shared/SubTitle";
 import Button from "src/components/shared/Button";
 import Add from "public/images/svg/Add";
 import Delete from "public/images/svg/Delete";
@@ -20,20 +18,110 @@ const style = {
 
 type OutcomeModalProps = {
   handleClose: () => void;
+  handleDelete: void;
   open: boolean;
   submission?: any;
+  store: any;
 };
 
-const OutcomeModal = ({ handleClose, open, submission }: OutcomeModalProps) => {
+const OutcomeModal = ({ handleClose, handleDelete, open, submission, store }: OutcomeModalProps) => {
+  const nameRef = useRef<HTMLInputElement | null>(null);
+  const summaryRef = useRef<HTMLTextAreaElement | null>(null);
+  const descriptionRef = useRef<HTMLTextAreaElement | null>(null);
+  const specsRef = useRef<HTMLTextAreaElement | null>(null);
   const [inputs, setInputs] = useState<any>({});
   const [openLinkModal, setOpenLinkModal] = useState(false);
+  const [linkModalContent, setLinkModalContent] = useState({});
+  const [titleState, setTitleState] = useState(
+    submission && store.evaluation.submission.find((e: any) => e.id === submission.id)
+      ? store.evaluation.submission.find((e: any) => e.id === submission.id).name
+      : "",
+  );
+  const [links, setLinks] = useState<any>(
+    submission && store.evaluation.submission.find((e: any) => e.id === submission.id)
+      ? store.evaluation.submission.find((e: any) => e.id === submission.id).links
+      : null,
+  );
+  const [summary, setSummary] = useState<any>(
+    submission && store.evaluation.submission.find((e: any) => e.id === submission.id)
+      ? store.evaluation.submission.find((e: any) => e.id === submission.id).description.summary
+      : "",
+  );
+  const [description, setDescription] = useState<any>(
+    submission && store.evaluation.submission.find((e: any) => e.id === submission.id)
+      ? store.evaluation.submission.find((e: any) => e.id === submission.id).description.description
+      : "",
+  );
+  const [specs, setSpecs] = useState<any>(
+    submission && store.evaluation.submission.find((e: any) => e.id === submission.id)
+      ? store.evaluation.submission.find((e: any) => e.id === submission.id).description.specs
+      : "",
+  );
 
   const handleChange = (event: any) => {
     const name = event.target.name;
     const value = event.target.value;
     setInputs((values: any) => ({ ...values, [name]: value }));
-    console.log("inputs", inputs);
   };
+
+  const handleBlurTitle = (value: any) => {
+    if (submission) {
+      store.setSubmissionTitle(submission.id, value);
+    }
+  };
+
+  const handleBlurDescription = (type: string, value: any) => {
+    if (submission) {
+      store.setSubmissionDescription(type, submission.id, value);
+    }
+  };
+
+  const handleOpenLinkModal = (link?: any) => {
+    setLinkModalContent(link ? link : null);
+    setOpenLinkModal(true);
+  };
+  const handleCloseLinkModal = (link?: any) => {
+    setOpenLinkModal(false);
+    setLinkModalContent({});
+  };
+
+  // const handleSubmit = () => {
+  //   store.createEvaluator(inputs);
+  //   handleClose();
+  //   setInputs({});
+  // };
+
+  const handleDeleteSubmission = () => {
+    handleDelete();
+    handleClose();
+    setInputs({});
+  };
+
+  useEffect(() => {
+    if (submission) {
+      setLinks(
+        store.evaluation.submission.find((e: any) => e.id === submission.id) &&
+          store.evaluation.submission.find((e: any) => e.id === submission.id).links,
+      );
+      setTitleState(
+        store.evaluation.submission.find((e: any) => e.id === submission.id) &&
+          store.evaluation.submission.find((e: any) => e.id === submission.id).name,
+      );
+      setSummary(
+        store.evaluation.submission.find((e: any) => e.id === submission.id) &&
+          store.evaluation.submission.find((e: any) => e.id === submission.id).description.summary,
+      );
+      setDescription(
+        store.evaluation.submission.find((e: any) => e.id === submission.id) &&
+          store.evaluation.submission.find((e: any) => e.id === submission.id).description.description,
+      );
+      setSpecs(
+        store.evaluation.submission.find((e: any) => e.id === submission.id) &&
+          store.evaluation.submission.find((e: any) => e.id === submission.id).description.specs,
+      );
+    }
+  }, [store, submission]);
+
   return (
     <Modal
       aria-labelledby="transition-modal-title"
@@ -50,7 +138,9 @@ const OutcomeModal = ({ handleClose, open, submission }: OutcomeModalProps) => {
         sx={style}
         className="translate-x-[-5%] md:-translate-x-1/2 -translate-y-1/2 top-1/2 left-[10%] md:left-1/2 py-3 px-5 md:py-10 md:px-14 lg:w-[1166px] text-offblack"
       >
-        <h1 className="text-center text-xl md:text-[28px] text-blue-alt font-semibold">Edit Outcome</h1>
+        <h1 className="text-center text-xl md:text-[28px] text-blue-alt font-semibold">
+          {submission ? "Edit" : "Create"} Outcome
+        </h1>
 
         <button
           onClick={handleClose}
@@ -58,105 +148,134 @@ const OutcomeModal = ({ handleClose, open, submission }: OutcomeModalProps) => {
         >
           <Close className="fill-current" />
         </button>
-        <div className="flex pt-8">
+        <div className="flex py-8">
           <div className="flex-1 md:text-lg">
             <div className="flex items-center pb-7">
               <div className="font-bold py-2 px-4 border border-gray border-r-0 rounded-l-lg bg-blue bg-opacity-5">
                 Title
               </div>
               <input
+                ref={nameRef}
                 type="text"
                 name="name"
                 className="appearance-none w-full px-4 py-2 rounded-r-lg border border-gray focus:outline-none"
                 placeholder="Example Title 1"
-                value={submission ? submission.name : inputs.name || ""}
-                onChange={handleChange}
+                value={submission ? titleState || "" : inputs.name || ""}
+                onChange={submission ? (e) => setTitleState(e.target.value) : handleChange}
+                onBlur={(e) => handleBlurTitle(e.target.value)}
               />
             </div>
             <p className="font-bold pb-1">Project Summary</p>
             <textarea
+              ref={summaryRef}
               className="w-full min-h-[112px] px-8 py-3 rounded-lg border border-gray focus:outline-none"
               placeholder="XYZ is..."
               name="summary"
-              value={submission ? submission.description?.summary : inputs.summary || ""}
-              onChange={handleChange}
+              value={submission ? summary || "" : inputs.summary || ""}
+              onChange={submission ? (e) => setSummary(e.target.value) : handleChange}
+              onBlur={(e) => handleBlurDescription("summary", e.target.value)}
             />
             <p className="font-bold pb-1">Progress Description</p>
 
             <textarea
+              ref={descriptionRef}
               className="w-full min-h-[112px] px-8 py-3 rounded-lg border border-gray focus:outline-none"
               placeholder="XYZ is..."
               name="description"
-              value={submission ? submission.description?.description : inputs.description || ""}
-              onChange={handleChange}
+              value={submission ? description || "" : inputs.description || ""}
+              onChange={submission ? (e) => setDescription(e.target.value) : handleChange}
+              onBlur={(e) => handleBlurDescription("description", e.target.value)}
             />
             <p className="font-bold pb-1">FVM Tech Specs</p>
             <textarea
+              ref={specsRef}
               className="w-full min-h-[112px] px-8 py-3 rounded-lg border border-gray focus:outline-none"
               placeholder="XYZ is..."
               name="specs"
-              value={submission ? submission.description?.specs : inputs.specs || ""}
-              onChange={handleChange}
+              value={submission ? specs || "" : inputs.specs || ""}
+              onChange={submission ? (e) => setSpecs(e.target.value) : handleChange}
+              onBlur={(e) => handleBlurDescription("specs", e.target.value)}
             />
           </div>
-          <div className="flex flex-col justify-between ml-8">
+          <div className="flex flex-col justify-between ml-8 lg:min-w-[240px]">
             <div>
-              <div className="flex pb-7">
-                <Button
-                  text="Add Link"
-                  secondary
-                  icon={<Add className="fill-current" />}
-                  onClick={() => console.log("hello")}
-                />
-
-                <div>
-                  <button className="bg-blue bg-opacity-5 p-4  rounded-lg ml-7">
-                    <Delete className="w-4 h-6" />
-                  </button>
-                </div>
-              </div>
-              <p className="font-bold pb-1">Links</p>
-              <button
-                className="flex items-center justify-center px-3 py-1 border border-[#dbdbdb] rounded-lg"
-                onClick={() => setOpenLinkModal(true)}
-              >
-                <span className="mr-3">
-                  <Edit className="w-3 h-3" />
-                </span>
-                <span>Github</span>
-              </button>
-              <p className="py-1">Github: {submission.github_link}</p>
-              <button
-                className="flex items-center justify-center px-3 py-1 border border-[#dbdbdb] rounded-lg"
-                onClick={() => setOpenLinkModal(true)}
-              >
-                <span className="mr-3">
-                  <Edit className="w-3 h-3" />
-                </span>
-                <span>Website</span>
-              </button>
-              {submission.website_link ? (
-                <p className="py-1">Website: {submission.website_link}</p>
-              ) : (
-                <p className="py-1">Website: N/A</p>
-              )}
-            </div>
-            <div className="flex justify-evenly">
-              <div>
-                <Button small alt text="Cancel" onClick={handleClose} />
-              </div>
-              <div>
+              <div className="pb-7">
                 <button
-                  onClick={handleClose}
-                  className="transition-colors duration-200 ease-in-out transform  outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold mx-auto border border-blue bg-blue hover:bg-blue-darkest hover:border-blue-darkest focus:bg-blue-darkest text-white text-lg px-3 py-1"
+                  className="transition-colors duration-200 ease-in-out transform  outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold border border-blue hover:bg-white focus:bg-white text-blue text-lg px-4 py-2"
+                  onClick={() => handleOpenLinkModal()}
                 >
-                  Save
+                  <span className="mr-3">
+                    <Add className="fill-current" />
+                  </span>
+
+                  <span>Add Link</span>
                 </button>
               </div>
+              <p className="font-bold pb-1">Links</p>
+              <div className="py-1">
+                <button
+                  className="flex items-center justify-center px-3 py-1 border border-[#dbdbdb] rounded-lg"
+                  onClick={() => handleOpenLinkModal(submission.github_link)}
+                >
+                  <span className="mr-3">
+                    <Edit className="w-3 h-3" />
+                  </span>
+                  <span>Github</span>
+                </button>
+              </div>
+
+              {links &&
+                Object.entries(links).map((link, idx) => {
+                  return (
+                    <div className="flex justify-between py-1" key={idx}>
+                      <button
+                        className="flex items-center justify-center px-3 py-1 border border-[#dbdbdb] rounded-lg"
+                        onClick={() => handleOpenLinkModal(link)}
+                      >
+                        <span className="mr-3">
+                          <Edit className="w-3 h-3" />
+                        </span>
+                        <span>{link[0]}</span>
+                      </button>
+                      <div>
+                        <button
+                          onClick={() => store.deleteSubmissionLink(link[0], submission.id)}
+                          className="bg-blue bg-opacity-5 px-3 py-[6.5px] rounded-lg"
+                        >
+                          <Delete className="w-3 h-5" />
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
             </div>
           </div>
         </div>
-        <SetLinkModal open={openLinkModal} handleClose={() => setOpenLinkModal(false)} />
+        <div className="flex justify-between">
+          <div>
+            <Button small secondary text="Delete" onClick={() => handleDeleteSubmission()} />
+          </div>
+          <div className="flex">
+            <div>
+              <Button small alt text="Cancel" onClick={handleClose} />
+            </div>
+            <div className="ml-4">
+              <button
+                onClick={handleClose}
+                className="transition-colors duration-200 ease-in-out transform  outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold mx-auto border border-blue bg-blue hover:bg-blue-darkest hover:border-blue-darkest focus:bg-blue-darkest text-white text-lg px-3 py-1"
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
+        <SetLinkModal
+          store={store}
+          submission={submission}
+          open={openLinkModal}
+          link={linkModalContent}
+          handleClose={() => handleCloseLinkModal()}
+        />
       </Box>
     </Modal>
   );

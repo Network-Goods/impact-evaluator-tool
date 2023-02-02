@@ -116,18 +116,8 @@ export default function Evaluation() {
               </div>
             );
           })}
-          <div className="flex justify-between items-center">
-            <EvaluationSubTitle small text="Evaluators:" />
+          <EvaluationSubTitle small text="Evaluators:" />
 
-            <div>
-              <button
-                onClick={() => handleOpenEvaluatorModal()}
-                className="flex items-center justify-center border border-blue rounded w-[19px] h-5"
-              >
-                <Plus className="stroke-blue w-3 h-3" />
-              </button>
-            </div>
-          </div>
           {store.evaluation.evaluator.map((evaluator: any) => {
             return (
               <div className="grid md:grid-cols-3 py-1" key={evaluator.id}>
@@ -182,7 +172,13 @@ export default function Evaluation() {
             })}
           </ol>
         </div>
-        <OutcomeModal open={openOutcomeModal} handleClose={handleCloseOutcomeModal} submission={outcomeModalContent} />
+        <OutcomeModal
+          store={store}
+          open={openOutcomeModal}
+          handleClose={handleCloseOutcomeModal}
+          handleDelete={handleDeleteSubmission}
+          submission={outcomeModalContent}
+        />
         <EvaluatorModal
           store={store}
           open={openEvaluatorModal}

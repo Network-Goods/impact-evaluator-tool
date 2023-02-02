@@ -16,11 +16,43 @@ const style = {
 type SetLinkModalProps = {
   handleClose: () => void;
   open: boolean;
-  // evaluator: any;
-  // store: any;
+  submission: any;
+  link?: any;
+  store: any;
 };
 
-const SetLinkModal = ({ handleClose, open }: SetLinkModalProps) => {
+const SetLinkModal = ({ handleClose, link, submission, open, store }: SetLinkModalProps) => {
+  const titleRef = useRef<HTMLInputElement | null>(null);
+  const linkRef = useRef<HTMLInputElement | null>(null);
+  const [inputs, setInputs] = useState<any>({});
+  const [titleState, setTitleState] = useState(link ? link[0] : "");
+  const [linkState, setLinkState] = useState(link ? link[1] : "");
+
+  const handleChange = (event: any) => {
+    const name = event.target.name;
+    const value = event.target.value;
+    setInputs((values: any) => ({ ...values, [name]: value }));
+  };
+
+  const handleBlurTitle = (value: any) => {
+    if (link) {
+      store.setSubmissionLinkTitle(link[0], submission.id, value);
+    }
+  };
+
+  const handleBlurLink = (value: any) => {
+    if (link) {
+      store.setSubmissionLink(link[0], submission.id, value);
+    }
+  };
+
+  useEffect(() => {
+    if (link) {
+      setTitleState(link[0]);
+      setLinkState(link[1]);
+    }
+  }, [link]);
+
   return (
     <Modal
       aria-labelledby="transition-modal-title"
@@ -38,7 +70,7 @@ const SetLinkModal = ({ handleClose, open }: SetLinkModalProps) => {
         className="translate-x-[-5%] md:-translate-x-1/2 -translate-y-1/2 top-1/2 left-[10%] md:left-1/2 py-3 px-5 md:py-10 md:px-14 lg:w-[640px]"
       >
         <div className="flex justify-between items-center text-offblack">
-          <h1 className="text-[28px] text-blue-alt font-semibold">Add link</h1>
+          <h1 className="text-[28px] text-blue-alt font-semibold">{link ? "Edit" : "Add"} link</h1>
 
           <button
             onClick={handleClose}
@@ -50,22 +82,30 @@ const SetLinkModal = ({ handleClose, open }: SetLinkModalProps) => {
 
         <div className="pt-5">
           <p className="font-bold pb-1">Title</p>
-          <input
-            type="text"
-            name="code"
-            className="appearance-none w-full px-4 py-2 rounded-lg border border-gray focus:outline-none"
-            placeholder="ExampleCode123"
-            // value={inputs.code || ""}
-            // onChange={handleChange}
-          />
+          {typeof link === "string" ? (
+            "Github"
+          ) : (
+            <input
+              ref={titleRef}
+              type="text"
+              name="title"
+              className="appearance-none w-full px-4 py-2 rounded-lg border border-gray focus:outline-none"
+              placeholder="ExampleCode123"
+              value={link ? titleState || "" : inputs.title || ""}
+              onChange={link ? (e) => setTitleState(e.target.value) : handleChange}
+              onBlur={(e) => handleBlurTitle(e.target.value)}
+            />
+          )}
           <p className="font-bold pt-7 pb-1">Link</p>
           <input
+            ref={linkRef}
             type="text"
-            name="code"
+            name="link"
             className="appearance-none w-full px-4 py-2 rounded-lg border border-gray focus:outline-none"
             placeholder="ExampleCode123"
-            // value={inputs.code || ""}
-            // onChange={handleChange}
+            value={link ? linkState || "" : inputs.link || ""}
+            onChange={link ? (e) => setLinkState(e.target.value) : handleChange}
+            onBlur={(e) => handleBlurLink(e.target.value)}
           />
         </div>
         <hr className="my-6 border-[#f0f0f0]" />

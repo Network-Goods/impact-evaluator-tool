@@ -18,3 +18,6 @@ export * from "./deleteInvitation";
 export * from "./setVoiceCredits";
 export * from "./setEmail";
 export * from "./createInvitation";
+export * from "./setLink";
+export * from "./setSubmissionTitle";
+export * from "./setSubmissionDescription";

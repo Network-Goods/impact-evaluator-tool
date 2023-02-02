@@ -16,6 +16,12 @@ export interface EvaluationStore {
   setEmail: (evalId: string, userId: string, email: string) => void;
   createInvitation: (invitation: any) => void;
   createEvaluator: (invitation: any) => void;
+  setSubmissionTitle: (id: string, title: string) => void;
+  setSubmissionDescription: (title: string, id: string, link: string) => void;
+  setSubmissionLinkTitle: (oldTitle: string, id: string, newTitle: string) => void;
+  setSubmissionLink: (title: string, id: string, link: string) => void;
+  deleteSubmissionLink: (title: string, id: string) => void;
+  deleteSubmission: (id: string) => void;
 }
 
 export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
@@ -265,25 +271,21 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
       });
   },
   createEvaluator: async (inputs: any) => {
-    const evaluation = get().evaluation;
-
-    if (!evaluation) {
-      return new Error("Evaluation not loaded");
-    }
-
-    const newEvaluator = {
-      ...inputs,
-      id: uuid(),
-      evaluation_id: evaluation.id,
-    };
-
-    set({
-      evaluation: {
-        ...evaluation,
-        evaluator: [...evaluation.evaluator, newEvaluator],
-      },
-    });
-
+    // const evaluation = get().evaluation;
+    // if (!evaluation) {
+    //   return new Error("Evaluation not loaded");
+    // }
+    // const newEvaluator = {
+    //   ...inputs,
+    //   id: uuid(),
+    //   evaluation_id: evaluation.id,
+    // };
+    // set({
+    //   evaluation: {
+    //     ...evaluation,
+    //     evaluator: [...evaluation.evaluator, newEvaluator],
+    //   },
+    // });
     // rpc
     //   .call("createEvaluator", {
     //     evaluator: newEvaluator,
@@ -294,5 +296,203 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
     //       return;
     //     }
     //   });
+  },
+  setSubmissionTitle: (id: string, title: string) => {
+    const evaluation = get().evaluation;
+
+    if (!evaluation) {
+      return new Error("Evaluation not loaded");
+    }
+
+    set({
+      evaluation: {
+        ...evaluation,
+        submission: evaluation.submission.map((e: any) => {
+          if (e.id === id) {
+            return {
+              ...e,
+              name: title,
+            };
+          }
+          return e;
+        }),
+      },
+    });
+
+    rpc
+      .call("setSubmissionTitle", {
+        id: id,
+        title: title,
+      })
+      .then((data) => {
+        if (data instanceof Error) {
+          console.error(`ERROR -- rpc call setResetVotes failed`, data);
+          return;
+        }
+      });
+  },
+  setSubmissionDescription: (type: string, id: string, text: string) => {
+    const evaluation = get().evaluation;
+
+    if (!evaluation) {
+      return;
+    }
+    const oldObj = evaluation.submission.find((e: any) => e.id === id).description;
+    const newObj = {
+      ...oldObj,
+      [type]: text,
+    };
+
+    set({
+      evaluation: {
+        ...evaluation,
+        submission: evaluation.submission.map((e: any) => {
+          if (e.id === id) {
+            return {
+              ...e,
+              description: newObj,
+            };
+          }
+          return e;
+        }),
+      },
+    });
+
+    rpc.call("setSubmissionDescription", { newObj: newObj, id: id }).then((data) => {
+      if (data instanceof Error) {
+        console.error(`ERROR -- rpc call setEvaluationName failed`, data);
+        return;
+      }
+    });
+  },
+  setSubmissionLinkTitle: (oldTitle: string, id: string, newTitle: string) => {
+    const evaluation = get().evaluation;
+
+    if (!evaluation) {
+      return;
+    }
+
+    const oldObj = evaluation.submission.find((e: any) => e.id === id).links;
+    const newObj = Object.keys(oldObj).reduce((obj: any, key: any) => {
+      if (key === oldTitle) {
+        obj[newTitle] = oldObj[key];
+      } else {
+        obj[key] = oldObj[key];
+      }
+      return obj;
+    }, {});
+
+    set({
+      evaluation: {
+        ...evaluation,
+        submission: evaluation.submission.map((e: any) => {
+          if (e.id === id) {
+            return {
+              ...e,
+              links: newObj,
+            };
+          }
+          return e;
+        }),
+      },
+    });
+
+    rpc.call("setLink", { newObj: newObj, id: id }).then((data) => {
+      if (data instanceof Error) {
+        console.error(`ERROR -- rpc call setEvaluationName failed`, data);
+        return;
+      }
+    });
+  },
+  setSubmissionLink: (title: string, id: string, link: string) => {
+    const evaluation = get().evaluation;
+
+    if (!evaluation) {
+      return;
+    }
+    const oldObj = evaluation.submission.find((e: any) => e.id === id).links;
+
+    const newObj = {
+      ...oldObj,
+      [title]: link,
+    };
+    set({
+      evaluation: {
+        ...evaluation,
+        submission: evaluation.submission.map((e: any) => {
+          if (e.id === id) {
+            return {
+              ...e,
+              links: newObj,
+            };
+          }
+          return e;
+        }),
+      },
+    });
+
+    rpc.call("setLink", { newObj: newObj, id: id }).then((data) => {
+      if (data instanceof Error) {
+        console.error(`ERROR -- rpc call setEvaluationName failed`, data);
+        return;
+      }
+    });
+  },
+  deleteSubmissionLink: (title: string, id: string) => {
+    const evaluation = get().evaluation;
+
+    if (!evaluation) {
+      return;
+    }
+    const oldObj = evaluation.submission.find((e: any) => e.id === id).links;
+
+    const newObj = Object.keys(oldObj).reduce((obj: any, key: any) => {
+      if (key !== title) {
+        obj[key] = oldObj[key];
+      }
+      return obj;
+    }, {});
+    set({
+      evaluation: {
+        ...evaluation,
+        submission: evaluation.submission.map((e: any) => {
+          if (e.id === id) {
+            return {
+              ...e,
+              links: newObj,
+            };
+          }
+          return e;
+        }),
+      },
+    });
+
+    rpc.call("setLink", { newObj: newObj, id: id }).then((data) => {
+      if (data instanceof Error) {
+        console.error(`ERROR -- rpc call setEvaluationName failed`, data);
+        return;
+      }
+    });
+  },
+  deleteSubmission: (id: string) => {
+    const evaluation = get().evaluation;
+
+    if (!evaluation) {
+      return new Error("Evaluation not loaded");
+    }
+
+    set({
+      evaluation: {
+        ...evaluation,
+        submission: evaluation.invitation.filter((i: any) => i.id !== id),
+      },
+    });
+
+    rpc.call("deleteSubmission", { id: id }).then((data) => {
+      if (data instanceof Error) {
+        console.error(`ERROR -- rpc call deleteSubmission failed`, data);
+        return;
+      }
+    });
   },
 }));
