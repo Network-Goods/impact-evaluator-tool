@@ -7,7 +7,8 @@ import Button from "src/components/shared/Button";
 import Add from "public/images/svg/Add";
 import Delete from "public/images/svg/Delete";
 import Edit from "public/images/svg/Edit";
-import SetLinkModal from "./SetLinkModal";
+import SetLinkModal from "../SetLinkModal";
+import SetGithubModal from "../SetGithubModal";
 
 const style = {
   position: "absolute",
@@ -18,20 +19,22 @@ const style = {
 
 type OutcomeModalProps = {
   handleClose: () => void;
-  handleDelete: void;
   open: boolean;
   submission?: any;
   store: any;
 };
 
-const OutcomeModal = ({ handleClose, handleDelete, open, submission, store }: OutcomeModalProps) => {
+const OutcomeModal = ({ handleClose, open, submission, store }: OutcomeModalProps) => {
   const nameRef = useRef<HTMLInputElement | null>(null);
   const summaryRef = useRef<HTMLTextAreaElement | null>(null);
   const descriptionRef = useRef<HTMLTextAreaElement | null>(null);
   const specsRef = useRef<HTMLTextAreaElement | null>(null);
   const [inputs, setInputs] = useState<any>({});
+  const [newLinks, setNewLinks] = useState<any>({});
   const [openLinkModal, setOpenLinkModal] = useState(false);
   const [linkModalContent, setLinkModalContent] = useState({});
+  const [openGithubModal, setOpenGithubModal] = useState(false);
+  const [githubModalContent, setGithubModalContent] = useState({});
   const [titleState, setTitleState] = useState(
     submission && store.evaluation.submission.find((e: any) => e.id === submission.id)
       ? store.evaluation.submission.find((e: any) => e.id === submission.id).name
@@ -40,6 +43,11 @@ const OutcomeModal = ({ handleClose, handleDelete, open, submission, store }: Ou
   const [links, setLinks] = useState<any>(
     submission && store.evaluation.submission.find((e: any) => e.id === submission.id)
       ? store.evaluation.submission.find((e: any) => e.id === submission.id).links
+      : null,
+  );
+  const [githubLink, setGithubLink] = useState<any>(
+    submission && store.evaluation.submission.find((e: any) => e.id === submission.id)
+      ? store.evaluation.submission.find((e: any) => e.id === submission.id).github_link
       : null,
   );
   const [summary, setSummary] = useState<any>(
@@ -62,6 +70,7 @@ const OutcomeModal = ({ handleClose, handleDelete, open, submission, store }: Ou
     const name = event.target.name;
     const value = event.target.value;
     setInputs((values: any) => ({ ...values, [name]: value }));
+    console.log("inputs", inputs);
   };
 
   const handleBlurTitle = (value: any) => {
@@ -80,19 +89,28 @@ const OutcomeModal = ({ handleClose, handleDelete, open, submission, store }: Ou
     setLinkModalContent(link ? link : null);
     setOpenLinkModal(true);
   };
-  const handleCloseLinkModal = (link?: any) => {
+  const handleCloseLinkModal = () => {
     setOpenLinkModal(false);
     setLinkModalContent({});
   };
+  const handleOpenGithubModal = (link?: any) => {
+    setGithubModalContent(link ? link : null);
+    setOpenGithubModal(true);
+  };
+  const handleCloseGithubModal = () => {
+    setOpenGithubModal(false);
+    setGithubModalContent({});
+  };
 
-  // const handleSubmit = () => {
-  //   store.createEvaluator(inputs);
-  //   handleClose();
-  //   setInputs({});
-  // };
+  const handleSubmit = () => {
+    // store.createLiveSubmission(inputs);
+    // handleClose();
+    // setInputs({});
+    console.log("hello");
+  };
 
   const handleDeleteSubmission = () => {
-    handleDelete();
+    store.deleteSubmission(submission.id);
     handleClose();
     setInputs({});
   };
@@ -102,6 +120,10 @@ const OutcomeModal = ({ handleClose, handleDelete, open, submission, store }: Ou
       setLinks(
         store.evaluation.submission.find((e: any) => e.id === submission.id) &&
           store.evaluation.submission.find((e: any) => e.id === submission.id).links,
+      );
+      setGithubLink(
+        store.evaluation.submission.find((e: any) => e.id === submission.id) &&
+          store.evaluation.submission.find((e: any) => e.id === submission.id).github_link,
       );
       setTitleState(
         store.evaluation.submission.find((e: any) => e.id === submission.id) &&
@@ -215,7 +237,7 @@ const OutcomeModal = ({ handleClose, handleDelete, open, submission, store }: Ou
               <div className="py-1">
                 <button
                   className="flex items-center justify-center px-3 py-1 border border-[#dbdbdb] rounded-lg"
-                  onClick={() => handleOpenLinkModal(submission.github_link)}
+                  onClick={() => handleOpenGithubModal(submission ? githubLink : null)}
                 >
                   <span className="mr-3">
                     <Edit className="w-3 h-3" />
@@ -223,7 +245,6 @@ const OutcomeModal = ({ handleClose, handleDelete, open, submission, store }: Ou
                   <span>Github</span>
                 </button>
               </div>
-
               {links &&
                 Object.entries(links).map((link, idx) => {
                   return (
@@ -261,7 +282,7 @@ const OutcomeModal = ({ handleClose, handleDelete, open, submission, store }: Ou
             </div>
             <div className="ml-4">
               <button
-                onClick={handleClose}
+                onClick={submission ? handleClose : handleSubmit}
                 className="transition-colors duration-200 ease-in-out transform  outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold mx-auto border border-blue bg-blue hover:bg-blue-darkest hover:border-blue-darkest focus:bg-blue-darkest text-white text-lg px-3 py-1"
               >
                 Save
@@ -275,6 +296,18 @@ const OutcomeModal = ({ handleClose, handleDelete, open, submission, store }: Ou
           open={openLinkModal}
           link={linkModalContent}
           handleClose={() => handleCloseLinkModal()}
+          newLinks={newLinks}
+          setNewLinks={setNewLinks}
+        />
+
+        <SetGithubModal
+          store={store}
+          submission={submission}
+          open={openGithubModal}
+          link={githubModalContent}
+          handleClose={() => handleCloseGithubModal()}
+          newInputs={inputs}
+          setNewInputs={setInputs}
         />
       </Box>
     </Modal>

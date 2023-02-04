@@ -6,6 +6,8 @@ import {
   deleteSubmission,
   setEvaluationName,
   setEvaluationStatus,
+  setEvaluationStartTime,
+  setEvaluationEndTime,
   setSubmissionName,
   createSubmission,
   getVotingStore,
@@ -21,6 +23,7 @@ import {
   createInvitation,
   setSubmissionTitle,
   setLink,
+  setGithubLink,
   setSubmissionDescription,
 } from "./methods";
 
@@ -32,6 +35,8 @@ export const MethodLookup = {
   deleteSubmission,
   setEvaluationName,
   setEvaluationStatus,
+  setEvaluationStartTime,
+  setEvaluationEndTime,
   setSubmissionName,
   createSubmission,
   getVotingStore,
@@ -47,5 +52,6 @@ export const MethodLookup = {
   createInvitation,
   setSubmissionTitle,
   setLink,
+  setGithubLink,
   setSubmissionDescription,
 };

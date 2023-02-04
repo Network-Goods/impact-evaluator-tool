@@ -102,7 +102,7 @@ const EvaluatorModal = ({ handleClose, handleReset, open, evaluator, store }: Ev
             <button onClick={() => setOpenConfirmResetModal(true)} className="border border-[#898888] rounded p-1">
               <Reset className="fill-[#898888] w-3 h-3" />
             </button>
-            <span className="font-bold ml-2">Reset user's votes</span>
+            <span className="font-bold ml-2">Reset user&#39;s votes</span>
           </>
         </div>
         <div className="flex justify-evenly">

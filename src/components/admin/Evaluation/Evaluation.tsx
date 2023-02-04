@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import LeftArrow from "public/images/svg/LeftArrow";
@@ -6,15 +6,18 @@ import LoadingSpinner from "src/components/shared/LoadingSpinner";
 import { useEvaluationStore } from "./EvaluationStore";
 import EvaluationSubTitle from "./EvaluationSubTitle";
 import Edit from "public/images/svg/Edit";
-import OutcomeModal from "./OutcomeModal";
+import EditOutcomeModal from "./OutcomeModal/EditOutcomeModal";
 import EvaluatorModal from "./EvaluatorModal";
 import CreateInvitationModal from "./CreateInvitationModal";
-import EditTitle from "./Edit/EditTitle";
+import EvaluationTitle from "./EvaluationTitle";
 import Delete from "public/images/svg/Delete";
 import Plus from "public/images/svg/Plus";
+import { DateTimePicker } from "./DateTimePicker";
 
 export default function Evaluation() {
-  const [openOutcomeModal, setOpenOutcomeModal] = useState(false);
+  const ref = useRef<any>(null);
+
+  const [openEditOutcomeModal, setOpenOutcomeModal] = useState(false);
   const [outcomeModalContent, setOutcomeModalContent] = useState({});
   const [openEvaluatorModal, setOpenEvaluatorModal] = useState(false);
   const [evaluatorModalContent, setEvaluatorModalContent] = useState({});
@@ -23,19 +26,25 @@ export default function Evaluation() {
   const { evaluation_id } = router.query;
   const store = useEvaluationStore();
 
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+
   useEffect(() => {
     if (!evaluation_id || Array.isArray(evaluation_id)) {
       return;
     }
     store.load(evaluation_id);
     console.log("store", store);
+
+    store.evaluation && setStartDate(new Date(store.evaluation.start_time));
+    store.evaluation && setEndDate(new Date(store.evaluation.end_time));
   }, [evaluation_id, store.fetching]);
 
   const handleOpenOutcomeModal = (submission?: any) => {
     setOutcomeModalContent(submission ? submission : null);
     setOpenOutcomeModal(true);
   };
-  const handleCloseOutcomeModal = () => {
+  const handleCloseEditOutcomeModal = () => {
     setOpenOutcomeModal(false);
     setOutcomeModalContent({});
   };
@@ -46,6 +55,16 @@ export default function Evaluation() {
   const handleCloseEvaluatorModal = () => {
     setOpenEvaluatorModal(false);
     setEvaluatorModalContent({});
+  };
+
+  const handleStartDateChange = (date: Date) => {
+    setStartDate(date);
+    store.setEvaluationStartTime(date);
+  };
+
+  const handleEndDateChange = (date: Date) => {
+    setEndDate(date);
+    store.setEvaluationEndTime(date);
   };
 
   if (store.fetching) return <LoadingSpinner />;
@@ -68,18 +87,23 @@ export default function Evaluation() {
       <div className="max-w-3xl mx-auto">
         <div className="text-lg font-bold">Review the evaluation round</div>
         <div className="bg-white text-lg font-semibold rounded-lg py-10 px-14 mt-7 mb-20">
-          <EditTitle store={store} />
+          <EvaluationTitle store={store} />
           <hr className="my-10 border-gray" />
           <div className="flex justify-between mb-4">
             <EvaluationSubTitle text="Evaluation Period" />
             <div>
-              <button onClick={() => console.log("period")} className="border border-blue rounded p-1">
+              <button onClick={() => ref.current?.input.focus()} className="border border-blue rounded p-1">
                 <Edit />
               </button>
             </div>
           </div>
-          <div>
-            {store.evaluation.start_time} to {store.evaluation.end_time}
+
+          <div className="flex flex-col sm:flex-row">
+            <div className="w-[120px]">
+              <DateTimePicker ref={ref} date={startDate} setDate={handleStartDateChange} />
+            </div>
+            <span className="sm:mx-2">to</span>
+            <DateTimePicker date={endDate} setDate={handleEndDateChange} />
           </div>
           <hr className="my-10 border-gray" />
           <div className="pb-4">
@@ -117,7 +141,6 @@ export default function Evaluation() {
             );
           })}
           <EvaluationSubTitle small text="Evaluators:" />
-
           {store.evaluation.evaluator.map((evaluator: any) => {
             return (
               <div className="grid md:grid-cols-3 py-1" key={evaluator.id}>
@@ -151,7 +174,6 @@ export default function Evaluation() {
               </button>
             </div>
           </div>
-
           <ol className="list-decimal ml-5">
             {store.evaluation.submission.map((submission: any) => {
               return (
@@ -172,11 +194,10 @@ export default function Evaluation() {
             })}
           </ol>
         </div>
-        <OutcomeModal
+        <EditOutcomeModal
           store={store}
-          open={openOutcomeModal}
-          handleClose={handleCloseOutcomeModal}
-          handleDelete={handleDeleteSubmission}
+          open={openEditOutcomeModal}
+          handleClose={handleCloseEditOutcomeModal}
           submission={outcomeModalContent}
         />
         <EvaluatorModal

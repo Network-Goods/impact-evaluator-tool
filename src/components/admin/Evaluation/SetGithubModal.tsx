@@ -12,22 +12,29 @@ const style = {
   borderRadius: "9.31292px",
 };
 
-type SetLinkModalProps = {
+type SetGithubModalProps = {
   handleClose: () => void;
   open: boolean;
   submission: any;
   link?: any;
   store: any;
-  newLinks: any;
-  setNewLinks: any;
+  newInputs?: any;
+  setNewInputs?: any;
 };
 
-const SetLinkModal = ({ handleClose, link, submission, open, store, newLinks, setNewLinks }: SetLinkModalProps) => {
-  const titleRef = useRef<HTMLInputElement | null>(null);
+const SetGithubModal = ({
+  handleClose,
+  link,
+  submission,
+  open,
+  store,
+  newInputs,
+  setNewInputs,
+}: SetGithubModalProps) => {
   const linkRef = useRef<HTMLInputElement | null>(null);
   const [inputs, setInputs] = useState<any>({});
-  const [titleState, setTitleState] = useState(link ? link[0] : "");
-  const [linkState, setLinkState] = useState(link ? link[1] : "");
+  const [linkState, setLinkState] = useState(link ? link : "");
+
   const handleChange = (event: any) => {
     const name = event.target.name;
     const value = event.target.value;
@@ -37,39 +44,24 @@ const SetLinkModal = ({ handleClose, link, submission, open, store, newLinks, se
   const handleNewChange = (event: any) => {
     const name = event.target.name;
     const value = event.target.value;
-    name === "title" ? setTitleState(value) : setLinkState(value);
-
-    console.log("newinputs", inputs);
-  };
-
-  const handleBlurTitle = (value: any) => {
-    if (link) {
-      store.setSubmissionLinkTitle(link[0], submission.id, value);
-    }
+    setNewInputs((values: any) => ({ ...values, [name]: value }));
+    console.log("inputs", newInputs);
   };
 
   const handleBlurLink = (value: any) => {
     if (link) {
-      store.setSubmissionLink(link[0], submission.id, value);
+      store.setGithubLink(submission.id, value);
     }
   };
   const handleCreateLink = () => {
-    if (submission) {
-      store.setSubmissionLink(inputs.title, submission.id, inputs.link);
-      handleClose();
-      setInputs({});
-    } else {
-      setNewLinks((values: any) => ({ ...values, [titleState]: linkState }));
-      handleClose();
-      setInputs({});
-      console.log("newlinks", newLinks);
-    }
+    store.setGithubLink(submission.id, inputs.github_link);
+    handleClose();
+    setInputs({});
   };
 
   useEffect(() => {
     if (link) {
-      setTitleState(link[0]);
-      setLinkState(link[1]);
+      setLinkState(link);
     }
   }, [link]);
 
@@ -90,7 +82,7 @@ const SetLinkModal = ({ handleClose, link, submission, open, store, newLinks, se
         className="translate-x-[-5%] md:-translate-x-1/2 -translate-y-1/2 top-1/2 left-[10%] md:left-1/2 py-3 px-5 md:py-10 md:px-14 lg:w-[640px]"
       >
         <div className="flex justify-between items-center text-offblack">
-          <h1 className="text-[28px] text-blue-alt font-semibold">{link ? "Edit" : "Add"} link</h1>
+          <h1 className="text-[28px] text-blue-alt font-semibold">{link ? "Edit" : "Add"} Github Repo</h1>
 
           <button
             onClick={handleClose}
@@ -100,29 +92,15 @@ const SetLinkModal = ({ handleClose, link, submission, open, store, newLinks, se
           </button>
         </div>
 
-        <div className="pt-5">
-          <p className="font-bold pb-1">Title</p>
-
-          <input
-            ref={titleRef}
-            type="text"
-            name="title"
-            className="appearance-none w-full px-4 py-2 rounded-lg border border-gray focus:outline-none"
-            placeholder="Website"
-            value={!submission || link ? titleState || "" : inputs.title || ""}
-            onChange={submission ? (link ? (e) => setTitleState(e.target.value) : handleChange) : handleNewChange}
-            onBlur={(e) => handleBlurTitle(e.target.value)}
-          />
-
+        <div>
           <p className="font-bold pt-7 pb-1">Link</p>
-
           <input
             ref={linkRef}
             type="text"
-            name="link"
+            name="github_link"
             className="appearance-none w-full px-4 py-2 rounded-lg border border-gray focus:outline-none"
-            placeholder="https://protocol.ai/"
-            value={!submission || link ? linkState || "" : inputs.link || ""}
+            placeholder="https://github.com/protocol/research"
+            value={submission ? (link ? linkState || "" : inputs.github_link || "") : newInputs.github_link || ""}
             onChange={submission ? (link ? (e) => setLinkState(e.target.value) : handleChange) : handleNewChange}
             onBlur={(e) => handleBlurLink(e.target.value)}
           />
@@ -134,9 +112,9 @@ const SetLinkModal = ({ handleClose, link, submission, open, store, newLinks, se
           </div>
           <div>
             <button
-              onClick={link ? handleClose : handleCreateLink}
+              onClick={submission ? (link ? handleClose : handleCreateLink) : handleClose}
               className={`transition-colors duration-200 ease-in-out transform  outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold mx-auto border border-blue bg-blue text-white text-lg px-3 py-1
-              `}
+               `}
             >
               Save Link
             </button>
@@ -147,4 +125,4 @@ const SetLinkModal = ({ handleClose, link, submission, open, store, newLinks, se
   );
 };
 
-export default SetLinkModal;
+export default SetGithubModal;

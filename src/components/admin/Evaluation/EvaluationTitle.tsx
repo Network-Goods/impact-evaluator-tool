@@ -1,11 +1,11 @@
 import { useState, useRef } from "react";
-import EvaluationSubTitle from "../EvaluationSubTitle";
+import EvaluationSubTitle from "./EvaluationSubTitle";
 import Edit from "public/images/svg/Edit";
 
-type EditTitleProps = {
+type EvaluationTitleProps = {
   store: any;
 };
-export default function EditTitle({ store }: EditTitleProps) {
+export default function EvaluationTitle({ store }: EvaluationTitleProps) {
   const ref = useRef<HTMLInputElement | null>(null);
   const [name, setName] = useState(store.evaluation.name);
 
