@@ -220,8 +220,6 @@ export default function Evaluation() {
           store={store}
           open={openInvitationModal}
           handleClose={() => setOpenInvitationModal(false)}
-          evaluator={evaluatorModalContent}
-          handleReset={store.resetVotes}
         />
       </div>
     </>

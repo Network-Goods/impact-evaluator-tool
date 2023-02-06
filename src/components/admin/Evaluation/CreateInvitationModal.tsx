@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
@@ -15,13 +15,11 @@ const style = {
 
 type CreateInvitationModalProps = {
   handleClose: () => void;
-  handleReset: (id: string) => void;
   open: boolean;
-  evaluator: any;
   store: any;
 };
 
-const CreateInvitationModal = ({ handleClose, handleReset, open, evaluator, store }: CreateInvitationModalProps) => {
+const CreateInvitationModal = ({ handleClose, open, store }: CreateInvitationModalProps) => {
   const [inputs, setInputs] = useState<any>({});
 
   const handleChange = (event: any) => {

@@ -32,7 +32,6 @@ const OutcomeModal = ({ handleClose, open, submission, store }: OutcomeModalProp
   const descriptionRef = useRef<HTMLTextAreaElement | null>(null);
   const specsRef = useRef<HTMLTextAreaElement | null>(null);
   const [inputs, setInputs] = useState<any>({});
-  const [newLinks, setNewLinks] = useState<any>({});
   const [openLinkModal, setOpenLinkModal] = useState(false);
   const [linkModalContent, setLinkModalContent] = useState({});
   const [openGithubModal, setOpenGithubModal] = useState(false);

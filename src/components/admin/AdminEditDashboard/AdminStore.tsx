@@ -8,7 +8,7 @@ export interface AdminStore {
   load: () => void;
 }
 
-export const useAdminStore = create<AdminStore>()((set, get) => ({
+export const useAdminStore = create<AdminStore>()((set) => ({
   fetching: true,
   evaluations: [],
 
