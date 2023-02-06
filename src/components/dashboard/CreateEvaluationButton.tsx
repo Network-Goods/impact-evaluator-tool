@@ -4,7 +4,7 @@ import { useState } from "react";
 import Button from "src/components/shared/Button";
 import { useDashboardStore } from "./DashboardStore";
 
-const CreateEvaluationButton = () => {
+export default function CreateEvaluationButton() {
   const dashboardStore = useDashboardStore();
   const [disabled, set_disabled] = useState(false);
   const router = useRouter();
@@ -28,12 +28,10 @@ const CreateEvaluationButton = () => {
     <div>
       <Button
         text="Create a Round"
-        icon={<Add className="mb-1 fill-white" />}
+        icon={<Add className="fill-white" />}
         onClick={() => console.log("Create a Round")}
         disabled
       />
     </div>
   );
-};
-
-export default CreateEvaluationButton;
+}

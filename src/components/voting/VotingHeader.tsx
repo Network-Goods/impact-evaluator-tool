@@ -12,7 +12,7 @@ type VotingHeaderProps = {
   evaluation: any;
 };
 
-const VotingHeader = ({ evaluation }: VotingHeaderProps) => {
+export default function VotingHeader({ evaluation }: VotingHeaderProps) {
   const [openQuadraticModal, setOpenQuadraticModal] = useState(false);
   const [openDetailsModal, setOpenDetailsModal] = useState(false);
 
@@ -74,6 +74,4 @@ const VotingHeader = ({ evaluation }: VotingHeaderProps) => {
       <RoundDetailsModal open={openDetailsModal} handleClose={handleCloseDetailsModal} />
     </div>
   );
-};
-
-export default VotingHeader;
+}

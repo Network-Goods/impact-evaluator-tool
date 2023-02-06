@@ -16,3 +16,13 @@ export function returnLocalDate(date: string) {
   });
   return localDate.slice(6, 10) + "." + localDate.slice(0, 2) + "." + localDate.slice(3, 5);
 }
+
+export function filterSubmissions(search: string, submissions: any) {
+  return submissions.filter((val: any) => {
+    if (search === "") {
+      return val;
+    } else if (val.name.toLowerCase().includes(search.toLowerCase())) {
+      return val;
+    }
+  });
+}

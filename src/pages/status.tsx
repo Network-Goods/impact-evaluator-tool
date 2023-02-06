@@ -1,10 +1,9 @@
-import { FC } from "react";
 import Container from "src/components/layout/Container";
 import Layout from "src/components/layout/Layout";
 import AuthNavbar from "src/components/navBar/AuthNavbar";
 import Status from "src/components/status/Status";
 
-const Index: FC = () => {
+export default function Index() {
   return (
     <Layout>
       <AuthNavbar />
@@ -15,6 +14,4 @@ const Index: FC = () => {
       </main>
     </Layout>
   );
-};
-
-export default Index;
+}

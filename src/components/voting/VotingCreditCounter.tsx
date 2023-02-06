@@ -6,7 +6,7 @@ type VotingCreditCounterProps = {
   allocatedCredits: number;
 };
 
-const VotingCreditCounter = ({ handleReset, credits, allocatedCredits }: VotingCreditCounterProps) => {
+export default function VotingCreditCounter({ handleReset, credits, allocatedCredits }: VotingCreditCounterProps) {
   return (
     <div className="rounded-lg bg-white border border-gray p-12 mt-4 lg:mt-0 lg:ml-6 text-center">
       <SmallTitle text="VOICE CREDITS" />
@@ -24,6 +24,4 @@ const VotingCreditCounter = ({ handleReset, credits, allocatedCredits }: VotingC
       </button>
     </div>
   );
-};
-
-export default VotingCreditCounter;
+}

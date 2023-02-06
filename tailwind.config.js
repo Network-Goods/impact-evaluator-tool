@@ -15,8 +15,11 @@ module.exports = {
       "gray-light": "#DBDBDB",
       "gray-lighter": "#F5F5F5",
       "gray-dark": "#2F2F2F",
+      "gray-subtitle": "#B5B5B5",
       red: "#FF0000",
       white: "#FFFFFF",
+      transparent: "transparent",
+      current: "currentColor",
     },
     screens: {
       sm: "640px",

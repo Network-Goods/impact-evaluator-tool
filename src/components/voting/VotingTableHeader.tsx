@@ -1,6 +1,6 @@
 import SmallTitle from "../shared/SmallTitle";
 
-const VotingTableHeader = () => {
+export default function VotingTableHeader() {
   return (
     <div className="flex py-2 pl-4 md:px-6">
       <div className="w-[45%] md:w-[60%] py-2 border-r border-gray ">
@@ -14,6 +14,4 @@ const VotingTableHeader = () => {
       </div>
     </div>
   );
-};
-
-export default VotingTableHeader;
+}

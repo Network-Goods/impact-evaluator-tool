@@ -1,4 +1,4 @@
-import { FC, ReactNode, useEffect } from "react";
+import { ReactNode, useEffect } from "react";
 import { useSession, useSessionContext } from "@supabase/auth-helpers-react";
 import { useUserProfileStore } from "src/lib/UserProfileStore";
 import LoginPage from "src/components/login/LoginPage";
@@ -8,7 +8,7 @@ type Props = {
   children: ReactNode;
 };
 
-const AuthWrapper: FC<Props> = ({ children }) => {
+export default function AuthWrapper({ children }: Props) {
   const session = useSession();
   const userProfileStore = useUserProfileStore();
   const sessionContext = useSessionContext();
@@ -30,6 +30,4 @@ const AuthWrapper: FC<Props> = ({ children }) => {
   }
 
   return <>{children}</>;
-};
-
-export default AuthWrapper;
+}
