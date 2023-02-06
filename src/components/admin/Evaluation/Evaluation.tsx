@@ -36,7 +36,6 @@ export default function Evaluation() {
       return;
     }
     store.load(evaluation_id);
-    console.log("store", store);
 
     store.evaluation && setStartDate(new Date(store.evaluation.start_time));
     store.evaluation && setEndDate(new Date(store.evaluation.end_time));

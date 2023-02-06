@@ -18,9 +18,6 @@ export const useAdminStore = create<AdminStore>()((set) => ({
         console.error(`ERROR -- rpc call getUserEvaluations failed`, data);
         return;
       }
-
-      console.log("data", data);
-
       set({
         fetching: false,
         evaluations: data,
