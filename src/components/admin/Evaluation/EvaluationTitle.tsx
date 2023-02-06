@@ -15,7 +15,7 @@ export default function EvaluationTitle({ store }: EvaluationTitleProps) {
         <EvaluationSubTitle text="Title" />
         <div>
           <button onClick={() => ref.current?.focus()} className="border border-blue rounded p-1">
-            <Edit />
+            <Edit className="fill-blue-alt" />
           </button>
         </div>
       </div>

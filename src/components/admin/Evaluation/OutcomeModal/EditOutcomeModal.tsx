@@ -170,7 +170,7 @@ const OutcomeModal = ({ handleClose, open, submission, store }: OutcomeModalProp
                   onClick={() => handleOpenGithubModal(githubLink)}
                 >
                   <span className="mr-3">
-                    <Edit className="w-3 h-3" />
+                    <Edit className="w-3 h-3 fill-offblack" />
                   </span>
                   <span>Github</span>
                 </button>
@@ -184,7 +184,7 @@ const OutcomeModal = ({ handleClose, open, submission, store }: OutcomeModalProp
                         onClick={() => handleOpenLinkModal(link)}
                       >
                         <span className="mr-3">
-                          <Edit className="w-3 h-3" />
+                          <Edit className="w-3 h-3 fill-offblack" />
                         </span>
                         <span>{link[0]}</span>
                       </button>

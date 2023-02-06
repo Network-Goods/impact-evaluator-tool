@@ -79,6 +79,16 @@ export default function AddOutcomeModal({ handleClose, open, submission, store }
     setInputs({});
   };
 
+  const checkIfDisabled = () => {
+    return (
+      !inputs.name ||
+      !inputs.description?.summary ||
+      !inputs.description?.description ||
+      !inputs.description?.specs ||
+      !inputs.github_link
+    );
+  };
+
   return (
     <Modal
       aria-labelledby="transition-modal-title"
@@ -130,7 +140,7 @@ export default function AddOutcomeModal({ handleClose, open, submission, store }
 
             <textarea
               className="w-full min-h-[112px] px-8 py-3 rounded-lg border border-gray focus:outline-none"
-              placeholder="XYZ is..."
+              placeholder="So far we have..."
               name="description"
               value={inputs.description?.description || ""}
               onChange={handleChange}
@@ -138,7 +148,7 @@ export default function AddOutcomeModal({ handleClose, open, submission, store }
             <p className="font-bold pb-1">FVM Tech Specs</p>
             <textarea
               className="w-full min-h-[112px] px-8 py-3 rounded-lg border border-gray focus:outline-none"
-              placeholder="XYZ is..."
+              placeholder="XYZ utilizes..."
               name="specs"
               value={inputs.description?.specs || ""}
               onChange={handleChange}
@@ -165,7 +175,7 @@ export default function AddOutcomeModal({ handleClose, open, submission, store }
                   onClick={() => handleOpenGithubModal()}
                 >
                   <span className="mr-3">
-                    <Edit className="w-3 h-3" />
+                    <Edit className="w-3 h-3 fill-charcoal" />
                   </span>
                   <span>Github</span>
                 </button>
@@ -179,7 +189,7 @@ export default function AddOutcomeModal({ handleClose, open, submission, store }
                         onClick={() => handleOpenLinkModal(link, idx)}
                       >
                         <span className="mr-3">
-                          <Edit className="w-3 h-3" />
+                          <Edit className="w-3 h-3 fill-charcoal" />
                         </span>
                         <span>{Object.keys(link)[0]}</span>
                       </button>
@@ -210,9 +220,16 @@ export default function AddOutcomeModal({ handleClose, open, submission, store }
             <div className="ml-4">
               <button
                 onClick={handleSubmit}
-                className="transition-colors duration-200 ease-in-out transform  outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold mx-auto border border-blue bg-blue hover:bg-blue-darkest hover:border-blue-darkest focus:bg-blue-darkest text-white text-lg px-3 py-1"
+                className={`transition-colors duration-200 ease-in-out transform  outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold mx-auto border border-blue bg-blue  text-white text-lg px-3 py-1
+                ${
+                  checkIfDisabled()
+                    ? "opacity-50 cursor-not-allowed"
+                    : "cursor-pointer hover:bg-blue-darkest hover:border-blue-darkest"
+                }
+                `}
+                disabled={checkIfDisabled()}
               >
-                Save
+                Add
               </button>
             </div>
           </div>

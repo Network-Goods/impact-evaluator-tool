@@ -1,4 +1,5 @@
 import VotingTableLink from "./VotingTableLink";
+import { filterSubmissions } from "src/lib/utils";
 
 type VotingTableBodyProps = {
   idx: number;
@@ -12,19 +13,7 @@ export default function VotingTableBody({ idx, project, submissions, search }: V
     <div
       className={`px-4 md:px-12 pb-4 md:pb-6
       ${idx % 2 === 0 ? "bg-white" : "bg-gray-lighter"}
-        ${
-          idx ===
-          submissions.filter((val: any) => {
-            if (search === "") {
-              return val;
-            } else if (val.name.toLowerCase().includes(search.toLowerCase())) {
-              return val;
-            }
-          }).length -
-            1
-            ? "rounded-b-lg"
-            : ""
-        }
+        ${idx === filterSubmissions(search, submissions).length - 1 ? "rounded-b-lg" : ""}
         `}
     >
       <div className="border border-gray w-full h-[3px]"></div>
@@ -41,7 +30,13 @@ export default function VotingTableBody({ idx, project, submissions, search }: V
           <div className="font-bold">{`Project Link${project.website_link ? "s" : ""}`}</div>
           <div className="flex flex-col">
             <VotingTableLink title="Github" link={project.github_link} />
-            {project.website_link ? <VotingTableLink title="Website" link={project.website_link} /> : null}
+            {project.links
+              ? Object.entries(project.links).map((link: any, idx: any) => (
+                  <div key={idx}>
+                    <VotingTableLink title={link[0]} link={link[1]} />
+                  </div>
+                ))
+              : null}
           </div>
         </div>
       </div>

@@ -4,7 +4,7 @@ import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import ConfirmResetModal from "./ConfirmResetModal";
 import Button from "src/components/shared/Button";
-import EvaluationSubTitle from "./EvaluationSubTitle";
+import EvaluationSubTitle from "../EvaluationSubTitle";
 import Reset from "public/images/svg/Reset";
 import Edit from "public/images/svg/Edit";
 
@@ -74,7 +74,7 @@ export default function EvaluatorModal({ handleClose, handleReset, open, evaluat
               />
               <div>
                 <button onClick={() => emailRef.current?.focus()} className="border border-blue rounded p-1">
-                  <Edit />
+                  <Edit className="fill-blue-alt" />
                 </button>
               </div>
             </div>
@@ -93,7 +93,7 @@ export default function EvaluatorModal({ handleClose, handleReset, open, evaluat
               />
               <div>
                 <button onClick={() => creditsRef.current?.focus()} className="border border-blue rounded p-1">
-                  <Edit />
+                  <Edit className="fill-blue-alt" />
                 </button>
               </div>
             </div>

@@ -1,5 +1,6 @@
 import DownChevron from "public/images/svg/DownChevron";
 import { useVotingStore } from "./VotingStore";
+import { filterSubmissions } from "src/lib/utils";
 
 type VotingTableItemProps = {
   project: any;
@@ -25,21 +26,7 @@ export default function VotingTableItem({
       className={`flex items-center pl-4 md:px-6 border border-gray border-x-0 border-b-0 ${
         idx % 2 === 0 ? "bg-white" : "bg-gray-lighter"
       }
-        ${
-          idx ===
-          submissions.filter((val: any) => {
-            if (search === "") {
-              return val;
-            } else if (val.name.toLowerCase().includes(search.toLowerCase())) {
-              return val;
-            }
-          }).length -
-            1
-            ? !openArray[idx]
-              ? "rounded-b-lg"
-              : ""
-            : ""
-        }
+        ${idx === filterSubmissions(search, submissions).length - 1 ? (!openArray[idx] ? "rounded-b-lg" : "") : ""}
         `}
     >
       <div className={`w-[45%] md:w-[60%] flex justify-between ${openArray[idx] ? "" : "border-r border-gray"}`}>

@@ -7,7 +7,7 @@ import { useEvaluationStore } from "./EvaluationStore";
 import EvaluationSubTitle from "./EvaluationSubTitle";
 import Edit from "public/images/svg/Edit";
 import EditOutcomeModal from "./OutcomeModal/EditOutcomeModal";
-import EvaluatorModal from "./EvaluatorModal";
+import EvaluatorModal from "./EvaluatorModal/EvaluatorModal";
 import CreateInvitationModal from "./CreateInvitationModal";
 import EvaluationTitle from "./EvaluationTitle";
 import Delete from "public/images/svg/Delete";
@@ -96,7 +96,7 @@ export default function Evaluation() {
             <EvaluationSubTitle text="Evaluation Period" />
             <div>
               <button onClick={() => ref.current?.input.focus()} className="border border-blue rounded p-1">
-                <Edit />
+                <Edit className="fill-blue-alt" />
               </button>
             </div>
           </div>
@@ -158,7 +158,7 @@ export default function Evaluation() {
                       onClick={() => handleOpenEvaluatorModal(evaluator)}
                       className="border border-blue rounded p-1"
                     >
-                      <Edit />
+                      <Edit className="fill-blue-alt" />
                     </button>
                   </div>
                 </div>
@@ -189,7 +189,7 @@ export default function Evaluation() {
                       onClick={() => handleOpenOutcomeModal(submission)}
                       className="border border-blue rounded p-1"
                     >
-                      <Edit />
+                      <Edit className="fill-blue-alt" />
                     </button>
                   </div>
                 </div>
