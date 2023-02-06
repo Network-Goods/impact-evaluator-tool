@@ -181,16 +181,11 @@ export const useVotingStore = create<VotingStore>()((set, get) => ({
       return;
     }
 
-    rpc
-      .call("setEvaluatorSubmission", { evaluator_id: evaluator.id })
-      .then((data) => {
-        if (data instanceof Error) {
-          console.error(
-            `ERROR -- rpc call setEvaluatorSubmission failed`,
-            data
-          );
-          return;
-        }
-      });
+    rpc.call("setEvaluatorSubmission", { evaluator_id: evaluator.id }).then((data) => {
+      if (data instanceof Error) {
+        console.error(`ERROR -- rpc call setEvaluatorSubmission failed`, data);
+        return;
+      }
+    });
   },
 }));

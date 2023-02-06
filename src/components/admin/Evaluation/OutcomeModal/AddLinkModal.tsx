@@ -12,67 +12,67 @@ const style = {
   borderRadius: "9.31292px",
 };
 
-type SetLinkModalProps = {
+type AddLinkModalProps = {
   handleClose: () => void;
   open: boolean;
-  submission: any;
   link?: any;
-  store: any;
+  index: number;
   newLinks: any;
   setNewLinks: any;
 };
 
-const SetLinkModal = ({ handleClose, link, submission, open, store, newLinks, setNewLinks }: SetLinkModalProps) => {
+export default function AddLinkModal({ handleClose, link, open, index, newLinks, setNewLinks }: AddLinkModalProps) {
   const titleRef = useRef<HTMLInputElement | null>(null);
   const linkRef = useRef<HTMLInputElement | null>(null);
   const [inputs, setInputs] = useState<any>({});
-  const [titleState, setTitleState] = useState(link ? link[0] : "");
-  const [linkState, setLinkState] = useState(link ? link[1] : "");
+  const [titleState, setTitleState] = useState(link ? Object.keys(link)[0] : "");
+  const [linkState, setLinkState] = useState(link ? Object.values(link)[0] : "");
+
   const handleChange = (event: any) => {
     const name = event.target.name;
     const value = event.target.value;
+
     setInputs((values: any) => ({ ...values, [name]: value }));
-    console.log("inputs", inputs);
-  };
-  const handleNewChange = (event: any) => {
-    const name = event.target.name;
-    const value = event.target.value;
-    name === "title" ? setTitleState(value) : setLinkState(value);
-
-    console.log("newinputs", inputs);
   };
 
-  const handleBlurTitle = (value: any) => {
+  const handleBlurTitle = (value: string) => {
     if (link) {
-      store.setSubmissionLinkTitle(link[0], submission.id, value);
+      const newArr = newLinks.map((link: any, idx: number) => {
+        if (index === idx) {
+          return { [value]: Object.values(link)[0] };
+        } else {
+          return link;
+        }
+      });
+      setNewLinks(newArr);
     }
   };
 
-  const handleBlurLink = (value: any) => {
+  const handleBlurLink = (value: string) => {
     if (link) {
-      store.setSubmissionLink(link[0], submission.id, value);
+      const newArr = newLinks.map((link: any, idx: number) => {
+        if (index === idx) {
+          return { [Object.keys(link)[0]]: value };
+        } else {
+          return link;
+        }
+      });
+      setNewLinks(newArr);
     }
   };
+
   const handleCreateLink = () => {
-    if (submission) {
-      store.setSubmissionLink(inputs.title, submission.id, inputs.link);
-      handleClose();
-      setInputs({});
-    } else {
-      setNewLinks((values: any) => ({ ...values, [titleState]: linkState }));
-      handleClose();
-      setInputs({});
-      console.log("newlinks", newLinks);
-    }
+    setNewLinks((values: any) => [...values, { [inputs.title]: inputs.link }]);
+    handleClose();
+    setInputs({});
   };
 
   useEffect(() => {
     if (link) {
-      setTitleState(link[0]);
-      setLinkState(link[1]);
+      setTitleState(Object.keys(link)[0]);
+      setLinkState(Object.values(link)[0]);
     }
   }, [link]);
-
   return (
     <Modal
       aria-labelledby="transition-modal-title"
@@ -90,7 +90,7 @@ const SetLinkModal = ({ handleClose, link, submission, open, store, newLinks, se
         className="translate-x-[-5%] md:-translate-x-1/2 -translate-y-1/2 top-1/2 left-[10%] md:left-1/2 py-3 px-5 md:py-10 md:px-14 lg:w-[640px]"
       >
         <div className="flex justify-between items-center text-offblack">
-          <h1 className="text-[28px] text-blue-alt font-semibold">{link ? "Edit" : "Add"} link</h1>
+          <h1 className="text-[28px] text-blue-alt font-semibold">Add link</h1>
 
           <button
             onClick={handleClose}
@@ -109,8 +109,8 @@ const SetLinkModal = ({ handleClose, link, submission, open, store, newLinks, se
             name="title"
             className="appearance-none w-full px-4 py-2 rounded-lg border border-gray focus:outline-none"
             placeholder="Website"
-            value={!submission || link ? titleState || "" : inputs.title || ""}
-            onChange={submission ? (link ? (e) => setTitleState(e.target.value) : handleChange) : handleNewChange}
+            value={link ? titleState || "" : inputs.title || ""}
+            onChange={link ? (e) => setTitleState(e.target.value) : handleChange}
             onBlur={(e) => handleBlurTitle(e.target.value)}
           />
 
@@ -122,8 +122,8 @@ const SetLinkModal = ({ handleClose, link, submission, open, store, newLinks, se
             name="link"
             className="appearance-none w-full px-4 py-2 rounded-lg border border-gray focus:outline-none"
             placeholder="https://protocol.ai/"
-            value={!submission || link ? linkState || "" : inputs.link || ""}
-            onChange={submission ? (link ? (e) => setLinkState(e.target.value) : handleChange) : handleNewChange}
+            value={link ? linkState || "" : inputs.link || ""}
+            onChange={link ? (e) => setLinkState(e.target.value) : handleChange}
             onBlur={(e) => handleBlurLink(e.target.value)}
           />
         </div>
@@ -145,6 +145,4 @@ const SetLinkModal = ({ handleClose, link, submission, open, store, newLinks, se
       </Box>
     </Modal>
   );
-};
-
-export default SetLinkModal;
+}

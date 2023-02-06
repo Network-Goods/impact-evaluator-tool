@@ -16,7 +16,7 @@ type QuadraticVotingModalProps = {
   open: boolean;
 };
 
-const QuadraticVotingModal = ({ handleClose, open }: QuadraticVotingModalProps) => {
+export default function QuadraticVotingModal({ handleClose, open }: QuadraticVotingModalProps) {
   return (
     <Modal
       aria-labelledby="transition-modal-title"
@@ -88,6 +88,4 @@ const QuadraticVotingModal = ({ handleClose, open }: QuadraticVotingModalProps) 
       </Fade>
     </Modal>
   );
-};
-
-export default QuadraticVotingModal;
+}

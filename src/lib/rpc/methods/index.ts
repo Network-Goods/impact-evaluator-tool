@@ -9,6 +9,7 @@ export * from "./setEvaluationStartTime";
 export * from "./setEvaluationEndTime";
 export * from "./setSubmissionName";
 export * from "./createSubmission";
+export * from "./createLiveSubmission";
 export * from "./getVotingStore";
 export * from "./setVote";
 export * from "./setResetVotes";

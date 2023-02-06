@@ -10,13 +10,13 @@ type VotingFilter = {
   handleSetAllProjectsView: any;
 };
 
-const VotingFilter = ({
+export default function VotingFilter({
   setSearch,
   projectsViewWrapperRef,
   openProjectsView,
   setOpenProjectsView,
   handleSetAllProjectsView,
-}: VotingFilter) => {
+}: VotingFilter) {
   return (
     <div className="flex flex-col md:flex-row">
       <div className="mb-1 md:mr-2">
@@ -72,6 +72,4 @@ const VotingFilter = ({
       </div>
     </div>
   );
-};
-
-export default VotingFilter;
+}

@@ -10,7 +10,14 @@ type VotingTableItemProps = {
   setOpenArray: any;
 };
 
-const VotingTableItem = ({ project, idx, search, submissions, openArray, setOpenArray }: VotingTableItemProps) => {
+export default function VotingTableItem({
+  project,
+  idx,
+  search,
+  submissions,
+  openArray,
+  setOpenArray,
+}: VotingTableItemProps) {
   const votingStore = useVotingStore();
 
   return (
@@ -109,6 +116,4 @@ const VotingTableItem = ({ project, idx, search, submissions, openArray, setOpen
       </div>
     </div>
   );
-};
-
-export default VotingTableItem;
+}

@@ -23,7 +23,7 @@ type EvaluatorModalProps = {
   store: any;
 };
 
-const EvaluatorModal = ({ handleClose, handleReset, open, evaluator, store }: EvaluatorModalProps) => {
+export default function EvaluatorModal({ handleClose, handleReset, open, evaluator, store }: EvaluatorModalProps) {
   const creditsRef = useRef<HTMLInputElement | null>(null);
   const emailRef = useRef<HTMLInputElement | null>(null);
   const [openConfirmResetModal, setOpenConfirmResetModal] = useState(false);
@@ -126,6 +126,4 @@ const EvaluatorModal = ({ handleClose, handleReset, open, evaluator, store }: Ev
       </Box>
     </Modal>
   );
-};
-
-export default EvaluatorModal;
+}

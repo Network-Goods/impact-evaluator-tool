@@ -10,7 +10,7 @@ type VotingTableProps = {
   setOpenArray: any;
 };
 
-const VotingTable = ({ search, submissions, openArray, setOpenArray }: VotingTableProps) => {
+export default function VotingTable({ search, submissions, openArray, setOpenArray }: VotingTableProps) {
   return (
     <div className="flex-1">
       <div className="w-full rounded-lg bg-[#f0f0f0] border border-gray">
@@ -48,6 +48,4 @@ const VotingTable = ({ search, submissions, openArray, setOpenArray }: VotingTab
       </div>
     </div>
   );
-};
-
-export default VotingTable;
+}

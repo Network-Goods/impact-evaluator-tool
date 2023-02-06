@@ -7,8 +7,8 @@ import Button from "src/components/shared/Button";
 import Add from "public/images/svg/Add";
 import Delete from "public/images/svg/Delete";
 import Edit from "public/images/svg/Edit";
-import SetLinkModal from "../SetLinkModal";
-import SetGithubModal from "../SetGithubModal";
+import SetLinkModal from "./SetLinkModal";
+import SetGithubModal from "./SetGithubModal";
 
 const style = {
   position: "absolute",
@@ -25,6 +25,8 @@ type OutcomeModalProps = {
 };
 
 const OutcomeModal = ({ handleClose, open, submission, store }: OutcomeModalProps) => {
+  const storeSubmissionExists = submission && store.evaluation.submission.find((e: any) => e.id === submission.id);
+
   const nameRef = useRef<HTMLInputElement | null>(null);
   const summaryRef = useRef<HTMLTextAreaElement | null>(null);
   const descriptionRef = useRef<HTMLTextAreaElement | null>(null);
@@ -35,55 +37,12 @@ const OutcomeModal = ({ handleClose, open, submission, store }: OutcomeModalProp
   const [linkModalContent, setLinkModalContent] = useState({});
   const [openGithubModal, setOpenGithubModal] = useState(false);
   const [githubModalContent, setGithubModalContent] = useState({});
-  const [titleState, setTitleState] = useState(
-    submission && store.evaluation.submission.find((e: any) => e.id === submission.id)
-      ? store.evaluation.submission.find((e: any) => e.id === submission.id).name
-      : "",
-  );
-  const [links, setLinks] = useState<any>(
-    submission && store.evaluation.submission.find((e: any) => e.id === submission.id)
-      ? store.evaluation.submission.find((e: any) => e.id === submission.id).links
-      : null,
-  );
-  const [githubLink, setGithubLink] = useState<any>(
-    submission && store.evaluation.submission.find((e: any) => e.id === submission.id)
-      ? store.evaluation.submission.find((e: any) => e.id === submission.id).github_link
-      : null,
-  );
-  const [summary, setSummary] = useState<any>(
-    submission && store.evaluation.submission.find((e: any) => e.id === submission.id)
-      ? store.evaluation.submission.find((e: any) => e.id === submission.id).description.summary
-      : "",
-  );
-  const [description, setDescription] = useState<any>(
-    submission && store.evaluation.submission.find((e: any) => e.id === submission.id)
-      ? store.evaluation.submission.find((e: any) => e.id === submission.id).description.description
-      : "",
-  );
-  const [specs, setSpecs] = useState<any>(
-    submission && store.evaluation.submission.find((e: any) => e.id === submission.id)
-      ? store.evaluation.submission.find((e: any) => e.id === submission.id).description.specs
-      : "",
-  );
-
-  const handleChange = (event: any) => {
-    const name = event.target.name;
-    const value = event.target.value;
-    setInputs((values: any) => ({ ...values, [name]: value }));
-    console.log("inputs", inputs);
-  };
-
-  const handleBlurTitle = (value: any) => {
-    if (submission) {
-      store.setSubmissionTitle(submission.id, value);
-    }
-  };
-
-  const handleBlurDescription = (type: string, value: any) => {
-    if (submission) {
-      store.setSubmissionDescription(type, submission.id, value);
-    }
-  };
+  const [titleState, setTitleState] = useState(storeSubmissionExists?.name);
+  const [links, setLinks] = useState<any>(storeSubmissionExists?.links);
+  const [githubLink, setGithubLink] = useState<any>(storeSubmissionExists?.github_link);
+  const [summary, setSummary] = useState<any>(storeSubmissionExists?.description.summary);
+  const [description, setDescription] = useState<any>(storeSubmissionExists?.description.description);
+  const [specs, setSpecs] = useState<any>(storeSubmissionExists?.description.specs);
 
   const handleOpenLinkModal = (link?: any) => {
     setLinkModalContent(link ? link : null);
@@ -102,13 +61,6 @@ const OutcomeModal = ({ handleClose, open, submission, store }: OutcomeModalProp
     setGithubModalContent({});
   };
 
-  const handleSubmit = () => {
-    // store.createLiveSubmission(inputs);
-    // handleClose();
-    // setInputs({});
-    console.log("hello");
-  };
-
   const handleDeleteSubmission = () => {
     store.deleteSubmission(submission.id);
     handleClose();
@@ -116,33 +68,13 @@ const OutcomeModal = ({ handleClose, open, submission, store }: OutcomeModalProp
   };
 
   useEffect(() => {
-    if (submission) {
-      setLinks(
-        store.evaluation.submission.find((e: any) => e.id === submission.id) &&
-          store.evaluation.submission.find((e: any) => e.id === submission.id).links,
-      );
-      setGithubLink(
-        store.evaluation.submission.find((e: any) => e.id === submission.id) &&
-          store.evaluation.submission.find((e: any) => e.id === submission.id).github_link,
-      );
-      setTitleState(
-        store.evaluation.submission.find((e: any) => e.id === submission.id) &&
-          store.evaluation.submission.find((e: any) => e.id === submission.id).name,
-      );
-      setSummary(
-        store.evaluation.submission.find((e: any) => e.id === submission.id) &&
-          store.evaluation.submission.find((e: any) => e.id === submission.id).description.summary,
-      );
-      setDescription(
-        store.evaluation.submission.find((e: any) => e.id === submission.id) &&
-          store.evaluation.submission.find((e: any) => e.id === submission.id).description.description,
-      );
-      setSpecs(
-        store.evaluation.submission.find((e: any) => e.id === submission.id) &&
-          store.evaluation.submission.find((e: any) => e.id === submission.id).description.specs,
-      );
-    }
-  }, [store, submission]);
+    setLinks(storeSubmissionExists?.links);
+    setGithubLink(storeSubmissionExists?.github_link);
+    setTitleState(storeSubmissionExists?.name);
+    setSummary(storeSubmissionExists?.description.summary);
+    setDescription(storeSubmissionExists?.description.description);
+    setSpecs(storeSubmissionExists?.description.specs);
+  }, [storeSubmissionExists]);
 
   return (
     <Modal
@@ -160,9 +92,7 @@ const OutcomeModal = ({ handleClose, open, submission, store }: OutcomeModalProp
         sx={style}
         className="translate-x-[-5%] md:-translate-x-1/2 -translate-y-1/2 top-1/2 left-[10%] md:left-1/2 py-3 px-5 md:py-10 md:px-14 lg:w-[1166px] text-offblack"
       >
-        <h1 className="text-center text-xl md:text-[28px] text-blue-alt font-semibold">
-          {submission ? "Edit" : "Create"} Outcome
-        </h1>
+        <h1 className="text-center text-xl md:text-[28px] text-blue-alt font-semibold">Edit Outcome</h1>
 
         <button
           onClick={handleClose}
@@ -182,9 +112,9 @@ const OutcomeModal = ({ handleClose, open, submission, store }: OutcomeModalProp
                 name="name"
                 className="appearance-none w-full px-4 py-2 rounded-r-lg border border-gray focus:outline-none"
                 placeholder="Example Title 1"
-                value={submission ? titleState || "" : inputs.name || ""}
-                onChange={submission ? (e) => setTitleState(e.target.value) : handleChange}
-                onBlur={(e) => handleBlurTitle(e.target.value)}
+                value={titleState || ""}
+                onChange={(e) => setTitleState(e.target.value)}
+                onBlur={(e) => store.setSubmissionTitle(submission.id, e.target.value)}
               />
             </div>
             <p className="font-bold pb-1">Project Summary</p>
@@ -193,9 +123,9 @@ const OutcomeModal = ({ handleClose, open, submission, store }: OutcomeModalProp
               className="w-full min-h-[112px] px-8 py-3 rounded-lg border border-gray focus:outline-none"
               placeholder="XYZ is..."
               name="summary"
-              value={submission ? summary || "" : inputs.summary || ""}
-              onChange={submission ? (e) => setSummary(e.target.value) : handleChange}
-              onBlur={(e) => handleBlurDescription("summary", e.target.value)}
+              value={summary || ""}
+              onChange={(e) => setSummary(e.target.value)}
+              onBlur={(e) => store.setSubmissionDescription("summary", submission.id, e.target.value)}
             />
             <p className="font-bold pb-1">Progress Description</p>
 
@@ -204,19 +134,19 @@ const OutcomeModal = ({ handleClose, open, submission, store }: OutcomeModalProp
               className="w-full min-h-[112px] px-8 py-3 rounded-lg border border-gray focus:outline-none"
               placeholder="XYZ is..."
               name="description"
-              value={submission ? description || "" : inputs.description || ""}
-              onChange={submission ? (e) => setDescription(e.target.value) : handleChange}
-              onBlur={(e) => handleBlurDescription("description", e.target.value)}
+              value={description || ""}
+              onChange={(e) => setDescription(e.target.value)}
+              onBlur={(e) => store.setSubmissionDescription("description", submission.id, e.target.value)}
             />
             <p className="font-bold pb-1">FVM Tech Specs</p>
             <textarea
-              ref={specsRef}
+              ref={specsRef || ""}
               className="w-full min-h-[112px] px-8 py-3 rounded-lg border border-gray focus:outline-none"
               placeholder="XYZ is..."
               name="specs"
-              value={submission ? specs || "" : inputs.specs || ""}
-              onChange={submission ? (e) => setSpecs(e.target.value) : handleChange}
-              onBlur={(e) => handleBlurDescription("specs", e.target.value)}
+              value={specs}
+              onChange={(e) => setSpecs(e.target.value)}
+              onBlur={(e) => store.setSubmissionDescription("specs", submission.id, e.target.value)}
             />
           </div>
           <div className="flex flex-col justify-between ml-8 lg:min-w-[240px]">
@@ -237,7 +167,7 @@ const OutcomeModal = ({ handleClose, open, submission, store }: OutcomeModalProp
               <div className="py-1">
                 <button
                   className="flex items-center justify-center px-3 py-1 border border-[#dbdbdb] rounded-lg"
-                  onClick={() => handleOpenGithubModal(submission ? githubLink : null)}
+                  onClick={() => handleOpenGithubModal(githubLink)}
                 >
                   <span className="mr-3">
                     <Edit className="w-3 h-3" />
@@ -282,7 +212,7 @@ const OutcomeModal = ({ handleClose, open, submission, store }: OutcomeModalProp
             </div>
             <div className="ml-4">
               <button
-                onClick={submission ? handleClose : handleSubmit}
+                onClick={handleClose}
                 className="transition-colors duration-200 ease-in-out transform  outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold mx-auto border border-blue bg-blue hover:bg-blue-darkest hover:border-blue-darkest focus:bg-blue-darkest text-white text-lg px-3 py-1"
               >
                 Save
@@ -296,8 +226,6 @@ const OutcomeModal = ({ handleClose, open, submission, store }: OutcomeModalProp
           open={openLinkModal}
           link={linkModalContent}
           handleClose={() => handleCloseLinkModal()}
-          newLinks={newLinks}
-          setNewLinks={setNewLinks}
         />
 
         <SetGithubModal

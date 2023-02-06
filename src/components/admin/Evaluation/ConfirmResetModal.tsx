@@ -1,7 +1,6 @@
 import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
-import Fade from "@mui/material/Fade";
 import Close from "public/images/svg/Close";
 import Button from "src/components/shared/Button";
 
@@ -18,7 +17,7 @@ type ConfirmResetModalProps = {
   open: boolean;
 };
 
-const ConfirmResetModal = ({ handleClose, handleReset, open }: ConfirmResetModalProps) => {
+export default function ConfirmResetModal({ handleClose, handleReset, open }: ConfirmResetModalProps) {
   const handleResetAndClose = () => {
     handleReset();
     handleClose();
@@ -70,6 +69,4 @@ const ConfirmResetModal = ({ handleClose, handleReset, open }: ConfirmResetModal
       </Box>
     </Modal>
   );
-};
-
-export default ConfirmResetModal;
+}

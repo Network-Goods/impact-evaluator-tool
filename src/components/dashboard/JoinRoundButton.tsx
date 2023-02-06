@@ -3,7 +3,7 @@ import Add from "public/images/svg/Add";
 import Button from "src/components/shared/Button";
 import JoinRoundModal from "./JoinRoundModal";
 
-const JoinRoundButton = () => {
+export default function JoinRoundButton() {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -14,6 +14,4 @@ const JoinRoundButton = () => {
       <JoinRoundModal handleClose={handleClose} open={open} />
     </div>
   );
-};
-
-export default JoinRoundButton;
+}

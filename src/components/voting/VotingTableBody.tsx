@@ -7,7 +7,7 @@ type VotingTableBodyProps = {
   search: string;
 };
 
-const VotingTableBody = ({ idx, project, submissions, search }: VotingTableBodyProps) => {
+export default function VotingTableBody({ idx, project, submissions, search }: VotingTableBodyProps) {
   return (
     <div
       className={`px-4 md:px-12 pb-4 md:pb-6
@@ -47,6 +47,4 @@ const VotingTableBody = ({ idx, project, submissions, search }: VotingTableBodyP
       </div>
     </div>
   );
-};
-
-export default VotingTableBody;
+}

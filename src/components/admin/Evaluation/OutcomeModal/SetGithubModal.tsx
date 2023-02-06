@@ -22,7 +22,7 @@ type SetGithubModalProps = {
   setNewInputs?: any;
 };
 
-const SetGithubModal = ({
+export default function SetGithubModal({
   handleClose,
   link,
   submission,
@@ -30,7 +30,7 @@ const SetGithubModal = ({
   store,
   newInputs,
   setNewInputs,
-}: SetGithubModalProps) => {
+}: SetGithubModalProps) {
   const linkRef = useRef<HTMLInputElement | null>(null);
   const [inputs, setInputs] = useState<any>({});
   const [linkState, setLinkState] = useState(link ? link : "");
@@ -39,13 +39,11 @@ const SetGithubModal = ({
     const name = event.target.name;
     const value = event.target.value;
     setInputs((values: any) => ({ ...values, [name]: value }));
-    console.log("inputs", inputs);
   };
   const handleNewChange = (event: any) => {
     const name = event.target.name;
     const value = event.target.value;
     setNewInputs((values: any) => ({ ...values, [name]: value }));
-    console.log("inputs", newInputs);
   };
 
   const handleBlurLink = (value: any) => {
@@ -123,6 +121,4 @@ const SetGithubModal = ({
       </Box>
     </Modal>
   );
-};
-
-export default SetGithubModal;
+}

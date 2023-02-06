@@ -16,7 +16,7 @@ type RoundDetailsModalProps = {
   open: boolean;
 };
 
-const RoundDetailsModal = ({ handleClose, open }: RoundDetailsModalProps) => {
+export default function RoundDetailsModal({ handleClose, open }: RoundDetailsModalProps) {
   return (
     <Modal
       aria-labelledby="transition-modal-title"
@@ -88,6 +88,4 @@ const RoundDetailsModal = ({ handleClose, open }: RoundDetailsModalProps) => {
       </Fade>
     </Modal>
   );
-};
-
-export default RoundDetailsModal;
+}

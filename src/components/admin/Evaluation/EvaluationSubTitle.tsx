@@ -3,8 +3,6 @@ type SubTitleProps = {
   small?: boolean;
 };
 
-const EvaluationSubTitle = ({ text, small }: SubTitleProps) => {
+export default function EvaluationSubTitle({ text, small }: SubTitleProps) {
   return <h1 className={`text-gray-subtitle font-normal ${small ? "text-[15px]" : ""}`}>{text}</h1>;
-};
-
-export default EvaluationSubTitle;
+}

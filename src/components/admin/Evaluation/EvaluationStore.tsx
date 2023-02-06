@@ -25,7 +25,7 @@ export interface EvaluationStore {
   setGithubLink: (id: string, link: string) => void;
   deleteSubmissionLink: (title: string, id: string) => void;
   deleteSubmission: (id: string) => void;
-  createLiveSubmission: (submission: any) => void;
+  createLiveSubmission: (submission: any, id: string) => void;
 }
 
 export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
@@ -569,35 +569,35 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
       }
     });
   },
-  createLiveSubmission: async (inputs: any) => {
+  createLiveSubmission: async (inputs: any, id: string) => {
     const evaluation = get().evaluation;
 
     if (!evaluation) {
       return new Error("Evaluation not loaded");
     }
+    const newSubmission = {
+      ...inputs,
+      id: uuid(),
+      user_id: id,
+      evaluation_id: evaluation.id,
+    };
 
-    // const newSubmission = {
-    //   ...inputs,
-    //   id: uuid(),
-    //   evaluation_id: evaluation.id,
-    // };
+    set({
+      evaluation: {
+        ...evaluation,
+        submission: [...evaluation.submission, newSubmission],
+      },
+    });
 
-    // set({
-    //   evaluation: {
-    //     ...evaluation,
-    //     submission: [...evaluation.submission, newSubmission],
-    //   },
-    // });
-
-    // rpc
-    //   .call("createLiveSubmission", {
-    //     submission: newSubmission,
-    //   })
-    //   .then((data) => {
-    //     if (data instanceof Error) {
-    //       console.error(`ERROR -- rpc call createLiveSubmission failed`, data);
-    //       return;
-    //     }
-    //   });
+    rpc
+      .call("createLiveSubmission", {
+        submission: newSubmission,
+      })
+      .then((data) => {
+        if (data instanceof Error) {
+          console.error(`ERROR -- rpc call createLiveSubmission failed`, data);
+          return;
+        }
+      });
   },
 }));

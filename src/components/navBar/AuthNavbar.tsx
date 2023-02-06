@@ -9,7 +9,7 @@ import { useClickOutside } from "src/hooks/useClickOutside";
 import { useRouter } from "next/router";
 import DownChevron from "public/images/svg/DownChevron";
 
-const AuthNavbar = () => {
+export default function AuthNavbar() {
   const [toggle, setToggle] = useState(false);
   const logoutWrapperRef = useRef<HTMLInputElement>(null);
   const supabase = useSupabaseClient();
@@ -78,6 +78,4 @@ const AuthNavbar = () => {
       </div>
     </Navbar>
   );
-};
-
-export default AuthNavbar;
+}

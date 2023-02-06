@@ -4,7 +4,7 @@ import { useState } from "react";
 import Button from "src/components/shared/Button";
 import { useDashboardStore } from "./DashboardStore";
 
-const CreateEvaluationButton = () => {
+export default function CreateEvaluationButton() {
   const dashboardStore = useDashboardStore();
   const [disabled, set_disabled] = useState(false);
   const router = useRouter();
@@ -34,6 +34,4 @@ const CreateEvaluationButton = () => {
       />
     </div>
   );
-};
-
-export default CreateEvaluationButton;
+}

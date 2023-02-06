@@ -2,7 +2,7 @@ type LayoutProps = {
   children?: React.ReactNode;
 };
 
-const Layout = ({ children }: LayoutProps) => {
+export default function Layout({ children }: LayoutProps) {
   return (
     <div
       className="w-full min-h-screen h-full bg-[#fafafa] text-offblack flex flex-col relative"
@@ -12,6 +12,4 @@ const Layout = ({ children }: LayoutProps) => {
       {children}
     </div>
   );
-};
-
-export default Layout;
+}

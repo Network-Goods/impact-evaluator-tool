@@ -13,11 +13,13 @@ import EvaluationTitle from "./EvaluationTitle";
 import Delete from "public/images/svg/Delete";
 import Plus from "public/images/svg/Plus";
 import { DateTimePicker } from "./DateTimePicker";
+import AddOutcomeModal from "./OutcomeModal/AddOutcomeModal";
 
 export default function Evaluation() {
   const ref = useRef<any>(null);
 
-  const [openEditOutcomeModal, setOpenOutcomeModal] = useState(false);
+  const [openEditOutcomeModal, setOpenEditOutcomeModal] = useState(false);
+  const [openNewOutcomeModal, setOpenNewOutcomeModal] = useState(false);
   const [outcomeModalContent, setOutcomeModalContent] = useState({});
   const [openEvaluatorModal, setOpenEvaluatorModal] = useState(false);
   const [evaluatorModalContent, setEvaluatorModalContent] = useState({});
@@ -42,12 +44,13 @@ export default function Evaluation() {
 
   const handleOpenOutcomeModal = (submission?: any) => {
     setOutcomeModalContent(submission ? submission : null);
-    setOpenOutcomeModal(true);
+    setOpenEditOutcomeModal(true);
   };
   const handleCloseEditOutcomeModal = () => {
-    setOpenOutcomeModal(false);
+    setOpenEditOutcomeModal(false);
     setOutcomeModalContent({});
   };
+
   const handleOpenEvaluatorModal = (evaluator?: any) => {
     setEvaluatorModalContent(evaluator ? evaluator : null);
     setOpenEvaluatorModal(true);
@@ -167,7 +170,7 @@ export default function Evaluation() {
             <EvaluationSubTitle text="Outcomes" />
             <div>
               <button
-                onClick={() => handleOpenOutcomeModal()}
+                onClick={() => setOpenNewOutcomeModal(true)}
                 className="flex items-center justify-center border border-blue rounded w-[19px] h-5"
               >
                 <Plus className="stroke-blue w-3 h-3" />
@@ -198,6 +201,12 @@ export default function Evaluation() {
           store={store}
           open={openEditOutcomeModal}
           handleClose={handleCloseEditOutcomeModal}
+          submission={outcomeModalContent}
+        />
+        <AddOutcomeModal
+          store={store}
+          open={openNewOutcomeModal}
+          handleClose={() => setOpenNewOutcomeModal(false)}
           submission={outcomeModalContent}
         />
         <EvaluatorModal
