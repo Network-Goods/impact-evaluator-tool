@@ -110,32 +110,32 @@ const OutcomeModal = ({ handleClose, open, submission, store }: OutcomeModalProp
                 type="text"
                 name="name"
                 className="appearance-none w-full px-4 py-2 rounded-r-lg border border-gray focus:outline-none"
-                placeholder="Example Title 1"
+                placeholder="Example Title"
                 value={titleState || ""}
                 onChange={(e) => setTitleState(e.target.value)}
                 onBlur={(e) => store.setSubmissionTitle(submission.id, e.target.value)}
               />
             </div>
-            <p className="font-bold pb-1">Project Summary</p>
+            <p className="font-bold pb-1">Project Description</p>
             <textarea
               ref={summaryRef}
-              className="w-full min-h-[112px] px-8 py-3 rounded-lg border border-gray focus:outline-none"
-              placeholder="XYZ is..."
-              name="summary"
-              value={summary || ""}
-              onChange={(e) => setSummary(e.target.value)}
-              onBlur={(e) => store.setSubmissionDescription("summary", submission.id, e.target.value)}
-            />
-            <p className="font-bold pb-1">Progress Description</p>
-
-            <textarea
-              ref={descriptionRef}
               className="w-full min-h-[112px] px-8 py-3 rounded-lg border border-gray focus:outline-none"
               placeholder="XYZ is..."
               name="description"
               value={description || ""}
               onChange={(e) => setDescription(e.target.value)}
               onBlur={(e) => store.setSubmissionDescription("description", submission.id, e.target.value)}
+            />
+            <p className="font-bold pb-1">Progress Summary</p>
+
+            <textarea
+              ref={descriptionRef}
+              className="w-full min-h-[112px] px-8 py-3 rounded-lg border border-gray focus:outline-none"
+              placeholder="XYZ is..."
+              name="summary"
+              value={summary || ""}
+              onChange={(e) => setSummary(e.target.value)}
+              onBlur={(e) => store.setSubmissionDescription("summary", submission.id, e.target.value)}
             />
             <p className="font-bold pb-1">FVM Tech Specs</p>
             <textarea

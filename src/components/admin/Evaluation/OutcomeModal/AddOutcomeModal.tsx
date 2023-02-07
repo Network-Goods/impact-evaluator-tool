@@ -128,21 +128,21 @@ export default function AddOutcomeModal({ handleClose, open, submission, store }
                 onChange={handleChange}
               />
             </div>
-            <p className="font-bold pb-1">Project Summary</p>
+            <p className="font-bold pb-1">Project Description</p>
             <textarea
               className="w-full min-h-[112px] px-8 py-3 rounded-lg border border-gray focus:outline-none"
               placeholder="XYZ is..."
-              name="summary"
-              value={inputs.description?.summary || ""}
+              name="description"
+              value={inputs.description?.description || ""}
               onChange={handleChange}
             />
-            <p className="font-bold pb-1">Progress Description</p>
+            <p className="font-bold pb-1">Progress Summary</p>
 
             <textarea
               className="w-full min-h-[112px] px-8 py-3 rounded-lg border border-gray focus:outline-none"
               placeholder="So far we have..."
-              name="description"
-              value={inputs.description?.description || ""}
+              name="summary"
+              value={inputs.description?.summary || ""}
               onChange={handleChange}
             />
             <p className="font-bold pb-1">FVM Tech Specs</p>
