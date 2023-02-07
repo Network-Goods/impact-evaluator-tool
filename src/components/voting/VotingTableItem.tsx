@@ -1,6 +1,8 @@
 import DownChevron from "public/images/svg/DownChevron";
 import { useVotingStore } from "./VotingStore";
+import { useUserProfileStore } from "src/lib/UserProfileStore";
 import { filterSubmissions } from "src/lib/utils";
+import SelfDealingTooltip from "./SelfDealingTooltip";
 
 type VotingTableItemProps = {
   project: any;
@@ -20,6 +22,9 @@ export default function VotingTableItem({
   setOpenArray,
 }: VotingTableItemProps) {
   const votingStore = useVotingStore();
+  const userProfileStore = useUserProfileStore();
+
+  console.log("pro", userProfileStore.profile?.github_handle);
 
   return (
     <div
@@ -72,22 +77,40 @@ export default function VotingTableItem({
             <span className="outline-none focus:outline-none text-center text-xl md:text-3xl text-blue-darkest md:w-9">
               {votingStore.getVotes(project.id) || 0}
             </span>
-
-            <button
-              onClick={() => votingStore.incrementVote(project.id)}
-              className={`w-6 h-6 md:w-9 md:h-9 rounded outline-none
+            {userProfileStore.profile?.github_handle === project.github_handle ? (
+              <SelfDealingTooltip>
+                <div className="pointer-events-none">
+                  <button
+                    className={`w-6 h-6 md:w-9 md:h-9 rounded outline-none
+               bg-blue-light bg-opacity-50
+            `}
+                  >
+                    <span
+                      className={`m-auto md:text-2xl font-semibold text-blue text-opacity-30
+                  `}
+                    >
+                      +
+                    </span>
+                  </button>
+                </div>
+              </SelfDealingTooltip>
+            ) : (
+              <button
+                onClick={() => votingStore.incrementVote(project.id)}
+                className={`w-6 h-6 md:w-9 md:h-9 rounded outline-none
                 ${votingStore.canVoteAgain(project.id) ? "bg-blue-light bg-opacity-50" : "bg-blue-light"}
             `}
-              disabled={votingStore.canVoteAgain(project.id)}
-            >
-              <span
-                className={`m-auto md:text-2xl font-semibold 
+                disabled={votingStore.canVoteAgain(project.id)}
+              >
+                <span
+                  className={`m-auto md:text-2xl font-semibold 
                   ${votingStore.canVoteAgain(project.id) ? "text-blue text-opacity-30" : "text-blue"}
                   `}
-              >
-                +
-              </span>
-            </button>
+                >
+                  +
+                </span>
+              </button>
+            )}
           </div>
         </div>
       </div>
