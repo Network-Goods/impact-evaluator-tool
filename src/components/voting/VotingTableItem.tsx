@@ -24,8 +24,6 @@ export default function VotingTableItem({
   const votingStore = useVotingStore();
   const userProfileStore = useUserProfileStore();
 
-  console.log("pro", userProfileStore.profile?.github_handle);
-
   return (
     <div
       className={`flex items-center pl-4 md:px-6 border border-gray border-x-0 border-b-0 ${
