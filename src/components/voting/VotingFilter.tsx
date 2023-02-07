@@ -10,13 +10,13 @@ type VotingFilter = {
   handleSetAllProjectsView: any;
 };
 
-const VotingFilter = ({
+export default function VotingFilter({
   setSearch,
   projectsViewWrapperRef,
   openProjectsView,
   setOpenProjectsView,
   handleSetAllProjectsView,
-}: VotingFilter) => {
+}: VotingFilter) {
   return (
     <div className="flex flex-col md:flex-row">
       <div className="mb-1 md:mr-2">
@@ -27,7 +27,7 @@ const VotingFilter = ({
           type="text"
           placeholder="Search"
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full lg:w-[550px] z-20 inline-flex justify-center px-14 py-2 text-[20px] font-medium bg-white rounded-lg border border-gray 
+          className="w-full lg:w-[550px] z-20 inline-flex justify-center px-14 py-2 text-[20px] font-medium bg-white rounded-lg border border-gray focus:outline-none
           "
         />
       </div>
@@ -72,6 +72,4 @@ const VotingFilter = ({
       </div>
     </div>
   );
-};
-
-export default VotingFilter;
+}

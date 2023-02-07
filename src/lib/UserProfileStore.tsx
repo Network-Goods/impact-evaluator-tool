@@ -1,4 +1,4 @@
-import create from "zustand";
+import { create } from "zustand";
 import { rpc, UserProfile } from "../lib";
 
 export type UserProfileStore = {

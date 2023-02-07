@@ -72,7 +72,6 @@ export default function Voting() {
           submissions={store.submissions}
           openArray={openArray}
           setOpenArray={setOpenArray}
-          evaluation_id={evaluation_id}
         />
         <div>
           <VotingCreditCounter
