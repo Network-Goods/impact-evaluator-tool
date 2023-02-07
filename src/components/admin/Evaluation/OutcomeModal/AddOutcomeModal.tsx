@@ -128,7 +128,7 @@ export default function AddOutcomeModal({ handleClose, open, submission, store }
                 onChange={handleChange}
               />
             </div>
-            <p className="font-bold pb-1">Project Summary</p>
+            <p className="font-bold pb-1">Project Description</p>
             <textarea
               className="w-full min-h-[112px] px-8 py-3 rounded-lg border border-gray focus:outline-none"
               placeholder="XYZ is..."
@@ -136,7 +136,7 @@ export default function AddOutcomeModal({ handleClose, open, submission, store }
               value={inputs.description?.summary || ""}
               onChange={handleChange}
             />
-            <p className="font-bold pb-1">Progress Description</p>
+            <p className="font-bold pb-1">Progress Summary</p>
 
             <textarea
               className="w-full min-h-[112px] px-8 py-3 rounded-lg border border-gray focus:outline-none"

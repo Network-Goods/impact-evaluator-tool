@@ -116,7 +116,7 @@ const OutcomeModal = ({ handleClose, open, submission, store }: OutcomeModalProp
                 onBlur={(e) => store.setSubmissionTitle(submission.id, e.target.value)}
               />
             </div>
-            <p className="font-bold pb-1">Project Summary</p>
+            <p className="font-bold pb-1">Project Description</p>
             <textarea
               ref={summaryRef}
               className="w-full min-h-[112px] px-8 py-3 rounded-lg border border-gray focus:outline-none"
@@ -126,7 +126,7 @@ const OutcomeModal = ({ handleClose, open, submission, store }: OutcomeModalProp
               onChange={(e) => setSummary(e.target.value)}
               onBlur={(e) => store.setSubmissionDescription("summary", submission.id, e.target.value)}
             />
-            <p className="font-bold pb-1">Progress Description</p>
+            <p className="font-bold pb-1">Progress Summary</p>
 
             <textarea
               ref={descriptionRef}
