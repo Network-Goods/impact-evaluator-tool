@@ -25,6 +25,7 @@ import {
   setSubmissionTitle,
   setLink,
   setGithubLink,
+  setGithubHandle,
   setSubmissionDescription,
 } from "./methods";
 
@@ -55,5 +56,6 @@ export const MethodLookup = {
   setSubmissionTitle,
   setLink,
   setGithubLink,
+  setGithubHandle,
   setSubmissionDescription,
 };

@@ -30,7 +30,6 @@ export default function SetLinkModal({ handleClose, link, submission, open, stor
     const name = event.target.name;
     const value = event.target.value;
     setInputs((values: any) => ({ ...values, [name]: value }));
-    console.log(inputs);
   };
 
   const handleBlurTitle = (value: any) => {
