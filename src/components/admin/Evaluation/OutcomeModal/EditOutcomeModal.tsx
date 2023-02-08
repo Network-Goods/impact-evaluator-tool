@@ -175,7 +175,7 @@ const OutcomeModal = ({ handleClose, open, submission, store }: OutcomeModalProp
                 </button>
               </div>
               {links &&
-                Object.entries(links).map((link, idx) => {
+                links.map((link: any, idx: number) => {
                   return (
                     <div className="flex justify-between py-1" key={idx}>
                       <button
@@ -185,11 +185,11 @@ const OutcomeModal = ({ handleClose, open, submission, store }: OutcomeModalProp
                         <span className="mr-3">
                           <Edit className="w-3 h-3 fill-offblack" />
                         </span>
-                        <span>{link[0]}</span>
+                        <span>{link.name}</span>
                       </button>
                       <div>
                         <button
-                          onClick={() => store.deleteSubmissionLink(link[0], submission.id)}
+                          onClick={() => store.deleteSubmissionLink(link.name, submission.id)}
                           className="bg-blue bg-opacity-5 px-3 py-[6.5px] rounded-lg"
                         >
                           <Delete className="w-3 h-5" />

@@ -65,9 +65,7 @@ export default function AddOutcomeModal({ handleClose, open, submission, store }
   };
 
   const handleSubmit = () => {
-    const submissionInputs = newLinks[0]
-      ? { ...inputs, links: newLinks.reduce((a: any, v: any) => ({ ...a, ...v }), {}) }
-      : inputs;
+    const submissionInputs = newLinks[0] ? { ...inputs, links: newLinks } : inputs;
 
     store.createLiveSubmission(submissionInputs, userProfileStore.profile?.id);
     handleClose();
@@ -88,7 +86,7 @@ export default function AddOutcomeModal({ handleClose, open, submission, store }
       !inputs.github_link
     );
   };
-
+  console.log("newLinks", newLinks);
   return (
     <Modal
       aria-labelledby="transition-modal-title"
@@ -191,7 +189,7 @@ export default function AddOutcomeModal({ handleClose, open, submission, store }
                         <span className="mr-3">
                           <Edit className="w-3 h-3 fill-charcoal" />
                         </span>
-                        <span>{Object.keys(link)[0]}</span>
+                        <span>{link.name}</span>
                       </button>
                       <div>
                         <button
