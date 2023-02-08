@@ -23,6 +23,7 @@ export interface EvaluationStore {
   setSubmissionLinkTitle: (oldTitle: string, id: string, newTitle: string) => void;
   setSubmissionLink: (title: string, id: string, link: string) => void;
   setGithubLink: (id: string, link: string) => void;
+  setGithubHandle: (id: string, handle: string) => void;
   createSubmissionLink: (link: any, id: string) => void;
   deleteSubmissionLink: (title: string, id: string) => void;
   deleteSubmission: (id: string) => void;
@@ -517,6 +518,39 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
         return;
       }
     });
+  },
+  setGithubHandle: (id: string, handle: string) => {
+    const evaluation = get().evaluation;
+
+    if (!evaluation) {
+      return new Error("Evaluation not loaded");
+    }
+    set({
+      evaluation: {
+        ...evaluation,
+        submission: evaluation.submission.map((e: any) => {
+          if (e.id === id) {
+            return {
+              ...e,
+              github_handle: handle,
+            };
+          }
+          return e;
+        }),
+      },
+    });
+
+    rpc
+      .call("setGithubHandle", {
+        id: id,
+        github_handle: handle,
+      })
+      .then((data) => {
+        if (data instanceof Error) {
+          console.error(`ERROR -- rpc call setResetVotes failed`, data);
+          return;
+        }
+      });
   },
   createSubmissionLink: (link: any, id: string) => {
     const evaluation = get().evaluation;
