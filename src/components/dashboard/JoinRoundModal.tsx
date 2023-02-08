@@ -86,6 +86,11 @@ const JoinRoundModal = ({ handleClose, open }: JoinRoundModalProps) => {
     }
   };
 
+  const is_join_button_disabled = !inputs.code && (checked ? !githubEmail : !inputs.email);
+  console.log(
+    `joinbutton: ${is_join_button_disabled}, checked: ${checked}, githubEmail: ${githubEmail}, email: ${inputs.email}`,
+  );
+
   return (
     <Modal
       aria-labelledby="transition-modal-title"
@@ -167,13 +172,13 @@ const JoinRoundModal = ({ handleClose, open }: JoinRoundModalProps) => {
             <input
               className={`transition-colors duration-200 ease-in-out transform outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold mx-auto
                 px-6 py-1 border border-blue bg-blue text-white text-lg ${error ? "mt-2 mb-8" : "my-8"} ${
-                inputs.code && inputs.email
-                  ? "cursor-pointer hover:bg-blue-darkest hover:border-blue-darkest"
-                  : "opacity-50 cursor-not-allowed"
+                is_join_button_disabled
+                  ? "opacity-50 cursor-not-allowed"
+                  : "cursor-pointer hover:bg-blue-darkest hover:border-blue-darkest"
               }`}
               type="submit"
               value="Join"
-              disabled={inputs.code && inputs.email ? false : true}
+              disabled={is_join_button_disabled}
             />
           </form>
         </Box>
