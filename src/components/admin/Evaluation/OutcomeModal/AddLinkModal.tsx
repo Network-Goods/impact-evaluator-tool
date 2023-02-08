@@ -25,21 +25,22 @@ export default function AddLinkModal({ handleClose, link, open, index, newLinks,
   const titleRef = useRef<HTMLInputElement | null>(null);
   const linkRef = useRef<HTMLInputElement | null>(null);
   const [inputs, setInputs] = useState<any>({});
-  const [titleState, setTitleState] = useState(link ? Object.keys(link)[0] : "");
-  const [linkState, setLinkState] = useState(link ? Object.values(link)[0] : "");
+  const [titleState, setTitleState] = useState(link ? link.name : "");
+  const [linkState, setLinkState] = useState(link ? link.value : "");
 
   const handleChange = (event: any) => {
     const name = event.target.name;
     const value = event.target.value;
 
     setInputs((values: any) => ({ ...values, [name]: value }));
+    console.log(inputs);
   };
 
   const handleBlurTitle = (value: string) => {
     if (link) {
       const newArr = newLinks.map((link: any, idx: number) => {
         if (index === idx) {
-          return { [value]: Object.values(link)[0] };
+          return { name: value, value: link.value };
         } else {
           return link;
         }
@@ -52,7 +53,7 @@ export default function AddLinkModal({ handleClose, link, open, index, newLinks,
     if (link) {
       const newArr = newLinks.map((link: any, idx: number) => {
         if (index === idx) {
-          return { [Object.keys(link)[0]]: value };
+          return { name: link.name, value: value };
         } else {
           return link;
         }
@@ -62,15 +63,15 @@ export default function AddLinkModal({ handleClose, link, open, index, newLinks,
   };
 
   const handleCreateLink = () => {
-    setNewLinks((values: any) => [...values, { [inputs.title]: inputs.link }]);
+    setNewLinks((values: any) => [...values, { name: inputs.title, value: inputs.link }]);
     handleClose();
     setInputs({});
   };
 
   useEffect(() => {
     if (link) {
-      setTitleState(Object.keys(link)[0]);
-      setLinkState(Object.values(link)[0]);
+      setTitleState(link.name);
+      setLinkState(link.value);
     }
   }, [link]);
 

@@ -23,6 +23,7 @@ export interface EvaluationStore {
   setSubmissionLinkTitle: (oldTitle: string, id: string, newTitle: string) => void;
   setSubmissionLink: (title: string, id: string, link: string) => void;
   setGithubLink: (id: string, link: string) => void;
+  createSubmissionLink: (link: any, id: string) => void;
   deleteSubmissionLink: (title: string, id: string) => void;
   deleteSubmission: (id: string) => void;
   createLiveSubmission: (submission: any, id: string) => void;
@@ -416,16 +417,16 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
       return;
     }
 
-    const oldObj = evaluation.submission.find((e: any) => e.id === id).links;
-    const newObj = Object.keys(oldObj).reduce((obj: any, key: any) => {
-      if (key === oldTitle) {
-        obj[newTitle] = oldObj[key];
-      } else {
-        obj[key] = oldObj[key];
+    const oldArr = evaluation.submission.find((e: any) => e.id === id).links;
+    const newArr = oldArr.map((e: any) => {
+      if (e.name === oldTitle) {
+        return {
+          ...e,
+          name: newTitle,
+        };
       }
-      return obj;
-    }, {});
-
+      return e;
+    });
     set({
       evaluation: {
         ...evaluation,
@@ -433,7 +434,7 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
           if (e.id === id) {
             return {
               ...e,
-              links: newObj,
+              links: newArr,
             };
           }
           return e;
@@ -441,7 +442,7 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
       },
     });
 
-    rpc.call("setLink", { newObj: newObj, id: id }).then((data) => {
+    rpc.call("setLink", { newArr: newArr, id: id }).then((data) => {
       if (data instanceof Error) {
         console.error(`ERROR -- rpc call setEvaluationName failed`, data);
         return;
@@ -454,12 +455,17 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
     if (!evaluation) {
       return;
     }
-    const oldObj = evaluation.submission.find((e: any) => e.id === id).links;
+    const oldArr = evaluation.submission.find((e: any) => e.id === id).links;
+    const newArr = oldArr.map((e: any) => {
+      if (e.name === title) {
+        return {
+          ...e,
+          value: link,
+        };
+      }
+      return e;
+    });
 
-    const newObj = {
-      ...oldObj,
-      [title]: link,
-    };
     set({
       evaluation: {
         ...evaluation,
@@ -467,7 +473,7 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
           if (e.id === id) {
             return {
               ...e,
-              links: newObj,
+              links: newArr,
             };
           }
           return e;
@@ -475,7 +481,7 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
       },
     });
 
-    rpc.call("setLink", { newObj: newObj, id: id }).then((data) => {
+    rpc.call("setLink", { newArr: newArr, id: id }).then((data) => {
       if (data instanceof Error) {
         console.error(`ERROR -- rpc call setEvaluationName failed`, data);
         return;
@@ -512,20 +518,28 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
       }
     });
   },
-  deleteSubmissionLink: (title: string, id: string) => {
+  createSubmissionLink: (link: any, id: string) => {
     const evaluation = get().evaluation;
 
     if (!evaluation) {
       return;
     }
-    const oldObj = evaluation.submission.find((e: any) => e.id === id).links;
+    const oldArr = evaluation.submission.find((e: any) => e.id === id).links;
+    const newArr = oldArr
+      ? [
+          ...oldArr,
+          {
+            name: link.title,
+            value: link.link,
+          },
+        ]
+      : [
+          {
+            name: link.title,
+            value: link.link,
+          },
+        ];
 
-    const newObj = Object.keys(oldObj).reduce((obj: any, key: any) => {
-      if (key !== title) {
-        obj[key] = oldObj[key];
-      }
-      return obj;
-    }, {});
     set({
       evaluation: {
         ...evaluation,
@@ -533,7 +547,7 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
           if (e.id === id) {
             return {
               ...e,
-              links: newObj,
+              links: newArr,
             };
           }
           return e;
@@ -541,7 +555,38 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
       },
     });
 
-    rpc.call("setLink", { newObj: newObj, id: id }).then((data) => {
+    rpc.call("setLink", { newArr: newArr, id: id }).then((data) => {
+      if (data instanceof Error) {
+        console.error(`ERROR -- rpc call setEvaluationName failed`, data);
+        return;
+      }
+    });
+  },
+  deleteSubmissionLink: (title: string, id: string) => {
+    const evaluation = get().evaluation;
+
+    if (!evaluation) {
+      return;
+    }
+    const oldArr = evaluation.submission.find((e: any) => e.id === id).links;
+    const newArr = oldArr.filter((e: any) => e.name !== title);
+
+    set({
+      evaluation: {
+        ...evaluation,
+        submission: evaluation.submission.map((e: any) => {
+          if (e.id === id) {
+            return {
+              ...e,
+              links: newArr,
+            };
+          }
+          return e;
+        }),
+      },
+    });
+
+    rpc.call("setLink", { newArr: newArr, id: id }).then((data) => {
       if (data instanceof Error) {
         console.error(`ERROR -- rpc call setEvaluationName failed`, data);
         return;
@@ -578,7 +623,6 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
     const newSubmission = {
       ...inputs,
       id: uuid(),
-      user_id: id,
       evaluation_id: evaluation.id,
     };
 
