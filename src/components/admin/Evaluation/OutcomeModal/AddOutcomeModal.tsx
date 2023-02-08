@@ -83,10 +83,10 @@ export default function AddOutcomeModal({ handleClose, open, submission, store }
       !inputs.description?.summary ||
       !inputs.description?.description ||
       !inputs.description?.specs ||
-      !inputs.github_link
+      !inputs.github_link ||
+      !inputs.github_handle
     );
   };
-  console.log("newLinks", newLinks);
   return (
     <Modal
       aria-labelledby="transition-modal-title"
@@ -204,6 +204,17 @@ export default function AddOutcomeModal({ handleClose, open, submission, store }
                     </div>
                   );
                 })}
+            </div>
+            <div>
+              <p className="font-bold pb-1">GitHub handle for representative:</p>
+              <input
+                type="text"
+                name="github_handle"
+                className="appearance-none w-full px-4 py-2 rounded-lg border border-gray focus:outline-none"
+                placeholder="geohot"
+                value={inputs.github_handle || ""}
+                onChange={handleChange}
+              />
             </div>
           </div>
         </div>

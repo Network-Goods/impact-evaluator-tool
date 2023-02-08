@@ -23,5 +23,6 @@ export * from "./setEmail";
 export * from "./createInvitation";
 export * from "./setLink";
 export * from "./setGithubLink";
+export * from "./setGithubHandle";
 export * from "./setSubmissionTitle";
 export * from "./setSubmissionDescription";

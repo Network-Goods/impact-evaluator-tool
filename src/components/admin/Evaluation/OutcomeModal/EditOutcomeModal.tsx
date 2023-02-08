@@ -39,6 +39,7 @@ const OutcomeModal = ({ handleClose, open, submission, store }: OutcomeModalProp
   const [titleState, setTitleState] = useState(storeSubmissionExists?.name);
   const [links, setLinks] = useState<any>(storeSubmissionExists?.links);
   const [githubLink, setGithubLink] = useState<any>(storeSubmissionExists?.github_link);
+  const [githubHandle, setGithubHandle] = useState<any>(storeSubmissionExists?.github_link);
   const [summary, setSummary] = useState<any>(storeSubmissionExists?.description.summary);
   const [description, setDescription] = useState<any>(storeSubmissionExists?.description.description);
   const [specs, setSpecs] = useState<any>(storeSubmissionExists?.description.specs);
@@ -69,6 +70,7 @@ const OutcomeModal = ({ handleClose, open, submission, store }: OutcomeModalProp
   useEffect(() => {
     setLinks(storeSubmissionExists?.links);
     setGithubLink(storeSubmissionExists?.github_link);
+    setGithubHandle(storeSubmissionExists?.github_handle);
     setTitleState(storeSubmissionExists?.name);
     setSummary(storeSubmissionExists?.description.summary);
     setDescription(storeSubmissionExists?.description.description);
@@ -198,6 +200,18 @@ const OutcomeModal = ({ handleClose, open, submission, store }: OutcomeModalProp
                     </div>
                   );
                 })}
+            </div>
+            <div>
+              <p className="font-bold pb-1">GitHub handle for representative:</p>
+              <input
+                type="text"
+                name="github_handle"
+                className="appearance-none w-full px-4 py-2 rounded-lg border border-gray focus:outline-none"
+                placeholder="geohot"
+                value={githubHandle || ""}
+                onChange={(e) => setGithubHandle(e.target.value)}
+                onBlur={(e) => store.setGithubHandle(submission.id, e.target.value)}
+              />
             </div>
           </div>
         </div>
