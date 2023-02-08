@@ -27,7 +27,7 @@ type JoinRoundModalProps = {
 
 const JoinRoundModal = ({ handleClose, open }: JoinRoundModalProps) => {
   const [inputs, setInputs] = useState<any>({});
-  const [checked, setChecked] = useState(false);
+  const [checked, setChecked] = useState(true);
   const [error, setError] = useState("");
   const session = useSession();
   const supabase = useSupabaseClient();
