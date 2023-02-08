@@ -2,15 +2,15 @@ import { isAdmin, ServerParams } from "..";
 
 type Params = {
   id: string;
-  newObj: any;
+  newArr: any;
 };
 
-export async function setLink({ supabase, params: { id, newObj }, auth }: ServerParams<Params>): Promise<void | Error> {
+export async function setLink({ supabase, params: { id, newArr }, auth }: ServerParams<Params>): Promise<void | Error> {
   if (!isAdmin(auth)) {
     return new Error(`Unauthorized`);
   }
 
-  const { data, error } = await supabase.from("submission").update({ links: newObj }).eq("id", id);
+  const { data, error } = await supabase.from("submission").update({ links: newArr }).eq("id", id);
 
   if (error) {
     console.error(error);

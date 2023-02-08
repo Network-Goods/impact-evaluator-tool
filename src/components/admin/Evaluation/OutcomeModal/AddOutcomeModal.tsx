@@ -65,9 +65,7 @@ export default function AddOutcomeModal({ handleClose, open, submission, store }
   };
 
   const handleSubmit = () => {
-    const submissionInputs = newLinks[0]
-      ? { ...inputs, links: newLinks.reduce((a: any, v: any) => ({ ...a, ...v }), {}) }
-      : inputs;
+    const submissionInputs = newLinks[0] ? { ...inputs, links: newLinks } : inputs;
 
     store.createLiveSubmission(submissionInputs, userProfileStore.profile?.id);
     handleClose();
@@ -85,10 +83,10 @@ export default function AddOutcomeModal({ handleClose, open, submission, store }
       !inputs.description?.summary ||
       !inputs.description?.description ||
       !inputs.description?.specs ||
-      !inputs.github_link
+      !inputs.github_link ||
+      !inputs.github_handle
     );
   };
-
   return (
     <Modal
       aria-labelledby="transition-modal-title"
@@ -132,8 +130,8 @@ export default function AddOutcomeModal({ handleClose, open, submission, store }
             <textarea
               className="w-full min-h-[112px] px-8 py-3 rounded-lg border border-gray focus:outline-none"
               placeholder="XYZ is..."
-              name="summary"
-              value={inputs.description?.summary || ""}
+              name="description"
+              value={inputs.description?.description || ""}
               onChange={handleChange}
             />
             <p className="font-bold pb-1">Progress Summary</p>
@@ -141,8 +139,8 @@ export default function AddOutcomeModal({ handleClose, open, submission, store }
             <textarea
               className="w-full min-h-[112px] px-8 py-3 rounded-lg border border-gray focus:outline-none"
               placeholder="So far we have..."
-              name="description"
-              value={inputs.description?.description || ""}
+              name="summary"
+              value={inputs.description?.summary || ""}
               onChange={handleChange}
             />
             <p className="font-bold pb-1">FVM Tech Specs</p>
@@ -191,7 +189,7 @@ export default function AddOutcomeModal({ handleClose, open, submission, store }
                         <span className="mr-3">
                           <Edit className="w-3 h-3 fill-charcoal" />
                         </span>
-                        <span>{Object.keys(link)[0]}</span>
+                        <span>{link.name}</span>
                       </button>
                       <div>
                         <button
@@ -206,6 +204,17 @@ export default function AddOutcomeModal({ handleClose, open, submission, store }
                     </div>
                   );
                 })}
+            </div>
+            <div>
+              <p className="font-bold pb-1">GitHub handle for representative:</p>
+              <input
+                type="text"
+                name="github_handle"
+                className="appearance-none w-full px-4 py-2 rounded-lg border border-gray focus:outline-none"
+                placeholder="geohot"
+                value={inputs.github_handle || ""}
+                onChange={handleChange}
+              />
             </div>
           </div>
         </div>

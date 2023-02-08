@@ -45,19 +45,19 @@ export default function RoundDetailsModal({ handleClose, open }: RoundDetailsMod
             </button>
           </div>
           <div className="md:text-lg">
-            <p className="py-3">
+            <div className="py-3">
               This Impact Evaluator (IE) round is part of the Space Warp program, which leads up to the mainnet launch
               of the Filecoin Virtual Machine (FVM). The recurring IE rounds crowdsource the community’s perspective on
               the most valuable work being done on the FVM, which populates the{" "}
               <span className="font-bold">FVM Builders Leaderboard</span> and directs the allocation of a $75,000 prize
               pool.
-            </p>
-            <p className="py-3">
+            </div>
+            <div className="py-3">
               Impact Evaluators are a type of funding mechanism that Protocol Labs is working to define and grow. By
               transparently measuring, evaluating, and rewarding valuable projects over time, this project aims to
               increase the efficiency of public goods funding for the Filecoin ecosystem.
-            </p>
-            <p className="py-3">
+            </div>
+            <div className="py-3">
               To learn more about Space Warp’s Impact Evaluator Rounds, see:
               <ul className="list-disc ml-6">
                 <li>
@@ -73,16 +73,15 @@ export default function RoundDetailsModal({ handleClose, open }: RoundDetailsMod
                 <li>
                   <a
                     className="text-blue hover:text-blue-dark font-bold underline"
-                    href="https://spacewarp.fvm.dev/"
+                    href="https://spacewarp.fvm.dev/#ie"
                     target="_blank"
                     rel="noreferrer"
                   >
-                    Space Warp Website
+                    FVM Builders Leaderboard
                   </a>
-                  , which will feature Round 1 results of FVM Builders Leaderboard once the round is complete
                 </li>
               </ul>
-            </p>
+            </div>
           </div>
         </Box>
       </Fade>

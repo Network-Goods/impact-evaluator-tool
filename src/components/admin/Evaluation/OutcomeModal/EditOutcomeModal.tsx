@@ -39,6 +39,7 @@ const OutcomeModal = ({ handleClose, open, submission, store }: OutcomeModalProp
   const [titleState, setTitleState] = useState(storeSubmissionExists?.name);
   const [links, setLinks] = useState<any>(storeSubmissionExists?.links);
   const [githubLink, setGithubLink] = useState<any>(storeSubmissionExists?.github_link);
+  const [githubHandle, setGithubHandle] = useState<any>(storeSubmissionExists?.github_link);
   const [summary, setSummary] = useState<any>(storeSubmissionExists?.description.summary);
   const [description, setDescription] = useState<any>(storeSubmissionExists?.description.description);
   const [specs, setSpecs] = useState<any>(storeSubmissionExists?.description.specs);
@@ -69,6 +70,7 @@ const OutcomeModal = ({ handleClose, open, submission, store }: OutcomeModalProp
   useEffect(() => {
     setLinks(storeSubmissionExists?.links);
     setGithubLink(storeSubmissionExists?.github_link);
+    setGithubHandle(storeSubmissionExists?.github_handle);
     setTitleState(storeSubmissionExists?.name);
     setSummary(storeSubmissionExists?.description.summary);
     setDescription(storeSubmissionExists?.description.description);
@@ -110,7 +112,7 @@ const OutcomeModal = ({ handleClose, open, submission, store }: OutcomeModalProp
                 type="text"
                 name="name"
                 className="appearance-none w-full px-4 py-2 rounded-r-lg border border-gray focus:outline-none"
-                placeholder="Example Title 1"
+                placeholder="Example Title"
                 value={titleState || ""}
                 onChange={(e) => setTitleState(e.target.value)}
                 onBlur={(e) => store.setSubmissionTitle(submission.id, e.target.value)}
@@ -121,10 +123,10 @@ const OutcomeModal = ({ handleClose, open, submission, store }: OutcomeModalProp
               ref={summaryRef}
               className="w-full min-h-[112px] px-8 py-3 rounded-lg border border-gray focus:outline-none"
               placeholder="XYZ is..."
-              name="summary"
-              value={summary || ""}
-              onChange={(e) => setSummary(e.target.value)}
-              onBlur={(e) => store.setSubmissionDescription("summary", submission.id, e.target.value)}
+              name="description"
+              value={description || ""}
+              onChange={(e) => setDescription(e.target.value)}
+              onBlur={(e) => store.setSubmissionDescription("description", submission.id, e.target.value)}
             />
             <p className="font-bold pb-1">Progress Summary</p>
 
@@ -132,10 +134,10 @@ const OutcomeModal = ({ handleClose, open, submission, store }: OutcomeModalProp
               ref={descriptionRef}
               className="w-full min-h-[112px] px-8 py-3 rounded-lg border border-gray focus:outline-none"
               placeholder="XYZ is..."
-              name="description"
-              value={description || ""}
-              onChange={(e) => setDescription(e.target.value)}
-              onBlur={(e) => store.setSubmissionDescription("description", submission.id, e.target.value)}
+              name="summary"
+              value={summary || ""}
+              onChange={(e) => setSummary(e.target.value)}
+              onBlur={(e) => store.setSubmissionDescription("summary", submission.id, e.target.value)}
             />
             <p className="font-bold pb-1">FVM Tech Specs</p>
             <textarea
@@ -175,7 +177,7 @@ const OutcomeModal = ({ handleClose, open, submission, store }: OutcomeModalProp
                 </button>
               </div>
               {links &&
-                Object.entries(links).map((link, idx) => {
+                links.map((link: any, idx: number) => {
                   return (
                     <div className="flex justify-between py-1" key={idx}>
                       <button
@@ -185,11 +187,11 @@ const OutcomeModal = ({ handleClose, open, submission, store }: OutcomeModalProp
                         <span className="mr-3">
                           <Edit className="w-3 h-3 fill-offblack" />
                         </span>
-                        <span>{link[0]}</span>
+                        <span>{link.name}</span>
                       </button>
                       <div>
                         <button
-                          onClick={() => store.deleteSubmissionLink(link[0], submission.id)}
+                          onClick={() => store.deleteSubmissionLink(link.name, submission.id)}
                           className="bg-blue bg-opacity-5 px-3 py-[6.5px] rounded-lg"
                         >
                           <Delete className="w-3 h-5" />
@@ -198,6 +200,18 @@ const OutcomeModal = ({ handleClose, open, submission, store }: OutcomeModalProp
                     </div>
                   );
                 })}
+            </div>
+            <div>
+              <p className="font-bold pb-1">GitHub handle for representative:</p>
+              <input
+                type="text"
+                name="github_handle"
+                className="appearance-none w-full px-4 py-2 rounded-lg border border-gray focus:outline-none"
+                placeholder="geohot"
+                value={githubHandle || ""}
+                onChange={(e) => setGithubHandle(e.target.value)}
+                onBlur={(e) => store.setGithubHandle(submission.id, e.target.value)}
+              />
             </div>
           </div>
         </div>

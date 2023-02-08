@@ -50,6 +50,8 @@ export const useVotingStore = create<VotingStore>()((set, get) => ({
       return;
     }
 
+    data.submissions.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
+
     set({
       votes: data.votes,
       submissions: data.submissions,

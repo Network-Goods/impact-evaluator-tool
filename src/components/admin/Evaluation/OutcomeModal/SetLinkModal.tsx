@@ -24,8 +24,8 @@ export default function SetLinkModal({ handleClose, link, submission, open, stor
   const titleRef = useRef<HTMLInputElement | null>(null);
   const linkRef = useRef<HTMLInputElement | null>(null);
   const [inputs, setInputs] = useState<any>({});
-  const [titleState, setTitleState] = useState(link ? link[0] : "");
-  const [linkState, setLinkState] = useState(link ? link[1] : "");
+  const [titleState, setTitleState] = useState(link ? link.name : "");
+  const [linkState, setLinkState] = useState(link ? link.value : "");
   const handleChange = (event: any) => {
     const name = event.target.name;
     const value = event.target.value;
@@ -34,25 +34,25 @@ export default function SetLinkModal({ handleClose, link, submission, open, stor
 
   const handleBlurTitle = (value: any) => {
     if (link) {
-      store.setSubmissionLinkTitle(link[0], submission.id, value);
+      store.setSubmissionLinkTitle(link.name, submission.id, value);
     }
   };
 
   const handleBlurLink = (value: any) => {
     if (link) {
-      store.setSubmissionLink(link[0], submission.id, value);
+      store.setSubmissionLink(link.name, submission.id, value);
     }
   };
   const handleCreateLink = () => {
-    store.setSubmissionLink(inputs.title, submission.id, inputs.link);
+    store.createSubmissionLink(inputs, submission.id);
     handleClose();
     setInputs({});
   };
 
   useEffect(() => {
     if (link) {
-      setTitleState(link[0]);
-      setLinkState(link[1]);
+      setTitleState(link.name);
+      setLinkState(link.value);
     }
   }, [link]);
 
