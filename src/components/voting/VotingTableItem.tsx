@@ -1,5 +1,8 @@
 import DownChevron from "public/images/svg/DownChevron";
 import { useVotingStore } from "./VotingStore";
+import { useUserProfileStore } from "src/lib/UserProfileStore";
+import { filterSubmissions } from "src/lib/utils";
+import SelfDealingTooltip from "./SelfDealingTooltip";
 
 type VotingTableItemProps = {
   project: any;
@@ -10,29 +13,23 @@ type VotingTableItemProps = {
   setOpenArray: any;
 };
 
-const VotingTableItem = ({ project, idx, search, submissions, openArray, setOpenArray }: VotingTableItemProps) => {
+export default function VotingTableItem({
+  project,
+  idx,
+  search,
+  submissions,
+  openArray,
+  setOpenArray,
+}: VotingTableItemProps) {
   const votingStore = useVotingStore();
+  const userProfileStore = useUserProfileStore();
 
   return (
     <div
       className={`flex items-center pl-4 md:px-6 border border-gray border-x-0 border-b-0 ${
         idx % 2 === 0 ? "bg-white" : "bg-gray-lighter"
       }
-        ${
-          idx ===
-          submissions.filter((val: any) => {
-            if (search === "") {
-              return val;
-            } else if (val.name.toLowerCase().includes(search.toLowerCase())) {
-              return val;
-            }
-          }).length -
-            1
-            ? !openArray[idx]
-              ? "rounded-b-lg"
-              : ""
-            : ""
-        }
+        ${idx === filterSubmissions(search, submissions).length - 1 ? (!openArray[idx] ? "rounded-b-lg" : "") : ""}
         `}
     >
       <div className={`w-[45%] md:w-[60%] flex justify-between ${openArray[idx] ? "" : "border-r border-gray"}`}>
@@ -78,22 +75,40 @@ const VotingTableItem = ({ project, idx, search, submissions, openArray, setOpen
             <span className="outline-none focus:outline-none text-center text-xl md:text-3xl text-blue-darkest md:w-9">
               {votingStore.getVotes(project.id) || 0}
             </span>
-
-            <button
-              onClick={() => votingStore.incrementVote(project.id)}
-              className={`w-6 h-6 md:w-9 md:h-9 rounded outline-none
+            {userProfileStore.profile?.github_handle === project.github_handle ? (
+              <SelfDealingTooltip>
+                <div className="pointer-events-none">
+                  <button
+                    className={`w-6 h-6 md:w-9 md:h-9 rounded outline-none
+               bg-blue-light bg-opacity-50
+            `}
+                  >
+                    <span
+                      className={`m-auto md:text-2xl font-semibold text-blue text-opacity-30
+                  `}
+                    >
+                      +
+                    </span>
+                  </button>
+                </div>
+              </SelfDealingTooltip>
+            ) : (
+              <button
+                onClick={() => votingStore.incrementVote(project.id)}
+                className={`w-6 h-6 md:w-9 md:h-9 rounded outline-none
                 ${votingStore.canVoteAgain(project.id) ? "bg-blue-light bg-opacity-50" : "bg-blue-light"}
             `}
-              disabled={votingStore.canVoteAgain(project.id)}
-            >
-              <span
-                className={`m-auto md:text-2xl font-semibold 
+                disabled={votingStore.canVoteAgain(project.id)}
+              >
+                <span
+                  className={`m-auto md:text-2xl font-semibold 
                   ${votingStore.canVoteAgain(project.id) ? "text-blue text-opacity-30" : "text-blue"}
                   `}
-              >
-                +
-              </span>
-            </button>
+                >
+                  +
+                </span>
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -109,6 +124,4 @@ const VotingTableItem = ({ project, idx, search, submissions, openArray, setOpen
       </div>
     </div>
   );
-};
-
-export default VotingTableItem;
+}

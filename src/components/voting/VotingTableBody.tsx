@@ -1,4 +1,5 @@
 import VotingTableLink from "./VotingTableLink";
+import { filterSubmissions } from "src/lib/utils";
 
 type VotingTableBodyProps = {
   idx: number;
@@ -7,24 +8,12 @@ type VotingTableBodyProps = {
   search: string;
 };
 
-const VotingTableBody = ({ idx, project, submissions, search }: VotingTableBodyProps) => {
+export default function VotingTableBody({ idx, project, submissions, search }: VotingTableBodyProps) {
   return (
     <div
       className={`px-4 md:px-12 pb-4 md:pb-6
       ${idx % 2 === 0 ? "bg-white" : "bg-gray-lighter"}
-        ${
-          idx ===
-          submissions.filter((val: any) => {
-            if (search === "") {
-              return val;
-            } else if (val.name.toLowerCase().includes(search.toLowerCase())) {
-              return val;
-            }
-          }).length -
-            1
-            ? "rounded-b-lg"
-            : ""
-        }
+        ${idx === filterSubmissions(search, submissions).length - 1 ? "rounded-b-lg" : ""}
         `}
     >
       <div className="border border-gray w-full h-[3px]"></div>
@@ -41,12 +30,16 @@ const VotingTableBody = ({ idx, project, submissions, search }: VotingTableBodyP
           <div className="font-bold">{`Project Link${project.website_link ? "s" : ""}`}</div>
           <div className="flex flex-col">
             <VotingTableLink title="Github" link={project.github_link} />
-            {project.website_link ? <VotingTableLink title="Website" link={project.website_link} /> : null}
+            {project.links
+              ? project.links.map((link: any, idx: any) => (
+                  <div key={idx}>
+                    <VotingTableLink title={link.name} link={link.value} />
+                  </div>
+                ))
+              : null}
           </div>
         </div>
       </div>
     </div>
   );
-};
-
-export default VotingTableBody;
+}

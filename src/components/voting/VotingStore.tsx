@@ -1,4 +1,4 @@
-import create from "zustand";
+import { create } from "zustand";
 import { Submission, rpc } from "src/lib";
 
 function calculateAvailableCredits(votes: SubmissionVotes) {
@@ -49,6 +49,8 @@ export const useVotingStore = create<VotingStore>()((set, get) => ({
       console.error(`ERROR -- rpc call getVotingStore failed. evaluation_id: ${evaluation_id}`, data);
       return;
     }
+
+    data.submissions.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
 
     set({
       votes: data.votes,
@@ -181,16 +183,11 @@ export const useVotingStore = create<VotingStore>()((set, get) => ({
       return;
     }
 
-    rpc
-      .call("setEvaluatorSubmission", { evaluator_id: evaluator.id })
-      .then((data) => {
-        if (data instanceof Error) {
-          console.error(
-            `ERROR -- rpc call setEvaluatorSubmission failed`,
-            data
-          );
-          return;
-        }
-      });
+    rpc.call("setEvaluatorSubmission", { evaluator_id: evaluator.id }).then((data) => {
+      if (data instanceof Error) {
+        console.error(`ERROR -- rpc call setEvaluatorSubmission failed`, data);
+        return;
+      }
+    });
   },
 }));

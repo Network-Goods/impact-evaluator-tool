@@ -1,3 +1,46 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* react-datepicker */
+.react-datepicker {
+  font-family: Aileron !important;
+}
+.react-datepicker__header {
+  background-color: transparent !important;
+  border: 0 !important;
+}
+.react-datepicker__current-month {
+  font-size: 17px !important;
+}
+.react-datepicker__day-name {
+  color: #3c3c434d !important;
+  text-transform: uppercase !important;
+}
+.react-datepicker__day {
+  font-size: 16px !important;
+  font-weight: 400 !important;
+}
+.react-datepicker__day--selected {
+  border-radius: 100% !important;
+  background-color: #0a7aff1f !important;
+  color: #0a7aff !important;
+}
+.react-datepicker__navigation-icon::before {
+  border: solid #0a7aff !important;
+  border-width: 2px 2px 0 0 !important;
+  margin-top: 8px !important;
+}
+.react-datepicker-time__caption,
+.react-datepicker-time__input {
+  font-size: 18px !important;
+  font-weight: 400 !important;
+}
+.react-datepicker-time__input {
+  margin-left: 30px !important;
+}
+
+@font-face {
+  font-family: "Aileron";
+  src: local("Aileron"), url(../../public/fonts/Aileron-Regular.otf) format("opentype");
+}
