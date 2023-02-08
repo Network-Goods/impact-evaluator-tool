@@ -31,9 +31,9 @@ export default function VotingTableBody({ idx, project, submissions, search }: V
           <div className="flex flex-col">
             <VotingTableLink title="Github" link={project.github_link} />
             {project.links
-              ? Object.entries(project.links).map((link: any, idx: any) => (
+              ? project.links.map((link: any, idx: any) => (
                   <div key={idx}>
-                    <VotingTableLink title={link[0]} link={link[1]} />
+                    <VotingTableLink title={link.name} link={link.value} />
                   </div>
                 ))
               : null}
