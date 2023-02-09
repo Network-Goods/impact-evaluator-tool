@@ -26,3 +26,69 @@ export function filterSubmissions(search: string, submissions: any) {
     }
   });
 }
+
+export function parseEvaluationResults(results: any) {
+  let output = [];
+  let headerArr: (string | number)[] = ["github_handle"];
+  results.submissions.forEach(function (submission: any, idx: number) {
+    headerArr.push(submission.name);
+  });
+  output.push(headerArr);
+
+  results.evaluators.forEach(function (evaluator: any, i: number) {
+    let evalArr: (string | number)[] = [];
+
+    output.push(evalArr);
+    evalArr.push(evaluator.github_handle);
+    results.submissions.forEach(function (submission: any, j: number) {
+      let votes = 0;
+      results.votes.forEach(function (vote: any, j: number) {
+        if (vote.evaluator_id === evaluator.evaluator_id && vote.submission_id === submission.id) {
+          votes = vote.votes;
+        }
+      });
+      evalArr.push(votes);
+    });
+  });
+  return output;
+}
+
+export function sortEvaluationResults(obj: any) {
+  obj.evaluators.sort(function (a: any, b: any) {
+    if (a.github_handle < b.github_handle) {
+      return -1;
+    }
+    if (a.github_handle > b.github_handle) {
+      return 1;
+    }
+    return 0;
+  });
+
+  obj.submissions.sort(function (a: any, b: any) {
+    if (a.name < b.name) {
+      return -1;
+    }
+    if (a.name > b.name) {
+      return 1;
+    }
+    return 0;
+  });
+}
+
+export function parseNestedArraysIntoCSV(data: any) {
+  let csv = "";
+  data.forEach((row: any) => {
+      csv += row.join(",");
+    csv += "\n";
+  });
+  return csv;
+}
+
+export function downloadCSV(data: any) {
+    const blob = new Blob([data], { type: "text/csv" });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.setAttribute("href", url);
+    a.setAttribute("download", "download.csv");
+    a.click();
+  };

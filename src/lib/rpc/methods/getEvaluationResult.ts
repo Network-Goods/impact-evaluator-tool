@@ -23,7 +23,7 @@ export async function getEvaluationResult({
 
   const { data, error } = await supabase
     .rpc("get_evaluation_result_store", {
-      in_evaluation_id: evaluation_id,
+      evaluation_id,
     })
     .single();
 

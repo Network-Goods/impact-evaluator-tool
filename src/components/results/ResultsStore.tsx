@@ -1,5 +1,9 @@
 import { create } from "zustand";
 import { Evaluation, rpc, DashboardEvaluation } from "src/lib";
+import { sortEvaluationResults } from "src/lib/utils";
+import { parseEvaluationResults } from "src/lib/utils";
+import { parseNestedArraysIntoCSV } from "src/lib/utils";
+import { downloadCSV } from "src/lib/utils";
 
 export interface ResultsStore {
   fetching: boolean;
@@ -35,5 +39,11 @@ export const useResultsStore = create<ResultsStore>()((set, get) => ({
     set({
       data: data,
     });
+
+  sortEvaluationResults(data);
+  const parsedArray = parseEvaluationResults(data);
+  const csv = parseNestedArraysIntoCSV(parsedArray);
+  downloadCSV(csv);
+  
   },
 }));

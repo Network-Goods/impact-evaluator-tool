@@ -1,10 +1,8 @@
 import { useState, useEffect } from "react";
 import LoadingSpinner from "src/components/shared/LoadingSpinner";
-import { useAdminStore } from "../admin/AdminEditDashboard/AdminStore";
 import { useResultsStore } from "./ResultsStore";
 import Title from "src/components/shared/Title";
 import SmallTitle from "src/components/shared/SmallTitle";
-import Link from "next/link";
 
 enum RoundStatus {
   "draft" = "Draft",
@@ -16,11 +14,14 @@ enum RoundStatus {
 export default function Results() {
   const store = useResultsStore();
 
-  const [results, setResults] = useState(store.data || "");
-
   useEffect(() => {
     store.load();
+    console.log(store)
   }, [store.fetching]);
+
+  useEffect(() => {
+    console.log(store.data)
+  }, [store.data]);
 
   if (store.fetching) return <LoadingSpinner />;
   if (store.error) return <p>Oh no... {store.error.message}</p>;
@@ -30,7 +31,6 @@ export default function Results() {
       <div className="pb-20">
         <Title text="Evaluation Results" />
       </div>
-      {results && results}
       {store.evaluations.length !== 0 ? (
         <>
           <div className="hidden md:flex justify-between items-center py-2 px-9 bg-[#f0f0f0] border border-gray rounded-t-lg">
