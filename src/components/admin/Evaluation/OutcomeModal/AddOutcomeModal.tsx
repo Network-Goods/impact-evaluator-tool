@@ -77,16 +77,13 @@ export default function AddOutcomeModal({ handleClose, open, submission, store }
     setInputs({});
   };
 
-  const checkIfDisabled = () => {
-    return (
-      !inputs.name ||
-      !inputs.description?.summary ||
-      !inputs.description?.description ||
-      !inputs.description?.specs ||
-      !inputs.github_link ||
-      !inputs.github_handle
-    );
-  };
+  const isDisabled =
+    !inputs.name ||
+    !inputs.description?.summary ||
+    !inputs.description?.description ||
+    !inputs.description?.specs ||
+    !inputs.github_link ||
+    !inputs.github_handle;
   return (
     <Modal
       aria-labelledby="transition-modal-title"
@@ -231,12 +228,12 @@ export default function AddOutcomeModal({ handleClose, open, submission, store }
                 onClick={handleSubmit}
                 className={`transition-colors duration-200 ease-in-out transform  outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold mx-auto border border-blue bg-blue  text-white text-lg px-3 py-1
                 ${
-                  checkIfDisabled()
+                  isDisabled
                     ? "opacity-50 cursor-not-allowed"
                     : "cursor-pointer hover:bg-blue-darkest hover:border-blue-darkest"
                 }
                 `}
-                disabled={checkIfDisabled()}
+                disabled={isDisabled}
               >
                 Add
               </button>

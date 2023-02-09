@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 import LoadingSpinner from "src/components/shared/LoadingSpinner";
 import { useSubmissionStore } from "./SubmissionStore";
@@ -8,8 +8,15 @@ import LeftArrow from "public/images/svg/LeftArrow";
 import SmallTitle from "src/components/shared/SmallTitle";
 import Add from "public/images/svg/Add";
 import Button from "../shared/Button";
+import Delete from "public/images/svg/Delete";
 
 export default function Submission() {
+  const nameRef = useRef<HTMLInputElement | null>(null);
+  const summaryRef = useRef<HTMLTextAreaElement | null>(null);
+  const descriptionRef = useRef<HTMLTextAreaElement | null>(null);
+  const specsRef = useRef<HTMLTextAreaElement | null>(null);
+  const githubLinkRef = useRef<HTMLInputElement | null>(null);
+  const githubHandleRef = useRef<HTMLInputElement | null>(null);
   const [checked, setChecked] = useState(true);
   const [inputs, setInputs] = useState<any>({});
   const [index, setIndex] = useState(0);
@@ -17,6 +24,14 @@ export default function Submission() {
   const router = useRouter();
   const { submission_id } = router.query;
   const store = useSubmissionStore();
+
+  const [titleState, setTitleState] = useState(store.submission?.name);
+  const [links, setLinks] = useState<any>(store.submission?.links || []);
+  const [githubLink, setGithubLink] = useState<any>(store.submission?.github_link);
+  const [githubHandle, setGithubHandle] = useState<any>(store.submission?.github_link);
+  const [summary, setSummary] = useState<any>(store.submission?.description.summary);
+  const [description, setDescription] = useState<any>(store.submission?.description.description);
+  const [specs, setSpecs] = useState<any>(store.submission?.description.specs);
 
   // useEffect(() => {
   //   if (!submission_id || Array.isArray(submission_id)) {
@@ -30,15 +45,15 @@ export default function Submission() {
     // setInputs((values: any) => ({ ...values, email: githubEmail }));
   };
 
-  const handleChange = (event: any) => {
-    const name = event.target.name;
-    const value = event.target.value;
-    if (event.target.name === "summary" || event.target.name === "description" || event.target.name === "specs") {
-      setInputs((values: any) => ({ ...values, description: { ...values.description, [name]: value } }));
-    } else {
-      setInputs((values: any) => ({ ...values, [name]: value }));
-    }
-  };
+  useEffect(() => {
+    setTitleState(store.submission?.name);
+    setLinks(store.submission?.links);
+    setGithubLink(store.submission?.github_link);
+    setGithubHandle(store.submission?.github_handle);
+    setSummary(store.submission?.description.summary);
+    setDescription(store.submission?.description.description);
+    setSpecs(store.submission?.description.specs);
+  }, [store.submission]);
 
   // if (store.fetching) return <LoadingSpinner />;
   // if (store.error) return <p>Oh no... {store.error.message}</p>;
@@ -94,12 +109,14 @@ export default function Submission() {
             <p className="text-xl font-bold pb-3">Project or Team Title</p>
 
             <input
+              ref={nameRef}
               type="text"
               name="name"
               className="appearance-none w-full px-4 py-2 rounded-lg border border-gray focus:outline-none"
               placeholder="Example Title"
-              value={inputs.name || ""}
-              onChange={handleChange}
+              value={titleState || ""}
+              onChange={(e) => setTitleState(e.target.value)}
+              onBlur={(e) => store.setSubmissionTitle(e.target.value)}
             />
           </div>
           <div className="mb-9">
@@ -108,11 +125,13 @@ export default function Submission() {
               Using <b>280 characters</b> or less, describe your project.
             </div>
             <textarea
+              ref={descriptionRef}
               className="w-full min-h-[112px] px-4 py-2 rounded-lg border border-gray focus:outline-none"
               placeholder="XYZ is..."
               name="description"
-              value={inputs.description?.description || ""}
-              onChange={handleChange}
+              value={description || ""}
+              onChange={(e) => setDescription(e.target.value)}
+              onBlur={(e) => store.setSubmissionDescription("description", e.target.value)}
             />
           </div>
           <div className="mb-9">
@@ -123,11 +142,13 @@ export default function Submission() {
             </div>
 
             <textarea
+              ref={summaryRef}
               className="w-full min-h-[112px] px-4 py-2 rounded-lg border border-gray focus:outline-none"
               placeholder="So far we have..."
               name="summary"
-              value={inputs.description?.summary || ""}
-              onChange={handleChange}
+              value={summary || ""}
+              onChange={(e) => setSummary(e.target.value)}
+              onBlur={(e) => store.setSubmissionDescription("summary", e.target.value)}
             />
           </div>
           <div className="mb-9">
@@ -137,26 +158,67 @@ export default function Submission() {
               value your contracts bring to Filecoin.
             </div>
             <textarea
+              ref={specsRef}
               className="w-full min-h-[112px] px-4 py-2 rounded-lg border border-gray focus:outline-none"
               placeholder="XYZ utilizes..."
               name="specs"
-              value={inputs.description?.specs || ""}
-              onChange={handleChange}
+              value={specs || ""}
+              onChange={(e) => setSpecs(e.target.value)}
+              onBlur={(e) => store.setSubmissionDescription("specs", e.target.value)}
             />
           </div>
           <p className="text-xl font-bold pb-3">Links</p>
-          <p className="text-[17px] text-blue-alt font-bold pb-1">Github Repo</p>
-          <input
-            type="text"
-            name="github_link"
-            className="appearance-none w-full px-4 py-2 rounded-lg border border-gray focus:outline-none"
-            placeholder="https://github.com/protocol/research"
-            value={inputs.github_link || ""}
-          />
-          <div className="pt-7 pb-9">
+          <div className="pb-3">
+            <p className="text-[17px] text-blue-alt font-bold pb-1">Github Repo</p>
+            <input
+              ref={githubLinkRef}
+              type="text"
+              name="github_link"
+              className="appearance-none w-full px-4 py-2 rounded-lg border border-gray focus:outline-none"
+              placeholder="https://github.com/protocol/research"
+              value={githubLink || ""}
+              onChange={(e) => setGithubLink(e.target.value)}
+              onBlur={(e) => store.setGithubLink(e.target.value)}
+            />
+          </div>
+          {links.map((link: any, index: number) => {
+            return (
+              <div key={index} className="pb-3">
+                <input
+                  ref={githubLinkRef}
+                  type="text"
+                  name="github_link"
+                  className="appearance-none text-[17px] text-blue-alt font-bold pb-1 focus:outline-none"
+                  placeholder="https://protocol.ai/"
+                  value={link.name || ""}
+                  onChange={(e) => setGithubLink(e.target.value)}
+                  onBlur={(e) => store.setGithubLink(e.target.value)}
+                />
+                <div className="flex items-center">
+                  <input
+                    ref={githubLinkRef}
+                    type="text"
+                    name="github_link"
+                    className="appearance-none w-full px-4 py-2 border border-gray rounded-l-lg focus:outline-none"
+                    placeholder="https://protocol.ai/"
+                    value={link.value || ""}
+                    onChange={(e) => setGithubLink(e.target.value)}
+                    onBlur={(e) => store.setGithubLink(e.target.value)}
+                  />
+                  <button
+                    className="font-bold py-[10px] px-4 border border-gray border-l-0 rounded-r-lg bg-blue bg-opacity-5"
+                    onClick={() => console.log("delete")}
+                  >
+                    <Delete className="w-3 h-5 fill-offblack" />
+                  </button>
+                </div>
+              </div>
+            );
+          })}
+          <div className="pt-4 pb-9">
             <button
               className="transition-colors duration-200 ease-in-out transform  outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold border border-blue hover:bg-white focus:bg-white text-blue text-lg px-4 py-1"
-              onClick={() => console.log("add link")}
+              onClick={() => setLinks([...links, { name: "", value: "" }])}
             >
               <span className="mr-3">
                 <Add className="fill-current" />
@@ -181,21 +243,21 @@ export default function Submission() {
 
           {checked ? (
             <input
+              ref={githubHandleRef}
               className="text-base appearance-none border border-gray rounded-lg w-full py-2 px-3 mt-1 font-medium text-gray focus:outline-none"
               type="text"
-              name="email"
-              value={"csjohn"}
-              // value={githubEmail}
+              name="githubHandle"
+              value={githubHandle || ""}
               disabled={true}
             />
           ) : (
             <input
               className="text-base appearance-none border border-gray rounded-lg w-full py-2 px-3 mt-1 font-medium  focus:outline-none"
               type="text"
-              name="email"
-              value={"csjohn"}
-              // value={inputs.email || ""}
-              // onChange={handleChange}
+              name="githubHandle"
+              value={githubHandle || ""}
+              onChange={(e) => setGithubHandle(e.target.value)}
+              onBlur={(e) => store.setGithubHandle(e.target.value)}
             />
           )}
 
