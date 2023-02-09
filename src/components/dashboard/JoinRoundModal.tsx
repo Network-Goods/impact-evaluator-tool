@@ -6,7 +6,7 @@ import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 import Close from "public/images/svg/Close";
 import { useUserProfileStore } from "src/lib/UserProfileStore";
-import { rpc } from "src/lib";
+import { rpc, isError } from "src/lib";
 
 const style = {
   position: "absolute",
@@ -61,13 +61,13 @@ const JoinRoundModal = ({ handleClose, open }: JoinRoundModalProps) => {
     }
 
     // TODO: add correct type for errors
-    const evaluator = (await rpc.call("joinWithCode", {
+    const evaluator = await rpc.call("joinWithCode", {
       user_id: userProfileStore.profile.id!,
       code: formInputs.code,
       preferred_email: formInputs.email,
-    })) as any;
+    });
 
-    if (evaluator.error) {
+    if (isError(evaluator)) {
       setError(evaluator.error);
       return;
     }
