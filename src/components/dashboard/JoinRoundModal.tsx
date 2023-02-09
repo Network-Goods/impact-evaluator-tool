@@ -82,7 +82,7 @@ const JoinRoundModal = ({ handleClose, open }: JoinRoundModalProps) => {
         return;
       }
 
-      window.location.replace("/");
+      router.push(`/submission/${evaluator.evaluation_id}`);
     }
   };
 

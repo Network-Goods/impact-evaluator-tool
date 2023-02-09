@@ -7,6 +7,7 @@ export * from "./setEvaluationName";
 export * from "./setEvaluationStatus";
 export * from "./setEvaluationStartTime";
 export * from "./setEvaluationEndTime";
+export * from "./getSubmissionStore";
 export * from "./setSubmissionName";
 export * from "./createSubmission";
 export * from "./createLiveSubmission";

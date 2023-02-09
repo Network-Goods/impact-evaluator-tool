@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import LoadingSpinner from "src/components/shared/LoadingSpinner";
-import { useAdminStore } from "../admin/AdminEditDashboard/AdminStore";
+import { useSubmissionStore } from "./SubmissionStore";
 import Title from "src/components/shared/Title";
 import Link from "next/link";
 import LeftArrow from "public/images/svg/LeftArrow";
@@ -9,16 +10,20 @@ import Add from "public/images/svg/Add";
 import Button from "../shared/Button";
 
 export default function Submission() {
-  const [checked, setChecked] = useState(false);
+  const [checked, setChecked] = useState(true);
   const [inputs, setInputs] = useState<any>({});
   const [index, setIndex] = useState(0);
   const [newLinks, setNewLinks] = useState<any>([]);
+  const router = useRouter();
+  const { submission_id } = router.query;
+  const store = useSubmissionStore();
 
-  const store = useAdminStore();
-
-  useEffect(() => {
-    store.load();
-  }, [store.fetching]);
+  // useEffect(() => {
+  //   if (!submission_id || Array.isArray(submission_id)) {
+  //     return;
+  //   }
+  //   store.load(submission_id);
+  // }, [submission_id, store.fetching]);
 
   const handleChecked = () => {
     setChecked((prev) => !prev);
@@ -35,8 +40,8 @@ export default function Submission() {
     }
   };
 
-  if (store.fetching) return <LoadingSpinner />;
-  if (store.error) return <p>Oh no... {store.error.message}</p>;
+  // if (store.fetching) return <LoadingSpinner />;
+  // if (store.error) return <p>Oh no... {store.error.message}</p>;
 
   return (
     <>
