@@ -42,6 +42,7 @@ export interface Evaluator {
   user_id: string;
   voice_credits: number;
   id: string;
+  is_submitted: boolean;
 }
 
 export interface Submission {
