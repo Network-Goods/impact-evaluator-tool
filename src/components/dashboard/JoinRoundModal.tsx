@@ -75,7 +75,7 @@ const JoinRoundModal = ({ handleClose, open }: JoinRoundModalProps) => {
     window.location.replace("/");
   };
 
-  const is_join_button_disabled = !formInputs.code && (isGithubEmailChecked ? !githubEmail : !formInputs.email);
+  const isJoinButtonDisabled = !formInputs.code && (isGithubEmailChecked ? !githubEmail : !formInputs.email);
 
   return (
     <Modal
@@ -146,13 +146,13 @@ const JoinRoundModal = ({ handleClose, open }: JoinRoundModalProps) => {
             <input
               className={`transition-colors duration-200 ease-in-out transform outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold mx-auto
                 px-6 py-1 border border-blue bg-blue text-white text-lg ${error ? "mt-2 mb-8" : "my-8"} ${
-                is_join_button_disabled
+                isJoinButtonDisabled
                   ? "opacity-50 cursor-not-allowed"
                   : "cursor-pointer hover:bg-blue-darkest hover:border-blue-darkest"
               }`}
               type="submit"
               value="Join"
-              disabled={is_join_button_disabled}
+              disabled={isJoinButtonDisabled}
             />
           </form>
         </Box>
