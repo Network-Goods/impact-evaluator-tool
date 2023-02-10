@@ -11,6 +11,7 @@ export interface ResultsStore {
   evaluations: any;
   load: () => void;
   data?: any;
+  getEvaluationResult: (evaluation_id: string) => Promise<Error | any>;
 }
 
 export const useResultsStore = create<ResultsStore>()((set, get) => ({
