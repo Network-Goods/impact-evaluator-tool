@@ -33,6 +33,8 @@ export function parseEvaluationResults(results: any) {
   results.submissions.forEach(function (submission: any, idx: number) {
     headerArr.push(submission.name);
   });
+  headerArr.push("credits_used");
+  headerArr.push("voice_credits");
   output.push(headerArr);
 
   results.evaluators.forEach(function (evaluator: any, i: number) {
@@ -40,6 +42,7 @@ export function parseEvaluationResults(results: any) {
 
     output.push(evalArr);
     evalArr.push(evaluator.github_handle);
+    let creditsUsed = 0;
     results.submissions.forEach(function (submission: any, j: number) {
       let votes = 0;
       results.votes.forEach(function (vote: any, j: number) {
@@ -47,8 +50,11 @@ export function parseEvaluationResults(results: any) {
           votes = vote.votes;
         }
       });
+      creditsUsed += votes * votes;
       evalArr.push(votes);
     });
+    evalArr.push(creditsUsed);
+    evalArr.push(evaluator.voice_credits);
   });
   return output;
 }
@@ -78,17 +84,17 @@ export function sortEvaluationResults(obj: any) {
 export function parseNestedArraysIntoCSV(data: any) {
   let csv = "";
   data.forEach((row: any) => {
-      csv += row.join(",");
+    csv += row.join(",");
     csv += "\n";
   });
   return csv;
 }
 
-export function downloadCSV(data: any) {
-    const blob = new Blob([data], { type: "text/csv" });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.setAttribute("href", url);
-    a.setAttribute("download", "download.csv");
-    a.click();
-  };
+export function downloadCSV(data: any, csvName: string) {
+  const blob = new Blob([data], { type: "text/csv" });
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.setAttribute("href", url);
+  a.setAttribute("download", csvName);
+  a.click();
+}

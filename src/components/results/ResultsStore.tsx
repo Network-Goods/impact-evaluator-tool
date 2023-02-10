@@ -40,10 +40,10 @@ export const useResultsStore = create<ResultsStore>()((set, get) => ({
       data: data,
     });
 
-  sortEvaluationResults(data);
-  const parsedArray = parseEvaluationResults(data);
-  const csv = parseNestedArraysIntoCSV(parsedArray);
-  downloadCSV(csv);
-  
+    sortEvaluationResults(data);
+    const parsedArray = parseEvaluationResults(data);
+    const csv = parseNestedArraysIntoCSV(parsedArray);
+    const csv_name = `${(data as any).evaluation.name} - Results.csv`;
+    downloadCSV(csv, csv_name);
   },
 }));
