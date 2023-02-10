@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { SupabaseClient, useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
@@ -6,8 +6,7 @@ import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 import Close from "public/images/svg/Close";
 import { useUserProfileStore } from "src/lib/UserProfileStore";
-import { useRouter } from "next/router";
-import { Evaluator } from "src/lib";
+import { rpc, isError } from "src/lib";
 
 const style = {
   position: "absolute",
@@ -20,79 +19,63 @@ const style = {
   borderRadius: "9.31292px",
 };
 
+interface FormInputs {
+  code: string;
+  email: string;
+}
+
 type JoinRoundModalProps = {
   handleClose: () => void;
   open: boolean;
 };
 
 const JoinRoundModal = ({ handleClose, open }: JoinRoundModalProps) => {
-  const [inputs, setInputs] = useState<any>({});
-  const [checked, setChecked] = useState(true);
-  const [error, setError] = useState("");
   const session = useSession();
-  const supabase = useSupabaseClient();
   const userProfileStore = useUserProfileStore();
-  const router = useRouter();
 
-  const githubEmail = session?.user.email;
+  const githubEmail = session?.user.email || "";
+  const [error, setError] = useState("");
+  const [isGithubEmailChecked, setIsGithubEmailChecked] = useState(true);
+  const [formInputs, setFormInputs] = useState<FormInputs>({
+    code: "",
+    email: isGithubEmailChecked ? githubEmail : "",
+  });
 
-  async function joinRoundWithCode(
-    supabase: SupabaseClient,
-    user_id: string,
-    code: string,
-    preffered_email: string,
-  ): Promise<Evaluator | void> {
-    const test = {
-      in_user_id: user_id,
-      in_code: code,
-      in_preffered_email: preffered_email,
-    };
-    console.log("payload: ", test);
-
-    const { data, error } = await supabase.rpc("join_with_code", test);
-
-    if (error) {
-      console.error("Failed to join round", error);
-      setError("Error: Please contact round administrator for support.");
-      return;
-    }
-
-    if (!data) {
-      console.error("joinRoundWithCode returned no data");
-      return;
-    }
-
-    return data as any;
-  }
-
-  const handleChange = (event: any) => {
-    const name = event.target.name;
+  const handleFormChange = (event: React.ChangeEvent<HTMLInputElement>, fieldName: keyof FormInputs) => {
     const value = event.target.value;
-    setInputs((values: any) => ({ ...values, [name]: value }));
+    setFormInputs((values: FormInputs) => ({ ...values, [fieldName]: value }));
   };
 
   const handleChecked = () => {
-    setChecked((prev) => !prev);
-    setInputs((values: any) => ({ ...values, email: githubEmail }));
+    const email = !isGithubEmailChecked ? githubEmail : "";
+    setIsGithubEmailChecked((prev) => !prev);
+    setFormInputs((values: FormInputs) => ({ ...values, email: email }));
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (userProfileStore.profile) {
-      const preferred_email = checked ? githubEmail : inputs.email;
 
-      const evaluator = await joinRoundWithCode(supabase, userProfileStore.profile.id!, inputs.code, preferred_email);
-
-      // TODO: handle error
-      if (!evaluator) {
-        return;
-      }
-
-      window.location.replace("/");
+    // TODO: this should never execute, need improve guarentees and fudge typechecking
+    if (!userProfileStore.profile) {
+      return;
     }
+
+    // TODO: add correct type for errors
+    const evaluator = await rpc.call("joinWithCode", {
+      user_id: userProfileStore.profile.id!,
+      code: formInputs.code,
+      preferred_email: formInputs.email,
+    });
+
+    if (isError(evaluator)) {
+      setError(evaluator.error);
+      return;
+    }
+
+    window.location.replace("/");
   };
 
-  const is_join_button_disabled = !inputs.code && (checked ? !githubEmail : !inputs.email);
+  const isJoinButtonDisabled = !formInputs.code && (isGithubEmailChecked ? !githubEmail : !formInputs.email);
 
   return (
     <Modal
@@ -127,9 +110,8 @@ const JoinRoundModal = ({ handleClose, open }: JoinRoundModalProps) => {
               <input
                 className="appearance-none border border-gray rounded-lg w-full py-2 px-3 mt-3 font-medium focus:outline-none"
                 type="text"
-                name="code"
-                value={inputs.code || ""}
-                onChange={handleChange}
+                value={formInputs.code}
+                onChange={(e) => handleFormChange(e, "code")}
               />
             </label>
             <label className="mt-2 flex flex-col" htmlFor="emailCheck">
@@ -142,8 +124,7 @@ const JoinRoundModal = ({ handleClose, open }: JoinRoundModalProps) => {
                 <input
                   className=" text-[#E5E7EB] border-[#E5E7EB] rounded-lg"
                   type="checkbox"
-                  name="emailCheck"
-                  checked={checked}
+                  checked={isGithubEmailChecked}
                   onChange={() => handleChecked()}
                 />{" "}
                 <span className="ml-2">Use email from Github account.</span>
@@ -153,35 +134,25 @@ const JoinRoundModal = ({ handleClose, open }: JoinRoundModalProps) => {
             <label className="mb-2 text-sm" htmlFor="email">
               <p className="text-[#979797] my-2">or</p>
               Enter email:
-              {checked ? (
-                <input
-                  className="text-base appearance-none border border-gray rounded-lg w-full py-2 px-3 mt-1 font-medium text-gray focus:outline-none"
-                  type="text"
-                  name="email"
-                  value={githubEmail}
-                  disabled={true}
-                />
-              ) : (
-                <input
-                  className="text-base appearance-none border border-gray rounded-lg w-full py-2 px-3 mt-1 font-medium  focus:outline-none"
-                  type="text"
-                  name="email"
-                  value={inputs.email || ""}
-                  onChange={handleChange}
-                />
-              )}
+              <input
+                className="text-base appearance-none border border-gray rounded-lg w-full py-2 px-3 mt-1 font-medium focus:outline-none disabled:text-gray"
+                type="text"
+                value={formInputs.email}
+                onChange={(e) => handleFormChange(e, "email")}
+                disabled={isGithubEmailChecked}
+              />
             </label>
             {error ? <span className="text-red text-center">{error}</span> : null}
             <input
               className={`transition-colors duration-200 ease-in-out transform outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold mx-auto
                 px-6 py-1 border border-blue bg-blue text-white text-lg ${error ? "mt-2 mb-8" : "my-8"} ${
-                is_join_button_disabled
+                isJoinButtonDisabled
                   ? "opacity-50 cursor-not-allowed"
                   : "cursor-pointer hover:bg-blue-darkest hover:border-blue-darkest"
               }`}
               type="submit"
               value="Join"
-              disabled={is_join_button_disabled}
+              disabled={isJoinButtonDisabled}
             />
           </form>
         </Box>
