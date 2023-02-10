@@ -230,20 +230,6 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
-"@json2csv/formatters@^6.1.2":
-  version "6.1.2"
-  resolved "https://registry.yarnpkg.com/@json2csv/formatters/-/formatters-6.1.2.tgz#cf5bc34716d6b04e6727bb20629240ddf05f9c1e"
-  integrity sha512-l8i5EdQvHZHrtSgRFEXMkRnIn8CBopT/ecZSIyPKuee9+pm/Sxcb/r/N2jQWARnOQc7uyqQWAtpPpxU7HhZ2tg==
-
-"@json2csv/plainjs@^6.1.2":
-  version "6.1.2"
-  resolved "https://registry.yarnpkg.com/@json2csv/plainjs/-/plainjs-6.1.2.tgz#c830ca8ac2d32314cd6bf4bc2c9c152f75970dde"
-  integrity sha512-XNcBd6W4G5mlP6ZL13idEx21diQAM5AJgIe78RxRfZctWRppaZrtpiGTzhc/sNv7UM1FpfO/aa5wel4+aQW7MQ==
-  dependencies:
-    "@json2csv/formatters" "^6.1.2"
-    "@streamparser/json" "^0.0.10"
-    lodash.get "^4.4.2"
-
 "@mui/base@5.0.0-alpha.113":
   version "5.0.0-alpha.113"
   resolved "https://registry.yarnpkg.com/@mui/base/-/base-5.0.0-alpha.113.tgz#51ab20c3a4cf31db4a5540ecf17d7ea6f73b3001"
@@ -465,11 +451,6 @@
   resolved "https://registry.yarnpkg.com/@stitches/react/-/react-1.2.8.tgz#954f8008be8d9c65c4e58efa0937f32388ce3a38"
   integrity sha512-9g9dWI4gsSVe8bNLlb+lMkBYsnIKCZTmvqvDG+Avnn69XfmHZKiaMrx7cgTaddq7aTPPmXiTsbFcUy0xgI4+wA==
 
-"@streamparser/json@^0.0.10":
-  version "0.0.10"
-  resolved "https://registry.yarnpkg.com/@streamparser/json/-/json-0.0.10.tgz#852725c1d4310217636075826cd5664b7b447aee"
-  integrity sha512-juqNFdqqmY/nvsODq1Vba7PWIaqr01VcqICIrxbws97QKSQhQUMml8FqdHLmevwVpqH39H5mVXKFWiWCi1ke0w==
-
 "@supabase/auth-helpers-nextjs@^0.5.2":
   version "0.5.2"
   resolved "https://registry.yarnpkg.com/@supabase/auth-helpers-nextjs/-/auth-helpers-nextjs-0.5.2.tgz#54b0e097d4dd21ca8c0621865214dc46f75f26f5"
@@ -655,11 +636,6 @@
   version "7.3.13"
   resolved "https://registry.yarnpkg.com/@types/semver/-/semver-7.3.13.tgz#da4bfd73f49bd541d28920ab0e2bf0ee80f71c91"
   integrity sha512-21cFJr9z3g5dW8B0CVI9g2O9beqaThGQ6ZFBqHfwhzLDKUxaqTIy3vnfah/UPkfOiF2pLq+tGz+W8RyCskuslw==
-
-"@types/tinycolor2@^1.4.0":
-  version "1.4.3"
-  resolved "https://registry.yarnpkg.com/@types/tinycolor2/-/tinycolor2-1.4.3.tgz#ed4a0901f954b126e6a914b4839c77462d56e706"
-  integrity sha512-Kf1w9NE5HEgGxCRyIcRXR/ZYtDv0V8FVPtYHwLxl0O+maGX0erE77pQlD0gpP+/KByMZ87mOA79SjifhSB3PjQ==
 
 "@types/uuid@^9.0.0":
   version "9.0.0"
@@ -1049,7 +1025,7 @@ chalk@^2.0.0:
     escape-string-regexp "^1.0.5"
     supports-color "^5.3.0"
 
-chalk@^4.0.0, chalk@^4.1.2:
+chalk@^4.0.0:
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/chalk/-/chalk-4.1.2.tgz#aac4e2b7734a740867aeb16bf02aad556a1e7a01"
   integrity sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA==
@@ -2020,14 +1996,6 @@ graceful-fs@^4.2.4:
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.10.tgz#147d3a006da4ca3ce14728c7aefc287c367d7a6c"
   integrity sha512-9ByhssR2fPVsNZj478qUUbKfmL0+t5BDVyjShtyZZLiK7ZDAArFFfopyOTj0M05wE2tJPisA4iTnnXl2YoPvOA==
 
-gradient-string@^2.0.2:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/gradient-string/-/gradient-string-2.0.2.tgz#a90402618990ec993ecbb72a56bd7e6598f45c0e"
-  integrity sha512-rEDCuqUQ4tbD78TpzsMtt5OIf0cBCSDWSJtUDaF6JsAh+k0v9r++NzxNEG87oDZx9ZwGhD8DaezR2L/yrw0Jdw==
-  dependencies:
-    chalk "^4.1.2"
-    tinygradient "^1.1.5"
-
 grapheme-splitter@^1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/grapheme-splitter/-/grapheme-splitter-1.0.4.tgz#9cf3a665c6247479896834af35cf1dbb4400767e"
@@ -2403,11 +2371,6 @@ locate-path@^6.0.0:
   integrity sha512-iPZK6eYjbxRu3uB4/WZ3EsEIMJFMqAoopl3R+zuq0UjcAm/MO6KCweDgPfP3elTztoKP3KtnVHxTn2NHBSDVUw==
   dependencies:
     p-locate "^5.0.0"
-
-lodash.get@^4.4.2:
-  version "4.4.2"
-  resolved "https://registry.yarnpkg.com/lodash.get/-/lodash.get-4.4.2.tgz#2d177f652fa31e939b4438d5341499dfa3825e99"
-  integrity sha512-z+Uw/vLuy6gQe8cfaFWD7p0wVv8fJl3mbzXh33RS+0oW2wvUqiRXiQ69gLWSLpgB5/6sU+r6BlQR0MBILadqTQ==
 
 lodash.merge@^4.6.2:
   version "4.6.2"
@@ -3279,19 +3242,6 @@ tiny-glob@^0.2.9:
   dependencies:
     globalyzer "0.1.0"
     globrex "^0.1.2"
-
-tinycolor2@^1.0.0:
-  version "1.5.2"
-  resolved "https://registry.yarnpkg.com/tinycolor2/-/tinycolor2-1.5.2.tgz#7d30b4584d8b7d62b9a94dacc505614a6516a95f"
-  integrity sha512-h80m9GPFGbcLzZByXlNSEhp1gf8Dy+VX/2JCGUZsWLo7lV1mnE/XlxGYgRBoMLJh1lIDXP0EMC4RPTjlRaV+Bg==
-
-tinygradient@^1.1.5:
-  version "1.1.5"
-  resolved "https://registry.yarnpkg.com/tinygradient/-/tinygradient-1.1.5.tgz#0fb855ceb18d96b21ba780b51a8012033b2530ef"
-  integrity sha512-8nIfc2vgQ4TeLnk2lFj4tRLvvJwEfQuabdsmvDdQPT0xlk9TaNtpGd6nNRxXoK6vQhN6RSzj+Cnp5tTQmpxmbw==
-  dependencies:
-    "@types/tinycolor2" "^1.4.0"
-    tinycolor2 "^1.0.0"
 
 to-fast-properties@^2.0.0:
   version "2.0.0"
