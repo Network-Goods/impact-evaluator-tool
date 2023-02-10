@@ -18,16 +18,23 @@ type PromisedMethodReturn<T extends Method> = Awaited<ReturnType<Lookup[T]>>;
 type MethodReturn<T extends Method> = Promise<PromisedMethodReturn<T>>;
 
 export async function call<M extends Method>(method: M, params: MethodParams<M>): MethodReturn<M> {
-  const res = await axios.post("/api/rpc", {
-    method: method,
-    params: params,
-  });
+  try {
+    const res = await axios.post("/api/rpc", {
+      method: method,
+      params: params,
+    });
+    if (res.data.error) {
+      return new Error(res.data.error) as any;
+    }
 
-  if (res.data.error) {
-    return new Error(res.data.error) as any;
+    return res.data.result as any;
+  } catch (e) {
+    console.error(`rpc.call faild. method: ${method}, params: `, params);
+    console.error(e);
+    // TODO: any rpc calls can return an error
+    // TODO: better error message
+    return new Error("RPC method failed") as any;
   }
-
-  return res.data.result as any;
 }
 
 export async function execute<M extends Method>(
@@ -42,6 +49,11 @@ export async function execute<M extends Method>(
     auth,
   };
 
-  const res = MethodLookup[method](serverParams as any);
-  return res as any;
+  try {
+    const res = MethodLookup[method](serverParams as any);
+    return res as any;
+  } catch (e) {
+    console.error("rpc call failed", e);
+    return new Error("rpc call failded") as any;
+  }
 }
