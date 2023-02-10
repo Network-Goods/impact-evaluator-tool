@@ -44,6 +44,7 @@ export const useResultsStore = create<ResultsStore>()((set, get) => ({
     sortEvaluationResults(data);
     const parsedArray = parseEvaluationResults(data);
     const csv = parseNestedArraysIntoCSV(parsedArray);
-    downloadCSV(csv);
+    const csv_name = `${(data as any).evaluation.name} - Results.csv`;
+    downloadCSV(csv, csv_name);
   },
 }));
