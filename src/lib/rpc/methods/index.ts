@@ -26,8 +26,5 @@ export * from "./setGithubLink";
 export * from "./setGithubHandle";
 export * from "./setSubmissionTitle";
 export * from "./setSubmissionDescription";
-<<<<<<< HEAD
 export * from "./joinWithCode";
-=======
 export * from "./getEvaluationResult";
->>>>>>> staging

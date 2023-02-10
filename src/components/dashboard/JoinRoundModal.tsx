@@ -30,12 +30,6 @@ type JoinRoundModalProps = {
 };
 
 const JoinRoundModal = ({ handleClose, open }: JoinRoundModalProps) => {
-<<<<<<< HEAD
-=======
-  const [inputs, setInputs] = useState<any>({});
-  const [checked, setChecked] = useState(true);
-  const [error, setError] = useState("");
->>>>>>> staging
   const session = useSession();
   const userProfileStore = useUserProfileStore();
 
@@ -47,41 +41,7 @@ const JoinRoundModal = ({ handleClose, open }: JoinRoundModalProps) => {
     email: isGithubEmailChecked ? githubEmail : "",
   });
 
-<<<<<<< HEAD
   const handleFormChange = (event: React.ChangeEvent<HTMLInputElement>, fieldName: keyof FormInputs) => {
-=======
-  async function joinRoundWithCode(
-    supabase: SupabaseClient,
-    user_id: string,
-    code: string,
-    preffered_email: string,
-  ): Promise<Evaluator | void> {
-    const test = {
-      in_user_id: user_id,
-      in_code: code,
-      in_preffered_email: preffered_email,
-    };
-    console.log("payload: ", test);
-
-    const { data, error } = await supabase.rpc("join_with_code", test);
-
-    if (error) {
-      console.error("Failed to join round", error);
-      setError("Error: Please contact round administrator for support.");
-      return;
-    }
-
-    if (!data) {
-      console.error("joinRoundWithCode returned no data");
-      return;
-    }
-
-    return data as any;
-  }
-
-  const handleChange = (event: any) => {
-    const name = event.target.name;
->>>>>>> staging
     const value = event.target.value;
     setFormInputs((values: FormInputs) => ({ ...values, [fieldName]: value }));
   };
@@ -94,24 +54,10 @@ const JoinRoundModal = ({ handleClose, open }: JoinRoundModalProps) => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-<<<<<<< HEAD
 
     // TODO: this should never execute, need improve guarentees and fudge typechecking
     if (!userProfileStore.profile) {
       return;
-=======
-    if (userProfileStore.profile) {
-      const preferred_email = checked ? githubEmail : inputs.email;
-
-      const evaluator = await joinRoundWithCode(supabase, userProfileStore.profile.id!, inputs.code, preferred_email);
-
-      // TODO: handle error
-      if (!evaluator) {
-        return;
-      }
-
-      window.location.replace("/");
->>>>>>> staging
     }
 
     // TODO: add correct type for errors
@@ -129,11 +75,7 @@ const JoinRoundModal = ({ handleClose, open }: JoinRoundModalProps) => {
     window.location.replace("/");
   };
 
-<<<<<<< HEAD
   const isJoinButtonDisabled = !formInputs.code && (isGithubEmailChecked ? !githubEmail : !formInputs.email);
-=======
-  const is_join_button_disabled = !inputs.code && (checked ? !githubEmail : !inputs.email);
->>>>>>> staging
 
   return (
     <Modal
