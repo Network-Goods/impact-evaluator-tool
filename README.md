@@ -47,3 +47,15 @@ join evaluation on evaluator.evaluation_id = evaluation.id
 where evaluator.voice_credits = 100 and evaluator.evaluation_id = 'cf866f4d-216c-49aa-8363-3cabd93e80e0'
 and "user".role != 'admin';
 ```
+
+Get number of credits used by each evaluator
+
+```
+select github_handle, coalesce(sum(votes*votes), 0)
+from evaluator
+left join votes on evaluator.id = votes.evaluator_id
+join "user" on "user".id = evaluator.user_id
+where evaluator.evaluation_id = 'cf866f4d-216c-49aa-8363-3cabd93e80e0'
+group by github_handle
+order by github_handle;
+```
