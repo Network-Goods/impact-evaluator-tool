@@ -10,6 +10,16 @@ import Add from "public/images/svg/Add";
 import Button from "../shared/Button";
 import Delete from "public/images/svg/Delete";
 
+interface FormInputs {
+  name: string;
+  description: string;
+  summary: string;
+  specs: string;
+  github_link: string;
+  links?: string[];
+  githubHandle: string;
+}
+
 export default function Submission() {
   const nameRef = useRef<HTMLInputElement | null>(null);
   const summaryRef = useRef<HTMLTextAreaElement | null>(null);
@@ -18,20 +28,34 @@ export default function Submission() {
   const githubLinkRef = useRef<HTMLInputElement | null>(null);
   const githubHandleRef = useRef<HTMLInputElement | null>(null);
   const [checked, setChecked] = useState(true);
-  const [inputs, setInputs] = useState<any>({});
-  const [index, setIndex] = useState(0);
-  const [newLinks, setNewLinks] = useState<any>([]);
+  const [isGithubHandleChecked, setIsGithubHandleChecked] = useState(true);
   const router = useRouter();
   const { submission_id } = router.query;
   const store = useSubmissionStore();
 
-  const [titleState, setTitleState] = useState(store.submission?.name);
-  const [links, setLinks] = useState<any>(store.submission?.links || []);
-  const [githubLink, setGithubLink] = useState<any>(store.submission?.github_link);
-  const [githubHandle, setGithubHandle] = useState<any>(store.submission?.github_link);
-  const [summary, setSummary] = useState<any>(store.submission?.description.summary);
-  const [description, setDescription] = useState<any>(store.submission?.description.description);
-  const [specs, setSpecs] = useState<any>(store.submission?.description.specs);
+  const [formInputs, setFormInputs] = useState<FormInputs>({
+    name: store.submission?.name,
+    description: store.submission?.description.description,
+    summary: store.submission?.description.summary,
+    specs: store.submission?.description.specs,
+    github_link: store.submission?.github_link,
+    links: store.submission?.links || [],
+    githubHandle: isGithubHandleChecked ? store.submission?.github_handle : "",
+  });
+
+  const handleFormChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    fieldName: keyof FormInputs,
+  ) => {
+    const value = event.target.value;
+    setFormInputs((values: FormInputs) => ({ ...values, [fieldName]: value }));
+  };
+
+  const handleChecked = () => {
+    const githubHandle = !isGithubHandleChecked ? store.submission?.github_handle : "";
+    setIsGithubHandleChecked((prev) => !prev);
+    setFormInputs((values: FormInputs) => ({ ...values, githubHandle: githubHandle }));
+  };
 
   // useEffect(() => {
   //   if (!submission_id || Array.isArray(submission_id)) {
@@ -40,19 +64,16 @@ export default function Submission() {
   //   store.load(submission_id);
   // }, [submission_id, store.fetching]);
 
-  const handleChecked = () => {
-    setChecked((prev) => !prev);
-    // setInputs((values: any) => ({ ...values, email: githubEmail }));
-  };
-
   useEffect(() => {
-    setTitleState(store.submission?.name);
-    setLinks(store.submission?.links);
-    setGithubLink(store.submission?.github_link);
-    setGithubHandle(store.submission?.github_handle);
-    setSummary(store.submission?.description.summary);
-    setDescription(store.submission?.description.description);
-    setSpecs(store.submission?.description.specs);
+    setFormInputs({
+      name: store.submission?.name,
+      description: store.submission?.description.description,
+      summary: store.submission?.description.summary,
+      specs: store.submission?.description.specs,
+      github_link: store.submission?.github_link,
+      links: store.submission?.links,
+      githubHandle: isGithubHandleChecked ? store.submission?.github_handle : "",
+    });
   }, [store.submission]);
 
   // if (store.fetching) return <LoadingSpinner />;
@@ -114,8 +135,8 @@ export default function Submission() {
               name="name"
               className="appearance-none w-full px-4 py-2 rounded-lg border border-gray focus:outline-none"
               placeholder="Example Title"
-              value={titleState || ""}
-              onChange={(e) => setTitleState(e.target.value)}
+              value={formInputs.name}
+              onChange={(e) => handleFormChange(e, "name")}
               onBlur={(e) => store.setSubmissionTitle(e.target.value)}
             />
           </div>
@@ -129,8 +150,8 @@ export default function Submission() {
               className="w-full min-h-[112px] px-4 py-2 rounded-lg border border-gray focus:outline-none"
               placeholder="XYZ is..."
               name="description"
-              value={description || ""}
-              onChange={(e) => setDescription(e.target.value)}
+              value={formInputs.description}
+              onChange={(e) => handleFormChange(e, "description")}
               onBlur={(e) => store.setSubmissionDescription("description", e.target.value)}
             />
           </div>
@@ -146,8 +167,8 @@ export default function Submission() {
               className="w-full min-h-[112px] px-4 py-2 rounded-lg border border-gray focus:outline-none"
               placeholder="So far we have..."
               name="summary"
-              value={summary || ""}
-              onChange={(e) => setSummary(e.target.value)}
+              value={formInputs.summary}
+              onChange={(e) => handleFormChange(e, "summary")}
               onBlur={(e) => store.setSubmissionDescription("summary", e.target.value)}
             />
           </div>
@@ -162,8 +183,8 @@ export default function Submission() {
               className="w-full min-h-[112px] px-4 py-2 rounded-lg border border-gray focus:outline-none"
               placeholder="XYZ utilizes..."
               name="specs"
-              value={specs || ""}
-              onChange={(e) => setSpecs(e.target.value)}
+              value={formInputs.specs}
+              onChange={(e) => handleFormChange(e, "specs")}
               onBlur={(e) => store.setSubmissionDescription("specs", e.target.value)}
             />
           </div>
@@ -176,45 +197,46 @@ export default function Submission() {
               name="github_link"
               className="appearance-none w-full px-4 py-2 rounded-lg border border-gray focus:outline-none"
               placeholder="https://github.com/protocol/research"
-              value={githubLink || ""}
-              onChange={(e) => setGithubLink(e.target.value)}
+              value={formInputs.github_link}
+              onChange={(e) => handleFormChange(e, "github_link")}
               onBlur={(e) => store.setGithubLink(e.target.value)}
             />
           </div>
-          {links.map((link: any, index: number) => {
-            return (
-              <div key={index} className="pb-3">
-                <input
-                  ref={githubLinkRef}
-                  type="text"
-                  name="github_link"
-                  className="appearance-none text-[17px] text-blue-alt font-bold pb-1 focus:outline-none"
-                  placeholder="https://protocol.ai/"
-                  value={link.name || ""}
-                  onChange={(e) => setGithubLink(e.target.value)}
-                  onBlur={(e) => store.setGithubLink(e.target.value)}
-                />
-                <div className="flex items-center">
+          {formInputs.links &&
+            formInputs.links.map((link: any, index: number) => {
+              return (
+                <div key={index} className="pb-3">
                   <input
                     ref={githubLinkRef}
                     type="text"
                     name="github_link"
-                    className="appearance-none w-full px-4 py-2 border border-gray rounded-l-lg focus:outline-none"
+                    className="appearance-none text-[17px] text-blue-alt font-bold pb-1 focus:outline-none"
                     placeholder="https://protocol.ai/"
-                    value={link.value || ""}
+                    value={link.name || ""}
                     onChange={(e) => setGithubLink(e.target.value)}
                     onBlur={(e) => store.setGithubLink(e.target.value)}
                   />
-                  <button
-                    className="font-bold py-[10px] px-4 border border-gray border-l-0 rounded-r-lg bg-blue bg-opacity-5"
-                    onClick={() => console.log("delete")}
-                  >
-                    <Delete className="w-3 h-5 fill-offblack" />
-                  </button>
+                  <div className="flex items-center">
+                    <input
+                      ref={githubLinkRef}
+                      type="text"
+                      name="github_link"
+                      className="appearance-none w-full px-4 py-2 border border-gray rounded-l-lg focus:outline-none"
+                      placeholder="https://protocol.ai/"
+                      value={link.value || ""}
+                      onChange={(e) => setGithubLink(e.target.value)}
+                      onBlur={(e) => store.setGithubLink(e.target.value)}
+                    />
+                    <button
+                      className="font-bold py-[10px] px-4 border border-gray border-l-0 rounded-r-lg bg-blue bg-opacity-5"
+                      onClick={() => console.log("delete")}
+                    >
+                      <Delete className="w-3 h-5 fill-offblack" />
+                    </button>
+                  </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
           <div className="pt-4 pb-9">
             <button
               className="transition-colors duration-200 ease-in-out transform  outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold border border-blue hover:bg-white focus:bg-white text-blue text-lg px-4 py-1"
@@ -234,32 +256,23 @@ export default function Submission() {
               className=" text-[#E5E7EB] border-[#E5E7EB] rounded-lg"
               type="checkbox"
               name="emailCheck"
-              checked={checked}
+              checked={isGithubHandleChecked}
               onChange={() => handleChecked()}
             />{" "}
             <span className="ml-2">I will be evaluating on behalf of this project for the Impact Evaluator round.</span>
           </div>
           <p className="text-[17px] font-bold">GitHub handle for representative:</p>
 
-          {checked ? (
-            <input
-              ref={githubHandleRef}
-              className="text-base appearance-none border border-gray rounded-lg w-full py-2 px-3 mt-1 font-medium text-gray focus:outline-none"
-              type="text"
-              name="githubHandle"
-              value={githubHandle || ""}
-              disabled={true}
-            />
-          ) : (
-            <input
-              className="text-base appearance-none border border-gray rounded-lg w-full py-2 px-3 mt-1 font-medium  focus:outline-none"
-              type="text"
-              name="githubHandle"
-              value={githubHandle || ""}
-              onChange={(e) => setGithubHandle(e.target.value)}
-              onBlur={(e) => store.setGithubHandle(e.target.value)}
-            />
-          )}
+          <input
+            ref={githubHandleRef}
+            className="text-base appearance-none border border-gray rounded-lg w-full py-2 px-3 mt-1 font-medium disabled:text-gray focus:outline-none"
+            type="text"
+            name="githubHandle"
+            value={formInputs.githubHandle}
+            onChange={() => handleChecked()}
+            onBlur={(e) => store.setGithubHandle(e.target.value)}
+            disabled={isGithubHandleChecked}
+          />
 
           <div className="flex justify-between mt-14">
             <div>
