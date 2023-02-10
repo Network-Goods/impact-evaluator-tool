@@ -30,3 +30,20 @@ details: null,
 hint: 'If a new function was created in the database with this name and parameters, try reloading the schema cache.',
 message: 'Could not find the public.join_with_code(code, preffered_email, user_id) function or the public.join_with_code function with a single unnamed json or jsonb parameter in the schema cache'
 }
+
+Get SME status
+
+```
+select
+"user".name as user_name,
+github_handle,
+voice_credits,
+exists (select 1 from votes where votes.evaluator_id = evaluator.id) as has_voted,
+true as has_logged_in,
+evaluation.name as round_title
+from evaluator
+join "user" on "user".id = evaluator.user_id
+join evaluation on evaluator.evaluation_id = evaluation.id
+where evaluator.voice_credits = 100 and evaluator.evaluation_id = 'cf866f4d-216c-49aa-8363-3cabd93e80e0'
+and "user".role != 'admin';
+```

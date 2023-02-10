@@ -28,6 +28,7 @@ import {
   setGithubHandle,
   setSubmissionDescription,
   joinWithCode,
+  getEvaluationResult,
 } from "./methods";
 
 export const MethodLookup = {
@@ -60,4 +61,5 @@ export const MethodLookup = {
   setGithubHandle,
   setSubmissionDescription,
   joinWithCode,
+  getEvaluationResult,
 };
