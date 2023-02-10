@@ -28,8 +28,8 @@ export function filterSubmissions(search: string, submissions: any) {
 }
 
 export function parseEvaluationResults(results: any) {
-  let output = [];
-  let headerArr: (string | number)[] = ["github_handle"];
+  const output = [];
+  const headerArr: (string | number)[] = ["github_handle"];
   results.submissions.forEach(function (submission: any, idx: number) {
     headerArr.push(submission.name);
   });
@@ -38,7 +38,7 @@ export function parseEvaluationResults(results: any) {
   output.push(headerArr);
 
   results.evaluators.forEach(function (evaluator: any, i: number) {
-    let evalArr: (string | number)[] = [];
+    const evalArr: (string | number)[] = [];
 
     output.push(evalArr);
     evalArr.push(evaluator.github_handle);
