@@ -28,15 +28,15 @@ export function filterSubmissions(search: string, submissions: any) {
 }
 
 export function parseEvaluationResults(results: any) {
-  let output = [];
-  let headerArr: (string | number)[] = ["github_handle"];
+  const output = [];
+  const headerArr: (string | number)[] = ["github_handle"];
   results.submissions.forEach(function (submission: any, idx: number) {
     headerArr.push(submission.name);
   });
   output.push(headerArr);
 
   results.evaluators.forEach(function (evaluator: any, i: number) {
-    let evalArr: (string | number)[] = [];
+    const evalArr: (string | number)[] = [];
 
     output.push(evalArr);
     evalArr.push(evaluator.github_handle);
@@ -78,17 +78,17 @@ export function sortEvaluationResults(obj: any) {
 export function parseNestedArraysIntoCSV(data: any) {
   let csv = "";
   data.forEach((row: any) => {
-      csv += row.join(",");
+    csv += row.join(",");
     csv += "\n";
   });
   return csv;
 }
 
 export function downloadCSV(data: any) {
-    const blob = new Blob([data], { type: "text/csv" });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.setAttribute("href", url);
-    a.setAttribute("download", "download.csv");
-    a.click();
-  };
+  const blob = new Blob([data], { type: "text/csv" });
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.setAttribute("href", url);
+  a.setAttribute("download", "download.csv");
+  a.click();
+}

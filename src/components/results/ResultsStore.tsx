@@ -11,6 +11,7 @@ export interface ResultsStore {
   evaluations: any;
   load: () => void;
   data?: any;
+  getEvaluationResult: (evaluation_id: string) => Promise<Error | any>;
 }
 
 export const useResultsStore = create<ResultsStore>()((set, get) => ({
@@ -40,10 +41,9 @@ export const useResultsStore = create<ResultsStore>()((set, get) => ({
       data: data,
     });
 
-  sortEvaluationResults(data);
-  const parsedArray = parseEvaluationResults(data);
-  const csv = parseNestedArraysIntoCSV(parsedArray);
-  downloadCSV(csv);
-  
+    sortEvaluationResults(data);
+    const parsedArray = parseEvaluationResults(data);
+    const csv = parseNestedArraysIntoCSV(parsedArray);
+    downloadCSV(csv);
   },
 }));

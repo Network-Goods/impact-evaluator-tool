@@ -87,9 +87,6 @@ const JoinRoundModal = ({ handleClose, open }: JoinRoundModalProps) => {
   };
 
   const is_join_button_disabled = !inputs.code && (checked ? !githubEmail : !inputs.email);
-  console.log(
-    `joinbutton: ${is_join_button_disabled}, checked: ${checked}, githubEmail: ${githubEmail}, email: ${inputs.email}`,
-  );
 
   return (
     <Modal
