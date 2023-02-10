@@ -27,6 +27,7 @@ import {
   setGithubLink,
   setGithubHandle,
   setSubmissionDescription,
+  getEvaluationResult,
 } from "./methods";
 
 export const MethodLookup = {
@@ -58,4 +59,5 @@ export const MethodLookup = {
   setGithubLink,
   setGithubHandle,
   setSubmissionDescription,
+  getEvaluationResult,
 };
