@@ -9,6 +9,7 @@ import SmallTitle from "src/components/shared/SmallTitle";
 import Add from "public/images/svg/Add";
 import Button from "../shared/Button";
 import Delete from "public/images/svg/Delete";
+import SubmitSubmissionModal from "./SubmitSubmissionModal";
 
 interface FormInputs {
   name: string;
@@ -21,17 +22,18 @@ interface FormInputs {
 }
 
 export default function Submission() {
-  const nameRef = useRef<HTMLInputElement | null>(null);
-  const summaryRef = useRef<HTMLTextAreaElement | null>(null);
-  const descriptionRef = useRef<HTMLTextAreaElement | null>(null);
-  const specsRef = useRef<HTMLTextAreaElement | null>(null);
-  const githubLinkRef = useRef<HTMLInputElement | null>(null);
-  const githubHandleRef = useRef<HTMLInputElement | null>(null);
-  const [checked, setChecked] = useState(true);
   const [isGithubHandleChecked, setIsGithubHandleChecked] = useState(true);
+  const [openModal, setOpenModal] = useState(false);
   const router = useRouter();
   const { submission_id } = router.query;
   const store = useSubmissionStore();
+
+  useEffect(() => {
+    if (!submission_id || Array.isArray(submission_id)) {
+      return;
+    }
+    store.load(submission_id);
+  }, [submission_id, store.fetching]);
 
   const [formInputs, setFormInputs] = useState<FormInputs>({
     name: store.submission?.name,
@@ -57,12 +59,11 @@ export default function Submission() {
     setFormInputs((values: FormInputs) => ({ ...values, githubHandle: githubHandle }));
   };
 
-  // useEffect(() => {
-  //   if (!submission_id || Array.isArray(submission_id)) {
-  //     return;
-  //   }
-  //   store.load(submission_id);
-  // }, [submission_id, store.fetching]);
+  const handleSubmitModal = () => {
+    store.setSubmission();
+    setOpenModal(false);
+    router.push("/");
+  };
 
   useEffect(() => {
     setFormInputs({
@@ -72,11 +73,11 @@ export default function Submission() {
       specs: store.submission?.description.specs,
       github_link: store.submission?.github_link,
       links: store.submission?.links,
-      githubHandle: isGithubHandleChecked ? store.submission?.github_handle : "",
+      githubHandle: store.submission?.github_handle,
     });
   }, [store.submission]);
 
-  // if (store.fetching) return <LoadingSpinner />;
+  if (store.fetching) return <LoadingSpinner />;
   // if (store.error) return <p>Oh no... {store.error.message}</p>;
 
   return (
@@ -110,7 +111,10 @@ export default function Submission() {
             <li>
               Submit project to Impact Evaluator (IE) round using this form before end of day on Monday, January 23rd.{" "}
             </li>
-            <li> Register for Protocol Labs' IE voting tool (invitation will be sent as the IE round approaches) </li>
+            <li>
+              {" "}
+              Register for Protocol Labs&#39; IE voting tool (invitation will be sent as the IE round approaches){" "}
+            </li>
             <li>Vote on projects using Quadratic Voting evaluation method</li>
           </ol>
         </div>
@@ -130,12 +134,11 @@ export default function Submission() {
             <p className="text-xl font-bold pb-3">Project or Team Title</p>
 
             <input
-              ref={nameRef}
               type="text"
               name="name"
               className="appearance-none w-full px-4 py-2 rounded-lg border border-gray focus:outline-none"
               placeholder="Example Title"
-              value={formInputs.name}
+              value={formInputs.name || ""}
               onChange={(e) => handleFormChange(e, "name")}
               onBlur={(e) => store.setSubmissionTitle(e.target.value)}
             />
@@ -146,11 +149,10 @@ export default function Submission() {
               Using <b>280 characters</b> or less, describe your project.
             </div>
             <textarea
-              ref={descriptionRef}
               className="w-full min-h-[112px] px-4 py-2 rounded-lg border border-gray focus:outline-none"
               placeholder="XYZ is..."
               name="description"
-              value={formInputs.description}
+              value={formInputs.description || ""}
               onChange={(e) => handleFormChange(e, "description")}
               onBlur={(e) => store.setSubmissionDescription("description", e.target.value)}
             />
@@ -163,11 +165,10 @@ export default function Submission() {
             </div>
 
             <textarea
-              ref={summaryRef}
               className="w-full min-h-[112px] px-4 py-2 rounded-lg border border-gray focus:outline-none"
               placeholder="So far we have..."
               name="summary"
-              value={formInputs.summary}
+              value={formInputs.summary || ""}
               onChange={(e) => handleFormChange(e, "summary")}
               onBlur={(e) => store.setSubmissionDescription("summary", e.target.value)}
             />
@@ -179,11 +180,10 @@ export default function Submission() {
               value your contracts bring to Filecoin.
             </div>
             <textarea
-              ref={specsRef}
               className="w-full min-h-[112px] px-4 py-2 rounded-lg border border-gray focus:outline-none"
               placeholder="XYZ utilizes..."
               name="specs"
-              value={formInputs.specs}
+              value={formInputs.specs || ""}
               onChange={(e) => handleFormChange(e, "specs")}
               onBlur={(e) => store.setSubmissionDescription("specs", e.target.value)}
             />
@@ -192,12 +192,11 @@ export default function Submission() {
           <div className="pb-3">
             <p className="text-[17px] text-blue-alt font-bold pb-1">Github Repo</p>
             <input
-              ref={githubLinkRef}
               type="text"
               name="github_link"
               className="appearance-none w-full px-4 py-2 rounded-lg border border-gray focus:outline-none"
               placeholder="https://github.com/protocol/research"
-              value={formInputs.github_link}
+              value={formInputs.github_link || ""}
               onChange={(e) => handleFormChange(e, "github_link")}
               onBlur={(e) => store.setGithubLink(e.target.value)}
             />
@@ -207,29 +206,27 @@ export default function Submission() {
               return (
                 <div key={index} className="pb-3">
                   <input
-                    ref={githubLinkRef}
                     type="text"
                     name="github_link"
                     className="appearance-none text-[17px] text-blue-alt font-bold pb-1 focus:outline-none"
                     placeholder="https://protocol.ai/"
                     value={link.name || ""}
                     onChange={(e) => setGithubLink(e.target.value)}
-                    onBlur={(e) => store.setGithubLink(e.target.value)}
+                    onBlur={(e) => store.setSubmissionLinkTitle(e.target.value, index)}
                   />
                   <div className="flex items-center">
                     <input
-                      ref={githubLinkRef}
                       type="text"
                       name="github_link"
                       className="appearance-none w-full px-4 py-2 border border-gray rounded-l-lg focus:outline-none"
                       placeholder="https://protocol.ai/"
                       value={link.value || ""}
                       onChange={(e) => setGithubLink(e.target.value)}
-                      onBlur={(e) => store.setGithubLink(e.target.value)}
+                      onBlur={(e) => store.setSubmissionLink(e.target.value, index)}
                     />
                     <button
                       className="font-bold py-[10px] px-4 border border-gray border-l-0 rounded-r-lg bg-blue bg-opacity-5"
-                      onClick={() => console.log("delete")}
+                      onClick={() => store.deleteSubmissionLink(index)}
                     >
                       <Delete className="w-3 h-5 fill-offblack" />
                     </button>
@@ -240,7 +237,7 @@ export default function Submission() {
           <div className="pt-4 pb-9">
             <button
               className="transition-colors duration-200 ease-in-out transform  outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold border border-blue hover:bg-white focus:bg-white text-blue text-lg px-4 py-1"
-              onClick={() => setLinks([...links, { name: "", value: "" }])}
+              onClick={() => store.createSubmissionLink()}
             >
               <span className="mr-3">
                 <Add className="fill-current" />
@@ -264,23 +261,22 @@ export default function Submission() {
           <p className="text-[17px] font-bold">GitHub handle for representative:</p>
 
           <input
-            ref={githubHandleRef}
             className="text-base appearance-none border border-gray rounded-lg w-full py-2 px-3 mt-1 font-medium disabled:text-gray focus:outline-none"
             type="text"
             name="githubHandle"
-            value={formInputs.githubHandle}
-            onChange={() => handleChecked()}
+            value={formInputs.githubHandle || ""}
+            onChange={(e) => handleFormChange(e, "githubHandle")}
             onBlur={(e) => store.setGithubHandle(e.target.value)}
             disabled={isGithubHandleChecked}
           />
 
           <div className="flex justify-between mt-14">
             <div>
-              <Button small alt text="Cancel" onClick={() => console.log("cancel")} />
+              <Button small alt text="Cancel" onClick={() => router.push("/")} />
             </div>
             <div>
               <button
-                onClick={() => console.log("submit")}
+                onClick={() => setOpenModal(true)}
                 className={`transition-colors duration-200 ease-in-out transform  outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold mx-auto border border-blue bg-blue  text-white text-lg px-3 py-1
                 ${
                   false
@@ -296,6 +292,11 @@ export default function Submission() {
           </div>
         </div>
       </div>
+      <SubmitSubmissionModal
+        open={openModal}
+        handleClose={() => setOpenModal(false)}
+        handleSubmit={handleSubmitModal}
+      />
     </>
   );
 }

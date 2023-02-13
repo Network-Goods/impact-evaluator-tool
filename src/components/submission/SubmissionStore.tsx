@@ -1,7 +1,6 @@
 import { create } from "zustand";
 import { v4 as uuid } from "uuid";
 import { Evaluation, rpc, Submission } from "src/lib";
-import { subtle } from "crypto";
 
 export interface SubmissionStore {
   fetching: boolean;
@@ -9,12 +8,13 @@ export interface SubmissionStore {
   load: (submission_id: string) => void;
   setSubmissionTitle: (title: string) => void;
   setSubmissionDescription: (title: string, link: string) => void;
-  setSubmissionLinkTitle: (oldTitle: string, newTitle: string) => void;
-  setSubmissionLink: (title: string, link: string) => void;
+  setSubmissionLinkTitle: (title: string, index: number) => void;
+  setSubmissionLink: (link: string, index: number) => void;
   setGithubLink: (link: string) => void;
   setGithubHandle: (handle: string) => void;
-  createSubmissionLink: (link: any) => void;
-  deleteSubmissionLink: (title: string) => void;
+  createSubmissionLink: () => void;
+  deleteSubmissionLink: (index: number) => void;
+  setSubmission: () => void;
 }
 
 export const useSubmissionStore = create<SubmissionStore>()((set, get) => ({
@@ -46,7 +46,7 @@ export const useSubmissionStore = create<SubmissionStore>()((set, get) => ({
     set({
       submission: {
         ...submission,
-        name: name,
+        name: title,
       },
     });
 
@@ -88,18 +88,18 @@ export const useSubmissionStore = create<SubmissionStore>()((set, get) => ({
       }
     });
   },
-  setSubmissionLinkTitle: (oldTitle: string, newTitle: string) => {
+  setSubmissionLinkTitle: (title: string, index: number) => {
     const submission = get().submission;
 
     if (!submission) {
       return;
     }
 
-    const newArr = submission.links.map((e: any) => {
-      if (e.name === oldTitle) {
+    const newArr = submission.links.map((e: any, idx: number) => {
+      if (idx === index) {
         return {
           ...e,
-          name: newTitle,
+          name: title,
         };
       }
       return e;
@@ -119,15 +119,15 @@ export const useSubmissionStore = create<SubmissionStore>()((set, get) => ({
       }
     });
   },
-  setSubmissionLink: (title: string, link: string) => {
+  setSubmissionLink: (link: string, index: number) => {
     const submission = get().submission;
 
     if (!submission) {
       return;
     }
 
-    const newArr = submission.link.map((e: any) => {
-      if (e.name === title) {
+    const newArr = submission.link.map((e: any, idx: number) => {
+      if (idx === index) {
         return {
           ...e,
           value: link,
@@ -197,7 +197,7 @@ export const useSubmissionStore = create<SubmissionStore>()((set, get) => ({
         }
       });
   },
-  createSubmissionLink: (link: any) => {
+  createSubmissionLink: () => {
     const submission = get().submission;
 
     if (!submission) {
@@ -208,14 +208,14 @@ export const useSubmissionStore = create<SubmissionStore>()((set, get) => ({
       ? [
           ...submission.links,
           {
-            name: link.title,
-            value: link.link,
+            name: "",
+            value: "",
           },
         ]
       : [
           {
-            name: link.title,
-            value: link.link,
+            name: "",
+            value: "",
           },
         ];
 
@@ -233,14 +233,14 @@ export const useSubmissionStore = create<SubmissionStore>()((set, get) => ({
       }
     });
   },
-  deleteSubmissionLink: (title: string) => {
+  deleteSubmissionLink: (index: number) => {
     const submission = get().submission;
 
     if (!submission) {
       return;
     }
 
-    const newArr = submission.links.filter((e: any) => e.name !== title);
+    const newArr = submission.links.filter((e: any, idx: number) => idx !== index);
 
     set({
       submission: {
@@ -255,5 +255,30 @@ export const useSubmissionStore = create<SubmissionStore>()((set, get) => ({
         return;
       }
     });
+  },
+  setSubmission: () => {
+    const submission = get().submission;
+
+    if (!submission) {
+      return new Error("Submission not loaded");
+    }
+
+    set({
+      submission: {
+        ...submission,
+        is_submittied: true,
+      },
+    });
+
+    rpc
+      .call("setSubmission", {
+        id: submission.id,
+      })
+      .then((data) => {
+        if (data instanceof Error) {
+          console.error(`ERROR -- rpc call setSubmission failed`, data);
+          return;
+        }
+      });
   },
 }));

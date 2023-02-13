@@ -26,6 +26,7 @@ export * from "./setLink";
 export * from "./setGithubLink";
 export * from "./setGithubHandle";
 export * from "./setSubmissionTitle";
+export * from "./setSubmission";
 export * from "./setSubmissionDescription";
 export * from "./joinWithCode";
 export * from "./getEvaluationResult";
