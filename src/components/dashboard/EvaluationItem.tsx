@@ -57,11 +57,7 @@ export const EvaluationItem = ({ evaluation, first, last }: EvaluationItemProps)
 
         <div className="pl-4 md:pl-10 border-l border-gray">
           {evaluation.status === "staging" ? (
-            <EvaluationLinkButton
-              text="Details"
-              link="https://network-goods.notion.site/Impact-Evaluators-Builders-Leaderboard-602ea6755b5642e1ad6f9da59a47fa62"
-              external
-            />
+            <EvaluationLinkButton text="Details" link={`/submission/${evaluation.id}`} external />
           ) : null}
           {evaluation.status === "started" && !evaluation.is_submitted ? (
             <>

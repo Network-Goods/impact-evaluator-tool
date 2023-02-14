@@ -74,8 +74,8 @@ const JoinRoundModal = ({ handleClose, open }: JoinRoundModalProps) => {
       return;
     }
 
-    if (data && data.id) {
-      router.push(`/submission/${data.id}`);
+    if (data && data.submission) {
+      router.push(`/evaluation/${data.evaluationID}/submission/${data.submission.id}`);
     } else {
       window.location.replace("/");
     }
