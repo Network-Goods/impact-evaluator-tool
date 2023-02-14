@@ -1,19 +1,11 @@
-import { isAdmin, ServerParams } from "..";
+import { ServerParams } from "..";
 
 type Params = {
   link: string;
   id: string;
 };
 
-export async function setGithubLink({
-  supabase,
-  params: { link, id },
-  auth,
-}: ServerParams<Params>): Promise<void | Error> {
-  if (!isAdmin(auth)) {
-    return new Error(`Unauthorized`);
-  }
-
+export async function setGithubLink({ supabase, params: { link, id } }: ServerParams<Params>): Promise<void | Error> {
   const { data, error } = await supabase.from("submission").update({ github_link: link }).eq("id", id);
 
   if (error) {
