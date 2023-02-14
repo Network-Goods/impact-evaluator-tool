@@ -1,5 +1,6 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import { useSession } from "@supabase/auth-helpers-react";
 import LoadingSpinner from "src/components/shared/LoadingSpinner";
 import { useSubmissionStore } from "./SubmissionStore";
 import Title from "src/components/shared/Title";
@@ -17,8 +18,13 @@ interface FormInputs {
   summary: string;
   specs: string;
   github_link: string;
-  links?: string[];
+  links?: LinkInputs[];
   githubHandle: string;
+}
+
+interface LinkInputs {
+  name: string;
+  value: string;
 }
 
 export default function Submission() {
@@ -27,6 +33,8 @@ export default function Submission() {
   const router = useRouter();
   const { submission_id } = router.query;
   const store = useSubmissionStore();
+  const session = useSession();
+  const githubHandleFromSession = session?.user.user_metadata.user_name;
 
   useEffect(() => {
     if (!submission_id || Array.isArray(submission_id)) {
@@ -42,7 +50,7 @@ export default function Submission() {
     specs: store.submission?.description.specs,
     github_link: store.submission?.github_link,
     links: store.submission?.links || [],
-    githubHandle: isGithubHandleChecked ? store.submission?.github_handle : "",
+    githubHandle: isGithubHandleChecked ? githubHandleFromSession : "",
   });
 
   const handleFormChange = (
@@ -53,10 +61,20 @@ export default function Submission() {
     setFormInputs((values: FormInputs) => ({ ...values, [fieldName]: value }));
   };
 
+  const handleLinkChange = (event: React.ChangeEvent<HTMLInputElement>, index: number, fieldName: keyof LinkInputs) => {
+    const value = event.target.value;
+    setFormInputs((values: any) => {
+      const links = values.links;
+      links[index][fieldName] = value;
+      return { ...values, links: links };
+    });
+  };
+
   const handleChecked = () => {
-    const githubHandle = !isGithubHandleChecked ? store.submission?.github_handle : "";
+    const githubHandle = !isGithubHandleChecked ? githubHandleFromSession : "";
     setIsGithubHandleChecked((prev) => !prev);
     setFormInputs((values: FormInputs) => ({ ...values, githubHandle: githubHandle }));
+    store.setGithubHandle(githubHandle);
   };
 
   const handleSubmitModal = () => {
@@ -73,9 +91,18 @@ export default function Submission() {
       specs: store.submission?.description.specs,
       github_link: store.submission?.github_link,
       links: store.submission?.links,
-      githubHandle: store.submission?.github_handle,
+      githubHandle: isGithubHandleChecked ? githubHandleFromSession : store.submission?.github_handle,
     });
   }, [store.submission]);
+
+  const isSubmitButtonDisabled =
+    !formInputs.name ||
+    !formInputs.description ||
+    !formInputs.summary ||
+    !formInputs.specs ||
+    !formInputs.github_link ||
+    (isGithubHandleChecked ? !store.submission?.github_handle : !formInputs.githubHandle) ||
+    (formInputs.links && formInputs.links.some((link) => !link.name || !link.value));
 
   if (store.fetching) return <LoadingSpinner />;
   // if (store.error) return <p>Oh no... {store.error.message}</p>;
@@ -209,9 +236,9 @@ export default function Submission() {
                     type="text"
                     name="github_link"
                     className="appearance-none text-[17px] text-blue-alt font-bold pb-1 focus:outline-none"
-                    placeholder="https://protocol.ai/"
+                    placeholder="Website"
                     value={link.name || ""}
-                    onChange={(e) => setGithubLink(e.target.value)}
+                    onChange={(e) => handleLinkChange(e, index, "name")}
                     onBlur={(e) => store.setSubmissionLinkTitle(e.target.value, index)}
                   />
                   <div className="flex items-center">
@@ -221,7 +248,7 @@ export default function Submission() {
                       className="appearance-none w-full px-4 py-2 border border-gray rounded-l-lg focus:outline-none"
                       placeholder="https://protocol.ai/"
                       value={link.value || ""}
-                      onChange={(e) => setGithubLink(e.target.value)}
+                      onChange={(e) => handleLinkChange(e, index, "value")}
                       onBlur={(e) => store.setSubmissionLink(e.target.value, index)}
                     />
                     <button
@@ -279,12 +306,12 @@ export default function Submission() {
                 onClick={() => setOpenModal(true)}
                 className={`transition-colors duration-200 ease-in-out transform  outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold mx-auto border border-blue bg-blue  text-white text-lg px-3 py-1
                 ${
-                  false
+                  isSubmitButtonDisabled
                     ? "opacity-50 cursor-not-allowed"
                     : "cursor-pointer hover:bg-blue-darkest hover:border-blue-darkest"
                 }
                 `}
-                disabled={false}
+                disabled={isSubmitButtonDisabled}
               >
                 Submit
               </button>

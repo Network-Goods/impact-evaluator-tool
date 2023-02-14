@@ -16,12 +16,7 @@ export default function Results() {
 
   useEffect(() => {
     store.load();
-    console.log(store)
   }, [store.fetching]);
-
-  useEffect(() => {
-    console.log(store.data)
-  }, [store.data]);
 
   if (store.fetching) return <LoadingSpinner />;
   if (store.error) return <p>Oh no... {store.error.message}</p>;

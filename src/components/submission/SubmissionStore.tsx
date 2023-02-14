@@ -126,7 +126,7 @@ export const useSubmissionStore = create<SubmissionStore>()((set, get) => ({
       return;
     }
 
-    const newArr = submission.link.map((e: any, idx: number) => {
+    const newArr = submission.links.map((e: any, idx: number) => {
       if (idx === index) {
         return {
           ...e,
