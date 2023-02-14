@@ -3,8 +3,7 @@ import Link from "next/link";
 import SmallTitle from "../shared/SmallTitle";
 import LeftArrow from "public/images/svg/LeftArrow";
 import Add from "public/images/svg/Add";
-import VotingHeaderButton from "./VotingHeaderButton";
-import { returnLocalDate, returnLocalTime } from "src/lib/utils";
+import { returnDate, returnTime } from "src/lib/utils";
 import QuadraticVotingModal from "./QuadraticVotingModal";
 import RoundDetailsModal from "./RoundDetailsModal";
 
@@ -66,8 +65,8 @@ export default function VotingHeader({ evaluation }: VotingHeaderProps) {
 
         <SmallTitle text="DEADLINE" />
         <div className="mt-2 font-bold tracking-wider">
-          {evaluation && evaluation.end_time && returnLocalDate(evaluation.end_time)}{" "}
-          {evaluation && evaluation.end_time && returnLocalTime(evaluation.end_time)}
+          {evaluation && evaluation.end_time && returnDate(evaluation.end_time)}{" "}
+          {evaluation && evaluation.end_time && returnTime(evaluation.end_time)}
         </div>
       </div>
       <QuadraticVotingModal open={openQuadraticModal} handleClose={handleCloseQuadraticModal} />

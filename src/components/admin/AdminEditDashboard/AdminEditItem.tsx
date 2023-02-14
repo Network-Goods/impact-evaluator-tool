@@ -1,6 +1,6 @@
 import { DashboardEvaluation } from "src/lib";
 import Link from "next/link";
-import { returnLocalTime, returnLocalDate } from "src/lib/utils";
+import { returnTime, returnDate } from "src/lib/utils";
 
 enum RoundStatus {
   "draft" = "Draft",
@@ -44,13 +44,13 @@ export const AdminEditItem = ({ evaluation, first, last }: EvaluationItemProps) 
           </div>
           <div className="text-[9px] text-offblack tracking-widest">
             {evaluation.status === "staging" || evaluation.status === "draft"
-              ? returnLocalDate(evaluation.start_time)
-              : returnLocalDate(evaluation.end_time)}
+              ? returnDate(evaluation.start_time)
+              : returnDate(evaluation.end_time)}
           </div>
           <div className="text-[9px] text-offblack tracking-widest">
             {evaluation.status === "staging" || evaluation.status === "draft"
-              ? returnLocalTime(evaluation.start_time)
-              : returnLocalTime(evaluation.end_time)}
+              ? returnTime(evaluation.start_time)
+              : returnTime(evaluation.end_time)}
           </div>
         </div>
         <div className="pl-4 md:pl-10 border-l border-gray">

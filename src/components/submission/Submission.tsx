@@ -236,7 +236,7 @@ export default function Submission() {
                     type="text"
                     name="github_link"
                     className="appearance-none text-[17px] text-blue-alt font-bold pb-1 focus:outline-none"
-                    placeholder="Website"
+                    placeholder="Add Link Title"
                     value={link.name || ""}
                     onChange={(e) => handleLinkChange(e, index, "name")}
                     onBlur={(e) => store.setSubmissionLinkTitle(e.target.value, index)}
