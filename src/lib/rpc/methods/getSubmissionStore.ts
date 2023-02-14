@@ -8,7 +8,7 @@ type Params = {
 export async function getSubmissionStore({
   supabase,
   params: { submission_id },
-}: ServerParams<Params>): Promise<DashboardEvaluation[] | Error> {
+}: ServerParams<Params>): Promise<any | Error> {
   const { error, data } = await supabase.from("submission").select("*").eq("id", submission_id).single();
 
   if (error) {
