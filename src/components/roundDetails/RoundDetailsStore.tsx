@@ -6,15 +6,18 @@ import { deleteSubmission } from "src/lib/rpc/methods";
 export interface RoundDetailsStore {
   fetching: boolean;
   submissions?: Submission[];
-  load: (evaluationID: string) => void;
+  evaluationID?: string;
+  userID?: string;
+  load: (userID: string, evaluationID: string) => void;
   deleteSubmission: (submissionID: string) => void;
+  createSubmission: () => Submission | null;
 }
 
 export const useRoundDetailsStore = create<RoundDetailsStore>()((set, get) => ({
   fetching: true,
   submission: null,
 
-  load: async (evaluationID: string): Promise<void> => {
+  load: async (userID: string, evaluationID: string): Promise<void> => {
     const data = await rpc.call("getRoundDetailsStore", {
       evaluation_id: evaluationID,
     });
@@ -26,11 +29,13 @@ export const useRoundDetailsStore = create<RoundDetailsStore>()((set, get) => ({
 
     set({
       submissions: data.submissions,
+      evaluationID: evaluationID,
+      userID: userID,
       fetching: false,
     });
   },
 
-  deleteSubmission: async (submissionID: string): Promise<void> => {
+  deleteSubmission: (submissionID: string): void => {
     if (get().fetching) {
       return;
     }
@@ -47,5 +52,31 @@ export const useRoundDetailsStore = create<RoundDetailsStore>()((set, get) => ({
         return;
       }
     });
+  },
+  createSubmission: (): Submission | null => {
+    const evaluationID = get().evaluationID;
+    const userID = get().userID;
+
+    if (get().fetching || !evaluationID || !userID) {
+      return null;
+    }
+
+    const newSubmission = Submission.init({
+      description: "",
+      evaluation_id: evaluationID,
+      website_link: "",
+      name: "",
+      user_id: userID,
+      github_link: "",
+    });
+
+    rpc.call("createSubmission", { submission: newSubmission }).then((data) => {
+      if (data instanceof Error) {
+        console.error(`ERROR -- rpc call createSubmission failed`, data);
+        return;
+      }
+    });
+
+    return newSubmission;
   },
 }));

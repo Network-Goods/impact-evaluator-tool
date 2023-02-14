@@ -10,7 +10,7 @@ export async function createSubmission({
   params: { submission },
   auth,
 }: ServerParams<Params>): Promise<void | Error> {
-  if (!isAdmin(auth)) {
+  if (!isAdmin(auth) && submission.user_id != auth.user_id) {
     return new Error(`Unauthorized`);
   }
 

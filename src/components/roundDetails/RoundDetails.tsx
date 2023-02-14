@@ -13,21 +13,23 @@ import VotingTable from "../voting/VotingTable";
 import VotingTableBody from "../voting/VotingTableBody";
 import { useRoundDetailsStore } from "./RoundDetailsStore";
 import { Submission } from "src/lib";
+import { useUserProfileStore } from "src/lib/UserProfileStore";
 
 export default function RoundDetails() {
   const router = useRouter();
   const store = useRoundDetailsStore();
+  const userProfileStore = useUserProfileStore();
   const [openArray, setOpenArray] = useState<boolean[]>([]);
 
   const { evaluation_id } = router.query;
 
   useEffect(() => {
-    if (!evaluation_id || Array.isArray(evaluation_id)) {
+    if (!evaluation_id || Array.isArray(evaluation_id) || !userProfileStore.profile) {
       return;
     }
 
-    store.load(evaluation_id);
-  }, [evaluation_id, store.fetching]);
+    store.load(userProfileStore.profile.id, evaluation_id);
+  }, [evaluation_id, store.fetching, userProfileStore.profile]);
 
   useEffect(() => {
     if (!store.submissions) {
@@ -41,6 +43,15 @@ export default function RoundDetails() {
 
     setOpenArray(arr);
   }, [store.submissions]);
+
+  const clickNewSubmission = () => {
+    const submission = store.createSubmission();
+    if (!submission) {
+      return;
+    }
+
+    router.push(`/evaluation/${evaluation_id}/submission/${submission.id}`);
+  };
 
   if (store.fetching) return <LoadingSpinner />;
 
@@ -62,6 +73,7 @@ export default function RoundDetails() {
 
         <h3 className="text-2xl text-blue-alt font-bold">Round Description</h3>
         <div className="text-xl pt-7">This description is far too graphic to be public</div>
+        <button onClick={() => clickNewSubmission()}>New submission</button>
       </div>
       <div className="flex flex-col lg:flex-row">
         <div className="flex-1">
