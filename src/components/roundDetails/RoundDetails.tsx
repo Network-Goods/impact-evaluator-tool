@@ -73,7 +73,15 @@ export default function RoundDetails() {
 
         <h3 className="text-2xl text-blue-alt font-bold">Round Description</h3>
         <div className="text-xl pt-7">This description is far too graphic to be public</div>
-        <button onClick={() => clickNewSubmission()}>New submission</button>
+        <button
+          className="transition-colors duration-200 ease-in-out transform outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold mx-auto
+                px-6 py-1 border border-blue bg-blue text-white text-lg cursor-pointer hover:bg-blue-darkest hover:border-blue-darkest"
+          type="submit"
+          value="New submission"
+          onClick={clickNewSubmission}
+        >
+          New submission
+        </button>
       </div>
       <div className="flex flex-col lg:flex-row">
         <div className="flex-1">
