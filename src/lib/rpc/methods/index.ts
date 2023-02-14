@@ -29,3 +29,4 @@ export * from "./setSubmission";
 export * from "./setSubmissionDescription";
 export * from "./joinWithCode";
 export * from "./getEvaluationResult";
+export * from "./getRoundDetailsStore";
