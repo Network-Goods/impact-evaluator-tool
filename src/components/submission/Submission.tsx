@@ -11,6 +11,8 @@ import Add from "public/images/svg/Add";
 import Button from "../shared/Button";
 import Delete from "public/images/svg/Delete";
 import SubmitSubmissionModal from "./SubmitSubmissionModal";
+import Edit from "public/images/svg/Edit";
+import IncompleteSubmissionTooltip from "./IncompleteSubmissionTooltip";
 
 interface FormInputs {
   name: string;
@@ -147,13 +149,13 @@ export default function Submission() {
         </div>
         <p className="text-xl pt-7">With any questions or issues, please email impact-evaluator@protocol.ai.</p>
       </div>
-      <div className="hidden md:flex justify-between items-center py-2 px-9 bg-[#f0f0f0] border border-gray rounded-t-lg">
+      <div className="flex justify-between items-center py-2 px-9 bg-[#f0f0f0] border border-gray rounded-t-lg">
         <div className="py-2">
           <SmallTitle text="SUBMISSION FORM" />
         </div>
       </div>
       <div
-        className="flex flex-col md:flex-row justify-between items-center px-24 bg-white border border-gray py-4 md:py-10 rounded-b-lg      
+        className="flex flex-col md:flex-row justify-between items-center px-8 md:px-24 bg-white border border-gray py-4 md:py-10 rounded-b-lg      
         border-t-0"
       >
         <div className="w-full">
@@ -232,19 +234,25 @@ export default function Submission() {
             formInputs.links.map((link: any, index: number) => {
               return (
                 <div key={index} className="pb-3">
-                  <input
-                    type="text"
-                    name="github_link"
-                    className="appearance-none text-[17px] text-blue-alt font-bold pb-1 focus:outline-none"
-                    placeholder="Add Link Title"
-                    value={link.name || ""}
-                    onChange={(e) => handleLinkChange(e, index, "name")}
-                    onBlur={(e) => store.setSubmissionLinkTitle(e.target.value, index)}
-                  />
+                  <div className="flex items-center pb-1">
+                    <div className="flex justify-center items-center w-5 h-5 -ml-5 ">
+                      <Edit className="h-4 w-4 fill-gray mr-1" />
+                    </div>
+                    <input
+                      autoFocus
+                      type="text"
+                      name="website_title"
+                      className="appearance-none text-[17px] text-blue-alt font-bold focus:outline-none"
+                      placeholder="Add Link Title"
+                      value={link.name || ""}
+                      onChange={(e) => handleLinkChange(e, index, "name")}
+                      onBlur={(e) => store.setSubmissionLinkTitle(e.target.value, index)}
+                    />
+                  </div>
                   <div className="flex items-center">
                     <input
                       type="text"
-                      name="github_link"
+                      name="website_link"
                       className="appearance-none w-full px-4 py-2 border border-gray rounded-l-lg focus:outline-none"
                       placeholder="https://protocol.ai/"
                       value={link.value || ""}
@@ -302,19 +310,20 @@ export default function Submission() {
               <Button small alt text="Cancel" onClick={() => router.push("/")} />
             </div>
             <div>
-              <button
-                onClick={() => setOpenModal(true)}
-                className={`transition-colors duration-200 ease-in-out transform  outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold mx-auto border border-blue bg-blue  text-white text-lg px-3 py-1
-                ${
-                  isSubmitButtonDisabled
-                    ? "opacity-50 cursor-not-allowed"
-                    : "cursor-pointer hover:bg-blue-darkest hover:border-blue-darkest"
-                }
-                `}
-                disabled={isSubmitButtonDisabled}
-              >
-                Submit
-              </button>
+              {isSubmitButtonDisabled ? (
+                <IncompleteSubmissionTooltip>
+                  <button className="transition-colors duration-200 ease-in-out transform  outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold mx-auto border border-blue bg-blue  text-white text-lg px-3 py-1 opacity-50 cursor-not-allowed">
+                    Submit
+                  </button>
+                </IncompleteSubmissionTooltip>
+              ) : (
+                <button
+                  onClick={() => setOpenModal(true)}
+                  className="transition-colors duration-200 ease-in-out transform  outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold mx-auto border border-blue bg-blue  text-white text-lg px-3 py-1 cursor-pointer hover:bg-blue-darkest hover:border-blue-darkest"
+                >
+                  Submit
+                </button>
+              )}
             </div>
           </div>
         </div>

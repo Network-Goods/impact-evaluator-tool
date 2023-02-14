@@ -36,8 +36,9 @@
   font-size: 18px !important;
   font-weight: 400 !important;
 }
-.react-datepicker-time__input {
-  margin-left: 30px !important;
+
+.react-datepicker__input-time-container {
+  margin-left: 10px !important;
 }
 
 @font-face {

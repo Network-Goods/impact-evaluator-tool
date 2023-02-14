@@ -34,9 +34,9 @@ export default function AuthNavbar() {
         <div className="flex flex-row items-center justify-between w-full max-w-[1600px] h-full px-8 mx-auto">
           <div className="flex">
             <Link href="/">
-              <div className="flex">
-                <PLLogo />
-                <span className="text-black font-bold text-xl">Impact Evaluator</span>
+              <div className="flex items-center">
+                <PLLogo className="min-w-[45px]" />
+                <span className="text-black font-bold md:text-xl">Impact Evaluator</span>
               </div>
             </Link>
             {userProfileStore.isAdmin() ? (
