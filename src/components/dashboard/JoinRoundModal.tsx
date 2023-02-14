@@ -7,6 +7,7 @@ import Fade from "@mui/material/Fade";
 import Close from "public/images/svg/Close";
 import { useUserProfileStore } from "src/lib/UserProfileStore";
 import { rpc, isError } from "src/lib";
+import { useRouter } from "next/router";
 
 const style = {
   position: "absolute",
@@ -32,6 +33,7 @@ type JoinRoundModalProps = {
 const JoinRoundModal = ({ handleClose, open }: JoinRoundModalProps) => {
   const session = useSession();
   const userProfileStore = useUserProfileStore();
+  const router = useRouter();
 
   const githubEmail = session?.user.email || "";
   const [error, setError] = useState("");
@@ -61,18 +63,22 @@ const JoinRoundModal = ({ handleClose, open }: JoinRoundModalProps) => {
     }
 
     // TODO: add correct type for errors
-    const evaluator = await rpc.call("joinWithCode", {
+    const data = await rpc.call("joinWithCode", {
       user_id: userProfileStore.profile.id!,
       code: formInputs.code,
       preferred_email: formInputs.email,
     });
 
-    if (isError(evaluator)) {
-      setError(evaluator.error);
+    if (isError(data)) {
+      setError(data.error);
       return;
     }
 
-    window.location.replace("/");
+    if (data && data.id) {
+      router.push(`/submission/${data.id}`);
+    } else {
+      window.location.replace("/");
+    }
   };
 
   const isJoinButtonDisabled = !formInputs.code && (isGithubEmailChecked ? !githubEmail : !formInputs.email);

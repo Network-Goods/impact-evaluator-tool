@@ -5,6 +5,7 @@ export interface AppError {
 }
 
 export function isError(obj: any): obj is AppError {
+  if (obj === null) return false;
   return !!obj.error;
 }
 

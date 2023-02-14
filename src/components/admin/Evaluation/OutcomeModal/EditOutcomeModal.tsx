@@ -120,7 +120,7 @@ const OutcomeModal = ({ handleClose, open, submission, store }: OutcomeModalProp
             </div>
             <p className="font-bold pb-1">Project Description</p>
             <textarea
-              ref={summaryRef}
+              ref={descriptionRef}
               className="w-full min-h-[112px] px-8 py-3 rounded-lg border border-gray focus:outline-none"
               placeholder="XYZ is..."
               name="description"
@@ -131,7 +131,7 @@ const OutcomeModal = ({ handleClose, open, submission, store }: OutcomeModalProp
             <p className="font-bold pb-1">Progress Summary</p>
 
             <textarea
-              ref={descriptionRef}
+              ref={summaryRef}
               className="w-full min-h-[112px] px-8 py-3 rounded-lg border border-gray focus:outline-none"
               placeholder="XYZ is..."
               name="summary"
@@ -141,11 +141,11 @@ const OutcomeModal = ({ handleClose, open, submission, store }: OutcomeModalProp
             />
             <p className="font-bold pb-1">FVM Tech Specs</p>
             <textarea
-              ref={specsRef || ""}
+              ref={specsRef}
               className="w-full min-h-[112px] px-8 py-3 rounded-lg border border-gray focus:outline-none"
               placeholder="XYZ is..."
               name="specs"
-              value={specs}
+              value={specs || ""}
               onChange={(e) => setSpecs(e.target.value)}
               onBlur={(e) => store.setSubmissionDescription("specs", submission.id, e.target.value)}
             />
