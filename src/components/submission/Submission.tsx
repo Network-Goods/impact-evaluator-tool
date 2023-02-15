@@ -126,7 +126,7 @@ export default function Submission() {
       <div className="pb-14">
         <div className="flex items-center pb-10">
           <div className="hidden md:flex mr-6">
-            <Link href="/">
+            <Link href={`/evaluation/${evaluation_id}/submission`}>
               <div className="rounded-lg bg-gray-light h-12 w-12 flex justify-center items-center">
                 <LeftArrow />
               </div>
