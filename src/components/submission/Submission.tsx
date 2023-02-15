@@ -113,6 +113,10 @@ export default function Submission() {
     });
   }, [store.submission]);
 
+  useEffect(() => {
+    store.setGithubHandle(githubHandleFromProfile);
+  }, [githubHandleFromProfile]);
+
   const isSubmitButtonDisabled =
     !formInputs.name ||
     !formInputs.description ||
