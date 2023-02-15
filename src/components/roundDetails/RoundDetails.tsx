@@ -151,7 +151,6 @@ export default function RoundDetails() {
             <div className="flex py-4 pl-4 md:pl-12">
               <SmallTitle text="Name" />
             </div>
-            {console.log("store.submissions", store.submissions)}
             {Array.isArray(store.submissions) && store.submissions.length ? (
               <div>
                 {store.submissions?.map((submission: Submission, idx: number) => {
