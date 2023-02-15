@@ -159,10 +159,10 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
     const newSubmission = Submission.init({
       description: "",
       evaluation_id: evaluation.id,
-      website_link: "",
       name: "",
       user_id: "",
       github_link: "",
+      links: [],
     });
 
     // set({

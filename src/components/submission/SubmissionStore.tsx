@@ -286,10 +286,10 @@ export const useSubmissionStore = create<SubmissionStore>()((set, get) => ({
     const newSubmission = Submission.init({
       description: "",
       evaluation_id: evaluation_id,
-      website_link: "",
       name: "",
       user_id: user_id,
       github_link: "",
+      links: [],
     });
 
     const res = await rpc.call("createSubmission", { submission: newSubmission });
