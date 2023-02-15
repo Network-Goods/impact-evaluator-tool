@@ -15,6 +15,8 @@ import VotingTableBody from "../voting/VotingTableBody";
 import { useRoundDetailsStore } from "./RoundDetailsStore";
 import { Submission } from "src/lib";
 import { useUserProfileStore } from "src/lib/UserProfileStore";
+import Add from "public/images/svg/Add";
+import QuadraticVotingModal from "../voting/QuadraticVotingModal";
 
 export default function RoundDetails() {
   const router = useRouter();
@@ -22,6 +24,7 @@ export default function RoundDetails() {
   const userProfileStore = useUserProfileStore();
   const [openArray, setOpenArray] = useState<boolean[]>([]);
   const [isNewSubmissionPending, setIsNewSubmissionPending] = useState<boolean>(false);
+  const [openQuadraticModal, setOpenQuadraticModal] = useState(false);
 
   const { evaluation_id } = router.query;
 
@@ -113,8 +116,19 @@ export default function RoundDetails() {
             </div>
             <div className="text-xl pt-4">
               <b>What evaluation method will be used for this round?</b>
-              <br />
-              TODO
+              <div className="flex">
+                <div>
+                  <button
+                    className="transition-colors duration-200 ease-in-out transform outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold mx-auto border border-blue bg-white text-blue text-lg px-3 py-1 cursor-pointer"
+                    onClick={() => setOpenQuadraticModal(true)}
+                  >
+                    <span className="mr-3">
+                      <Add className=" fill-blue" />
+                    </span>
+                    <span>Quadratic voting</span>
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -146,7 +160,7 @@ export default function RoundDetails() {
                         className={`flex items-center pl-4 md:px-6 border border-gray border-x-0 border-b-0 ${
                           idx % 2 === 0 ? "bg-white" : "bg-gray-lighter"
                         }
-        ${!openArray[idx] ? "rounded-b-lg" : ""}`}
+                        ${!openArray[idx] ? "rounded-b-lg" : ""}`}
                       >
                         <div
                           className={`w-[65%] md:w-[83%] flex justify-between ${
@@ -201,6 +215,7 @@ export default function RoundDetails() {
           </div>
         </div>
       </div>
+      <QuadraticVotingModal open={openQuadraticModal} handleClose={() => setOpenQuadraticModal(false)} />
     </>
   );
 }
