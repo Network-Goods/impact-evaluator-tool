@@ -219,7 +219,7 @@ export default function Submission() {
               </div>
               <textarea
                 className="w-full min-h-[112px] px-4 py-2 rounded-lg border border-gray focus:outline-none"
-                placeholder="XYZ is..."
+                placeholder="My project is..."
                 name="description"
                 maxLength={280}
                 value={formInputs.description || ""}
@@ -236,7 +236,7 @@ export default function Submission() {
 
               <textarea
                 className="w-full min-h-[112px] px-4 py-2 rounded-lg border border-gray focus:outline-none"
-                placeholder="So far we have..."
+                placeholder="In the past 1 month, my project has..."
                 name="summary"
                 maxLength={280}
                 value={formInputs.summary || ""}
@@ -252,7 +252,7 @@ export default function Submission() {
               </div>
               <textarea
                 className="w-full min-h-[112px] px-4 py-2 rounded-lg border border-gray focus:outline-none"
-                placeholder="XYZ utilizes..."
+                placeholder="My project is using FVM's functionality to..."
                 name="specs"
                 maxLength={360}
                 value={formInputs.specs || ""}
