@@ -92,31 +92,52 @@ export default function RoundDetails() {
               increase the efficiency of public goods funding for the Filecoin ecosystem.
               <br />
               <br />
-              To learn more about Space Warp’s Impact Evaluator Rounds, see: IE Round Overview & FAQ Space Warp Website,
-              featuring the FVM Builders Leaderboard
+              To learn more about Space Warp’s Impact Evaluator Rounds, see:
+              <ul className="list-disc ml-6">
+                <li>
+                  <a
+                    className="text-blue hover:text-blue-dark font-bold underline"
+                    href="https://network-goods.notion.site/Impact-Evaluators-Builders-Leaderboard-602ea6755b5642e1ad6f9da59a47fa62"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    IE Round Overview & FAQ
+                  </a>
+                </li>
+                <li>
+                  <a
+                    className="text-blue hover:text-blue-dark font-bold underline"
+                    href="https://spacewarp.fvm.dev/#ie"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    FVM Builders Leaderboard
+                  </a>
+                </li>
+              </ul>
             </div>
           </div>
 
-          <div className="pb-14">
+          <div className="pb-12">
             <h3 className="text-2xl text-blue-alt font-bold">Round Details</h3>
             <div className="text-xl pt-4">
               <b>When will this round be open to evaluation submissions?</b>
-              <div className="flex pt-2">
+              <div className="flex flex-col md:flex-row pt-8">
                 <div>
                   <b>Start:</b>
                   <br />
-                  TODO
+                  <span>June 4, 2023 11:38 AM UTC-5</span>
                 </div>
-                <div className="pl-14">
+                <div className="pt-4 md:pt-0 md:pl-20">
                   <b>End:</b>
                   <br />
-                  TODO
+                  <span>June 5, 2023 12:00 PM UTC-5</span>
                 </div>
               </div>
             </div>
-            <div className="text-xl pt-4">
+            <div className="text-xl pt-8">
               <b>What evaluation method will be used for this round?</b>
-              <div className="flex">
+              <div className="flex pt-4">
                 <div>
                   <button
                     className="transition-colors duration-200 ease-in-out transform outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold mx-auto border border-blue bg-white text-blue text-lg px-3 py-1 cursor-pointer"
@@ -164,7 +185,7 @@ export default function RoundDetails() {
                         ${!openArray[idx] ? "rounded-b-lg" : ""}`}
                         >
                           <div
-                            className={`w-[65%] md:w-[83%] flex justify-between ${
+                            className={`w-[60%] md:w-[83%] flex justify-between ${
                               openArray[idx] ? "" : "border-r border-gray"
                             }`}
                           >
@@ -190,7 +211,7 @@ export default function RoundDetails() {
                             </button>
                           </div>
                           <div className="pl-4 md:pl-10 flex">
-                            <div className="mr-10">
+                            <div className="pr-2 mr-2 md:pr-5 md:mr-5 border-r border-gray">
                               <EvaluationLinkButton
                                 text="Edit"
                                 link={`/evaluation/${evaluation_id}/submission/${submission.id}`}
@@ -198,7 +219,7 @@ export default function RoundDetails() {
                             </div>
                             <button
                               onClick={() => store.deleteSubmission(submission.id)}
-                              className="border border-blue px-3 py-[6.5px] rounded-lg"
+                              className="border border-blue px-2 md:px-3 py-1 md:py-[6.5px] rounded-lg mr-2 md:mr-0"
                             >
                               <Delete className="w-3 h-5" />
                             </button>
