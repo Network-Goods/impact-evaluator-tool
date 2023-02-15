@@ -266,7 +266,7 @@ export const useSubmissionStore = create<SubmissionStore>()((set, get) => ({
     set({
       submission: {
         ...submission,
-        is_submittied: true,
+        is_submitted: true,
       },
     });
 
