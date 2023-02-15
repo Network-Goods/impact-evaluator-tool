@@ -58,9 +58,9 @@ export interface Submission {
   user_id: string;
   name: string;
   github_link: string;
-  website_link: string;
   evaluation_id: string;
   description: any;
+  links: any;
 }
 
 export interface RoundStatus {
