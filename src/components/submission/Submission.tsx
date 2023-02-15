@@ -147,7 +147,7 @@ export default function Submission() {
 
         <h3 className="text-2xl text-blue-alt font-bold">Submission Form</h3>
         <div className="text-xl pt-7">
-          Submit a project to be included in{" "}
+          Submit a project for{" "}
           <a
             className="text-blue hover:text-blue-dark underline"
             href="https://spacewarp.fvm.dev/"
@@ -193,7 +193,7 @@ export default function Submission() {
             <li>
               <b>Voting Method:</b>{" "}
               <a
-                className="text-blue hover:text-blue-dark"
+                className="text-blue hover:text-blue-dark underline"
                 href="https://www.economist.com/interactive/2021/12/18/quadratic-voting"
                 target="_blank"
                 rel="noreferrer"
