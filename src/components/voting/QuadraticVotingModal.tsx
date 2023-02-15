@@ -45,18 +45,18 @@ export default function QuadraticVotingModal({ handleClose, open }: QuadraticVot
             </button>
           </div>
           <div className="md:text-lg">
-            <p className="py-3">
+            <div className="py-3">
               Quadratic Voting is a voting method that allows participants to indicate their strength of conviction in
               support of items in a list of options. Participants receive a budget of{" "}
               <span className="font-bold">voice credits</span>, which they allocate to different items on the ballot to
               signal the <span className="italic">intensity of their preferences</span>.
-            </p>
-            <p className="py-3">
+            </div>
+            <div className="py-3">
               Those voice credits convert to <span className="font-bold"> counted votes</span> according to their square
               root. For example, if a voter puts one voice credit towards an issue, that equals one counted vote; four
               credits are two votes; nine credits are three votes, and so on.
-            </p>
-            <p className="py-3">
+            </div>
+            <div className="py-3">
               To learn more about Quadratic Voting, see:
               <ul className="list-disc ml-6">
                 <li>
@@ -82,7 +82,7 @@ export default function QuadraticVotingModal({ handleClose, open }: QuadraticVot
                   | The Economist
                 </li>
               </ul>
-            </p>
+            </div>
           </div>
         </Box>
       </Fade>

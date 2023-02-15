@@ -73,13 +73,13 @@ export default function RoundDetails() {
             </Link>
           </div>
           <div className="flex-1">
-            <Title text="Big Ole Description Page" />
+            <Title text="Space Warp Impact Evaluator | Round 3" />
           </div>
         </div>
 
         <div className="px-2">
           <div className="pb-14">
-            <h3 className="text-2xl text-blue-alt font-bold">Round Description</h3>
+            <h3 className="text-2xl text-blue-alt font-bold">Round Overview</h3>
             <div className="text-xl pt-4">
               This Impact Evaluator (IE) round is part of the Space Warp program, which leads up to the mainnet launch
               of the Filecoin Virtual Machine (FVM). The recurring IE rounds crowdsource the community’s perspective on
@@ -93,7 +93,7 @@ export default function RoundDetails() {
               <br />
               <br />
               To learn more about Space Warp’s Impact Evaluator Rounds, see:
-              <ul className="list-disc ml-6">
+              <ul className="list-disc ml-6 pt-2">
                 <li>
                   <a
                     className="text-blue hover:text-blue-dark font-bold underline"
@@ -121,17 +121,17 @@ export default function RoundDetails() {
           <div className="pb-12">
             <h3 className="text-2xl text-blue-alt font-bold">Round Details</h3>
             <div className="text-xl pt-4">
-              <b>When will this round be open to evaluation submissions?</b>
+              <b>When will voting happen for this round?</b>
               <div className="flex flex-col md:flex-row pt-8">
                 <div>
                   <b>Start:</b>
                   <br />
-                  <span>June 4, 2023 11:38 AM UTC-5</span>
+                  <span>Wednesday, Feb. 22 at 00:01 UTC-5</span>
                 </div>
                 <div className="pt-4 md:pt-0 md:pl-20">
                   <b>End:</b>
                   <br />
-                  <span>June 5, 2023 12:00 PM UTC-5</span>
+                  <span>Thursday, Feb. 23 at 23:59 UTC-5</span>
                 </div>
               </div>
             </div>
