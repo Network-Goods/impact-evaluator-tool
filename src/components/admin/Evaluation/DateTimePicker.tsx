@@ -16,6 +16,7 @@ export const DateTimePicker = forwardRef<any, DateTimePickerProps>(({ date, setD
     dateFormat={"yyyy.MM.dd"}
     className="w-[100px]"
     showPopperArrow={false}
+    timeInputLabel="Local Time:"
   />
 ));
 DateTimePicker.displayName = "DateTimePicker";
