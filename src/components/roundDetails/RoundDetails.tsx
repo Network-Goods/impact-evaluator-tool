@@ -92,6 +92,30 @@ export default function RoundDetails() {
             </div>
           </div>
 
+          <div className="pb-14">
+            <h3 className="text-2xl text-blue-alt font-bold">Round Details</h3>
+            <div className="text-xl pt-4">
+              <b>When will this round be open to evaluation submissions?</b>
+              <div className="flex pt-2">
+                <div>
+                  <b>Start:</b>
+                  <br />
+                  TODO
+                </div>
+                <div className="pl-14">
+                  <b>End:</b>
+                  <br />
+                  TODO
+                </div>
+              </div>
+            </div>
+            <div className="text-xl pt-4">
+              <b>What evaluation method will be used for this round?</b>
+              <br />
+              TODO
+            </div>
+          </div>
+
           <div className="flex justify-between">
             <h3 className="text-2xl text-blue-alt font-bold">Submissions</h3>
 
