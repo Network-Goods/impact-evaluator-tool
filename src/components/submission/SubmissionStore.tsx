@@ -15,6 +15,7 @@ export interface SubmissionStore {
   createSubmissionLink: () => void;
   deleteSubmissionLink: (index: number) => void;
   setSubmission: () => void;
+  createSubmission: (evaluation_id: string, user_id: string) => Submission | null;
 }
 
 export const useSubmissionStore = create<SubmissionStore>()((set, get) => ({
@@ -280,5 +281,23 @@ export const useSubmissionStore = create<SubmissionStore>()((set, get) => ({
           return;
         }
       });
+  },
+  createSubmission: (evaluation_id: string, user_id: string): Submission | null => {
+    const newSubmission = Submission.init({
+      description: "",
+      evaluation_id: evaluation_id,
+      website_link: "",
+      name: "",
+      user_id: user_id,
+      github_link: "",
+    });
+
+    rpc.call("createSubmission", { submission: newSubmission }).then((data) => {
+      if (data instanceof Error) {
+        console.error(`ERROR -- rpc call createSubmission failed`, data);
+        return;
+      }
+    });
+    return newSubmission;
   },
 }));

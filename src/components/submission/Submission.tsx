@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { useSession } from "@supabase/auth-helpers-react";
 import LoadingSpinner from "src/components/shared/LoadingSpinner";
 import { useSubmissionStore } from "./SubmissionStore";
 import Title from "src/components/shared/Title";
@@ -13,6 +12,7 @@ import Delete from "public/images/svg/Delete";
 import SubmitSubmissionModal from "./SubmitSubmissionModal";
 import Edit from "public/images/svg/Edit";
 import IncompleteSubmissionTooltip from "./IncompleteSubmissionTooltip";
+import { useUserProfileStore } from "src/lib/UserProfileStore";
 
 interface FormInputs {
   name: string;
@@ -33,10 +33,11 @@ export default function Submission() {
   const [isGithubHandleChecked, setIsGithubHandleChecked] = useState(true);
   const [openModal, setOpenModal] = useState(false);
   const router = useRouter();
-  const { submission_id } = router.query;
+  const userProfileStore = useUserProfileStore();
+  const { submission_id, evaluation_id } = router.query;
   const store = useSubmissionStore();
-  const session = useSession();
-  const githubHandleFromSession = session?.user.user_metadata.user_name;
+  const githubHandleFromProfile = userProfileStore.profile?.github_handle || "";
+  const userIDFromProfile = userProfileStore.profile?.id || "";
 
   useEffect(() => {
     if (!submission_id || Array.isArray(submission_id)) {
@@ -52,7 +53,7 @@ export default function Submission() {
     specs: store.submission?.description.specs,
     github_link: store.submission?.github_link,
     links: store.submission?.links || [],
-    githubHandle: isGithubHandleChecked ? githubHandleFromSession : "",
+    githubHandle: isGithubHandleChecked ? githubHandleFromProfile : "",
   });
 
   const handleFormChange = (
@@ -73,7 +74,7 @@ export default function Submission() {
   };
 
   const handleChecked = () => {
-    const githubHandle = !isGithubHandleChecked ? githubHandleFromSession : "";
+    const githubHandle = !isGithubHandleChecked ? githubHandleFromProfile : "";
     setIsGithubHandleChecked((prev) => !prev);
     setFormInputs((values: FormInputs) => ({ ...values, githubHandle: githubHandle }));
     store.setGithubHandle(githubHandle);
@@ -85,8 +86,15 @@ export default function Submission() {
   };
 
   const handleCreateNewSubmission = () => {
-    store.setSubmission();
-    router.push("/submission");
+    if (!evaluation_id || Array.isArray(evaluation_id)) {
+      return;
+    }
+    const submission = store.createSubmission(evaluation_id, userIDFromProfile);
+    if (!submission) {
+      return;
+    }
+
+    router.push(`/evaluation/${evaluation_id}/submission/${submission.id}`);
   };
 
   useEffect(() => {
@@ -97,7 +105,7 @@ export default function Submission() {
       specs: store.submission?.description.specs,
       github_link: store.submission?.github_link,
       links: store.submission?.links,
-      githubHandle: isGithubHandleChecked ? githubHandleFromSession : store.submission?.github_handle,
+      githubHandle: isGithubHandleChecked ? githubHandleFromProfile : store.submission?.github_handle,
     });
   }, [store.submission]);
 
@@ -107,7 +115,7 @@ export default function Submission() {
     !formInputs.summary ||
     !formInputs.specs ||
     !formInputs.github_link ||
-    (isGithubHandleChecked ? !store.submission?.github_handle : !formInputs.githubHandle) ||
+    (isGithubHandleChecked ? !githubHandleFromProfile : !formInputs.githubHandle) ||
     (formInputs.links && formInputs.links.some((link) => !link.name || !link.value));
 
   if (store.fetching) return <LoadingSpinner />;
@@ -168,7 +176,10 @@ export default function Submission() {
               <p>Your submission is complete.</p>
               <p className="py-8">Would you like to complete another submission? </p>
               <div className="flex justify-between">
-                <button className="transition-colors duration-200 ease-in-out transform outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold mx-auto border border-gray-light bg-gray-light  text-lg px-4 py-2 cursor-pointer hover:bg-gray hover:border-gray">
+                <button
+                  className="transition-colors duration-200 ease-in-out transform outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold mx-auto border border-gray-light bg-gray-light  text-lg px-4 py-2 cursor-pointer hover:bg-gray hover:border-gray"
+                  onClick={() => router.push(`/evaluation/${evaluation_id}/submission`)}
+                >
                   Round Details
                 </button>
                 <button
@@ -188,6 +199,7 @@ export default function Submission() {
               <input
                 type="text"
                 name="name"
+                maxLength={100}
                 className="appearance-none w-full px-4 py-2 rounded-lg border border-gray focus:outline-none"
                 placeholder="Example Title"
                 value={formInputs.name || ""}
@@ -204,6 +216,7 @@ export default function Submission() {
                 className="w-full min-h-[112px] px-4 py-2 rounded-lg border border-gray focus:outline-none"
                 placeholder="XYZ is..."
                 name="description"
+                maxLength={280}
                 value={formInputs.description || ""}
                 onChange={(e) => handleFormChange(e, "description")}
                 onBlur={(e) => store.setSubmissionDescription("description", e.target.value)}
@@ -220,6 +233,7 @@ export default function Submission() {
                 className="w-full min-h-[112px] px-4 py-2 rounded-lg border border-gray focus:outline-none"
                 placeholder="So far we have..."
                 name="summary"
+                maxLength={280}
                 value={formInputs.summary || ""}
                 onChange={(e) => handleFormChange(e, "summary")}
                 onBlur={(e) => store.setSubmissionDescription("summary", e.target.value)}
@@ -235,6 +249,7 @@ export default function Submission() {
                 className="w-full min-h-[112px] px-4 py-2 rounded-lg border border-gray focus:outline-none"
                 placeholder="XYZ utilizes..."
                 name="specs"
+                maxLength={360}
                 value={formInputs.specs || ""}
                 onChange={(e) => handleFormChange(e, "specs")}
                 onBlur={(e) => store.setSubmissionDescription("specs", e.target.value)}
@@ -332,7 +347,12 @@ export default function Submission() {
 
             <div className="flex justify-between mt-14">
               <div>
-                <Button small alt text="Cancel" onClick={() => router.push("/")} />
+                <Button
+                  small
+                  alt
+                  text="Cancel"
+                  onClick={() => router.push(`/evaluation/${evaluation_id}/submission`)}
+                />
               </div>
               <div>
                 {isSubmitButtonDisabled ? (
