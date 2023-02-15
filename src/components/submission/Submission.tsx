@@ -188,7 +188,7 @@ export default function Submission() {
               <b>Submission Deadline:</b> Mon., Feb 20 at 23:59 UTC-5
             </li>
             <li>
-              <b>Voting Dates:</b> Wed., Feb. 22 at 00:01 UTC-5 and ends Thurs., Feb. 23 at 23:59 UTC-5
+              <b>Voting Dates:</b> Begins Wed., Feb. 22 at 00:01 UTC-5 and ends Thurs., Feb. 23 at 23:59 UTC-5
             </li>
             <li>
               <b>Voting Method:</b>{" "}
