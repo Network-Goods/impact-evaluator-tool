@@ -10,7 +10,7 @@ export interface RoundDetailsStore {
   userID?: string;
   load: (userID: string, evaluationID: string) => void;
   deleteSubmission: (submissionID: string) => void;
-  createSubmission: () => Submission | null;
+  createSubmission: () => Promise<Submission | null>;
 }
 
 export const useRoundDetailsStore = create<RoundDetailsStore>()((set, get) => ({
@@ -53,7 +53,7 @@ export const useRoundDetailsStore = create<RoundDetailsStore>()((set, get) => ({
       }
     });
   },
-  createSubmission: (): Submission | null => {
+  createSubmission: async (): Promise<Submission | null> => {
     const evaluationID = get().evaluationID;
     const userID = get().userID;
 
@@ -70,12 +70,12 @@ export const useRoundDetailsStore = create<RoundDetailsStore>()((set, get) => ({
       github_link: "",
     });
 
-    rpc.call("createSubmission", { submission: newSubmission }).then((data) => {
-      if (data instanceof Error) {
-        console.error(`ERROR -- rpc call createSubmission failed`, data);
-        return;
-      }
-    });
+    const res = await rpc.call("createSubmission", { submission: newSubmission });
+    // TODO: error handling
+    if (res instanceof Error) {
+      console.error(`ERROR -- rpc call createSubmission failed`, res);
+      return null;
+    }
 
     return newSubmission;
   },

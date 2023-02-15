@@ -15,7 +15,7 @@ export interface SubmissionStore {
   createSubmissionLink: () => void;
   deleteSubmissionLink: (index: number) => void;
   setSubmission: () => void;
-  createSubmission: (evaluation_id: string, user_id: string) => Submission | null;
+  createSubmission: (evaluation_id: string, user_id: string) => Promise<Submission | null>;
 }
 
 export const useSubmissionStore = create<SubmissionStore>()((set, get) => ({
@@ -198,7 +198,7 @@ export const useSubmissionStore = create<SubmissionStore>()((set, get) => ({
         }
       });
   },
-  createSubmissionLink: () => {
+  createSubmissionLink: async () => {
     const submission = get().submission;
 
     if (!submission) {
@@ -282,7 +282,7 @@ export const useSubmissionStore = create<SubmissionStore>()((set, get) => ({
         }
       });
   },
-  createSubmission: (evaluation_id: string, user_id: string): Submission | null => {
+  createSubmission: async (evaluation_id: string, user_id: string): Promise<Submission | null> => {
     const newSubmission = Submission.init({
       description: "",
       evaluation_id: evaluation_id,
@@ -292,12 +292,13 @@ export const useSubmissionStore = create<SubmissionStore>()((set, get) => ({
       github_link: "",
     });
 
-    rpc.call("createSubmission", { submission: newSubmission }).then((data) => {
-      if (data instanceof Error) {
-        console.error(`ERROR -- rpc call createSubmission failed`, data);
-        return;
-      }
-    });
+    const res = await rpc.call("createSubmission", { submission: newSubmission });
+    // TODO: error handling
+    if (res instanceof Error) {
+      console.error(`ERROR -- rpc call createSubmission failed`, res);
+      return null;
+    }
+
     return newSubmission;
   },
 }));
