@@ -7,7 +7,12 @@ type Params = {
   preferred_email: string;
 };
 
-export async function joinWithCode({ supabase, params }: ServerParams<Params>): Promise<Submission | AppError> {
+type Return = {
+  evaluationID: string;
+  submission: Submission;
+};
+
+export async function joinWithCode({ supabase, params }: ServerParams<Params>): Promise<Return | AppError> {
   // TODO: if user has already joined the round error, we should show which round it is that they tried to rejoin
   // TODO: errors raised in stored procedures are now caught in the error object? (causes a panic)
   const { data, error } = await supabase.rpc("join_with_code", params).single();
