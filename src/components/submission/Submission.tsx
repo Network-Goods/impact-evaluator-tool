@@ -38,6 +38,7 @@ export default function Submission() {
   const store = useSubmissionStore();
   const githubHandleFromProfile = userProfileStore.profile?.github_handle || "";
   const userIDFromProfile = userProfileStore.profile?.id || "";
+  const [isNewSubmissionPending, setIsNewSubmissionPending] = useState<boolean>(false);
 
   useEffect(() => {
     if (!submission_id || Array.isArray(submission_id)) {
@@ -85,11 +86,14 @@ export default function Submission() {
     setOpenModal(false);
   };
 
-  const handleCreateNewSubmission = () => {
+  const handleCreateNewSubmission = async () => {
     if (!evaluation_id || Array.isArray(evaluation_id)) {
       return;
     }
-    const submission = store.createSubmission(evaluation_id, userIDFromProfile);
+
+    setIsNewSubmissionPending(true);
+
+    const submission = await store.createSubmission(evaluation_id, userIDFromProfile);
     if (!submission) {
       return;
     }
@@ -185,6 +189,7 @@ export default function Submission() {
                 <button
                   className="transition-colors duration-200 ease-in-out transform outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold mx-auto border border-blue bg-blue  text-white text-lg px-4 py-2 cursor-pointer hover:bg-blue-darkest hover:border-blue-darkest"
                   onClick={() => handleCreateNewSubmission()}
+                  disabled={isNewSubmissionPending}
                 >
                   New Submission
                 </button>

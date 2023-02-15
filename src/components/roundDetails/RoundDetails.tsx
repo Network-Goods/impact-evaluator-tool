@@ -21,6 +21,7 @@ export default function RoundDetails() {
   const store = useRoundDetailsStore();
   const userProfileStore = useUserProfileStore();
   const [openArray, setOpenArray] = useState<boolean[]>([]);
+  const [isNewSubmissionPending, setIsNewSubmissionPending] = useState<boolean>(false);
 
   const { evaluation_id } = router.query;
 
@@ -45,8 +46,9 @@ export default function RoundDetails() {
     setOpenArray(arr);
   }, [store.submissions]);
 
-  const clickNewSubmission = () => {
-    const submission = store.createSubmission();
+  const clickNewSubmission = async () => {
+    setIsNewSubmissionPending(true);
+    const submission = await store.createSubmission();
     if (!submission) {
       return;
     }
@@ -122,6 +124,7 @@ export default function RoundDetails() {
             <button
               className="transition-colors px-4 duration-200 ease-in-out transform  outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold border border-blue bg-blue hover:bg-blue-darkest hover:border-blue-darkest  text-white text-sm md:text-base py-1"
               onClick={clickNewSubmission}
+              disabled={isNewSubmissionPending}
             >
               New Submission
             </button>
