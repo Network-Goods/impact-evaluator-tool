@@ -13,6 +13,7 @@ import SubmitSubmissionModal from "./SubmitSubmissionModal";
 import Edit from "public/images/svg/Edit";
 import IncompleteSubmissionTooltip from "./IncompleteSubmissionTooltip";
 import { useUserProfileStore } from "src/lib/UserProfileStore";
+import QuadraticVotingModal from "../voting/QuadraticVotingModal";
 
 interface FormInputs {
   name: string;
@@ -39,6 +40,7 @@ export default function Submission() {
   const githubHandleFromProfile = userProfileStore.profile?.github_handle || "";
   const userIDFromProfile = userProfileStore.profile?.id || "";
   const [isNewSubmissionPending, setIsNewSubmissionPending] = useState<boolean>(false);
+  const [openQuadraticModal, setOpenQuadraticModal] = useState(false);
 
   useEffect(() => {
     if (!submission_id || Array.isArray(submission_id)) {
@@ -192,14 +194,9 @@ export default function Submission() {
             </li>
             <li>
               <b>Voting Method:</b>{" "}
-              <a
-                className="text-blue hover:text-blue-dark underline"
-                href="https://www.economist.com/interactive/2021/12/18/quadratic-voting"
-                target="_blank"
-                rel="noreferrer"
-              >
+              <button className="text-blue hover:text-blue-dark underline" onClick={() => setOpenQuadraticModal(true)}>
                 Quadratic Voting
-              </a>
+              </button>
             </li>
             <li>
               <b>Reward Pool:</b> $10,000 USD (denominated in FIL)
@@ -440,6 +437,7 @@ export default function Submission() {
         handleClose={() => setOpenModal(false)}
         handleSubmit={handleSubmitModal}
       />
+      <QuadraticVotingModal open={openQuadraticModal} handleClose={() => setOpenQuadraticModal(false)} />
     </>
   );
 }
