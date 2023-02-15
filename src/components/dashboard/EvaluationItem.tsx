@@ -1,6 +1,6 @@
 import { DashboardEvaluation } from "src/lib";
 import EvaluationLinkButton from "./EvaluationLinkButton";
-import { returnLocalTime, returnLocalDate } from "src/lib/utils";
+import { returnTime, returnDate } from "src/lib/utils";
 
 enum RoundStatus {
   "staging" = "Staging",
@@ -41,14 +41,10 @@ export const EvaluationItem = ({ evaluation, first, last }: EvaluationItemProps)
             {`ROUND ${RoundTiming[evaluation.status as keyof typeof RoundTiming]}`}
           </div>
           <div className="text-[9px] text-offblack tracking-widest">
-            {evaluation.status === "staging"
-              ? returnLocalDate(evaluation.start_time)
-              : returnLocalDate(evaluation.end_time)}
+            {evaluation.status === "staging" ? returnDate(evaluation.start_time) : returnDate(evaluation.end_time)}
           </div>
           <div className="text-[9px] text-offblack tracking-widest">
-            {evaluation.status === "staging"
-              ? returnLocalTime(evaluation.start_time)
-              : returnLocalTime(evaluation.end_time)}
+            {evaluation.status === "staging" ? returnTime(evaluation.start_time) : returnTime(evaluation.end_time)}
           </div>
         </div>
         <div className="text-center py-[9px] font-bold text-sm text-gray-dark border-l border-gray px-4 min-w-[79px] md:min-w-[100px]">
@@ -57,11 +53,7 @@ export const EvaluationItem = ({ evaluation, first, last }: EvaluationItemProps)
 
         <div className="pl-4 md:pl-10 border-l border-gray">
           {evaluation.status === "staging" ? (
-            <EvaluationLinkButton
-              text="Details"
-              link="https://network-goods.notion.site/Impact-Evaluators-Builders-Leaderboard-602ea6755b5642e1ad6f9da59a47fa62"
-              external
-            />
+            <EvaluationLinkButton text="Details" link={`/evaluation/${evaluation.id}/submission`} />
           ) : null}
           {evaluation.status === "started" && !evaluation.is_submitted ? (
             <>
