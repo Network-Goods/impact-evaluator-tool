@@ -9,10 +9,15 @@ export async function deleteSubmission({
   params: { id },
   auth,
 }: ServerParams<Params>): Promise<void | Error> {
-  // TODO: Fix this ASAP
-  // if (!isAdmin(auth)) {
-  //   return new Error(`Unauthorized`);
-  // }
+  let { data, error: error1 } = await supabase.from("submission").select("user_id").eq("id", id).single();
+
+  if (!data || error1) {
+    return new Error("Failed to get user_id for auth");
+  }
+
+  if (!isAdmin(auth) && data.user_id != auth.user_id) {
+    return new Error(`Unauthorized`);
+  }
 
   const { error } = await supabase.from("submission").delete().eq("id", id);
 

@@ -1,9 +1,10 @@
 import VotingTableLink from "./VotingTableLink";
 import { filterSubmissions } from "src/lib/utils";
+import { Submission } from "src/lib";
 
 type VotingTableBodyProps = {
   idx: number;
-  project: any;
+  project: Submission;
   submissions: any;
   search: string;
 };
@@ -27,7 +28,7 @@ export default function VotingTableBody({ idx, project, submissions, search }: V
           <p className="text-sm mb-3">{project.description.description}</p>
         </div>
         <div className="md:w-[30%] md:border-l md:border-gray md:pl-6">
-          <div className="font-bold">{`Project Link${project.website_link ? "s" : ""}`}</div>
+          <div className="font-bold">{`Project Link${project.links.length > 1 ? "s" : ""}`}</div>
           <div className="flex flex-col">
             <VotingTableLink title="Github" link={project.github_link} />
             {project.links

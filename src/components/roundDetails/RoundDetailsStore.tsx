@@ -64,10 +64,10 @@ export const useRoundDetailsStore = create<RoundDetailsStore>()((set, get) => ({
     const newSubmission = Submission.init({
       description: "",
       evaluation_id: evaluationID,
-      website_link: "",
       name: "",
       user_id: userID,
       github_link: "",
+      links: [],
     });
 
     const res = await rpc.call("createSubmission", { submission: newSubmission });
