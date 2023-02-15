@@ -57,7 +57,7 @@ export const EvaluationItem = ({ evaluation, first, last }: EvaluationItemProps)
 
         <div className="pl-4 md:pl-10 border-l border-gray">
           {evaluation.status === "staging" ? (
-            <EvaluationLinkButton text="Details" link={`/submission/${evaluation.id}`} external />
+            <EvaluationLinkButton text="Details" link={`/evaluation/${evaluation.id}/submission`} />
           ) : null}
           {evaluation.status === "started" && !evaluation.is_submitted ? (
             <>

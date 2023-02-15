@@ -1,7 +1,7 @@
 import Container from "src/components/layout/Container";
 import Layout from "src/components/layout/Layout";
 import AuthNavbar from "src/components/navBar/AuthNavbar";
-import SubmissionOverview from "src/components/submission/SubmissionOverview";
+import RoundDetails from "src/components/roundDetails/RoundDetails";
 
 export default function Index() {
   return (
@@ -9,7 +9,7 @@ export default function Index() {
       <AuthNavbar />
       <main>
         <Container>
-          <SubmissionOverview />
+          <RoundDetails />
         </Container>
       </main>
     </Layout>

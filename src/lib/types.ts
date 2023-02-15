@@ -78,3 +78,7 @@ export namespace Submission {
     };
   }
 }
+
+export interface RoundDetailsData {
+  submissions: Submission[];
+}

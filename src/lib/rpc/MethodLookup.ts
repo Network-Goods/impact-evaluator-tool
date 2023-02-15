@@ -30,6 +30,7 @@ import {
   setSubmissionDescription,
   joinWithCode,
   getEvaluationResult,
+  getRoundDetailsStore,
 } from "./methods";
 
 export const MethodLookup = {
@@ -64,4 +65,5 @@ export const MethodLookup = {
   setSubmissionDescription,
   joinWithCode,
   getEvaluationResult,
+  getRoundDetailsStore,
 };
