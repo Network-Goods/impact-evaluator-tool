@@ -107,10 +107,8 @@ export default function RoundDetails() {
       <div className="flex flex-col lg:flex-row">
         <div className="flex-1">
           <div className="w-full rounded-lg bg-[#f0f0f0] border border-gray">
-            <div className="flex py-2 pl-4 md:px-6">
-              <div className="w-[45%] md:w-[60%] py-2 border-r border-gray ">
-                <SmallTitle text="Name" />
-              </div>
+            <div className="flex py-4 pl-4 md:pl-12">
+              <SmallTitle text="Name" />
             </div>
             <div>
               {store.submissions?.map((submission: Submission, idx: number) => {
@@ -124,7 +122,7 @@ export default function RoundDetails() {
         ${!openArray[idx] ? "rounded-b-lg" : ""}`}
                       >
                         <div
-                          className={`w-[45%] md:w-[60%] flex justify-between ${
+                          className={`w-[65%] md:w-[83%] flex justify-between ${
                             openArray[idx] ? "" : "border-r border-gray"
                           }`}
                         >
@@ -144,21 +142,23 @@ export default function RoundDetails() {
                           >
                             <DownChevron
                               className={`h-5 w-5 transform transition-all duration-300  ease-in-out
-              ${openArray[idx] ? "rotate-180 fill-blue" : "rotate-0"}
-              `}
+                            ${openArray[idx] ? "rotate-180 fill-blue" : "rotate-0"}
+                            `}
                             />
                           </button>
                         </div>
                         <div className="pl-4 md:pl-10 flex">
-                          <EvaluationLinkButton
-                            text="Edit"
-                            link={`/evaluation/${evaluation_id}/submission/${submission.id}`}
-                          />
+                          <div className="mr-10">
+                            <EvaluationLinkButton
+                              text="Edit"
+                              link={`/evaluation/${evaluation_id}/submission/${submission.id}`}
+                            />
+                          </div>
                           <button
-                            className="font-bold py-[10px] px-4 border border-gray border-l-0 rounded-r-lg bg-blue bg-opacity-5"
                             onClick={() => store.deleteSubmission(submission.id)}
+                            className="border border-blue px-3 py-[6.5px] rounded-lg"
                           >
-                            <Delete className="w-3 h-5 fill-offblack" />
+                            <Delete className="w-3 h-5" />
                           </button>
                         </div>
                       </div>
