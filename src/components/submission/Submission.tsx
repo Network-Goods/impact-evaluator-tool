@@ -159,7 +159,7 @@ export default function Submission() {
             Space Warp
           </a>
           &#39;s <b>Impact Evaluator: Round 3</b>, where builders and FVM subject matter experts vote on the top
-          projects in the community and direct the allocation of a $75k prize pool. See the{" "}
+          projects in the community and direct the allocation of funding. See the{" "}
           <a
             className="text-blue hover:text-blue-dark underline"
             href="https://spacewarp.fvm.dev/#ie"
