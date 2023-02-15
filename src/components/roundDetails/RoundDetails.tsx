@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import LoadingSpinner from "src/components/shared/LoadingSpinner";
 import EvaluationLinkButton from "../dashboard/EvaluationLinkButton";
 import SmallTitle from "../shared/SmallTitle";
+import Button from "../shared/Button";
 import Title from "../shared/Title";
 import VotingTable from "../voting/VotingTable";
 import VotingTableBody from "../voting/VotingTableBody";
@@ -57,7 +58,7 @@ export default function RoundDetails() {
 
   return (
     <>
-      <div className="pb-14">
+      <div className="pb-2">
         <div className="flex items-center pb-10">
           <div className="hidden md:flex mr-6">
             <Link href="/">
@@ -71,24 +72,44 @@ export default function RoundDetails() {
           </div>
         </div>
 
-        <h3 className="text-2xl text-blue-alt font-bold">Round Description</h3>
-        <div className="text-xl pt-7">This description is far too graphic to be public</div>
-        <button
-          className="transition-colors duration-200 ease-in-out transform outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold mx-auto
-                px-6 py-1 border border-blue bg-blue text-white text-lg cursor-pointer hover:bg-blue-darkest hover:border-blue-darkest"
-          type="submit"
-          value="New submission"
-          onClick={clickNewSubmission}
-        >
-          New submission
-        </button>
+        <div className="px-2">
+          <div className="pb-14">
+            <h3 className="text-2xl text-blue-alt font-bold">Round Description</h3>
+            <div className="text-xl pt-4">
+              This Impact Evaluator (IE) round is part of the Space Warp program, which leads up to the mainnet launch
+              of the Filecoin Virtual Machine (FVM). The recurring IE rounds crowdsource the community’s perspective on
+              the most valuable work being done on the FVM, which populates the <b>FVM Builders Leaderboard</b> and
+              directs the allocation of a $75,000 prize pool.
+              <br />
+              <br />
+              Impact Evaluators are a type of funding mechanism that Protocol Labs is working to define and grow. By
+              transparently measuring, evaluating, and rewarding valuable projects over time, this project aims to
+              increase the efficiency of public goods funding for the Filecoin ecosystem.
+              <br />
+              <br />
+              To learn more about Space Warp’s Impact Evaluator Rounds, see: IE Round Overview & FAQ Space Warp Website,
+              featuring the FVM Builders Leaderboard
+            </div>
+          </div>
+
+          <div className="flex justify-between">
+            <h3 className="text-2xl text-blue-alt font-bold">Submissions</h3>
+
+            <button
+              className="transition-colors px-4 duration-200 ease-in-out transform  outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold border border-blue bg-blue hover:bg-blue-darkest hover:border-blue-darkest  text-white text-sm md:text-base py-1"
+              onClick={clickNewSubmission}
+            >
+              New Submission
+            </button>
+          </div>
+        </div>
       </div>
       <div className="flex flex-col lg:flex-row">
         <div className="flex-1">
           <div className="w-full rounded-lg bg-[#f0f0f0] border border-gray">
             <div className="flex py-2 pl-4 md:px-6">
               <div className="w-[45%] md:w-[60%] py-2 border-r border-gray ">
-                <SmallTitle text="Submitted Projects" />
+                <SmallTitle text="Name" />
               </div>
             </div>
             <div>
