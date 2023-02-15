@@ -141,33 +141,85 @@ export default function Submission() {
             </Link>
           </div>
           <div className="flex-1">
-            <Title text="Space Warp Round 1" />
+            <Title text="Space Warp Impact Evaluator | Round 3" />
           </div>
         </div>
 
-        <h3 className="text-2xl text-blue-alt font-bold">Round Description</h3>
+        <h3 className="text-2xl text-blue-alt font-bold">Submission Form</h3>
         <div className="text-xl pt-7">
-          As part of Space Warp, Community Impact Evaluator rounds will give FVM subject matter experts and builders an
-          opportunity to vote on top projects in the community. These Impact Evaluator rounds will empower builders to
-          weigh in on the most valuable projects on the FVM and to direct the allocation of a total prize pool up to
-          $75k. Results will populate the Builders Leaderboard on the Space Warp website.
-        </div>
-        <p className="text-xl pt-7">The Impact Evaluator Round 1 will open voting on Wednesday, January 25th.</p>
-        <div className="text-xl pt-7">
-          To be eligible to receive funds, each submitted project must have the team member vote who submitted this form
-          in the Impact Evaluator round and must follow each step in these instructions:
-          <ol className="list-decimal ml-6">
+          Submit a project to be included in{" "}
+          <a
+            className="text-blue hover:text-blue-dark underline"
+            href="https://spacewarp.fvm.dev/"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Space Warp
+          </a>
+          's <b>Impact Evaluator: Round 3</b>, where builders and FVM subject matter experts vote on the top projects in
+          the community and direct the allocation of a $75k prize pool. See the{" "}
+          <a
+            className="text-blue hover:text-blue-dark underline"
+            href="https://spacewarp.fvm.dev/#ie"
+            target="_blank"
+            rel="noreferrer"
+          >
+            FVM Builders Leaderboard
+          </a>{" "}
+          for past round results.
+          <br />
+          <br />
+          <u>
+            Round 3 details [
+            <a
+              className="text-blue hover:text-blue-dark underline"
+              href="https://network-goods.notion.site/Impact-Evaluators-Builders-Leaderboard-602ea6755b5642e1ad6f9da59a47fa62"
+              target="_blank"
+              rel="noreferrer"
+            >
+              full details here
+            </a>
+            ]:
+            <br />
+            <br />
+          </u>{" "}
+          <ul className="list-disc ml-6">
             <li>
-              Submit project to Impact Evaluator (IE) round using this form before end of day on Monday, January 23rd.{" "}
+              <b>Submission Deadline:</b> Mon., Feb 20 at 23:59 UTC-5
             </li>
             <li>
-              {" "}
-              Register for Protocol Labs&#39; IE voting tool (invitation will be sent as the IE round approaches){" "}
+              <b>Voting Dates:</b> Wed., Feb. 22 at 00:01 UTC-5 and ends Thurs., Feb. 23 at 23:59 UTC-5
             </li>
-            <li>Vote on projects using Quadratic Voting evaluation method</li>
-          </ol>
+            <li>
+              <b>Voting Method:</b>{" "}
+              <a
+                className="text-blue hover:text-blue-dark"
+                href="https://www.economist.com/interactive/2021/12/18/quadratic-voting"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Quadratic Voting
+              </a>
+            </li>
+            <li>
+              <b>Reward Pool:</b> $10,000 USD (denominated in FIL)
+            </li>
+          </ul>
+          <br />
+          <u>Eligibility:</u>
+          <br />
+          <br />
+          <ul className="list-disc ml-6">
+            <li>
+              To receive rewards, each submitted project <u>must have a team member vote on its behalf</u>
+            </li>
+            <li>
+              An evaluator <u>cannot vote</u> on their own project(s). Those votes will not be counted.
+            </li>
+          </ul>{" "}
+          <br />
+          With any questions or issues, please email <b>impact-evaluator@protocol.ai</b>.
         </div>
-        <p className="text-xl pt-7">With any questions or issues, please email impact-evaluator@protocol.ai.</p>
       </div>
       <div className="flex justify-between items-center py-2 px-9 bg-[#f0f0f0] border border-gray rounded-t-lg">
         <div className="py-2">
@@ -223,7 +275,7 @@ export default function Submission() {
               </div>
               <textarea
                 className="w-full min-h-[112px] px-4 py-2 rounded-lg border border-gray focus:outline-none"
-                placeholder="XYZ is..."
+                placeholder="My project is..."
                 name="description"
                 maxLength={280}
                 value={formInputs.description || ""}
@@ -240,7 +292,7 @@ export default function Submission() {
 
               <textarea
                 className="w-full min-h-[112px] px-4 py-2 rounded-lg border border-gray focus:outline-none"
-                placeholder="So far we have..."
+                placeholder="In the past 1 month, my project has..."
                 name="summary"
                 maxLength={280}
                 value={formInputs.summary || ""}
@@ -256,7 +308,7 @@ export default function Submission() {
               </div>
               <textarea
                 className="w-full min-h-[112px] px-4 py-2 rounded-lg border border-gray focus:outline-none"
-                placeholder="XYZ utilizes..."
+                placeholder="My project is using FVM's functionality to..."
                 name="specs"
                 maxLength={360}
                 value={formInputs.specs || ""}
