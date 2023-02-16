@@ -39,7 +39,11 @@ export default function SubmitSubmissionModal({ handleSubmit, handleClose, open 
           className="translate-x-[-5%] md:-translate-x-1/2 -translate-y-1/2 top-[40%] left-[10%] md:left-1/2"
         >
           <h1 className="text-[28px] text-blue-alt font-semibold text-center">Submit to Round</h1>
-          <p className="text-center py-6">Are you sure you would like to submit?</p>
+          <p className="text-center py-3">Are you sure you would like to submit?</p>
+          <p className="text-center pb-6">
+            You will be able to edit this submission before the round begins, and the round administrator will be able
+            to review it once submitted.
+          </p>
           <div className="flex justify-evenly">
             <div>
               <Button small alt text="Cancel" onClick={handleClose} />

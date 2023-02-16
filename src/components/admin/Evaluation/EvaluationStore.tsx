@@ -161,6 +161,7 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
       evaluation_id: evaluation.id,
       name: "",
       user_id: "",
+      github_handle: "",
       github_link: "",
       links: [],
     });

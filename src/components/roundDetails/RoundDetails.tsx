@@ -32,8 +32,7 @@ export default function RoundDetails() {
     if (!evaluation_id || Array.isArray(evaluation_id) || !userProfileStore.profile) {
       return;
     }
-
-    store.load(userProfileStore.profile.id, evaluation_id);
+    store.load(userProfileStore.profile.id, evaluation_id, userProfileStore.profile.github_handle);
   }, [evaluation_id, store.fetching, userProfileStore.profile]);
 
   useEffect(() => {
@@ -76,8 +75,103 @@ export default function RoundDetails() {
             <Title text="Space Warp Impact Evaluator | Round 3" />
           </div>
         </div>
-
         <div className="px-2">
+          <div className="pb-14">
+            <div className="pb-2">
+              <div className="flex justify-between">
+                <h3 className="text-2xl text-blue-alt font-bold">Submissions</h3>
+
+                <button
+                  className="transition-colors px-4 duration-200 ease-in-out transform  outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold border border-blue bg-blue hover:bg-blue-darkest hover:border-blue-darkest  text-white text-sm md:text-base py-1"
+                  onClick={clickNewSubmission}
+                  disabled={isNewSubmissionPending}
+                >
+                  New Submission
+                </button>
+              </div>
+            </div>
+            <div className="flex flex-col lg:flex-row">
+              <div className="flex-1">
+                <div className="w-full rounded-lg bg-[#f0f0f0] border border-gray">
+                  <div className="flex py-4 pl-4 md:pl-12">
+                    <SmallTitle text="Name" />
+                  </div>
+                  {Array.isArray(store.submissions) && store.submissions.length ? (
+                    <div>
+                      {store.submissions?.map((submission: Submission, idx: number) => {
+                        return (
+                          <div key={idx}>
+                            <div>
+                              <div
+                                className={`flex items-center pl-4 md:px-6 border border-gray border-x-0 border-b-0 ${
+                                  idx % 2 === 0 ? "bg-white" : "bg-gray-lighter"
+                                }
+                        ${!openArray[idx] ? "rounded-b-lg" : ""}`}
+                              >
+                                <div
+                                  className={`w-[60%] md:w-[83%] flex justify-between ${
+                                    openArray[idx] ? "" : "border-r border-gray"
+                                  }`}
+                                >
+                                  <div className="py-6 md:pl-6 md:text-[20px]">{submission.name}</div>
+                                  <button
+                                    onClick={() =>
+                                      setOpenArray((prev: any) => {
+                                        return prev.map((item: boolean, j: number) => {
+                                          if (j === idx) {
+                                            return !item;
+                                          }
+                                          return item;
+                                        });
+                                      })
+                                    }
+                                    className="p-4"
+                                  >
+                                    <DownChevron
+                                      className={`h-5 w-5 transform transition-all duration-300  ease-in-out
+                            ${openArray[idx] ? "rotate-180 fill-blue" : "rotate-0"}
+                            `}
+                                    />
+                                  </button>
+                                </div>
+                                <div className="pl-4 md:pl-10 flex">
+                                  <div className="pr-2 mr-2 md:pr-5 md:mr-5 border-r border-gray">
+                                    <EvaluationLinkButton
+                                      text="Edit"
+                                      link={`/evaluation/${evaluation_id}/submission/${submission.id}`}
+                                    />
+                                  </div>
+                                  <button
+                                    onClick={() => store.deleteSubmission(submission.id)}
+                                    className="border border-blue px-2 md:px-3 py-1 md:py-[6.5px] rounded-lg mr-2 md:mr-0"
+                                  >
+                                    <Delete className="w-3 h-5" />
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+
+                            <Collapse in={openArray[idx]} timeout="auto" unmountOnExit>
+                              <VotingTableBody
+                                idx={idx}
+                                project={submission}
+                                submissions={store.submissions}
+                                search={""}
+                              />
+                            </Collapse>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <div className="flex justify-center py-16 text-lg bg-white rounded-b-lg border-t border-gray">
+                      You have not made a submission for this round.
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
           <div className="pb-14">
             <h3 className="text-2xl text-blue-alt font-bold">Round Overview</h3>
             <div className="text-xl pt-4">
@@ -118,7 +212,7 @@ export default function RoundDetails() {
             </div>
           </div>
 
-          <div className="pb-12">
+          <div>
             <h3 className="text-2xl text-blue-alt font-bold">Round Details</h3>
             <div className="text-xl pt-4">
               <b>When will voting happen for this round?</b>
@@ -152,96 +246,9 @@ export default function RoundDetails() {
               </div>
             </div>
           </div>
-
-          <div className="flex justify-between">
-            <h3 className="text-2xl text-blue-alt font-bold">Submissions</h3>
-
-            <button
-              className="transition-colors px-4 duration-200 ease-in-out transform  outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold border border-blue bg-blue hover:bg-blue-darkest hover:border-blue-darkest  text-white text-sm md:text-base py-1"
-              onClick={clickNewSubmission}
-              disabled={isNewSubmissionPending}
-            >
-              New Submission
-            </button>
-          </div>
         </div>
       </div>
-      <div className="flex flex-col lg:flex-row">
-        <div className="flex-1">
-          <div className="w-full rounded-lg bg-[#f0f0f0] border border-gray">
-            <div className="flex py-4 pl-4 md:pl-12">
-              <SmallTitle text="Name" />
-            </div>
-            {Array.isArray(store.submissions) && store.submissions.length ? (
-              <div>
-                {store.submissions?.map((submission: Submission, idx: number) => {
-                  return (
-                    <div key={idx}>
-                      <div>
-                        <div
-                          className={`flex items-center pl-4 md:px-6 border border-gray border-x-0 border-b-0 ${
-                            idx % 2 === 0 ? "bg-white" : "bg-gray-lighter"
-                          }
-                        ${!openArray[idx] ? "rounded-b-lg" : ""}`}
-                        >
-                          <div
-                            className={`w-[60%] md:w-[83%] flex justify-between ${
-                              openArray[idx] ? "" : "border-r border-gray"
-                            }`}
-                          >
-                            <div className="py-6 md:pl-6 md:text-[20px]">{submission.name}</div>
-                            <button
-                              onClick={() =>
-                                setOpenArray((prev: any) => {
-                                  return prev.map((item: boolean, j: number) => {
-                                    if (j === idx) {
-                                      return !item;
-                                    }
-                                    return item;
-                                  });
-                                })
-                              }
-                              className="p-4"
-                            >
-                              <DownChevron
-                                className={`h-5 w-5 transform transition-all duration-300  ease-in-out
-                            ${openArray[idx] ? "rotate-180 fill-blue" : "rotate-0"}
-                            `}
-                              />
-                            </button>
-                          </div>
-                          <div className="pl-4 md:pl-10 flex">
-                            <div className="pr-2 mr-2 md:pr-5 md:mr-5 border-r border-gray">
-                              <EvaluationLinkButton
-                                text="Edit"
-                                link={`/evaluation/${evaluation_id}/submission/${submission.id}`}
-                              />
-                            </div>
-                            <button
-                              onClick={() => store.deleteSubmission(submission.id)}
-                              className="border border-blue px-2 md:px-3 py-1 md:py-[6.5px] rounded-lg mr-2 md:mr-0"
-                            >
-                              <Delete className="w-3 h-5" />
-                            </button>
-                          </div>
-                        </div>
-                      </div>
 
-                      <Collapse in={openArray[idx]} timeout="auto" unmountOnExit>
-                        <VotingTableBody idx={idx} project={submission} submissions={store.submissions} search={""} />
-                      </Collapse>
-                    </div>
-                  );
-                })}
-              </div>
-            ) : (
-              <div className="flex justify-center py-16 text-lg bg-white rounded-b-lg border-t border-gray">
-                You have not made a submission for this round.
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
       <QuadraticVotingModal open={openQuadraticModal} handleClose={() => setOpenQuadraticModal(false)} />
     </>
   );

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { DashboardEvaluation } from "src/lib";
 import EvaluationLinkButton from "./EvaluationLinkButton";
 import { returnTime, returnDate } from "src/lib/utils";
@@ -53,7 +54,11 @@ export const EvaluationItem = ({ evaluation, first, last }: EvaluationItemProps)
 
         <div className="pl-4 md:pl-10 border-l border-gray">
           {evaluation.status === "staging" ? (
-            <EvaluationLinkButton text="Details" link={`/evaluation/${evaluation.id}/submission`} />
+            <Link href={`/evaluation/${evaluation.id}/submission`}>
+              <div className="transition-colors duration-200 ease-in-out transform  outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold mx-auto  border border-red bg-red hover:bg-dark-red hover:border-dark-red  text-white text-xs md:text-base py-1 w-24 md:w-32">
+                Submit Project
+              </div>
+            </Link>
           ) : null}
           {evaluation.status === "started" && !evaluation.is_submitted ? (
             <>
@@ -61,7 +66,7 @@ export const EvaluationItem = ({ evaluation, first, last }: EvaluationItemProps)
             </>
           ) : null}
           {(evaluation.status === "started" && evaluation.is_submitted) || evaluation.status === "closed" ? (
-            <div className="transition-colors duration-200 ease-in-out transform  outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold mx-auto border border-[#DADADA] bg-[#DADADA] text-gray-dark text-sm md:text-base py-1 w-16 md:w-20">
+            <div className="transition-colors duration-200 ease-in-out transform  outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold mx-auto border border-[#DADADA] bg-[#DADADA] text-gray-dark text-xs md:text-base py-1 w-24 md:w-32">
               Done
             </div>
           ) : null}
