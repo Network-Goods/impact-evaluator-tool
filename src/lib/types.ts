@@ -58,6 +58,7 @@ export interface Submission {
   user_id: string;
   name: string;
   github_link: string;
+  github_handle: string;
   evaluation_id: string;
   description: any;
   links: any;
@@ -79,6 +80,6 @@ export namespace Submission {
   }
 }
 
-export interface RoundDetailsData {
-  submissions: Submission[];
+export interface RoundDetailsData extends Submission {
+  user: { github_handle: string };
 }

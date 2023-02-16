@@ -5,7 +5,8 @@ import { Evaluation, rpc, Submission } from "src/lib";
 export interface SubmissionStore {
   fetching: boolean;
   submission?: any;
-  load: (submission_id: string) => void;
+  githubHandle?: string;
+  load: (submission_id: string, githubHandle: string) => void;
   setSubmissionTitle: (title: string) => void;
   setSubmissionDescription: (title: string, link: string) => void;
   setSubmissionLinkTitle: (title: string, index: number) => void;
@@ -22,7 +23,7 @@ export const useSubmissionStore = create<SubmissionStore>()((set, get) => ({
   fetching: true,
   submission: null,
 
-  load: async (submission_id: string): Promise<void> => {
+  load: async (submission_id: string, githubHandle: string): Promise<void> => {
     const data = await rpc.call("getSubmissionStore", {
       submission_id: submission_id,
     });
@@ -34,6 +35,7 @@ export const useSubmissionStore = create<SubmissionStore>()((set, get) => ({
 
     set({
       submission: data,
+      githubHandle: githubHandle,
       fetching: false,
     });
   },
@@ -283,11 +285,18 @@ export const useSubmissionStore = create<SubmissionStore>()((set, get) => ({
       });
   },
   createSubmission: async (evaluation_id: string, user_id: string): Promise<Submission | null> => {
+    const githubHandle = get().githubHandle;
+
+    if (get().fetching || !githubHandle) {
+      return null;
+    }
+
     const newSubmission = Submission.init({
       description: "",
       evaluation_id: evaluation_id,
       name: "",
       user_id: user_id,
+      github_handle: githubHandle,
       github_link: "",
       links: [],
     });
