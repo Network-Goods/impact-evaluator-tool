@@ -101,6 +101,7 @@ export default function Submission() {
     if (!submission) {
       return;
     }
+    setIsSubmitted(false);
 
     router.push(`/evaluation/${evaluation_id}/submission/${submission.id}`);
   };
