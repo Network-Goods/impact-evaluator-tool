@@ -17,7 +17,7 @@ export const EvaluationCard = ({ children }: EvaluationCardProps) => {
           <div className="text-center py-2 border-l border-gray min-w-[100px]">
             <SmallTitle text="ROLE" />
           </div>
-          <div className="text-center py-2 border-l border-gray pl-9 min-w-[121px]">
+          <div className="text-center py-2 border-l border-gray pl-9 min-w-[169px]">
             <SmallTitle text="ACTION" />
           </div>
         </div>

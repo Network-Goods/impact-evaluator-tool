@@ -46,8 +46,8 @@ export default function Submission() {
     if (!submission_id || Array.isArray(submission_id)) {
       return;
     }
-    store.load(submission_id);
-  }, [submission_id, store.fetching]);
+    store.load(submission_id, githubHandleFromProfile);
+  }, [submission_id, store.fetching, githubHandleFromProfile]);
 
   const [formInputs, setFormInputs] = useState<FormInputs>({
     name: store.submission?.name,
@@ -114,10 +114,6 @@ export default function Submission() {
       githubHandle: isGithubHandleChecked ? githubHandleFromProfile : store.submission?.github_handle,
     });
   }, [store.submission]);
-
-  useEffect(() => {
-    store.setGithubHandle(githubHandleFromProfile);
-  }, [githubHandleFromProfile]);
 
   const isSubmitButtonDisabled =
     !formInputs.name ||

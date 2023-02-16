@@ -8,7 +8,8 @@ export interface RoundDetailsStore {
   submissions?: Submission[];
   evaluationID?: string;
   userID?: string;
-  load: (userID: string, evaluationID: string) => void;
+  githubHandle?: string;
+  load: (userID: string, evaluationID: string, githubHandle: string) => void;
   deleteSubmission: (submissionID: string) => void;
   createSubmission: () => Promise<Submission | null>;
 }
@@ -17,7 +18,7 @@ export const useRoundDetailsStore = create<RoundDetailsStore>()((set, get) => ({
   fetching: true,
   submission: null,
 
-  load: async (userID: string, evaluationID: string): Promise<void> => {
+  load: async (userID: string, evaluationID: string, githubHandle: string): Promise<void> => {
     const data = await rpc.call("getRoundDetailsStore", {
       evaluation_id: evaluationID,
     });
@@ -28,9 +29,10 @@ export const useRoundDetailsStore = create<RoundDetailsStore>()((set, get) => ({
     }
 
     set({
-      submissions: data.submissions,
+      submissions: data,
       evaluationID: evaluationID,
       userID: userID,
+      githubHandle: githubHandle,
       fetching: false,
     });
   },
@@ -56,8 +58,9 @@ export const useRoundDetailsStore = create<RoundDetailsStore>()((set, get) => ({
   createSubmission: async (): Promise<Submission | null> => {
     const evaluationID = get().evaluationID;
     const userID = get().userID;
+    const githubHandle = get().githubHandle;
 
-    if (get().fetching || !evaluationID || !userID) {
+    if (get().fetching || !evaluationID || !userID || !githubHandle) {
       return null;
     }
 
@@ -67,6 +70,7 @@ export const useRoundDetailsStore = create<RoundDetailsStore>()((set, get) => ({
       name: "",
       user_id: userID,
       github_link: "",
+      github_handle: githubHandle,
       links: [],
     });
 
