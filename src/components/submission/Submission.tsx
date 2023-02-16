@@ -41,6 +41,7 @@ export default function Submission() {
   const userIDFromProfile = userProfileStore.profile?.id || "";
   const [isNewSubmissionPending, setIsNewSubmissionPending] = useState<boolean>(false);
   const [openQuadraticModal, setOpenQuadraticModal] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   useEffect(() => {
     if (!submission_id || Array.isArray(submission_id)) {
@@ -85,6 +86,7 @@ export default function Submission() {
 
   const handleSubmitModal = () => {
     store.setSubmission();
+    setIsSubmitted(true);
     setOpenModal(false);
   };
 
@@ -223,7 +225,7 @@ export default function Submission() {
         className="flex flex-col md:flex-row justify-between items-center px-8 md:px-24 bg-white border border-gray py-4 md:py-10 rounded-b-lg      
         border-t-0"
       >
-        {store.submission?.is_submitted ? (
+        {isSubmitted ? (
           <div className="flex justify-center items-center w-full">
             <div className="text-xl font-bold flex flex-col text-center pt-16 pb-20">
               <p>Your submission is complete.</p>
