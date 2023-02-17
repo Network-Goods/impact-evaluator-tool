@@ -31,7 +31,6 @@ interface LinkInputs {
 }
 
 export default function Submission() {
-  const [isGithubHandleChecked, setIsGithubHandleChecked] = useState(true);
   const [openModal, setOpenModal] = useState(false);
   const router = useRouter();
   const userProfileStore = useUserProfileStore();
@@ -42,6 +41,9 @@ export default function Submission() {
   const [isNewSubmissionPending, setIsNewSubmissionPending] = useState<boolean>(false);
   const [openQuadraticModal, setOpenQuadraticModal] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isGithubHandleChecked, setIsGithubHandleChecked] = useState(
+    githubHandleFromProfile === store.submission?.github_handle,
+  );
 
   useEffect(() => {
     if (!submission_id || Array.isArray(submission_id)) {
@@ -57,7 +59,7 @@ export default function Submission() {
     specs: store.submission?.description.specs,
     github_link: store.submission?.github_link,
     links: store.submission?.links || [],
-    githubHandle: isGithubHandleChecked ? githubHandleFromProfile : "",
+    githubHandle: isGithubHandleChecked ? store.submission?.github_handle : "",
   });
 
   const handleFormChange = (
@@ -114,8 +116,9 @@ export default function Submission() {
       specs: store.submission?.description.specs,
       github_link: store.submission?.github_link,
       links: store.submission?.links,
-      githubHandle: isGithubHandleChecked ? githubHandleFromProfile : store.submission?.github_handle,
+      githubHandle: store.submission?.github_handle,
     });
+    setIsGithubHandleChecked(githubHandleFromProfile === store.submission?.github_handle);
   }, [store.submission]);
 
   const isSubmitButtonDisabled =
