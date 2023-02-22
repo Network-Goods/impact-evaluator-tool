@@ -1,15 +1,22 @@
-import { ServerParams } from "..";
+import { Submission } from "../..";
+import { isAdmin, ServerParams } from "..";
 
 type Params = {
   id: string;
   title: string;
+  submission: Submission;
 };
 
 export async function setSubmissionTitle({
   supabase,
-  params: { id, title },
+  params: { id, title, submission },
+  auth,
 }: ServerParams<Params>): Promise<void | Error> {
-  const { data, error } = await supabase.from("submission").update({ name: title }).eq("id", id);
+  if (!isAdmin(auth) && submission.user_id != auth.user_id) {
+    return new Error(`Unauthorized`);
+  }
+  // Trimming the title here and in setSubmissionTitle in SubmissionStore
+  const { data, error } = await supabase.from("submission").update({ name: title.trim() }).eq("id", id);
 
   if (error) {
     console.error(error);

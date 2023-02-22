@@ -45,18 +45,21 @@ export const useSubmissionStore = create<SubmissionStore>()((set, get) => ({
     if (!submission) {
       return new Error("Submission not loaded");
     }
+    // Trimming the title here and in setSubmissionTitle in methods
+    const trimmedTitle = title.trim();
 
     set({
       submission: {
         ...submission,
-        name: title,
+        name: trimmedTitle,
       },
     });
 
     rpc
       .call("setSubmissionTitle", {
         id: submission.id,
-        title: title,
+        title: trimmedTitle,
+        submission: submission,
       })
       .then((data) => {
         if (data instanceof Error) {
