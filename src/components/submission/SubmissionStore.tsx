@@ -59,7 +59,7 @@ export const useSubmissionStore = create<SubmissionStore>()((set, get) => ({
       .call("setSubmissionTitle", {
         id: submission.id,
         title: trimmedTitle,
-        submission: submission,
+        user_id: submission.user_id,
       })
       .then((data) => {
         if (data instanceof Error) {

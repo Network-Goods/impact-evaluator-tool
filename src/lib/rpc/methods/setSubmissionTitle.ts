@@ -4,15 +4,17 @@ import { isAdmin, ServerParams } from "..";
 type Params = {
   id: string;
   title: string;
-  submission: Submission;
+  user_id?: string;
 };
 
 export async function setSubmissionTitle({
   supabase,
-  params: { id, title, submission },
+  params: { id, title, user_id },
   auth,
 }: ServerParams<Params>): Promise<void | Error> {
-  if (!isAdmin(auth) && submission.user_id != auth.user_id) {
+  user_id = user_id ? user_id : auth.user_id;
+
+  if (!isAdmin(auth) && user_id != auth.user_id) {
     return new Error(`Unauthorized`);
   }
   // Trimming the title here and in setSubmissionTitle in SubmissionStore
