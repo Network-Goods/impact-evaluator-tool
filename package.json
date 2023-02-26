@@ -27,6 +27,7 @@
     "axios": "^1.2.3",
     "cross-undici-fetch": "^0.4.14",
     "csv-parse": "^5.3.3",
+    "dotenv": "^16.0.3",
     "gradient-string": "^2.0.2",
     "next": "13.1.1",
     "progress": "^2.0.3",
