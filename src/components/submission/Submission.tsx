@@ -145,7 +145,7 @@ export default function Submission() {
             </Link>
           </div>
           <div className="flex-1">
-            <Title text="Space Warp Impact Evaluator | Round 3" />
+            <Title text="Space Warp Impact Evaluator | Round 4" />
           </div>
         </div>
 
@@ -160,7 +160,7 @@ export default function Submission() {
           >
             Space Warp
           </a>
-          &#39;s <b>Impact Evaluator: Round 3</b>, where builders and FVM subject matter experts vote on the top
+          &#39;s <b>Impact Evaluator: Round 4</b>, where builders and FVM subject matter experts vote on the top
           projects in the community and direct the allocation of funding. See the{" "}
           <a
             className="text-blue hover:text-blue-dark underline"
@@ -174,7 +174,7 @@ export default function Submission() {
           <br />
           <br />
           <u>
-            Round 3 details [
+            Round 4 details [
             <a
               className="text-blue hover:text-blue-dark underline"
               href="https://network-goods.notion.site/Impact-Evaluators-Builders-Leaderboard-602ea6755b5642e1ad6f9da59a47fa62"
@@ -189,10 +189,10 @@ export default function Submission() {
           </u>{" "}
           <ul className="list-disc ml-6">
             <li>
-              <b>Submission Deadline:</b> Mon., Feb 20 at 23:59 UTC-5
+              <b>Submission Deadline:</b> Mon., Mar 6 at 23:59 UTC-5
             </li>
             <li>
-              <b>Voting Dates:</b> Begins Wed., Feb. 22 at 00:01 UTC-5 and ends Thurs., Feb. 23 at 23:59 UTC-5
+              <b>Voting Dates:</b> Begins Wed., Mar. 8 at 00:01 UTC-5 and ends Thurs., Mar. 9 at 23:59 UTC-5
             </li>
             <li>
               <b>Voting Method:</b>{" "}
@@ -201,7 +201,7 @@ export default function Submission() {
               </button>
             </li>
             <li>
-              <b>Reward Pool:</b> $10,000 USD (denominated in FIL)
+              <b>Reward Pool:</b> $15,000 USD (denominated in FIL)
             </li>
           </ul>
           <br />
