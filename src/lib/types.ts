@@ -55,7 +55,7 @@ export interface Evaluator {
 
 export interface Submission {
   id: string;
-  user_id: string;
+  user_id?: string;
   name: string;
   github_link: string;
   github_handle: string;
@@ -82,4 +82,20 @@ export namespace Submission {
 
 export interface RoundDetailsData extends Submission {
   user: { github_handle: string };
+}
+
+export interface SubmissionFormInputs {
+  name: string;
+  description: string;
+  summary: string;
+  specs: string;
+  github_link: string;
+  links?: SubmissionFormLinkInputs[];
+  githubHandle: string;
+  user_id?: string;
+}
+
+export interface SubmissionFormLinkInputs {
+  name: string;
+  value: string;
 }

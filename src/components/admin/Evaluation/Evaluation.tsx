@@ -6,20 +6,18 @@ import LoadingSpinner from "src/components/shared/LoadingSpinner";
 import { useEvaluationStore } from "./EvaluationStore";
 import EvaluationSubTitle from "./EvaluationSubTitle";
 import Edit from "public/images/svg/Edit";
-import EditOutcomeModal from "./OutcomeModal/EditOutcomeModal";
+import OutcomeModal from "./OutcomeModal/OutcomeModal";
 import EvaluatorModal from "./EvaluatorModal/EvaluatorModal";
 import CreateInvitationModal from "./CreateInvitationModal";
 import EvaluationTitle from "./EvaluationTitle";
 import Delete from "public/images/svg/Delete";
 import Plus from "public/images/svg/Plus";
 import { DateTimePicker } from "./DateTimePicker";
-import AddOutcomeModal from "./OutcomeModal/AddOutcomeModal";
 
 export default function Evaluation() {
   const ref = useRef<any>(null);
 
-  const [openEditOutcomeModal, setOpenEditOutcomeModal] = useState(false);
-  const [openNewOutcomeModal, setOpenNewOutcomeModal] = useState(false);
+  const [openOutcomeModal, setOpenOutcomeModal] = useState(false);
   const [outcomeModalContent, setOutcomeModalContent] = useState({});
   const [openEvaluatorModal, setOpenEvaluatorModal] = useState(false);
   const [evaluatorModalContent, setEvaluatorModalContent] = useState({});
@@ -27,7 +25,7 @@ export default function Evaluation() {
   const router = useRouter();
   const { evaluation_id } = router.query;
   const store = useEvaluationStore();
-
+  const [isNewOutcomePending, setIsNewOutcomePending] = useState<boolean>(false);
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
 
@@ -41,13 +39,23 @@ export default function Evaluation() {
     store.evaluation && setEndDate(new Date(store.evaluation.end_time));
   }, [evaluation_id, store.fetching]);
 
-  const handleOpenOutcomeModal = (submission?: any) => {
-    setOutcomeModalContent(submission ? submission : null);
-    setOpenEditOutcomeModal(true);
+  const handleOpenOutcomeModal = (submission: any) => {
+    setOutcomeModalContent(submission);
+    setOpenOutcomeModal(true);
   };
   const handleCloseEditOutcomeModal = () => {
-    setOpenEditOutcomeModal(false);
+    setOpenOutcomeModal(false);
     setOutcomeModalContent({});
+  };
+
+  const handleCreateNewOutcome = async () => {
+    setIsNewOutcomePending(true);
+    const submission = await store.createSubmission();
+    if (!submission) {
+      return;
+    }
+    handleOpenOutcomeModal(submission);
+    setIsNewOutcomePending(false);
   };
 
   const handleOpenEvaluatorModal = (evaluator?: any) => {
@@ -169,8 +177,9 @@ export default function Evaluation() {
             <EvaluationSubTitle text="Outcomes" />
             <div>
               <button
-                onClick={() => setOpenNewOutcomeModal(true)}
+                onClick={() => handleCreateNewOutcome()}
                 className="flex items-center justify-center border border-blue rounded w-[19px] h-5"
+                disabled={isNewOutcomePending}
               >
                 <Plus className="stroke-blue w-3 h-3" />
               </button>
@@ -196,18 +205,14 @@ export default function Evaluation() {
             })}
           </ol>
         </div>
-        <EditOutcomeModal
+        <OutcomeModal
           store={store}
-          open={openEditOutcomeModal}
+          open={openOutcomeModal}
           handleClose={handleCloseEditOutcomeModal}
           submission={outcomeModalContent}
+          evaluation_id={evaluation_id}
         />
-        <AddOutcomeModal
-          store={store}
-          open={openNewOutcomeModal}
-          handleClose={() => setOpenNewOutcomeModal(false)}
-          submission={outcomeModalContent}
-        />
+
         <EvaluatorModal
           store={store}
           open={openEvaluatorModal}

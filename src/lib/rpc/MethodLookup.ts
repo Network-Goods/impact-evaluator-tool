@@ -10,7 +10,6 @@ import {
   setEvaluationEndTime,
   getSubmissionStore,
   createSubmission,
-  createLiveSubmission,
   getVotingStore,
   getAllEvaluations,
   getEvaluationStore,
@@ -31,6 +30,7 @@ import {
   joinWithCode,
   getEvaluationResult,
   getRoundDetailsStore,
+  setUserID,
 } from "./methods";
 
 export const MethodLookup = {
@@ -45,7 +45,6 @@ export const MethodLookup = {
   setEvaluationEndTime,
   getSubmissionStore,
   createSubmission,
-  createLiveSubmission,
   getVotingStore,
   getAllEvaluations,
   getEvaluationStore,
@@ -66,4 +65,5 @@ export const MethodLookup = {
   joinWithCode,
   getEvaluationResult,
   getRoundDetailsStore,
+  setUserID,
 };
