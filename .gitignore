@@ -27,3 +27,10 @@ yarn-error.log*
 
 # Supabase
 .supabase
+
+/playwright-report/
+/playwright/.cache/
+/test-results/
+/playwright-report/
+/playwright/.cache/
+/playwright/.auth
