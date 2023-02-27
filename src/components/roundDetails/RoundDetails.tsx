@@ -72,7 +72,7 @@ export default function RoundDetails() {
             </Link>
           </div>
           <div className="flex-1">
-            <Title text="Space Warp Impact Evaluator | Round 3" />
+            <Title text="Space Warp Impact Evaluator | Round 4" />
           </div>
         </div>
         <div className="px-2">
@@ -220,12 +220,12 @@ export default function RoundDetails() {
                 <div>
                   <b>Start:</b>
                   <br />
-                  <span>Wednesday, Feb. 22 at 00:01 UTC-5</span>
+                  <span>Wednesday, Mar. 8 at 00:01 UTC-5</span>
                 </div>
                 <div className="pt-4 md:pt-0 md:pl-20">
                   <b>End:</b>
                   <br />
-                  <span>Thursday, Feb. 23 at 23:59 UTC-5</span>
+                  <span>Thursday, Mar. 9 at 23:59 UTC-5</span>
                 </div>
               </div>
             </div>
