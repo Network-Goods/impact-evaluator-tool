@@ -36,11 +36,11 @@ export namespace Evaluation {
   export function init(): Evaluation {
     return {
       id: uuid(),
-      name: "new evaluation",
+      name: "",
       status: "draft",
       description: "",
-      start_time: "",
-      end_time: "",
+      start_time: "2023-01-02 00:00:00+00",
+      end_time: "2023-01-02 00:00:00+00",
     };
   }
 }

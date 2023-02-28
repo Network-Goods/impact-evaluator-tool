@@ -19,7 +19,7 @@ export default function Dashboard() {
 
   return (
     <>
-      <DashboardHeader />
+      <DashboardHeader store={store} />
       {store.evaluations.filter((evaluation) => evaluation.status !== "closed" && evaluation.status !== "draft")
         .length !== 0 ? (
         <EvaluationCard>

@@ -54,7 +54,7 @@ export const AdminEditItem = ({ evaluation, first, last }: EvaluationItemProps) 
           </div>
         </div>
         <div className="pl-4 md:pl-10 border-l border-gray">
-          <Link href={`/admin/${evaluation.id}`}>
+          <Link href={`/admin/evaluation/${evaluation.id}`}>
             <div className="transition-colors duration-200 ease-in-out transform  outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold mx-auto  border border-blue bg-blue hover:bg-blue-darkest hover:border-blue-darkest  text-white text-sm md:text-base py-1 w-16 md:w-20">
               Edit
             </div>

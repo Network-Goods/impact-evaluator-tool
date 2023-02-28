@@ -4,6 +4,7 @@ export * from "./createEvaluation";
 export * from "./deleteEvaluation";
 export * from "./deleteSubmission";
 export * from "./setEvaluationName";
+export * from "./setEvaluationDescription";
 export * from "./setEvaluationStatus";
 export * from "./setEvaluationStartTime";
 export * from "./setEvaluationEndTime";

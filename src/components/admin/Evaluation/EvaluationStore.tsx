@@ -7,6 +7,7 @@ export interface EvaluationStore {
   evaluation?: any;
   load: (evaluation_id: string) => void;
   setEvaluationName: (name: string) => void;
+  setEvaluationDescription: (description: string) => void;
   setEvaluationStatus: (status: string) => void;
   setEvaluationStartTime: (time: Date) => void;
   setEvaluationEndTime: (time: Date) => void;
@@ -72,7 +73,28 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
       }
     });
   },
+  
+setEvaluationDescription: (description: string) => {
+    const evaluation = get().evaluation;
 
+    if (!evaluation) {
+      return;
+    }
+
+    set({
+      evaluation: {
+        ...evaluation,
+        description,
+      },
+    });
+
+    rpc.call("setEvaluationDescription", { description: description, id: evaluation.id }).then((data) => {
+      if (data instanceof Error) {
+        console.error(`ERROR -- rpc call setEvaluationDescription failed`, data);
+        return;
+      }
+    });
+  },
   setEvaluationStatus: (status: string) => {
     const evaluation = get().evaluation;
 
