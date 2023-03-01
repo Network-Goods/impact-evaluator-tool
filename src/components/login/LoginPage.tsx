@@ -29,7 +29,7 @@ export default function Login() {
             <div className="py-8">
               <div className="max-w-[190px] mx-auto">
                 <Auth
-                  onlyThirdPartyProviders={false}
+                  onlyThirdPartyProviders={true}
                   redirectTo={redirectTo}
                   appearance={{
                     style: {
