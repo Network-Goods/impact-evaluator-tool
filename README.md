@@ -2,7 +2,7 @@
 
 ## Environment Variables
 
-To facilitate low friction switching between different backends (local, staging, prod) during development the environment variables for each backend are split into seperate files in the .env directory. Which env file is loaded is determined by the `DEV_TARGET` environment variable, so `DEV_TARGET=staging` would load environment variables from the file `.env/.staging`.
+To facilitate low friction switching between different backends (local, staging, prod) during development the environment variables for each backend are split into seperate files in the .env directory. Which env file is loaded is determined by the `CLIENT_BACKEND` environment variable, so `CLIENT_BACKEND=staging` would load environment variables from the file `.env/.staging`.
 
 Convenience commands are included for the common backends:
 

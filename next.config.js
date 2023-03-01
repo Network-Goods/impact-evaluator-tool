@@ -1,11 +1,11 @@
-if (!process.env.DEV_TARGET) {
+if (!process.env.CLIENT_BACKEND) {
   console.error(
-    `ERROR - Failde to load environment variables: 'DEV_TARGET' is not set. See the 'Environment Variables' section in the README.`,
+    `ERROR - Failde to load environment variables: 'CLIENT_BACKEND' is not set. See the 'Environment Variables' section in the README.`,
   );
   process.exit(1);
 }
 
-require("dotenv").config({ path: `.env/.${process.env.DEV_TARGET}` });
+require("dotenv").config({ path: `.env/.${process.env.CLIENT_BACKEND}` });
 
 const nextConfig = {
   env: {
