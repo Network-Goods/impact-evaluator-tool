@@ -1,4 +1,3 @@
-import { useRouter } from "next/router";
 import Add from "public/images/svg/Add";
 import { useState } from "react";
 import Button from "src/components/shared/Button";
@@ -9,7 +8,6 @@ type CreateEvaluationButtonProps = {
 
 export default function CreateEvaluationButton({ store }: CreateEvaluationButtonProps) {
   const [isNewEvaluationPending, setIsNewEvaluationPending] = useState<boolean>(false);
-  const router = useRouter();
 
   const handleCreateNewEvaluation = async () => {
     setIsNewEvaluationPending(true);
@@ -18,7 +16,7 @@ export default function CreateEvaluationButton({ store }: CreateEvaluationButton
     if (!evaluation) {
       return;
     }
-    router.push(`/admin/evaluation/${evaluation.id}`);
+    window.location.replace(`/admin/evaluation/${evaluation.id}`);
   };
 
   return (

@@ -10,6 +10,7 @@ import EvaluationTitle from "./EvaluationTitle";
 import Delete from "public/images/svg/Delete";
 import Plus from "public/images/svg/Plus";
 import { DateTimePicker } from "./DateTimePicker";
+import moment from "moment";
 
 type EditEvaluationProps = {
   evaluation_id: string | string[] | undefined;
@@ -17,15 +18,15 @@ type EditEvaluationProps = {
 };
 
 export default function EditEvaluation({ evaluation_id, store }: EditEvaluationProps) {
-  const ref = useRef<any>(null);
+  const ref = useRef<HTMLInputElement | null>(null);
   const [openOutcomeModal, setOpenOutcomeModal] = useState(false);
   const [outcomeModalContent, setOutcomeModalContent] = useState({});
   const [openEvaluatorModal, setOpenEvaluatorModal] = useState(false);
   const [evaluatorModalContent, setEvaluatorModalContent] = useState({});
   const [openInvitationModal, setOpenInvitationModal] = useState(false);
   const [isNewOutcomePending, setIsNewOutcomePending] = useState<boolean>(false);
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+  const [startDate, setStartDate] = useState(store.evaluation?.start_time ? moment(store.evaluation?.start_time) : "");
+  const [endDate, setEndDate] = useState(store.evaluation?.end_time ? moment(store.evaluation?.end_time) : "");
 
   const handleOpenOutcomeModal = (submission: any) => {
     setOutcomeModalContent(submission);
@@ -55,19 +56,19 @@ export default function EditEvaluation({ evaluation_id, store }: EditEvaluationP
     setEvaluatorModalContent({});
   };
 
-  const handleStartDateChange = (date: Date) => {
+  const handleStartDateChange = (date: string) => {
     setStartDate(date);
     store.setEvaluationStartTime(date);
   };
 
-  const handleEndDateChange = (date: Date) => {
+  const handleEndDateChange = (date: string) => {
     setEndDate(date);
     store.setEvaluationEndTime(date);
   };
 
   useEffect(() => {
-    setStartDate(new Date(store.evaluation?.start_time));
-    setEndDate(new Date(store.evaluation?.end_time));
+    setStartDate(store.evaluation?.start_time ? moment(store.evaluation?.start_time) : "");
+    setEndDate(store.evaluation?.end_time ? moment(store.evaluation?.end_time) : "");
   }, [store.evaluation?.start_time, store.evaluation?.end_time]);
 
   return (
@@ -92,18 +93,18 @@ export default function EditEvaluation({ evaluation_id, store }: EditEvaluationP
           <div className="flex justify-between mb-4">
             <EvaluationSubTitle text="Evaluation Period" />
             <div>
-              <button onClick={() => ref.current?.input.focus()} className="border border-blue rounded p-1">
+              <button onClick={() => ref.current?.focus()} className="border border-blue rounded p-1">
                 <Edit className="fill-blue-alt" />
               </button>
             </div>
           </div>
 
           <div className="flex flex-col sm:flex-row">
-            <div className="w-[120px]">
-              <DateTimePicker ref={ref} date={startDate} setDate={handleStartDateChange} classes="w-[100px]" />
+            <div className="">
+              <DateTimePicker ref={ref} date={startDate} setDate={handleStartDateChange} classes="" />
             </div>
             <span className="sm:mx-2">to</span>
-            <DateTimePicker date={endDate} setDate={handleEndDateChange} classes="w-[100px]" />
+            <DateTimePicker date={endDate} setDate={handleEndDateChange} classes="" />
           </div>
           <hr className="my-10 border-gray" />
           <div className="pb-4">

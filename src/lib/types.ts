@@ -24,8 +24,8 @@ export interface Evaluation {
   name: string;
   status: string;
   description: string;
-  start_time: string;
-  end_time: string;
+  start_time: string | null;
+  end_time: string | null;
 }
 
 export interface DashboardEvaluation extends Evaluation {
@@ -39,8 +39,8 @@ export namespace Evaluation {
       name: "",
       status: "draft",
       description: "",
-      start_time: "2023-01-02 00:00:00+00",
-      end_time: "2023-01-02 00:00:00+00",
+      start_time: null,
+      end_time: null,
     };
   }
 }
