@@ -9,4 +9,6 @@ stdenv.mkDerivation {
     shellHook = ''
         export PATH="$PWD/node_modules/.bin/:$PATH"
     '';
+
+    NODE_OPTIONS = "--openssl-legacy-provider";
 }

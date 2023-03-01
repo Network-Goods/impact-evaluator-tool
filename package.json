@@ -2,7 +2,10 @@
   "name": "impact-evaluator-tool",
   "version": "1.0.0",
   "scripts": {
-    "dev": "next",
+    "dev": "DEV_TARGET=staging next",
+    "dev:local": "DEV_TARGET=local next",
+    "dev:staging": "DEV_TARGET=staging next",
+    "dev:production": "DEV_TARGET=production next",
     "build": "next build",
     "start": "next start",
     "post-update": "yarn upgrade --latest",

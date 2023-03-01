@@ -1,5 +1,18 @@
 # Impact Evaluator Tool
 
+## Environment Variables
+
+To facilitate low friction switching between different backends (local, staging, prod) during development the environment variables for each backend are split into seperate files in the .env directory. Which env file is loaded is determined by the `DEV_TARGET` environment variable, so `DEV_TARGET=staging` would load environment variables from the file `.env/.staging`.
+
+Convenience commands are included for the common backends:
+
+- `yarn dev:local`
+- `yarn dev:staging`
+- `yarn dev:production`
+- `yarn dev` (uses staging)
+
+Implementation of this switch is in `next.config.js`
+
 ## Development
 
 ### Running
