@@ -1,11 +1,3 @@
-const toBoolean = (dataStr) => {
-  if (dataStr === undefined) {
-    return undefined;
-  }
-
-  return dataStr?.toLowerCase?.() === "true";
-};
-
 if (process.env.CLIENT_BACKEND) {
   require("dotenv").config({ path: `.env/.${process.env.CLIENT_BACKEND}` });
 }
@@ -13,6 +5,7 @@ if (process.env.CLIENT_BACKEND) {
 const env = {
   NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
   NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+  NEXT_PUBLIC_SHOW_EMAIL_LOGIN: process.env.NEXT_PUBLIC_SHOW_EMAIL_LOGIN,
 };
 
 let errors = [];
