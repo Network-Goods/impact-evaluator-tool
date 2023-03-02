@@ -12,8 +12,6 @@ jobs:
         with:
           node-version: 16
           cache: "yarn"
-      - name: Install dependencies
-        run: yarn
 
         # https://playwrightsolutions.com/playwright-github-action-to-cache-the-browser-binaries/
       - name: Get installed Playwright version
@@ -26,7 +24,8 @@ jobs:
           path: |
             ~/.cache/ms-playwright
           key: ${{ runner.os }}-playwright-${{ env.PLAYWRIGHT_VERSION }}
-      - run: npm ci
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
       - run: npx playwright install --with-deps
         if: steps.playwright-cache.outputs.cache-hit != 'true'
       - run: npx playwright install-deps
