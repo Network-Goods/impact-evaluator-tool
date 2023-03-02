@@ -14,15 +14,15 @@ jobs:
         with:
           node-version: 16
       - name: Install dependencies
+        run: yarn
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+      - name: Run Playwright tests
         env: # Or as an environment variable
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
           NEXT_PUBLIC_SHOW_EMAIL_LOGIN: ${{ secrets.NEXT_PUBLIC_SHOW_EMAIL_LOGIN }}
-        run: npx playwright test
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
-      - name: Run Playwright tests
-        run: npx playwright test
+        run: yarn test:staging
       - uses: actions/upload-artifact@v3
         if: always()
         with:
