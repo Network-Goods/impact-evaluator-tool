@@ -9,6 +9,7 @@ const env = {
   CLIENT_PORT: process.env.CLIENT_PORT,
   CLIENT_BACKEND: process.env.CLIENT_BACKEND || "staging",
   BASE_URL: process.env.BASE_URL,
+  CLIENT_PORT: process.env.CLIENT_PORT,
 };
 
 let errors = [];
