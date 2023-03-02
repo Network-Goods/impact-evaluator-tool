@@ -22,7 +22,9 @@ jobs:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
           NEXT_PUBLIC_SHOW_EMAIL_LOGIN: ${{ secrets.NEXT_PUBLIC_SHOW_EMAIL_LOGIN }}
-        run: yarn test:staging
+          CLIENT_PORT: ${{ secrets.CLIENT_PORT }}
+          BASE_URL: ${{ secrets.BASE_URL }}
+        run: yarn test
       - uses: actions/upload-artifact@v3
         if: always()
         with:

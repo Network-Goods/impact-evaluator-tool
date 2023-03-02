@@ -2,10 +2,11 @@
   "name": "impact-evaluator-tool",
   "version": "1.0.0",
   "scripts": {
-    "dev": "CLIENT_BACKEND=staging next",
+    "dev": "next",
     "dev:local": "CLIENT_BACKEND=local next",
     "dev:staging": "CLIENT_BACKEND=staging next",
     "dev:production": "CLIENT_BACKEND=production next",
+    "test": "npx playwright test",
     "test:local": "CLIENT_BACKEND=local npx playwright test",
     "test:staging": "CLIENT_BACKEND=staging npx playwright test",
     "test:production": "CLIENT_BACKEND=production npx playwright test",
