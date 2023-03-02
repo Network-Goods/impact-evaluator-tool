@@ -13,7 +13,7 @@ jobs:
           node-version: 16
           cache: "yarn"
 
-      - run: echo ${{ env.BASE_URL }}
+      - run: echo ${{ vars.BASE_URL }}
         # https://playwrightsolutions.com/playwright-github-action-to-cache-the-browser-binaries/
       - name: Get installed Playwright version
         id: playwright-version
