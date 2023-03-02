@@ -2,7 +2,7 @@ import { defineConfig, devices } from "@playwright/test";
 
 import config from "./loadconfig";
 
-console.log("config: ", config);
+console.log("config:  ", config);
 
 /**
  * See https://playwright.dev/docs/test-configuration.
