@@ -7,7 +7,13 @@ export async function middleware(req: NextRequest) {
   const res = NextResponse.next();
   // Create authenticated Supabase Client.
   const supabase = createMiddlewareSupabaseClient({ req, res });
-  // Check if we have a session
+
+  // Code for creating email accounts for testing purposes. Note that registration emails need to be disable
+  // in the supabase UI for this method to work correctly.
+  // const createNewUser = await supabase.auth.signUp({
+  //   email: "",
+  //   password: "",
+  // });
 
   const {
     data: { session },
