@@ -25,6 +25,7 @@ jobs:
           path: |
             ~/.cache/ms-playwright
           key: ${{ runner.os }}-playwright-${{ env.PLAYWRIGHT_VERSION }}
+      - run: echo ${{ env.PLAYWRIGHT_VERSION }}
       - name: Install dependencies
         run: yarn install --frozen-lockfile
       - run: npx playwright install --with-deps
