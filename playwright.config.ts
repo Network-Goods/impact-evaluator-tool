@@ -1,7 +1,6 @@
 import { defineConfig, devices } from "@playwright/test";
-import dotenv from "dotenv";
 
-dotenv.config();
+import config from "./loadconfig";
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -33,7 +32,7 @@ export default defineConfig({
     /* Maximum time each action such as `click()` can take. Defaults to 0 (no limit). */
     actionTimeout: 0,
     /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: "http://localhost:3002",
+    baseURL: config.BASE_URL,
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: "on-first-retry",
   },
@@ -88,7 +87,7 @@ export default defineConfig({
 
   /* Run your local dev server before starting the tests */
   webServer: {
-    command: "yarn dev:local",
-    port: 3002,
+    command: `yarn dev:${config.CLIENT_BACKEND}`,
+    port: parseInt(config.CLIENT_PORT!),
   },
 });

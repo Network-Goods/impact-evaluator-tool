@@ -1,7 +1,4 @@
 import { test as setup } from "@playwright/test";
-import dotenv from "dotenv";
-
-dotenv.config();
 
 const authFile = "playwright/.auth/user.json";
 
