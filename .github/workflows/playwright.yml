@@ -1,4 +1,12 @@
 name: Playwright Tests
+env:
+  NEXT_PUBLIC_SUPABASE_URL: ${{ vars.NEXT_PUBLIC_SUPABASE_URL }}
+  NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ vars.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+  NEXT_PUBLIC_SHOW_EMAIL_LOGIN: ${{ vars.NEXT_PUBLIC_SHOW_EMAIL_LOGIN }}
+  CLIENT_PORT: ${{ vars.CLIENT_PORT }}
+  BASE_URL: ${{ vars.BASE_URL }}
+  CLIENT_BACKEND: ${{ vars.CLIENT_BACKEND }}
+
 on:
   pull_request:
     branches: [staging]
@@ -13,7 +21,6 @@ jobs:
           node-version: 16
           cache: "yarn"
 
-      - run: echo ${{ vars.BASE_URL }}
         # https://playwrightsolutions.com/playwright-github-action-to-cache-the-browser-binaries/
       - name: Get installed Playwright version
         id: playwright-version
@@ -25,7 +32,6 @@ jobs:
           path: |
             ~/.cache/ms-playwright
           key: ${{ runner.os }}-playwright-${{ env.PLAYWRIGHT_VERSION }}
-      - run: echo ${{ env.PLAYWRIGHT_VERSION }}
       - name: Install dependencies
         run: yarn install --frozen-lockfile
       - run: npx playwright install --with-deps
@@ -35,6 +41,8 @@ jobs:
 
       - name: Run Playwright tests
         run: yarn test
+        env:
+
       - uses: actions/upload-artifact@v3
         if: always()
         with:
