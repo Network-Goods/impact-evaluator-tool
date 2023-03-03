@@ -20,7 +20,6 @@ jobs:
           cache: "yarn"
 
         # https://playwrightsolutions.com/playwright-github-action-to-cache-the-browser-binaries/
-      - run: echo $BASE_URL
       - name: Get installed Playwright version
         id: playwright-version
         run: echo "PLAYWRIGHT_VERSION=$(node -e "console.log(require('./package-lock.json').dependencies['@playwright/test'].version)")" >> $GITHUB_ENV
