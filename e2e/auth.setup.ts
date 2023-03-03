@@ -3,7 +3,7 @@ import { test as setup } from "@playwright/test";
 const authFile = "playwright/.auth/user.json";
 
 setup("authenticate", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("http://localhost:3000");
   await page.getByPlaceholder("Your email address").click();
   await page.getByPlaceholder("Your email address").fill("j@jmoggr.com");
   await page.getByPlaceholder("Your password").click();
