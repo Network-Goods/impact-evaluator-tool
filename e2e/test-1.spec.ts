@@ -1,10 +1,10 @@
 import { test, expect } from "@playwright/test";
 
-// test("test", async ({ page }) => {
-//   await page.goto("/");
-//   await page.getByRole("button", { name: "Sign in with Github" }).click();
-//   await expect(page.getByRole("heading", { name: "Dashboard" })).toHaveText("Dashboard");
-// });
+test("test", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Sign in with Github" }).click();
+  await expect(page.getByRole("heading", { name: "Dashboard" })).toHaveText("Dashboard");
+});
 
 test("test2", async ({ page }) => {
   await page.goto("/");
@@ -14,3 +14,8 @@ test("test2", async ({ page }) => {
   await page.getByRole("button", { name: "Join" }).click();
   await page.getByText("Invalid invite code. code: SubmissionsDemo").click();
 });
+
+// test("test3", async ({ page }) => {
+//   await page.goto("/");
+//   await page.getByRole("button", { name: "stthstst" }).click();
+// });
