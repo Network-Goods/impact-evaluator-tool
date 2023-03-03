@@ -8,7 +8,7 @@ import config from "./loadconfig";
 export default defineConfig({
   testDir: "./e2e",
   /* Maximum time one test can run for. */
-  timeout: 20 * 1000,
+  timeout: 11 * 1000,
   expect: {
     /**
      * Maximum time expect() should wait for the condition to be met.
