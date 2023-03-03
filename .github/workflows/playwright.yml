@@ -49,6 +49,8 @@ jobs:
           name: playwright-report
           path: playwright-report/
           retention-days: 30
+
+  # https://dev.to/ysfaran/how-to-use-playwright-with-github-actions-and-github-pages-4gdl
   publish_report:
     name: Publish HTML Report
     # using always() is not ideal here, because it would also run if the workflow was cancelled
@@ -97,6 +99,6 @@ jobs:
           done
       - name: Output Report URL as Worfklow Annotation
         run: |
-          FULL_HTML_REPORT_URL=https://ysfaran.github.io/playwright-gh-actions-gh-pages/$HTML_REPORT_URL_PATH
+          FULL_HTML_REPORT_URL=https://network-goods.github.io/impact-evaluator-tool/$HTML_REPORT_URL_PATH
 
-          echo "::notice title=📋 Published Playwright Test Report::$FULL_HTML_REPORT_URL"
+          echo "::notice title=📋 Published Playwright Test Report::<a href="$FULL_HTML_REPORT_URL">View Report</a>"
