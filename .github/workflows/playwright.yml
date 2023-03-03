@@ -11,7 +11,8 @@ on:
   pull_request:
     branches: [staging]
 jobs:
-  test:
+  run_playwright_tests:
+    name: Run Playwright Tests
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
