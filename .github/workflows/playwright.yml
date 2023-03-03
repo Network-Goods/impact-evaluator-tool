@@ -97,11 +97,8 @@ jobs:
               exit 0
             fi
           done
-      - name: Output Report URL as Worfklow Annotation
+      - name: Output Report URL as Step Summary
         run: |
           FULL_HTML_REPORT_URL=https://network-goods.github.io/impact-evaluator-tool/$HTML_REPORT_URL_PATH
 
-          echo "::notice title=📋 Published Playwright Test Report::<a href="$FULL_HTML_REPORT_URL">View Report</a>"
-      - name: Adding markdown
-        run: |
-          echo '### Hello world! ' >> $GITHUB_STEP_SUMMARY
+          echo '[View Report]($FULL_HTML_REPORT_URL)' >> $GITHUB_STEP_SUMMARY
