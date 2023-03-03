@@ -2,7 +2,7 @@ import { defineConfig, devices } from "@playwright/test";
 
 import config from "./loadconfig";
 
-/**#
+/**
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
