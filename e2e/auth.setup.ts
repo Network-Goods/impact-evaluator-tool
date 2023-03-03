@@ -4,8 +4,8 @@ const axios = require("axios");
 const authFile = "playwright/.auth/user.json";
 
 setup("authenticate", async ({ page }) => {
-  const res = await axios.get("http://127.0.0.1:3000");
-  console.log(res);
+  // const res = await axios.get("http://127.0.0.1:3000");
+  // console.log(res);
 
   await page.goto("http://127.0.0.1:3000");
   await page.getByPlaceholder("Your email address").click();
