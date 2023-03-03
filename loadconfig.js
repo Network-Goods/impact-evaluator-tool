@@ -2,18 +2,21 @@ if (process.env.CLIENT_BACKEND) {
   require("dotenv").config({ path: `.env/.${process.env.CLIENT_BACKEND}` });
 }
 
-const env = {
+const required = {
   NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
   NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-  NEXT_PUBLIC_SHOW_EMAIL_LOGIN: process.env.NEXT_PUBLIC_SHOW_EMAIL_LOGIN,
-  CLIENT_PORT: process.env.CLIENT_PORT,
-  CLIENT_BACKEND: process.env.CLIENT_BACKEND || "staging",
-  BASE_URL: process.env.BASE_URL,
-  CLIENT_PORT: process.env.CLIENT_PORT,
+};
+
+const optional_with_default = {
+  NEXT_PUBLIC_SHOW_EMAIL_LOGIN: process.env.NEXT_PUBLIC_SHOW_EMAIL_LOGIN || "false",
+};
+
+const optional = {
+  CLIENT_BACKEND: process.env.CLIENT_BACKEND,
 };
 
 let errors = [];
-for (let [key, value] of Object.entries(env)) {
+for (let [key, value] of Object.entries(required)) {
   if (value === undefined) {
     errors.push(`    ${key}`);
   }
@@ -33,5 +36,11 @@ if (errors.length != 0) {
 
   process.exit(1);
 }
+
+const env = {
+  ...required,
+  ...optional_with_default,
+  ...optional,
+};
 
 module.exports = env;
