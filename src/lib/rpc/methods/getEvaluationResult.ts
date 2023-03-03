@@ -34,5 +34,5 @@ export async function getEvaluationResult({
     );
   }
 
-  return data;
+  return data as any;
 }

@@ -15,5 +15,5 @@ export async function getStatusStore({ supabase, auth }: ServerParams<null>): Pr
     return new Error(`ERROR -- get_status_store failed. message: ${error.message}`);
   }
 
-  return data;
+  return data as any;
 }

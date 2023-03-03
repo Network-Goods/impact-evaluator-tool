@@ -38,10 +38,12 @@ export async function getVotingStore({
     return new Error(`ERROR -- get_voting_store failed. user_id: ${user_id}, evaluation_id: ${evaluation_id}`);
   }
 
+  const d: any = data;
+
   return {
-    submissions: data.submissions || [],
-    evaluator: data.evaluator,
-    evaluation: data.evaluation,
-    votes: data.votes || {},
+    submissions: d.submissions || [],
+    evaluator: d.evaluator,
+    evaluation: d.evaluation,
+    votes: d.votes || {},
   };
 }
