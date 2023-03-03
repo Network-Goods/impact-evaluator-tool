@@ -2,8 +2,6 @@ import { defineConfig, devices } from "@playwright/test";
 
 import config from "./loadconfig";
 
-console.log("client backend: ", config.CLIENT_BACKEND, !!config.CLIENT_BACKEND);
-
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
