@@ -11,7 +11,7 @@ Convenience commands are included for the common backends:
 - `yarn dev:local`
 - `yarn dev:staging`
 - `yarn dev:production`
-- `yarn dev` (uses staging)
+- `yarn dev` (does not set CLIENT_BACKEND itself)
 
 Implementation of this switch is in `next.config.js`
 

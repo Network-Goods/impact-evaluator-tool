@@ -15,6 +15,10 @@ export default function Login() {
     redirectTo = window.location.protocol + "//" + window.location.host + router.route;
   }
 
+  const onlyThirdPartyProviders = process.env.NEXT_PUBLIC_SHOW_EMAIL_LOGIN
+    ? process.env.NEXT_PUBLIC_SHOW_EMAIL_LOGIN != "true"
+    : true;
+
   return (
     <Layout>
       <BasicNavbar />
@@ -29,7 +33,7 @@ export default function Login() {
             <div className="py-8">
               <div className="max-w-[190px] mx-auto">
                 <Auth
-                  onlyThirdPartyProviders={true}
+                  onlyThirdPartyProviders={onlyThirdPartyProviders}
                   redirectTo={redirectTo}
                   appearance={{
                     style: {

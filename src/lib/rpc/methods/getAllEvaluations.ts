@@ -11,5 +11,5 @@ export async function getAllEvaluations({ supabase }: ServerParams<Params>): Pro
     return new Error(`ERROR -- failed to get Admin Store`);
   }
 
-  return data || [];
+  return (data as any) || [];
 }
