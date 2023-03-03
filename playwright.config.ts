@@ -87,7 +87,7 @@ export default defineConfig({
 
   /* Run your local dev server before starting the tests */
   webServer: {
-    command: `yarn dev:${config.CLIENT_BACKEND}`,
+    command: config.CLIENT_BACKEND ? `yarn dev:${config.CLIENT_BACKEND}` : "yarn dev",
     port: parseInt(config.CLIENT_PORT!),
   },
 });
