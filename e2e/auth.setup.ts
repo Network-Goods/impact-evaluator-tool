@@ -1,12 +1,13 @@
 import { test as setup } from "@playwright/test";
+const axios = require("axios");
 
 const authFile = "playwright/.auth/user.json";
 
 setup("authenticate", async ({ page }) => {
-  const res = await fetch("http://localhost:3000");
+  const res = await axios.get("http://127.0.0.1:3000");
   console.log(res);
 
-  await page.goto("http://localhost:3000");
+  await page.goto("http://127.0.0.1:3000");
   await page.getByPlaceholder("Your email address").click();
   await page.getByPlaceholder("Your email address").fill("j@jmoggr.com");
   await page.getByPlaceholder("Your password").click();
