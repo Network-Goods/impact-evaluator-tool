@@ -11,11 +11,9 @@ const optional_with_default = {
   NEXT_PUBLIC_SHOW_EMAIL_LOGIN: process.env.NEXT_PUBLIC_SHOW_EMAIL_LOGIN || "false",
 };
 
-let optional = {};
-
-if (process.env.CLIENT_BACKEND) {
-  optional.CLIENT_BACKEND = process.env.CLIENT_BACKEND;
-}
+let optional = {
+  CLIENT_BACKEND: process.env.CLIENT_BACKEND,
+};
 
 let errors = [];
 for (let [key, value] of Object.entries(required)) {
