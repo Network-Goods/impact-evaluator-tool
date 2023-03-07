@@ -1,28 +1,21 @@
-import { useState } from "react";
 import { Editor } from "react-draft-wysiwyg";
-import { EditorState, ContentState, convertToRaw, convertFromHTML } from "draft-js";
-import draftToHtml from "draftjs-to-html";
+import { EditorState } from "draft-js";
 import parse from "html-react-parser";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
 type RichTextEditorProps = {
-  store: any;
+  text: string;
+  editorState: EditorState;
+  handleEditorStateChange: (editorState: EditorState) => void;
+  handleEditorBlur: () => void;
 };
 
-export default function RichTextEditor({ store }: RichTextEditorProps) {
-  const blocksFromHTML = convertFromHTML(store.evaluation?.description);
-  const state = ContentState.createFromBlockArray(blocksFromHTML.contentBlocks, blocksFromHTML.entityMap);
-  const [editorState, setEditorState] = useState(
-    store.evaluation?.description ? EditorState.createWithContent(state) : EditorState.createEmpty(),
-  );
-
-  const [text, setText] = useState(draftToHtml(convertToRaw(editorState.getCurrentContent())));
-
-  const onEditorStateChange = (editorState: EditorState) => {
-    setEditorState(editorState);
-    setText(draftToHtml(convertToRaw(editorState.getCurrentContent())));
-  };
-
+export default function RichTextEditor({
+  text,
+  editorState,
+  handleEditorStateChange,
+  handleEditorBlur,
+}: RichTextEditorProps) {
   return (
     <>
       <Editor
@@ -42,8 +35,8 @@ export default function RichTextEditor({ store }: RichTextEditorProps) {
           image: { className: "!hidden" },
           history: { className: "!hidden" },
         }}
-        onEditorStateChange={onEditorStateChange}
-        onBlur={() => store.setEvaluationDescription(draftToHtml(convertToRaw(editorState.getCurrentContent())))}
+        onEditorStateChange={handleEditorStateChange}
+        onBlur={handleEditorBlur}
       />
       <h5 className="text-offblack font-bold mb-1 mt-4">Preview</h5>
       <div className="min-h-[112px] pb-8 rich-text-display">{parse(text)}</div>

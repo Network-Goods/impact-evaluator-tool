@@ -11,13 +11,21 @@ export interface EvaluationStore {
   setEvaluationStatus: (status: string) => void;
   setEvaluationStartTime: (time: Date) => void;
   setEvaluationEndTime: (time: Date) => void;
+  setFormDescription: (form_description: string) => void;
+  createFormField: () => void;
+  setFormFieldName: (name: string, id: string) => void;
+  deleteFormField: (id: string) => void;
   deleteEvaluation: () => void;
   createSubmission: () => Promise<Submission | null>;
+  setInvitationCode: (code: string, id: string) => void;
+  setInvitationCredits: (credits: string, id: string) => void;
+  setInvitationRemainingUses: (uses: string, id: string) => void;
+  setInvitationSubmissionRequired: (id: string, is_sme: boolean) => void;
   deleteInvitation: (id: string) => void;
   resetVotes: (id: string) => void;
   setVoiceCredits: (id: string, amount: number) => void;
   setEmail: (evalId: string, userId: string, email: string) => void;
-  createInvitation: (invitation: any) => void;
+  createInvitation: (invitation?: any) => void;
   createEvaluator: (evaluator: any) => void;
   setSubmissionTitle: (title: string, id: string) => void;
   setSubmissionDescription: (text: string, type: string, id: string) => void;
@@ -73,8 +81,8 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
       }
     });
   },
-  
-setEvaluationDescription: (description: string) => {
+
+  setEvaluationDescription: (description: string) => {
     const evaluation = get().evaluation;
 
     if (!evaluation) {
@@ -111,7 +119,7 @@ setEvaluationDescription: (description: string) => {
 
     rpc.call("setEvaluationStatus", { status: status, id: evaluation.id }).then((data) => {
       if (data instanceof Error) {
-        console.error(`ERROR -- rpc call setEvaluationName failed`, data);
+        console.error(`ERROR -- rpc call setEvaluationStatus failed`, data);
         return;
       }
     });
@@ -131,7 +139,7 @@ setEvaluationDescription: (description: string) => {
     });
     rpc.call("setEvaluationStartTime", { time: time, id: evaluation.id }).then((data) => {
       if (data instanceof Error) {
-        console.error(`ERROR -- rpc call setEvaluationName failed`, data);
+        console.error(`ERROR -- rpc call setEvaluationStartTime failed`, data);
         return;
       }
     });
@@ -151,12 +159,115 @@ setEvaluationDescription: (description: string) => {
     });
     rpc.call("setEvaluationEndTime", { time: time, id: evaluation.id }).then((data) => {
       if (data instanceof Error) {
-        console.error(`ERROR -- rpc call setEvaluationName failed`, data);
+        console.error(`ERROR -- rpc call setEvaluationEndTime failed`, data);
         return;
       }
     });
   },
 
+  setFormDescription: (form_description: string) => {
+    const evaluation = get().evaluation;
+
+    if (!evaluation) {
+      return;
+    }
+
+    set({
+      evaluation: {
+        ...evaluation,
+        form_description,
+      },
+    });
+
+    rpc.call("setFormDescription", { description: form_description, id: evaluation.id }).then((data) => {
+      if (data instanceof Error) {
+        console.error(`ERROR -- rpc call setFormDescription failed`, data);
+        return;
+      }
+    });
+  },
+  createFormField: () => {
+    const evaluation = get().evaluation;
+
+    if (!evaluation) {
+      return new Error("Evaluation not loaded");
+    }
+
+    const newFormField = {
+      id: uuid(),
+      evaluation_id: evaluation.id,
+      field_name: "",
+    };
+
+    set({
+      evaluation: {
+        ...evaluation,
+        evaluation_field: [...evaluation.evaluation_field, newFormField],
+      },
+    });
+
+    rpc
+      .call("createFormField", {
+        formField: newFormField,
+      })
+      .then((data) => {
+        if (data instanceof Error) {
+          console.error(`ERROR -- rpc call createFormField failed`, data);
+          return;
+        }
+      });
+  },
+  setFormFieldName: (name: string, id: string) => {
+    const evaluation = get().evaluation;
+
+    if (!evaluation) {
+      return;
+    }
+    set({
+      evaluation: {
+        ...evaluation,
+        evaluation_field: evaluation.evaluation_field.map((field: any) => {
+          if (field.id === id) {
+            return {
+              ...field,
+              field_name: name,
+            };
+          }
+          return field;
+        }),
+      },
+    });
+
+    rpc.call("setFormFieldName", { name: name, id: id }).then((data) => {
+      if (data instanceof Error) {
+        console.error(`ERROR -- rpc call setFormFieldName failed`, data);
+        return;
+      }
+    });
+  },
+  deleteFormField: (id: string) => {
+    const evaluation = get().evaluation;
+
+    if (!evaluation) {
+      return;
+    }
+
+    const newArr = evaluation.evaluation_field.filter((field: any) => field.id !== id);
+
+    set({
+      evaluation: {
+        ...evaluation,
+        evaluation_field: newArr,
+      },
+    });
+
+    rpc.call("deleteFormField", { id: id }).then((data) => {
+      if (data instanceof Error) {
+        console.error(`ERROR -- rpc call deleteFormField failed`, data);
+        return;
+      }
+    });
+  },
   deleteEvaluation: () => {
     const evaluation = get().evaluation;
 
@@ -202,6 +313,124 @@ setEvaluationDescription: (description: string) => {
       return null;
     }
     return newSubmission;
+  },
+
+  setInvitationCode: (code: string, id: string) => {
+    const evaluation = get().evaluation;
+
+    if (!evaluation) {
+      return;
+    }
+
+    set({
+      evaluation: {
+        ...evaluation,
+        invitation: evaluation.invitation.map((i: any) => {
+          if (i.id === id) {
+            return {
+              ...i,
+              code: code,
+            };
+          }
+          return i;
+        }),
+      },
+    });
+
+    rpc.call("setInvitationCode", { code: code, id: id }).then((data) => {
+      if (data instanceof Error) {
+        console.error(`ERROR -- rpc call setInvitationCode failed`, data);
+        return;
+      }
+    });
+  },
+  setInvitationCredits: (credits: string, id: string) => {
+    const evaluation = get().evaluation;
+
+    if (!evaluation) {
+      return;
+    }
+
+    set({
+      evaluation: {
+        ...evaluation,
+        invitation: evaluation.invitation.map((i: any) => {
+          if (i.id === id) {
+            return {
+              ...i,
+              voice_credits: credits,
+            };
+          }
+          return i;
+        }),
+      },
+    });
+
+    rpc.call("setInvitationCredits", { credits: credits, id: id }).then((data) => {
+      if (data instanceof Error) {
+        console.error(`ERROR -- rpc call setInvitationCredits failed`, data);
+        return;
+      }
+    });
+  },
+  setInvitationRemainingUses: (uses: string, id: string) => {
+    const evaluation = get().evaluation;
+
+    if (!evaluation) {
+      return;
+    }
+
+    set({
+      evaluation: {
+        ...evaluation,
+        invitation: evaluation.invitation.map((i: any) => {
+          if (i.id === id) {
+            return {
+              ...i,
+              remaining_uses: uses,
+            };
+          }
+          return i;
+        }),
+      },
+    });
+
+    rpc.call("setInvitationRemainingUses", { uses: uses, id: id }).then((data) => {
+      if (data instanceof Error) {
+        console.error(`ERROR -- rpc call setInvitationRemainingUses failed`, data);
+        return;
+      }
+    });
+  },
+
+  setInvitationSubmissionRequired: (id: string, is_sme: boolean) => {
+    const evaluation = get().evaluation;
+
+    if (!evaluation) {
+      return;
+    }
+    console.log("issme", is_sme);
+    set({
+      evaluation: {
+        ...evaluation,
+        invitation: evaluation.invitation.map((i: any) => {
+          if (i.id === id) {
+            return {
+              ...i,
+              is_sme: !is_sme,
+            };
+          }
+          return i;
+        }),
+      },
+    });
+
+    rpc.call("setInvitationSubmissionRequired", { is_sme: !is_sme, id: id }).then((data) => {
+      if (data instanceof Error) {
+        console.error(`ERROR -- rpc call setInvitationSubmissionRequired failed`, data);
+        return;
+      }
+    });
   },
 
   deleteInvitation: (id: string) => {
@@ -311,15 +540,17 @@ setEvaluationDescription: (description: string) => {
       });
   },
 
-  createInvitation: async (inputs: any) => {
+  createInvitation: async (inputs?: any) => {
     const evaluation = get().evaluation;
 
     if (!evaluation) {
       return new Error("Evaluation not loaded");
     }
 
+    const invitationInputs = inputs || null;
+
     const newInvitation = {
-      ...inputs,
+      ...invitationInputs,
       id: uuid(),
       evaluation_id: evaluation.id,
     };

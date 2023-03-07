@@ -1,9 +1,15 @@
-export function returnTime(date: string) {
+export function returnTime(date: string | null) {
+  if (date === null) {
+    return;
+  }
   const time = new Date(date).toUTCString();
   return time.slice(17, 22) + " UTC";
 }
 
-export function returnDate(date: string) {
+export function returnDate(date: string | null) {
+  if (date === null) {
+    return;
+  }
   const fullDate = new Date(date);
   return fullDate.getUTCFullYear() + "." + (Number(fullDate.getUTCMonth()) + 1) + "." + fullDate.getUTCDate();
 }

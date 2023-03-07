@@ -26,6 +26,7 @@ export interface Evaluation {
   description: string;
   start_time: string | null;
   end_time: string | null;
+  form_description: string;
 }
 
 export interface DashboardEvaluation extends Evaluation {
@@ -41,6 +42,7 @@ export namespace Evaluation {
       description: "",
       start_time: null,
       end_time: null,
+      form_description: "",
     };
   }
 }

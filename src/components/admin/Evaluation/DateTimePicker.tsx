@@ -23,3 +23,4 @@ export const DateTimePicker = forwardRef<any, DateTimePickerProps>(({ date, setD
     className={classes}
   />
 ));
+DateTimePicker.displayName = "DateTimePicker";
