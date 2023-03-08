@@ -44,6 +44,15 @@ export default function Submission({
       return { ...values, links: links };
     });
   };
+  const handleFieldChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, fieldName: string) => {
+    const value = event.target.value;
+    setFormInputs((values: any) => {
+      const evaluation_field = values.evaluation_field;
+      const field = evaluation_field.find((field: any) => field.field_name === fieldName);
+      field.submission_field[0].field_body = value;
+      return { ...values, evaluation_field: evaluation_field };
+    });
+  };
 
   const handleChecked = () => {
     const githubHandle = !isGithubHandleChecked ? githubHandleFromProfile : "";
@@ -52,11 +61,12 @@ export default function Submission({
     store.setGithubHandle(githubHandle);
   };
 
+  console.log("store", store);
+  console.log("formInputs", formInputs);
   return (
     <>
       <div className="mb-9">
         <p className="text-xl font-bold pb-3">Project or Team Title</p>
-
         <input
           type="text"
           name="name"
@@ -72,6 +82,25 @@ export default function Submission({
           }
         />
       </div>
+      {formInputs.evaluation_field.map((field: any) => {
+        return (
+          <div key={field.id} className="mb-9">
+            <p className="text-xl font-bold pb-3">{field.field_name}</p>
+            <textarea
+              className="w-full min-h-[112px] px-4 py-2 rounded-lg border border-gray focus:outline-none"
+              placeholder="My project is..."
+              maxLength={280}
+              value={field.submission_field[0]?.field_body || ""}
+              onChange={(e) => handleFieldChange(e, field.field_name)}
+              onBlur={
+                !submission
+                  ? (e) => store.setSubmissionDescription(e.target.value, "description")
+                  : (e) => store.setSubmissionDescription(e.target.value, "description", submission?.id)
+              }
+            />
+          </div>
+        );
+      })}
       <div className="mb-9">
         <p className="text-xl font-bold">Project Description</p>
         <div className="text-[17px] text-[#898888] py-1">

@@ -1,7 +1,4 @@
-import { useState, useEffect } from "react";
-import dynamic from "next/dynamic";
 import moment from "moment";
-import SmallTitle from "src/components/shared/SmallTitle";
 import { EvaluationDetailsType } from ".";
 import EvaluationSubTitle from "../EvaluationSubTitle";
 import parse from "html-react-parser";

@@ -13,6 +13,7 @@ import Button from "../shared/Button";
 import IncompleteSubmissionTooltip from "./IncompleteSubmissionTooltip";
 import SubmitSubmissionModal from "./SubmitSubmissionModal";
 import { SubmissionFormInputs } from "src/lib";
+import parse from "html-react-parser";
 
 export default function SubmissionPage() {
   const router = useRouter();
@@ -38,6 +39,7 @@ export default function SubmissionPage() {
   );
   const [formInputs, setFormInputs] = useState<SubmissionFormInputs>({
     name: store.submission?.name,
+    evaluation_field: store.submission?.evaluation.evaluation_field,
     description: store.submission?.description.description,
     summary: store.submission?.description.summary,
     specs: store.submission?.description.specs,
@@ -71,6 +73,7 @@ export default function SubmissionPage() {
   useEffect(() => {
     setFormInputs({
       name: store.submission?.name,
+      evaluation_field: store.submission?.evaluation.evaluation_field,
       description: store.submission?.description.description,
       summary: store.submission?.description.summary,
       specs: store.submission?.description.specs,
@@ -105,79 +108,12 @@ export default function SubmissionPage() {
             </Link>
           </div>
           <div className="flex-1">
-            <Title text="Space Warp Impact Evaluator | Round 3" />
+            <Title text={store.submission.evaluation.name} />
           </div>
         </div>
-
         <h3 className="text-2xl text-blue-alt font-bold">Submission Form</h3>
         <div className="text-xl pt-7">
-          Submit a project for{" "}
-          <a
-            className="text-blue hover:text-blue-dark underline"
-            href="https://spacewarp.fvm.dev/"
-            target="_blank"
-            rel="noreferrer"
-          >
-            Space Warp
-          </a>
-          &#39;s <b>Impact Evaluator: Round 3</b>, where builders and FVM subject matter experts vote on the top
-          projects in the community and direct the allocation of funding. See the{" "}
-          <a
-            className="text-blue hover:text-blue-dark underline"
-            href="https://spacewarp.fvm.dev/#ie"
-            target="_blank"
-            rel="noreferrer"
-          >
-            FVM Builders Leaderboard
-          </a>{" "}
-          for past round results.
-          <br />
-          <br />
-          <u>
-            Round 3 details [
-            <a
-              className="text-blue hover:text-blue-dark underline"
-              href="https://network-goods.notion.site/Impact-Evaluators-Builders-Leaderboard-602ea6755b5642e1ad6f9da59a47fa62"
-              target="_blank"
-              rel="noreferrer"
-            >
-              full details here
-            </a>
-            ]:
-            <br />
-            <br />
-          </u>{" "}
-          <ul className="list-disc ml-6">
-            <li>
-              <b>Submission Deadline:</b> Mon., Feb 20 at 23:59 UTC-5
-            </li>
-            <li>
-              <b>Voting Dates:</b> Begins Wed., Feb. 22 at 00:01 UTC-5 and ends Thurs., Feb. 23 at 23:59 UTC-5
-            </li>
-            <li>
-              <b>Voting Method:</b>{" "}
-              <button className="text-blue hover:text-blue-dark underline" onClick={() => setOpenQuadraticModal(true)}>
-                Quadratic Voting
-              </button>
-            </li>
-            <li>
-              <b>Reward Pool:</b> $10,000 USD (denominated in FIL)
-            </li>
-          </ul>
-          <br />
-          <u>Eligibility:</u>
-          <br />
-          <br />
-          <ul className="list-disc ml-6">
-            <li>
-              To receive rewards, each submitted project <u>must have a team member vote on its behalf</u>
-            </li>
-            <li>
-              An evaluator <u>cannot vote</u> on their own project(s). Those votes will not be counted.
-            </li>
-          </ul>{" "}
-          <br />
-          With any questions or issues, please email <b>impact-evaluator@protocol.ai</b>.
+          <div className="rich-text-display">{parse(store.submission.evaluation.description)}</div>
         </div>
       </div>
       <div className="flex justify-between items-center py-2 px-9 bg-[#f0f0f0] border border-gray rounded-t-lg">

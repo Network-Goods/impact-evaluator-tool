@@ -14,7 +14,7 @@ export const DateTimePicker = forwardRef<any, DateTimePickerProps>(({ date, setD
     utc={true}
     value={date}
     onChange={(date: any) => setDate(date)}
-    dateFormat={"yyyy.MM.D"}
+    dateFormat={"yyyy.MM.DD"}
     timeFormat={"HH:mm z"}
     inputProps={{
       placeholder: "Select date",

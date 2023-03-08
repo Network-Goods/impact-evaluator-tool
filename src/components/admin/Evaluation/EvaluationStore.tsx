@@ -322,6 +322,8 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
       return;
     }
 
+    const trimmedCode = code.trim();
+
     set({
       evaluation: {
         ...evaluation,
@@ -329,7 +331,7 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
           if (i.id === id) {
             return {
               ...i,
-              code: code,
+              code: trimmedCode,
             };
           }
           return i;
@@ -337,7 +339,7 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
       },
     });
 
-    rpc.call("setInvitationCode", { code: code, id: id }).then((data) => {
+    rpc.call("setInvitationCode", { code: trimmedCode, id: id }).then((data) => {
       if (data instanceof Error) {
         console.error(`ERROR -- rpc call setInvitationCode failed`, data);
         return;

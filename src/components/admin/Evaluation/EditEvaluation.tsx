@@ -11,6 +11,10 @@ import Delete from "public/images/svg/Delete";
 import Plus from "public/images/svg/Plus";
 import { DateTimePicker } from "./DateTimePicker";
 import moment from "moment";
+import parse from "html-react-parser";
+import RichTextEditor from "./CreateEvaluation/RichTextEditor";
+import { EditorState, ContentState, convertToRaw, convertFromHTML } from "draft-js";
+import draftToHtml from "draftjs-to-html";
 
 type EditEvaluationProps = {
   evaluation_id: string | string[] | undefined;
@@ -25,8 +29,31 @@ export default function EditEvaluation({ evaluation_id, store }: EditEvaluationP
   const [evaluatorModalContent, setEvaluatorModalContent] = useState({});
   const [openInvitationModal, setOpenInvitationModal] = useState(false);
   const [isNewOutcomePending, setIsNewOutcomePending] = useState<boolean>(false);
+  const [showShortDescription, setShowShortDescription] = useState<boolean>(false);
   const [startDate, setStartDate] = useState(store.evaluation?.start_time ? moment(store.evaluation?.start_time) : "");
   const [endDate, setEndDate] = useState(store.evaluation?.end_time ? moment(store.evaluation?.end_time) : "");
+
+  const [editorState, setEditorState] = useState(
+    store.evaluation?.description
+      ? EditorState.createWithContent(
+          ContentState.createFromBlockArray(
+            convertFromHTML(store.evaluation?.description).contentBlocks,
+            convertFromHTML(store.evaluation?.description).entityMap,
+          ),
+        )
+      : EditorState.createEmpty(),
+  );
+
+  const [text, setText] = useState(draftToHtml(convertToRaw(editorState.getCurrentContent())));
+
+  const handleEditorStateChange = (editorState: EditorState) => {
+    setEditorState(editorState);
+    setText(draftToHtml(convertToRaw(editorState.getCurrentContent())));
+  };
+
+  const handleEditorBlur = () => {
+    store.setEvaluationDescription(draftToHtml(convertToRaw(editorState.getCurrentContent())));
+  };
 
   const handleOpenOutcomeModal = (submission: any) => {
     setOutcomeModalContent(submission);
@@ -65,6 +92,7 @@ export default function EditEvaluation({ evaluation_id, store }: EditEvaluationP
     setEndDate(date);
     store.setEvaluationEndTime(date);
   };
+  console.log(store);
 
   useEffect(() => {
     setStartDate(store.evaluation?.start_time ? moment(store.evaluation?.start_time) : "");
@@ -91,6 +119,31 @@ export default function EditEvaluation({ evaluation_id, store }: EditEvaluationP
           <EvaluationTitle store={store} />
           <hr className="my-10 border-gray" />
           <div className="flex justify-between mb-4">
+            <EvaluationSubTitle text="Short description" />
+            <div>
+              <button
+                onClick={() => setShowShortDescription((prev) => !prev)}
+                className="border border-blue rounded p-1"
+              >
+                <Edit className="fill-blue-alt" />
+              </button>
+            </div>
+          </div>
+          {showShortDescription ? (
+            <div className="flex flex-col">
+              {" "}
+              <RichTextEditor
+                text={text}
+                editorState={editorState}
+                handleEditorStateChange={handleEditorStateChange}
+                handleEditorBlur={handleEditorBlur}
+              />
+            </div>
+          ) : (
+            <div className="rich-text-display">{parse(store.evaluation.description || "EMPTY")}</div>
+          )}
+          <hr className="my-10 border-gray" />
+          <div className="flex justify-between mb-4">
             <EvaluationSubTitle text="Evaluation Period" />
             <div>
               <button onClick={() => ref.current?.focus()} className="border border-blue rounded p-1">
@@ -100,12 +153,21 @@ export default function EditEvaluation({ evaluation_id, store }: EditEvaluationP
           </div>
 
           <div className="flex flex-col sm:flex-row">
-            <div className="">
-              <DateTimePicker ref={ref} date={startDate} setDate={handleStartDateChange} classes="" />
-            </div>
+            <DateTimePicker ref={ref} date={startDate} setDate={handleStartDateChange} classes="" />
+
             <span className="sm:mx-2">to</span>
             <DateTimePicker date={endDate} setDate={handleEndDateChange} classes="" />
           </div>
+          <hr className="my-10 border-gray" />
+          <div className="mb-4">
+            <EvaluationSubTitle text="Type of evaluation" />
+          </div>
+          <div className="font-semibold">Quadratic voting</div>
+          <hr className="my-10 border-gray" />
+          <div className="mb-4">
+            <EvaluationSubTitle text="Form description" />
+          </div>
+          <div className="rich-text-display">{parse(store.evaluation.form_description || "EMPTY")}</div>
           <hr className="my-10 border-gray" />
           <div className="pb-4">
             <EvaluationSubTitle text="Evaluators and voice credits" />

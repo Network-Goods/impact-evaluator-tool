@@ -5,6 +5,7 @@ import { deleteSubmission } from "src/lib/rpc/methods";
 
 export interface RoundDetailsStore {
   fetching: boolean;
+  evaluation?: any;
   submissions?: Submission[];
   evaluationID?: string;
   userID?: string;
@@ -29,7 +30,8 @@ export const useRoundDetailsStore = create<RoundDetailsStore>()((set, get) => ({
     }
 
     set({
-      submissions: data,
+      evaluation: data.evaluation[0],
+      submissions: data.submissions,
       evaluationID: evaluationID,
       userID: userID,
       githubHandle: githubHandle,

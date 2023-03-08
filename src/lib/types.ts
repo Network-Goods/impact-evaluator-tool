@@ -88,6 +88,7 @@ export interface RoundDetailsData extends Submission {
 
 export interface SubmissionFormInputs {
   name: string;
+  evaluation_field: SubmissionFormFieldInputs[];
   description: string;
   summary: string;
   specs: string;
@@ -100,4 +101,16 @@ export interface SubmissionFormInputs {
 export interface SubmissionFormLinkInputs {
   name: string;
   value: string;
+}
+export interface SubmissionFormFieldInputs {
+  id: string;
+  evaluation_id: string;
+  field_name: string;
+  submission_field: SubmissionFormFieldBodyInputs[];
+}
+export interface SubmissionFormFieldBodyInputs {
+  id: string;
+  field_body: string;
+  fields_id: string;
+  submission_id: string;
 }

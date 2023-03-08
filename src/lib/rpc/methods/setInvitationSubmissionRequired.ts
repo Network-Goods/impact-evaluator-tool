@@ -2,7 +2,7 @@ import { isAdmin, ServerParams } from "..";
 
 type Params = {
   id: string;
-  is_sme: string;
+  is_sme: boolean;
 };
 
 export async function setInvitationSubmissionRequired({
