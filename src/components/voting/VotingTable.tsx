@@ -16,7 +16,6 @@ export default function VotingTable({ search, submissions, openArray, setOpenArr
     <div className="flex-1">
       <div className="w-full rounded-lg bg-[#f0f0f0] border border-gray">
         <VotingTableHeader />
-        {console.log("submissions", submissions)}
         <div>
           {filterSubmissions(search, submissions).map((project: any, idx: number) => {
             return (
