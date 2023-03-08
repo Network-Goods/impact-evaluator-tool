@@ -10,7 +10,7 @@ export function returnDate(date: string) {
 
 export function filterSubmissions(search: string, submissions: any) {
   return submissions
-    .filter((sub: any) => sub.is_submitted === true)
+    .filter((sub: any) => sub.is_submitted !== true)
     .filter((val: any) => {
       if (search === "") {
         return val;
