@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { EditorState, ContentState, convertToRaw, convertFromHTML } from "draft-js";
-import { EvaluationDetailsType } from ".";
+import { EvaluationDetailsType, EvaluationFieldType } from ".";
 import draftToHtml from "draftjs-to-html";
-import Edit from "public/images/svg/Edit";
 import Delete from "public/images/svg/Delete";
 
 const RichTextEditor = dynamic(() => import("./RichTextEditor"), {
@@ -37,14 +36,15 @@ export default function OutcomesPage({ store, formInputs, setFormInputs }: Outco
   const handleEditorBlur = () => {
     store.setFormDescription(draftToHtml(convertToRaw(editorState.getCurrentContent())));
   };
-  const handleFormFieldNameChange = (e: React.ChangeEvent<HTMLInputElement>, id: number) => {
-    const newFormFields = formInputs.evaluation_field.map((field: any) => {
-      if (field.id === id) {
-        field.field_name = e.target.value;
-      }
-      return field;
-    });
-    setFormInputs({ ...formInputs, evaluation_field: newFormFields });
+  const handleFormFieldChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    id: string,
+    field: keyof EvaluationFieldType,
+  ) => {
+    const newFormInputs: any = { ...formInputs };
+    const fieldIndex = newFormInputs.evaluation_field.findIndex((field: any) => field.id === id);
+    newFormInputs.evaluation_field[fieldIndex][field] = event.target.value;
+    setFormInputs(newFormInputs);
   };
 
   useEffect(() => {
@@ -57,26 +57,46 @@ export default function OutcomesPage({ store, formInputs, setFormInputs }: Outco
         <h3 className="text-lg text-offblack font-bold mb-2">Create a form to collect submissions for your round</h3>
       </div>
       <div className="mb-6">
-        <h5 className="text-offblack font-bold mb-1">Fields</h5>
+        <h5 className="text-offblack font-bold mb-1">Form Fields</h5>
         {store.evaluation?.evaluation_field.map((field: any, index: number) => (
-          <div key={index} className="flex items-center pb-1">
-            <div className="flex justify-center items-center w-5 h-5 -ml-5 ">
-              <Edit className="h-4 w-4 fill-gray mr-1" />
+          <div key={index} className="flex pb-1">
+            <div className="flex flex-col w-full">
+              <h5 className="text-[#979797] text-sm mb-1">Heading</h5>
+              <input
+                type="text"
+                className="appearance-none w-full px-4 py-2 rounded-lg border border-gray focus:outline-none"
+                placeholder="Project Overview"
+                value={field.heading || ""}
+                onChange={(e) => handleFormFieldChange(e, field.id, "heading")}
+                onBlur={(e) => store.setFormFieldHeading(e.target.value, field.id)}
+              />
+              <h5 className="text-[#979797] text-sm mb-1 mt-2">Subheading</h5>
+              <input
+                type="text"
+                className="appearance-none w-full px-4 py-2 rounded-lg border border-gray focus:outline-none"
+                placeholder="Using 280 characters or less, describe your project."
+                value={field.subheading || ""}
+                onChange={(e) => handleFormFieldChange(e, field.id, "subheading")}
+                onBlur={(e) => store.setFormFieldSubheading(e.target.value, field.id)}
+              />
             </div>
-            <input
-              type="text"
-              className="appearance-none w-full px-4 py-2 rounded-lg border border-gray focus:outline-none"
-              placeholder="Project Overview"
-              value={field.field_name || ""}
-              onChange={(e) => handleFormFieldNameChange(e, field.id)}
-              onBlur={(e) => store.setFormFieldName(e.target.value, field.id)}
-            />
-            <div>
+            <div className="flex flex-col justify-between ml-2">
+              <div>
+                <h5 className="text-[#979797] text-sm mb-1">Max length (characters)</h5>
+                <input
+                  type="text"
+                  className="appearance-none w-full px-4 py-2 rounded-lg border border-gray focus:outline-none"
+                  placeholder="Project Overview"
+                  value={field.char_count || ""}
+                  onChange={(e) => handleFormFieldChange(e, field.id, "char_count")}
+                  onBlur={(e) => store.setFormFieldCharCount(e.target.value, field.id)}
+                />
+              </div>
               <button
                 onClick={() => store.deleteFormField(field.id)}
-                className="border border-blue rounded-lg p-2 ml-2"
+                className="text-blue text-lg font-bold border border-blue rounded-lg px-4 py-[6px] ml-auto"
               >
-                <Delete className="w-5 h-5" />
+                Delete Field
               </button>
             </div>
           </div>

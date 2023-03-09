@@ -47,17 +47,19 @@ export default function ReviewPage({ store, formInputs }: ReviewPageProps) {
         <div className="mb-4">
           <EvaluationSubTitle text="Fields" />
         </div>
-        <ol className="list-decimal ml-5">
+        <ul className="list-disc ml-5">
           {formInputs.evaluation_field.map((field: any) => {
             return (
-              <div className=" py-1" key={field.id}>
+              <div className="py-1" key={field.id}>
                 <li className="text-blue font-bold">
-                  <div className="inline-block text-offblack font-semibold">{field.field_name}</div>
+                  <div className="inline-block text-offblack font-semibold">Heading: {field.heading}</div>
+                  <div className="inline-block text-offblack font-semibold">Subheading: {field.subheading}</div>
+                  <div className="inline-block text-offblack font-semibold">Character count: {field.char_count}</div>
                 </li>
               </div>
             );
           })}
-        </ol>
+        </ul>
         <hr className="my-10 border-gray" />
         <div className="mb-4">
           <EvaluationSubTitle text="Evaluators" />

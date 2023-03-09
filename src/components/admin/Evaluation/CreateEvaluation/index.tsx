@@ -20,10 +20,12 @@ export interface EvaluationDetailsType {
   invitation: InvitationType[];
   status: string;
 }
-type EvaluationFieldType = {
+export type EvaluationFieldType = {
   id: string;
-  field_name: string;
   evaluation_id: string;
+  heading: string;
+  subheading: string;
+  char_count: number;
 };
 type InvitationType = {
   code: string;

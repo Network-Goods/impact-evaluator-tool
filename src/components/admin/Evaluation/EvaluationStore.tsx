@@ -13,7 +13,9 @@ export interface EvaluationStore {
   setEvaluationEndTime: (time: Date) => void;
   setFormDescription: (form_description: string) => void;
   createFormField: () => void;
-  setFormFieldName: (name: string, id: string) => void;
+  setFormFieldHeading: (heading: string, id: string) => void;
+  setFormFieldSubheading: (subheading: string, id: string) => void;
+  setFormFieldCharCount: (count: number, id: string) => void;
   deleteFormField: (id: string) => void;
   deleteEvaluation: () => void;
   createSubmission: () => Promise<Submission | null>;
@@ -196,7 +198,9 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
     const newFormField = {
       id: uuid(),
       evaluation_id: evaluation.id,
-      field_name: "",
+      heading: "",
+      subheading: "",
+      char_count: 280,
     };
 
     set({
@@ -217,7 +221,7 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
         }
       });
   },
-  setFormFieldName: (name: string, id: string) => {
+  setFormFieldHeading: (heading: string, id: string) => {
     const evaluation = get().evaluation;
 
     if (!evaluation) {
@@ -230,7 +234,7 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
           if (field.id === id) {
             return {
               ...field,
-              field_name: name,
+              heading: heading,
             };
           }
           return field;
@@ -238,13 +242,70 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
       },
     });
 
-    rpc.call("setFormFieldName", { name: name, id: id }).then((data) => {
+    rpc.call("setFormFieldHeading", { heading: heading, id: id }).then((data) => {
       if (data instanceof Error) {
-        console.error(`ERROR -- rpc call setFormFieldName failed`, data);
+        console.error(`ERROR -- rpc call setFormFieldHeading failed`, data);
         return;
       }
     });
   },
+  setFormFieldSubheading: (subheading: string, id: string) => {
+    const evaluation = get().evaluation;
+
+    if (!evaluation) {
+      return;
+    }
+    set({
+      evaluation: {
+        ...evaluation,
+        evaluation_field: evaluation.evaluation_field.map((field: any) => {
+          if (field.id === id) {
+            return {
+              ...field,
+              subheading: subheading,
+            };
+          }
+          return field;
+        }),
+      },
+    });
+
+    rpc.call("setFormFieldSubheading", { subheading: subheading, id: id }).then((data) => {
+      if (data instanceof Error) {
+        console.error(`ERROR -- rpc call setFormFieldSubheading failed`, data);
+        return;
+      }
+    });
+  },
+  setFormFieldCharCount: (count: number, id: string) => {
+    const evaluation = get().evaluation;
+
+    if (!evaluation) {
+      return;
+    }
+    set({
+      evaluation: {
+        ...evaluation,
+        evaluation_field: evaluation.evaluation_field.map((field: any) => {
+          if (field.id === id) {
+            return {
+              ...field,
+              char_count: count,
+            };
+          }
+          return field;
+        }),
+      },
+    });
+
+    rpc.call("setFormFieldCharCount", { char_count: count, id: id }).then((data) => {
+      if (data instanceof Error) {
+        console.error(`ERROR -- rpc call setFormFieldCharCount failed`, data);
+        return;
+      }
+    });
+  },
+
   deleteFormField: (id: string) => {
     const evaluation = get().evaluation;
 

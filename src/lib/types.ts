@@ -105,7 +105,9 @@ export interface SubmissionFormLinkInputs {
 export interface SubmissionFormFieldInputs {
   id: string;
   evaluation_id: string;
-  field_name: string;
+  heading: string;
+  subheading: string;
+  char_count: number;
   submission_field: SubmissionFormFieldBodyInputs[];
 }
 export interface SubmissionFormFieldBodyInputs {

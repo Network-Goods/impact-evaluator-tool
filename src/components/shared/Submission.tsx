@@ -48,7 +48,7 @@ export default function Submission({
     const value = event.target.value;
     setFormInputs((values: any) => {
       const evaluation_field = values.evaluation_field;
-      const field = evaluation_field.find((field: any) => field.field_name === fieldName);
+      const field = evaluation_field.find((field: any) => field.heading === fieldName);
       field.submission_field[0].field_body = value;
       return { ...values, evaluation_field: evaluation_field };
     });
@@ -85,13 +85,13 @@ export default function Submission({
       {formInputs.evaluation_field.map((field: any) => {
         return (
           <div key={field.id} className="mb-9">
-            <p className="text-xl font-bold pb-3">{field.field_name}</p>
+            <p className="text-xl font-bold pb-3">{field.heading}</p>
             <textarea
               className="w-full min-h-[112px] px-4 py-2 rounded-lg border border-gray focus:outline-none"
               placeholder="My project is..."
               maxLength={280}
               value={field.submission_field[0]?.field_body || ""}
-              onChange={(e) => handleFieldChange(e, field.field_name)}
+              onChange={(e) => handleFieldChange(e, field.heading)}
               onBlur={
                 !submission
                   ? (e) => store.setSubmissionDescription(e.target.value, "description")

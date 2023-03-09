@@ -12,9 +12,8 @@ import Plus from "public/images/svg/Plus";
 import { DateTimePicker } from "./DateTimePicker";
 import moment from "moment";
 import parse from "html-react-parser";
-import RichTextEditor from "./CreateEvaluation/RichTextEditor";
-import { EditorState, ContentState, convertToRaw, convertFromHTML } from "draft-js";
-import draftToHtml from "draftjs-to-html";
+import EvaluationShortDescription from "./EvaluationShortDescription";
+import EvaluationFormDescription from "./EvaluationFormDescription";
 
 type EditEvaluationProps = {
   evaluation_id: string | string[] | undefined;
@@ -30,30 +29,9 @@ export default function EditEvaluation({ evaluation_id, store }: EditEvaluationP
   const [openInvitationModal, setOpenInvitationModal] = useState(false);
   const [isNewOutcomePending, setIsNewOutcomePending] = useState<boolean>(false);
   const [showShortDescription, setShowShortDescription] = useState<boolean>(false);
+  const [showFormDescription, setShowFormDescription] = useState<boolean>(false);
   const [startDate, setStartDate] = useState(store.evaluation?.start_time ? moment(store.evaluation?.start_time) : "");
   const [endDate, setEndDate] = useState(store.evaluation?.end_time ? moment(store.evaluation?.end_time) : "");
-
-  const [editorState, setEditorState] = useState(
-    store.evaluation?.description
-      ? EditorState.createWithContent(
-          ContentState.createFromBlockArray(
-            convertFromHTML(store.evaluation?.description).contentBlocks,
-            convertFromHTML(store.evaluation?.description).entityMap,
-          ),
-        )
-      : EditorState.createEmpty(),
-  );
-
-  const [text, setText] = useState(draftToHtml(convertToRaw(editorState.getCurrentContent())));
-
-  const handleEditorStateChange = (editorState: EditorState) => {
-    setEditorState(editorState);
-    setText(draftToHtml(convertToRaw(editorState.getCurrentContent())));
-  };
-
-  const handleEditorBlur = () => {
-    store.setEvaluationDescription(draftToHtml(convertToRaw(editorState.getCurrentContent())));
-  };
 
   const handleOpenOutcomeModal = (submission: any) => {
     setOutcomeModalContent(submission);
@@ -130,17 +108,11 @@ export default function EditEvaluation({ evaluation_id, store }: EditEvaluationP
             </div>
           </div>
           {showShortDescription ? (
-            <div className="flex flex-col">
-              {" "}
-              <RichTextEditor
-                text={text}
-                editorState={editorState}
-                handleEditorStateChange={handleEditorStateChange}
-                handleEditorBlur={handleEditorBlur}
-              />
+            <div className="flex flex-col font-normal">
+              <EvaluationShortDescription store={store} />
             </div>
           ) : (
-            <div className="rich-text-display">{parse(store.evaluation.description || "EMPTY")}</div>
+            <div className="rich-text-display font-normal">{parse(store.evaluation.description || "EMPTY")}</div>
           )}
           <hr className="my-10 border-gray" />
           <div className="flex justify-between mb-4">
@@ -164,10 +136,41 @@ export default function EditEvaluation({ evaluation_id, store }: EditEvaluationP
           </div>
           <div className="font-semibold">Quadratic voting</div>
           <hr className="my-10 border-gray" />
-          <div className="mb-4">
+          <div className="flex justify-between mb-4">
             <EvaluationSubTitle text="Form description" />
+            <div>
+              <button
+                onClick={() => setShowFormDescription((prev) => !prev)}
+                className="border border-blue rounded p-1"
+              >
+                <Edit className="fill-blue-alt" />
+              </button>
+            </div>
           </div>
-          <div className="rich-text-display">{parse(store.evaluation.form_description || "EMPTY")}</div>
+
+          {showFormDescription ? (
+            <div className="flex flex-col font-normal">
+              <EvaluationFormDescription store={store} />
+            </div>
+          ) : (
+            <div className="rich-text-display font-normal">{parse(store.evaluation.form_description || "EMPTY")}</div>
+          )}
+
+          <hr className="my-10 border-gray" />
+          <div className="mb-4">
+            <EvaluationSubTitle text="Fields" />
+          </div>
+          <ol className="list-decimal ml-5">
+            {store.evaluation.evaluation_field.map((field: any) => {
+              return (
+                <div className=" py-1" key={field.id}>
+                  <li className="text-blue font-bold">
+                    <div className="inline-block text-offblack font-semibold">{field.heading}</div>
+                  </li>
+                </div>
+              );
+            })}
+          </ol>
           <hr className="my-10 border-gray" />
           <div className="pb-4">
             <EvaluationSubTitle text="Evaluators and voice credits" />
@@ -185,8 +188,11 @@ export default function EditEvaluation({ evaluation_id, store }: EditEvaluationP
           </div>
           {store.evaluation.invitation.map((invitation: any) => {
             return (
-              <div className="grid md:grid-cols-2 py-1" key={invitation.id}>
+              <div className="grid md:grid-cols-3 py-1" key={invitation.id}>
                 <div>{invitation.code}</div>
+                <div className="text-base text-gray-subtitle font-normal mr-10">
+                  Remaining: <span className="text-offblack font-semibold">{invitation.remaining_uses}</span>
+                </div>
                 <div className="flex md:justify-end">
                   <div className="inline-flex flex-row w-auto items-center justify-center font-bold rounded-lg text-xs py-1 bg-gray-lighter text-blue min-w-[45px] mr-16">
                     {invitation.voice_credits}
