@@ -107,6 +107,7 @@ export interface SubmissionFormFieldInputs {
   evaluation_id: string;
   heading: string;
   subheading: string;
+  placeholder: string;
   char_count: number;
   submission_field: SubmissionFormFieldBodyInputs[];
 }

@@ -13,10 +13,7 @@ export async function createSubmission({
   if (!isAdmin(auth) && submission.user_id != auth.user_id) {
     return new Error(`Unauthorized`);
   }
-  // const { data, error } = await supabase.from("submission").insert([submission]);
-
-  const { data, error } = await supabase.rpc("create_submission", submission);
-  console.log("data", data);
+  const { data, error } = await supabase.from("submission").insert([submission]);
 
   if (error) {
     console.error(error);

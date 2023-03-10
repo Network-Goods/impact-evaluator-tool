@@ -70,7 +70,36 @@ export default function EditEvaluation({ evaluation_id, store }: EditEvaluationP
     setEndDate(date);
     store.setEvaluationEndTime(date);
   };
-  console.log(store);
+  const actionButton = () => {
+    switch (store.evaluation.status) {
+      case "staging":
+        return (
+          <button
+            onClick={() => store.setEvaluationStatus("started")}
+            className="transition-colors duration-200 ease-in-out transform  outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold border border-blue bg-blue  text-white text-lg px-3 py-1 cursor-pointer hover:bg-blue-darkest hover:border-blue-darkest"
+          >
+            Launch Round &#8594;
+          </button>
+        );
+      case "started":
+        return (
+          <button
+            onClick={() => store.setEvaluationStatus("closed")}
+            className="transition-colors duration-200 ease-in-out transform  outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold border border-blue bg-blue  text-white text-lg px-3 py-1 cursor-pointer hover:bg-blue-darkest hover:border-blue-darkest"
+          >
+            Close Round
+          </button>
+        );
+      case "closed":
+        return (
+          <div className="transition-colors duration-200 ease-in-out transform  outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold border border-[#DADADA] bg-[#DADADA] text-gray-dark text-lg px-3 py-1 cursor-pointer">
+            Round Closed
+          </div>
+        );
+      default:
+        return null;
+    }
+  };
 
   useEffect(() => {
     setStartDate(store.evaluation?.start_time ? moment(store.evaluation?.start_time) : "");
@@ -87,8 +116,9 @@ export default function EditEvaluation({ evaluation_id, store }: EditEvaluationP
             </div>
           </Link>
         </div>
-        <div className="flex-1">
+        <div className="flex-1 flex justify-between">
           <h1 className="text-3xl">{store.evaluation.name}</h1>
+          {actionButton()}
         </div>
       </div>
       <div className="max-w-3xl mx-auto">
@@ -160,17 +190,20 @@ export default function EditEvaluation({ evaluation_id, store }: EditEvaluationP
           <div className="mb-4">
             <EvaluationSubTitle text="Fields" />
           </div>
-          <ol className="list-decimal ml-5">
+          <ul className="list-disc ml-5">
             {store.evaluation.evaluation_field.map((field: any) => {
               return (
-                <div className=" py-1" key={field.id}>
+                <div className="flex flex-col py-1" key={field.id}>
                   <li className="text-blue font-bold">
-                    <div className="inline-block text-offblack font-semibold">{field.heading}</div>
+                    <div className="inline-block text-offblack font-semibold">Heading: {field.heading}</div>
                   </li>
+                  <div className="inline-block text-offblack font-semibold">Subheading: {field.subheading}</div>
+                  <div className="inline-block text-offblack font-semibold">Placeholder: {field.placeholder}</div>
+                  <div className="inline-block text-offblack font-semibold">Character count: {field.char_count}</div>
                 </div>
               );
             })}
-          </ol>
+          </ul>
           <hr className="my-10 border-gray" />
           <div className="pb-4">
             <EvaluationSubTitle text="Evaluators and voice credits" />

@@ -52,6 +52,7 @@
   "description": "A tool for evaluating impact",
   "devDependencies": {
     "@types/draftjs-to-html": "^0.8.1",
+    "@types/html-to-draftjs": "^1.4.0",
     "@types/react-datepicker": "^4.8.0",
     "@types/react-draft-wysiwyg": "^1.13.4",
     "@typescript-eslint/eslint-plugin": "^5.48.2",

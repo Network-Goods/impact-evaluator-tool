@@ -3,8 +3,9 @@ import dynamic from "next/dynamic";
 import { DateTimePicker } from "../DateTimePicker";
 import moment from "moment";
 import { EvaluationDetailsType } from ".";
-import { EditorState, ContentState, convertToRaw, convertFromHTML } from "draft-js";
+import { EditorState, ContentState, convertToRaw } from "draft-js";
 import draftToHtml from "draftjs-to-html";
+import htmlToDraft from "html-to-draftjs";
 
 const RichTextEditor = dynamic(() => import("./RichTextEditor"), {
   ssr: false,
@@ -26,8 +27,8 @@ export default function DetailsPage({ store, formInputs, handleFormChange }: Det
     store.evaluation?.description
       ? EditorState.createWithContent(
           ContentState.createFromBlockArray(
-            convertFromHTML(store.evaluation?.description).contentBlocks,
-            convertFromHTML(store.evaluation?.description).entityMap,
+            htmlToDraft(store.evaluation?.description).contentBlocks,
+            htmlToDraft(store.evaluation?.description).entityMap,
           ),
         )
       : EditorState.createEmpty(),

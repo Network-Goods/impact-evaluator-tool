@@ -85,18 +85,19 @@ export default function Submission({
       {formInputs.evaluation_field.map((field: any) => {
         return (
           <div key={field.id} className="mb-9">
-            <p className="text-xl font-bold pb-3">{field.heading}</p>
+            <p className="text-xl font-bold">{field.heading}</p>
+            <div className="text-[17px] text-[#898888] py-1">{field.subheading}</div>
             <textarea
               className="w-full min-h-[112px] px-4 py-2 rounded-lg border border-gray focus:outline-none"
-              placeholder="My project is..."
-              maxLength={280}
-              value={field.submission_field[0]?.field_body || ""}
-              onChange={(e) => handleFieldChange(e, field.heading)}
-              onBlur={
-                !submission
-                  ? (e) => store.setSubmissionDescription(e.target.value, "description")
-                  : (e) => store.setSubmissionDescription(e.target.value, "description", submission?.id)
-              }
+              placeholder={field.placeholder}
+              maxLength={field.char_count}
+              // value={field.submission_field[0]?.field_body || ""}
+              // onChange={(e) => handleFieldChange(e, field.heading)}
+              // onBlur={
+              //   !submission
+              //     ? (e) => store.setSubmissionDescription(e.target.value, "description")
+              //     : (e) => store.setSubmissionDescription(e.target.value, "description", submission?.id)
+              // }
             />
           </div>
         );

@@ -39,7 +39,7 @@ export default function SubmissionPage() {
   );
   const [formInputs, setFormInputs] = useState<SubmissionFormInputs>({
     name: store.submission?.name,
-    evaluation_field: store.submission?.evaluation.evaluation_field,
+    evaluation_field: store.submission?.evaluation.evaluation_field || [],
     description: store.submission?.description.description,
     summary: store.submission?.description.summary,
     specs: store.submission?.description.specs,

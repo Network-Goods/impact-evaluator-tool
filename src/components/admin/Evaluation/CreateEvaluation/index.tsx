@@ -25,6 +25,7 @@ export type EvaluationFieldType = {
   evaluation_id: string;
   heading: string;
   subheading: string;
+  placeholder: string;
   char_count: number;
 };
 type InvitationType = {

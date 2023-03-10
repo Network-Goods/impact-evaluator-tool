@@ -2,7 +2,7 @@ import { isAdmin, ServerParams } from "..";
 
 type Params = {
   id: string;
-  char_count: string;
+  char_count: number;
 };
 
 export async function setFormFieldCharCount({

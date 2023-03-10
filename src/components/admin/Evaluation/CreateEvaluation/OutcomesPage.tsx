@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
-import { EditorState, ContentState, convertToRaw, convertFromHTML } from "draft-js";
+import { EditorState, ContentState, convertToRaw } from "draft-js";
 import { EvaluationDetailsType, EvaluationFieldType } from ".";
 import draftToHtml from "draftjs-to-html";
-import Delete from "public/images/svg/Delete";
+import htmlToDraft from "html-to-draftjs";
 
 const RichTextEditor = dynamic(() => import("./RichTextEditor"), {
   ssr: false,
@@ -19,8 +19,8 @@ export default function OutcomesPage({ store, formInputs, setFormInputs }: Outco
     store.evaluation?.form_description
       ? EditorState.createWithContent(
           ContentState.createFromBlockArray(
-            convertFromHTML(store.evaluation?.form_description).contentBlocks,
-            convertFromHTML(store.evaluation?.form_description).entityMap,
+            htmlToDraft(store.evaluation?.form_description).contentBlocks,
+            htmlToDraft(store.evaluation?.form_description).entityMap,
           ),
         )
       : EditorState.createEmpty(),
@@ -70,7 +70,7 @@ export default function OutcomesPage({ store, formInputs, setFormInputs }: Outco
                 onChange={(e) => handleFormFieldChange(e, field.id, "heading")}
                 onBlur={(e) => store.setFormFieldHeading(e.target.value, field.id)}
               />
-              <h5 className="text-[#979797] text-sm mb-1 mt-2">Subheading</h5>
+              <h5 className="text-[#979797] text-sm mb-1 mt-2">Subheading (optional)</h5>
               <input
                 type="text"
                 className="appearance-none w-full px-4 py-2 rounded-lg border border-gray focus:outline-none"
@@ -78,6 +78,15 @@ export default function OutcomesPage({ store, formInputs, setFormInputs }: Outco
                 value={field.subheading || ""}
                 onChange={(e) => handleFormFieldChange(e, field.id, "subheading")}
                 onBlur={(e) => store.setFormFieldSubheading(e.target.value, field.id)}
+              />
+              <h5 className="text-[#979797] text-sm mb-1">Placeholder</h5>
+              <input
+                type="text"
+                className="appearance-none w-full px-4 py-2 rounded-lg border border-gray focus:outline-none"
+                placeholder="My project is..."
+                value={field.placeholder || ""}
+                onChange={(e) => handleFormFieldChange(e, field.id, "placeholder")}
+                onBlur={(e) => store.setFormFieldPlaceholder(e.target.value, field.id)}
               />
             </div>
             <div className="flex flex-col justify-between ml-2">

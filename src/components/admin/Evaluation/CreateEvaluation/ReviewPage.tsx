@@ -54,6 +54,7 @@ export default function ReviewPage({ store, formInputs }: ReviewPageProps) {
                 <li className="text-blue font-bold">
                   <div className="inline-block text-offblack font-semibold">Heading: {field.heading}</div>
                   <div className="inline-block text-offblack font-semibold">Subheading: {field.subheading}</div>
+                  <div className="inline-block text-offblack font-semibold">Placeholder: {field.placeholder}</div>
                   <div className="inline-block text-offblack font-semibold">Character count: {field.char_count}</div>
                 </li>
               </div>

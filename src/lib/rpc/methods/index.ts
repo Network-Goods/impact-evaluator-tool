@@ -12,6 +12,7 @@ export * from "./setFormDescription";
 export * from "./createFormField";
 export * from "./setFormFieldHeading";
 export * from "./setFormFieldSubheading";
+export * from "./setFormFieldPlaceholder";
 export * from "./setFormFieldCharCount";
 export * from "./deleteFormField";
 export * from "./getSubmissionStore";

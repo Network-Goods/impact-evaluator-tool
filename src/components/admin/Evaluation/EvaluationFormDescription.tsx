@@ -1,7 +1,8 @@
 import { useState } from "react";
 import dynamic from "next/dynamic";
-import { EditorState, ContentState, convertToRaw, convertFromHTML } from "draft-js";
+import { EditorState, ContentState, convertToRaw } from "draft-js";
 import draftToHtml from "draftjs-to-html";
+import htmlToDraft from "html-to-draftjs";
 
 const RichTextEditor = dynamic(() => import("./CreateEvaluation/RichTextEditor"), {
   ssr: false,
@@ -15,8 +16,8 @@ export default function EvaluationFormDescription({ store }: EvaluationFormDescr
     store.evaluation?.form_description
       ? EditorState.createWithContent(
           ContentState.createFromBlockArray(
-            convertFromHTML(store.evaluation?.form_description).contentBlocks,
-            convertFromHTML(store.evaluation?.form_description).entityMap,
+            htmlToDraft(store.evaluation?.form_description).contentBlocks,
+            htmlToDraft(store.evaluation?.form_description).entityMap,
           ),
         )
       : EditorState.createEmpty(),

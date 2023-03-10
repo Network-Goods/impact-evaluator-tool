@@ -15,6 +15,7 @@ export interface EvaluationStore {
   createFormField: () => void;
   setFormFieldHeading: (heading: string, id: string) => void;
   setFormFieldSubheading: (subheading: string, id: string) => void;
+  setFormFieldPlaceholder: (placeholder: string, id: string) => void;
   setFormFieldCharCount: (count: number, id: string) => void;
   deleteFormField: (id: string) => void;
   deleteEvaluation: () => void;
@@ -273,6 +274,34 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
     rpc.call("setFormFieldSubheading", { subheading: subheading, id: id }).then((data) => {
       if (data instanceof Error) {
         console.error(`ERROR -- rpc call setFormFieldSubheading failed`, data);
+        return;
+      }
+    });
+  },
+  setFormFieldPlaceholder: (placeholder: string, id: string) => {
+    const evaluation = get().evaluation;
+
+    if (!evaluation) {
+      return;
+    }
+    set({
+      evaluation: {
+        ...evaluation,
+        evaluation_field: evaluation.evaluation_field.map((field: any) => {
+          if (field.id === id) {
+            return {
+              ...field,
+              placeholder: placeholder,
+            };
+          }
+          return field;
+        }),
+      },
+    });
+
+    rpc.call("setFormFieldPlaceholder", { placeholder: placeholder, id: id }).then((data) => {
+      if (data instanceof Error) {
+        console.error(`ERROR -- rpc call setFormFieldPlaceholder failed`, data);
         return;
       }
     });
