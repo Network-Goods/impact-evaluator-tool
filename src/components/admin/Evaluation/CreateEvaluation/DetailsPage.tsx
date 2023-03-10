@@ -3,11 +3,8 @@ import dynamic from "next/dynamic";
 import { DateTimePicker } from "../DateTimePicker";
 import moment from "moment";
 import { EvaluationDetailsType } from ".";
-import { EditorState, ContentState, convertToRaw } from "draft-js";
-import draftToHtml from "draftjs-to-html";
-import htmlToDraft from "html-to-draftjs";
 
-const RichTextEditor = dynamic(() => import("./RichTextEditor"), {
+const EvaluationShortDescription = dynamic(() => import("../EvaluationShortDescription"), {
   ssr: false,
 });
 
@@ -23,27 +20,6 @@ export default function DetailsPage({ store, formInputs, handleFormChange }: Det
   const [startDate, setStartDate] = useState(store.evaluation?.start_time ? moment(store.evaluation?.start_time) : "");
   const [endDate, setEndDate] = useState(store.evaluation?.end_time ? moment(store.evaluation?.end_time) : "");
   const [evaluationType, setEvaluationType] = useState("");
-  const [editorState, setEditorState] = useState(
-    store.evaluation?.description
-      ? EditorState.createWithContent(
-          ContentState.createFromBlockArray(
-            htmlToDraft(store.evaluation?.description).contentBlocks,
-            htmlToDraft(store.evaluation?.description).entityMap,
-          ),
-        )
-      : EditorState.createEmpty(),
-  );
-
-  const [text, setText] = useState(draftToHtml(convertToRaw(editorState.getCurrentContent())));
-
-  const handleEditorStateChange = (editorState: EditorState) => {
-    setEditorState(editorState);
-    setText(draftToHtml(convertToRaw(editorState.getCurrentContent())));
-  };
-
-  const handleEditorBlur = () => {
-    store.setEvaluationDescription(draftToHtml(convertToRaw(editorState.getCurrentContent())));
-  };
 
   const handleStartDateChange = (date: string) => {
     setStartDate(date);
@@ -75,12 +51,7 @@ export default function DetailsPage({ store, formInputs, handleFormChange }: Det
       </div>
       <div className="mb-6">
         <h3 className="text-lg text-offblack font-bold mb-2">Round Description</h3>
-        <RichTextEditor
-          text={text}
-          editorState={editorState}
-          handleEditorStateChange={handleEditorStateChange}
-          handleEditorBlur={handleEditorBlur}
-        />
+        <EvaluationShortDescription store={store} />
       </div>
       <div className="mb-14">
         <h3 className="text-lg text-offblack font-bold mb-4">

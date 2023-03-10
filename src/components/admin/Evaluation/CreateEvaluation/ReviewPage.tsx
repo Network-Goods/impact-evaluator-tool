@@ -8,7 +8,6 @@ type ReviewPageProps = {
   formInputs: EvaluationDetailsType;
 };
 export default function ReviewPage({ store, formInputs }: ReviewPageProps) {
-  console.log("store", store);
   return (
     <>
       <div className="bg-white text-lg rounded-lg py-10 px-14 mt-7 mb-20">

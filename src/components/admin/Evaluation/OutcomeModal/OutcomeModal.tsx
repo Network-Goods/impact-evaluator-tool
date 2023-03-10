@@ -28,6 +28,7 @@ const OutcomeModal = ({ handleClose, open, submission, store, evaluation_id }: O
 
   const [formInputs, setFormInputs] = useState<SubmissionFormInputs>({
     name: storeSubmissionExists?.name,
+    evaluation_field: storeSubmissionExists?.evaluation.evaluation_field || [],
     description: storeSubmissionExists?.description.description,
     summary: storeSubmissionExists?.description.summary,
     specs: storeSubmissionExists?.description.specs,
@@ -49,6 +50,7 @@ const OutcomeModal = ({ handleClose, open, submission, store, evaluation_id }: O
   useEffect(() => {
     setFormInputs({
       name: storeSubmissionExists?.name,
+      evaluation_field: storeSubmissionExists?.evaluation.evaluation_field,
       description: storeSubmissionExists?.description.description,
       summary: storeSubmissionExists?.description.summary,
       specs: storeSubmissionExists?.description.specs,

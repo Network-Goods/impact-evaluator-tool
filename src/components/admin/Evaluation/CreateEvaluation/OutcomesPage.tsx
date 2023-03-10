@@ -1,11 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import dynamic from "next/dynamic";
-import { EditorState, ContentState, convertToRaw } from "draft-js";
 import { EvaluationDetailsType, EvaluationFieldType } from ".";
-import draftToHtml from "draftjs-to-html";
-import htmlToDraft from "html-to-draftjs";
 
-const RichTextEditor = dynamic(() => import("./RichTextEditor"), {
+const EvaluationFormDescription = dynamic(() => import("../EvaluationFormDescription"), {
   ssr: false,
 });
 
@@ -15,27 +12,6 @@ type OutcomesPageProps = {
   setFormInputs: (formInputs: EvaluationDetailsType) => void;
 };
 export default function OutcomesPage({ store, formInputs, setFormInputs }: OutcomesPageProps) {
-  const [editorState, setEditorState] = useState(
-    store.evaluation?.form_description
-      ? EditorState.createWithContent(
-          ContentState.createFromBlockArray(
-            htmlToDraft(store.evaluation?.form_description).contentBlocks,
-            htmlToDraft(store.evaluation?.form_description).entityMap,
-          ),
-        )
-      : EditorState.createEmpty(),
-  );
-
-  const [text, setText] = useState(draftToHtml(convertToRaw(editorState.getCurrentContent())));
-
-  const handleEditorStateChange = (editorState: EditorState) => {
-    setEditorState(editorState);
-    setText(draftToHtml(convertToRaw(editorState.getCurrentContent())));
-  };
-
-  const handleEditorBlur = () => {
-    store.setFormDescription(draftToHtml(convertToRaw(editorState.getCurrentContent())));
-  };
   const handleFormFieldChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     id: string,
@@ -120,12 +96,7 @@ export default function OutcomesPage({ store, formInputs, setFormInputs }: Outco
       <div className="mb-6">
         <h5 className="text-offblack font-bold">Form Description</h5>
         <h5 className="text-[#979797] text-sm mb-1">Summary of form, round, and/or instructions. </h5>
-        <RichTextEditor
-          text={text}
-          editorState={editorState}
-          handleEditorStateChange={handleEditorStateChange}
-          handleEditorBlur={handleEditorBlur}
-        />
+        <EvaluationFormDescription store={store} />
       </div>
     </>
   );
