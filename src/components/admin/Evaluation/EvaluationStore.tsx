@@ -20,6 +20,7 @@ export interface EvaluationStore {
   deleteFormField: (id: string) => void;
   deleteEvaluation: () => void;
   createSubmission: () => Promise<Submission | null>;
+  createInvitation: (invitation?: any) => void;
   setInvitationCode: (code: string, id: string) => void;
   setInvitationCredits: (credits: string, id: string) => void;
   setInvitationRemainingUses: (uses: string, id: string) => void;
@@ -28,10 +29,10 @@ export interface EvaluationStore {
   resetVotes: (id: string) => void;
   setVoiceCredits: (id: string, amount: number) => void;
   setEmail: (evalId: string, userId: string, email: string) => void;
-  createInvitation: (invitation?: any) => void;
   createEvaluator: (evaluator: any) => void;
   setSubmissionTitle: (title: string, id: string) => void;
   setSubmissionDescription: (text: string, type: string, id: string) => void;
+  setSubmissionField: (value: string, field_id: string, submission_id: string) => void;
   setSubmissionLinkTitle: (title: string, index: number, id: string) => void;
   setSubmissionLink: (value: string, index: number, id: string) => void;
   setGithubLink: (link: string, id: string) => void;
@@ -501,7 +502,6 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
     if (!evaluation) {
       return;
     }
-    console.log("issme", is_sme);
     set({
       evaluation: {
         ...evaluation,
@@ -758,6 +758,37 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
     rpc.call("setSubmissionDescription", { newObj: newObj, id: id }).then((data) => {
       if (data instanceof Error) {
         console.error(`ERROR -- rpc call setEvaluationName failed`, data);
+        return;
+      }
+    });
+  },
+  setSubmissionField: (value: string, field_id: string, submission_id: string) => {
+    const evaluation = get().evaluation;
+
+    if (!evaluation) {
+      return;
+    }
+
+    const newObj = evaluation.evaluation_field.map((e: any) => {
+      if (e.id === field_id) {
+        return {
+          ...e,
+          value: value,
+        };
+      }
+      return e;
+    });
+
+    set({
+      evaluation: {
+        ...evaluation,
+        evaluation_field: newObj,
+      },
+    });
+
+    rpc.call("setSubmissionField", { value: value, id: field_id }).then((data) => {
+      if (data instanceof Error) {
+        console.error(`ERROR -- rpc call setSubmissionField failed`, data);
         return;
       }
     });

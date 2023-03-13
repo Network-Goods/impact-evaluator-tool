@@ -6,6 +6,7 @@ import Close from "public/images/svg/Close";
 import Submission from "src/components/shared/Submission";
 import { SubmissionFormInputs } from "src/lib";
 import Button from "src/components/shared/Button";
+import { submissionFormCustomFieldsCheck } from "src/lib/utils";
 
 const style = {
   position: "absolute",
@@ -28,7 +29,7 @@ const OutcomeModal = ({ handleClose, open, submission, store, evaluation_id }: O
 
   const [formInputs, setFormInputs] = useState<SubmissionFormInputs>({
     name: storeSubmissionExists?.name,
-    evaluation_field: storeSubmissionExists?.evaluation.evaluation_field || [],
+    evaluation_field: store.evaluation.evaluation_field || [],
     description: storeSubmissionExists?.description.description,
     summary: storeSubmissionExists?.description.summary,
     specs: storeSubmissionExists?.description.specs,
@@ -50,7 +51,7 @@ const OutcomeModal = ({ handleClose, open, submission, store, evaluation_id }: O
   useEffect(() => {
     setFormInputs({
       name: storeSubmissionExists?.name,
-      evaluation_field: storeSubmissionExists?.evaluation.evaluation_field,
+      evaluation_field: store.evaluation.evaluation_field,
       description: storeSubmissionExists?.description.description,
       summary: storeSubmissionExists?.description.summary,
       specs: storeSubmissionExists?.description.specs,
@@ -63,12 +64,10 @@ const OutcomeModal = ({ handleClose, open, submission, store, evaluation_id }: O
 
   const isDisabled =
     !formInputs.name ||
-    !formInputs.description ||
-    !formInputs.summary ||
-    !formInputs.specs ||
     !formInputs.github_link ||
     !formInputs.githubHandle ||
-    !formInputs.user_id;
+    !formInputs.user_id ||
+    !submissionFormCustomFieldsCheck(formInputs, submission?.id);
 
   return (
     <Modal
@@ -94,7 +93,13 @@ const OutcomeModal = ({ handleClose, open, submission, store, evaluation_id }: O
         >
           <Close className="fill-current" />
         </button>
-        <Submission store={store} formInputs={formInputs} setFormInputs={setFormInputs} submission={submission} />
+        <Submission
+          store={store}
+          formInputs={formInputs}
+          setFormInputs={setFormInputs}
+          submission={submission}
+          submission_id={submission?.id}
+        />
         <div className="flex justify-between mt-14">
           <div>
             <Button small secondary text="Delete" onClick={() => handleDeleteSubmission()} />

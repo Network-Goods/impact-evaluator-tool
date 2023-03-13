@@ -104,6 +104,15 @@ export default function CreateEvaluation({ store }: CreateEvaluationProps) {
     }
   };
 
+  const isSubmitButtonDisabled =
+    !formInputs.name ||
+    !formInputs.description ||
+    !formInputs.start_time ||
+    !formInputs.end_time ||
+    !formInputs.form_description ||
+    formInputs.evaluation_field.some((field) => !field.heading || !field.placeholder || !field.char_count) ||
+    !(Array.isArray(formInputs.evaluation_field) && formInputs.evaluation_field.length);
+
   return (
     <>
       <div className="flex items-center pb-6">
@@ -146,7 +155,8 @@ export default function CreateEvaluation({ store }: CreateEvaluationProps) {
             {page === 3 ? (
               <button
                 onClick={handlePublishRound}
-                className="transition-colors duration-200 ease-in-out transform  outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold mx-auto border border-blue bg-blue  text-white text-lg px-3 py-1 cursor-pointer hover:bg-blue-darkest hover:border-blue-darkest"
+                className="transition-colors duration-200 ease-in-out transform  outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold mx-auto border border-blue bg-blue  text-white text-lg px-3 py-1 cursor-pointer hover:bg-blue-darkest hover:border-blue-darkest disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-blue disabled:border-blue"
+                disabled={isSubmitButtonDisabled}
               >
                 Publish Round
               </button>

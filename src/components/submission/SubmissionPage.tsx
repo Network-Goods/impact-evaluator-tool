@@ -14,6 +14,7 @@ import IncompleteSubmissionTooltip from "./IncompleteSubmissionTooltip";
 import SubmitSubmissionModal from "./SubmitSubmissionModal";
 import { SubmissionFormInputs } from "src/lib";
 import parse from "html-react-parser";
+import { submissionFormCustomFieldsCheck } from "src/lib/utils";
 
 export default function SubmissionPage() {
   const router = useRouter();
@@ -37,6 +38,7 @@ export default function SubmissionPage() {
   const [isGithubHandleChecked, setIsGithubHandleChecked] = useState(
     githubHandleFromProfile === store.submission?.github_handle,
   );
+
   const [formInputs, setFormInputs] = useState<SubmissionFormInputs>({
     name: store.submission?.name,
     evaluation_field: store.submission?.evaluation.evaluation_field || [],
@@ -86,16 +88,13 @@ export default function SubmissionPage() {
 
   const isSubmitButtonDisabled =
     !formInputs.name ||
-    !formInputs.description ||
-    !formInputs.summary ||
-    !formInputs.specs ||
     !formInputs.github_link ||
     (isGithubHandleChecked ? !githubHandleFromProfile : !formInputs.githubHandle) ||
-    (formInputs.links && formInputs.links.some((link) => !link.name || !link.value));
+    (formInputs.links && formInputs.links.some((link) => !link.name || !link.value)) ||
+    !submissionFormCustomFieldsCheck(formInputs, submission_id);
 
   if (store.fetching) return <LoadingSpinner />;
   // if (store.error) return <p>Oh no... {store.error.message}</p>;
-
   return (
     <>
       <div className="pb-14">
@@ -156,6 +155,7 @@ export default function SubmissionPage() {
               setFormInputs={setFormInputs}
               isGithubHandleChecked={isGithubHandleChecked}
               setIsGithubHandleChecked={setIsGithubHandleChecked}
+              submission_id={submission_id}
             />
             <div className="flex justify-between mt-14">
               <div>

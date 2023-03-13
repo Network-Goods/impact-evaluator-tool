@@ -9,6 +9,7 @@ export interface SubmissionStore {
   load: (submission_id: string, githubHandle: string) => void;
   setSubmissionTitle: (title: string) => void;
   setSubmissionDescription: (title: string, link: string) => void;
+  setSubmissionField: (value: string, id: string) => void;
   setSubmissionLinkTitle: (title: string, index: number) => void;
   setSubmissionLink: (link: string, index: number) => void;
   setGithubLink: (link: string) => void;
@@ -90,6 +91,39 @@ export const useSubmissionStore = create<SubmissionStore>()((set, get) => ({
     rpc.call("setSubmissionDescription", { newObj: newObj, id: submission.id }).then((data) => {
       if (data instanceof Error) {
         console.error(`ERROR -- rpc call setSubmissionDescription failed`, data);
+        return;
+      }
+    });
+  },
+  setSubmissionField: (value: string, id: string) => {
+    const submission = get().submission;
+
+    if (!submission) {
+      return;
+    }
+    const newObj = submission.evaluation.evaluation_field.map((e: any) => {
+      if (e.id === id) {
+        return {
+          ...e,
+          value: value,
+        };
+      }
+      return e;
+    });
+
+    set({
+      submission: {
+        ...submission,
+        evaluation: {
+          ...submission.evaluation,
+          evaluation_field: newObj,
+        },
+      },
+    });
+
+    rpc.call("setSubmissionField", { value: value, id: id }).then((data) => {
+      if (data instanceof Error) {
+        console.error(`ERROR -- rpc call setSubmissionField failed`, data);
         return;
       }
     });

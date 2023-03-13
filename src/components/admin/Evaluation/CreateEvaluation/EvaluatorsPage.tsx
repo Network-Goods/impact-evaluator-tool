@@ -39,8 +39,6 @@ export default function EvaluatorsPage({ store, formInputs, setFormInputs }: Eva
     store.setInvitationSubmissionRequired(id, is_sme);
   };
 
-  console.log("store", store.evaluation.invitation);
-  console.log("inputs", formInputs.invitation);
   return (
     <div className="mb-6">
       <h3 className="text-lg text-offblack font-bold mb-2">Create unique code for Impact Evaluator round.</h3>

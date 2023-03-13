@@ -13,6 +13,7 @@ type SubmissionProps = {
   isGithubHandleChecked?: boolean;
   setIsGithubHandleChecked?: any;
   submission?: SubmissionType;
+  submission_id: string | string[] | undefined;
 };
 
 export default function Submission({
@@ -23,6 +24,7 @@ export default function Submission({
   isGithubHandleChecked,
   setIsGithubHandleChecked,
   submission,
+  submission_id,
 }: SubmissionProps) {
   const handleFormChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -49,11 +51,10 @@ export default function Submission({
     setFormInputs((values: any) => {
       const evaluation_field = values.evaluation_field;
       const field = evaluation_field.find((field: any) => field.heading === fieldName);
-      field.submission_field[0].field_body = value;
+      field.submission_field.find((f: any) => f.submission_id === submission_id).field_body = value;
       return { ...values, evaluation_field: evaluation_field };
     });
   };
-
   const handleChecked = () => {
     const githubHandle = !isGithubHandleChecked ? githubHandleFromProfile : "";
     setIsGithubHandleChecked((prev: boolean) => !prev);
@@ -61,8 +62,6 @@ export default function Submission({
     store.setGithubHandle(githubHandle);
   };
 
-  console.log("store", store);
-  console.log("formInputs", formInputs);
   return (
     <>
       <div className="mb-9">
@@ -82,86 +81,40 @@ export default function Submission({
           }
         />
       </div>
-      {formInputs.evaluation_field.map((field: any) => {
-        return (
-          <div key={field.id} className="mb-9">
-            <p className="text-xl font-bold">{field.heading}</p>
-            <div className="text-[17px] text-[#898888] py-1">{field.subheading}</div>
-            <textarea
-              className="w-full min-h-[112px] px-4 py-2 rounded-lg border border-gray focus:outline-none"
-              placeholder={field.placeholder}
-              maxLength={field.char_count}
-              // value={field.submission_field[0]?.field_body || ""}
-              // onChange={(e) => handleFieldChange(e, field.heading)}
-              // onBlur={
-              //   !submission
-              //     ? (e) => store.setSubmissionDescription(e.target.value, "description")
-              //     : (e) => store.setSubmissionDescription(e.target.value, "description", submission?.id)
-              // }
-            />
-          </div>
-        );
-      })}
-      <div className="mb-9">
-        <p className="text-xl font-bold">Project Description</p>
-        <div className="text-[17px] text-[#898888] py-1">
-          Using <b>280 characters</b> or less, describe your project.
-        </div>
-        <textarea
-          className="w-full min-h-[112px] px-4 py-2 rounded-lg border border-gray focus:outline-none"
-          placeholder="My project is..."
-          name="description"
-          maxLength={280}
-          value={formInputs.description || ""}
-          onChange={(e) => handleFormChange(e, "description")}
-          onBlur={
-            !submission
-              ? (e) => store.setSubmissionDescription(e.target.value, "description")
-              : (e) => store.setSubmissionDescription(e.target.value, "description", submission?.id)
-          }
-        />
-      </div>
-      <div className="mb-9">
-        <p className="text-xl font-bold">Progress Summary</p>
-        <div className="text-[17px] text-[#898888] py-1">
-          Using <b>280 characters</b> or less, describe what your project has accomplished{" "}
-          <span className="font-bold italic">in the past 1 month</span>.
-        </div>
+      {formInputs.evaluation_field &&
+        formInputs.evaluation_field.map((field: any, idx: number) => {
+          return (
+            <div key={idx} className="mb-9">
+              <p className="text-xl font-bold pb-1">{field?.heading}</p>
+              {field?.subheading ? <div className="text-[17px] text-[#898888] pb-1">{field?.subheading}</div> : null}
+              <textarea
+                className="w-full min-h-[112px] px-4 py-2 rounded-lg border border-gray focus:outline-none"
+                placeholder={field?.placeholder}
+                maxLength={field?.char_count}
+                value={
+                  (field && field?.submission_field.find((f: any) => f.submission_id === submission_id).field_body) ||
+                  ""
+                }
+                onChange={(e) => handleFieldChange(e, field.heading)}
+                onBlur={
+                  !submission
+                    ? (e) =>
+                        store.setSubmissionField(
+                          e.target.value,
+                          field.submission_field.find((f: any) => f.submission_id === submission_id).id,
+                        )
+                    : (e) =>
+                        store.setSubmissionField(
+                          e.target.value,
+                          field.submission_field.find((f: any) => f.submission_id === submission_id).id,
+                          submission?.id,
+                        )
+                }
+              />
+            </div>
+          );
+        })}
 
-        <textarea
-          className="w-full min-h-[112px] px-4 py-2 rounded-lg border border-gray focus:outline-none"
-          placeholder="In the past 1 month, my project has..."
-          name="summary"
-          maxLength={280}
-          value={formInputs.summary || ""}
-          onChange={(e) => handleFormChange(e, "summary")}
-          onBlur={
-            !submission
-              ? (e) => store.setSubmissionDescription(e.target.value, "summary")
-              : (e) => store.setSubmissionDescription(e.target.value, "summary", submission?.id)
-          }
-        />
-      </div>
-      <div className="mb-9">
-        <p className="text-xl font-bold">FVM Tech Specs</p>
-        <div className="text-[17px] text-[#898888] py-1">
-          Using <b>360 characters</b> or less, describe your F(E)VM smart contract designs as well as the unique value
-          your contracts bring to Filecoin.
-        </div>
-        <textarea
-          className="w-full min-h-[112px] px-4 py-2 rounded-lg border border-gray focus:outline-none"
-          placeholder="My project is using FVM's functionality to..."
-          name="specs"
-          maxLength={360}
-          value={formInputs.specs || ""}
-          onChange={(e) => handleFormChange(e, "specs")}
-          onBlur={
-            !submission
-              ? (e) => store.setSubmissionDescription(e.target.value, "specs")
-              : (e) => store.setSubmissionDescription(e.target.value, "specs", submission?.id)
-          }
-        />
-      </div>
       <p className="text-xl font-bold pb-3">Links</p>
       <div className="pb-3">
         <p className="text-[17px] text-blue-alt font-bold pb-1">Github Repo</p>

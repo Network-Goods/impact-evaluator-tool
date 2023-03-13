@@ -97,3 +97,15 @@ export function downloadCSV(data: any, csvName: string) {
   a.setAttribute("download", csvName);
   a.click();
 }
+
+export function submissionFormCustomFieldsCheck(formInputs: any, submission_id: string | string[] | undefined) {
+  let completed = true;
+  formInputs.evaluation_field.map((field: any) => {
+    field.submission_field.map((subfield: any) => {
+      if (subfield.submission_id === submission_id && subfield.field_body === "") {
+        completed = false;
+      }
+    });
+  });
+  return completed;
+}
