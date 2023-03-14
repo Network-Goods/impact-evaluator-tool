@@ -62,7 +62,7 @@ export default function EvaluatorsPage({ store, formInputs, setFormInputs }: Eva
           </div>
         </div>
       ) : null}
-      {store.evaluation?.invitation.map((invitation: any, index: number) => (
+      {store.evaluation?.invitation.map((invitation: any) => (
         <div
           className="flex flex-col md:flex-row justify-between items-center px-9 bg-white border border-gray py-4 md:py-0 ${
              rounded-b-lg border-t-0"
@@ -105,7 +105,7 @@ export default function EvaluatorsPage({ store, formInputs, setFormInputs }: Eva
               <input
                 type="checkbox"
                 name="form"
-                checked={invitation.is_sme || false}
+                checked={!invitation.is_sme || false}
                 onChange={() => handleChecked(invitation.id, invitation.is_sme)}
               />{" "}
               <span className="text-sm">Required</span>

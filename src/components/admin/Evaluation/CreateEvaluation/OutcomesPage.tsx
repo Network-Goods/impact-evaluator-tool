@@ -30,6 +30,11 @@ export default function OutcomesPage({ store, formInputs, setFormInputs }: Outco
   return (
     <>
       <div className="mb-6">
+        <h5 className="text-offblack font-bold">Form Description</h5>
+        <h5 className="text-[#979797] text-sm mb-1">Summary of form, round, and/or instructions. </h5>
+        <EvaluationFormDescription store={store} />
+      </div>
+      <div className="mb-6">
         <h3 className="text-lg text-offblack font-bold mb-2">Create a form to collect submissions for your round</h3>
       </div>
       <div className="mb-6">
@@ -92,11 +97,6 @@ export default function OutcomesPage({ store, formInputs, setFormInputs }: Outco
         >
           <span>Add Field</span>
         </button>
-      </div>
-      <div className="mb-6">
-        <h5 className="text-offblack font-bold">Form Description</h5>
-        <h5 className="text-[#979797] text-sm mb-1">Summary of form, round, and/or instructions. </h5>
-        <EvaluationFormDescription store={store} />
       </div>
     </>
   );

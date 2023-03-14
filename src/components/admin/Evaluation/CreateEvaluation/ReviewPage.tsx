@@ -49,13 +49,21 @@ export default function ReviewPage({ store, formInputs }: ReviewPageProps) {
         <ul className="list-disc ml-5">
           {formInputs.evaluation_field.map((field: any) => {
             return (
-              <div className="py-1" key={field.id}>
+              <div className="flex flex-col py-1" key={field.id}>
                 <li className="text-blue font-bold">
-                  <div className="inline-block text-offblack font-semibold">Heading: {field.heading}</div>
-                  <div className="inline-block text-offblack font-semibold">Subheading: {field.subheading}</div>
-                  <div className="inline-block text-offblack font-semibold">Placeholder: {field.placeholder}</div>
-                  <div className="inline-block text-offblack font-semibold">Character count: {field.char_count}</div>
+                  <div className="inline-block text-offblack font-semibold">
+                    Heading: <span className="font-normal">{field.heading}</span>
+                  </div>
                 </li>
+                <div className="inline-block text-offblack font-semibold">
+                  Subheading: <span className="font-normal">{field.subheading}</span>
+                </div>
+                <div className="inline-block text-offblack font-semibold">
+                  Placeholder: <span className="font-normal">{field.placeholder}</span>
+                </div>
+                <div className="inline-block text-offblack font-semibold">
+                  Character count: <span className="font-normal">{field.char_count}</span>
+                </div>
               </div>
             );
           })}

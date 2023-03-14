@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import Add from "public/images/svg/Add";
 import Delete from "public/images/svg/Delete";
 import Edit from "public/images/svg/Edit";
@@ -92,7 +91,7 @@ export default function Submission({
                 placeholder={field?.placeholder}
                 maxLength={field?.char_count}
                 value={
-                  (field && field?.submission_field.find((f: any) => f.submission_id === submission_id).field_body) ||
+                  (field && field?.submission_field.find((f: any) => f.submission_id === submission_id)?.field_body) ||
                   ""
                 }
                 onChange={(e) => handleFieldChange(e, field.heading)}

@@ -19,7 +19,7 @@ type CreateInvitationModalProps = {
 };
 
 const CreateInvitationModal = ({ handleClose, open, store }: CreateInvitationModalProps) => {
-  const [inputs, setInputs] = useState<any>({});
+  const [inputs, setInputs] = useState<any>({ is_sme: false });
 
   const handleChange = (event: any) => {
     const name = event.target.name;
@@ -92,7 +92,7 @@ const CreateInvitationModal = ({ handleClose, open, store }: CreateInvitationMod
               <input
                 type="checkbox"
                 name="form"
-                checked={inputs.is_sme || false}
+                checked={!inputs.is_sme || false}
                 onChange={() => handleChecked()}
               />{" "}
               <span className="text-sm">Required</span>

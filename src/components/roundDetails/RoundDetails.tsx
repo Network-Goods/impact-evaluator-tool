@@ -133,7 +133,6 @@ export default function RoundDetails({
                                 </div>
                               </div>
                             </div>
-
                             <Collapse in={openArray[idx]} timeout="auto" unmountOnExit>
                               <VotingTableBody
                                 idx={idx}

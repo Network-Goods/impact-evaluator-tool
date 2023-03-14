@@ -57,7 +57,7 @@ export interface Evaluator {
 
 export interface Submission {
   id: string;
-  user_id?: string;
+  user_id?: string | null;
   name: string;
   github_link: string;
   github_handle: string;

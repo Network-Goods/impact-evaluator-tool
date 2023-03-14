@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
@@ -24,7 +24,7 @@ type OutcomeModalProps = {
   evaluation_id: string | string[] | undefined;
 };
 
-const OutcomeModal = ({ handleClose, open, submission, store, evaluation_id }: OutcomeModalProps) => {
+const OutcomeModal = ({ handleClose, open, submission, store }: OutcomeModalProps) => {
   const storeSubmissionExists = submission && store.evaluation.submission.find((e: any) => e.id === submission.id);
 
   const [formInputs, setFormInputs] = useState<SubmissionFormInputs>({
@@ -43,7 +43,6 @@ const OutcomeModal = ({ handleClose, open, submission, store, evaluation_id }: O
     store.setSubmission(submission?.id);
     handleClose();
   };
-
   const handleDeleteSubmission = () => {
     store.deleteSubmission(submission?.id);
     handleClose();
@@ -68,7 +67,6 @@ const OutcomeModal = ({ handleClose, open, submission, store, evaluation_id }: O
     !formInputs.githubHandle ||
     !formInputs.user_id ||
     !submissionFormCustomFieldsCheck(formInputs, submission?.id);
-
   return (
     <Modal
       aria-labelledby="transition-modal-title"

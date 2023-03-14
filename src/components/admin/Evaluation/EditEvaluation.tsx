@@ -14,6 +14,7 @@ import moment from "moment";
 import parse from "html-react-parser";
 import EvaluationShortDescription from "./EvaluationShortDescription";
 import EvaluationFormDescription from "./EvaluationFormDescription";
+import EvaluationFormFields from "./EvaluationFormFields";
 
 type EditEvaluationProps = {
   evaluation_id: string | string[] | undefined;
@@ -22,6 +23,7 @@ type EditEvaluationProps = {
 
 export default function EditEvaluation({ evaluation_id, store }: EditEvaluationProps) {
   const ref = useRef<HTMLInputElement | null>(null);
+  const [evaluationStatus, setEvaluationStatus] = useState(store.evaluation.status);
   const [openOutcomeModal, setOpenOutcomeModal] = useState(false);
   const [outcomeModalContent, setOutcomeModalContent] = useState({});
   const [openEvaluatorModal, setOpenEvaluatorModal] = useState(false);
@@ -30,6 +32,7 @@ export default function EditEvaluation({ evaluation_id, store }: EditEvaluationP
   const [isNewOutcomePending, setIsNewOutcomePending] = useState<boolean>(false);
   const [showShortDescription, setShowShortDescription] = useState<boolean>(false);
   const [showFormDescription, setShowFormDescription] = useState<boolean>(false);
+  const [showFormFields, setShowFormFields] = useState<boolean>(false);
   const [startDate, setStartDate] = useState(store.evaluation?.start_time ? moment(store.evaluation?.start_time) : "");
   const [endDate, setEndDate] = useState(store.evaluation?.end_time ? moment(store.evaluation?.end_time) : "");
 
@@ -45,6 +48,7 @@ export default function EditEvaluation({ evaluation_id, store }: EditEvaluationP
   const handleCreateNewOutcome = async () => {
     setIsNewOutcomePending(true);
     const submission = await store.createSubmission();
+    await store.load(evaluation_id);
     if (!submission) {
       return;
     }
@@ -70,41 +74,15 @@ export default function EditEvaluation({ evaluation_id, store }: EditEvaluationP
     setEndDate(date);
     store.setEvaluationEndTime(date);
   };
-  const actionButton = () => {
-    switch (store.evaluation.status) {
-      case "staging":
-        return (
-          <button
-            onClick={() => store.setEvaluationStatus("started")}
-            className="transition-colors duration-200 ease-in-out transform  outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold border border-blue bg-blue  text-white text-lg px-3 py-1 cursor-pointer hover:bg-blue-darkest hover:border-blue-darkest"
-          >
-            Launch Round &#8594;
-          </button>
-        );
-      case "started":
-        return (
-          <button
-            onClick={() => store.setEvaluationStatus("closed")}
-            className="transition-colors duration-200 ease-in-out transform  outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold border border-blue bg-blue  text-white text-lg px-3 py-1 cursor-pointer hover:bg-blue-darkest hover:border-blue-darkest"
-          >
-            Close Round
-          </button>
-        );
-      case "closed":
-        return (
-          <div className="transition-colors duration-200 ease-in-out transform  outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold border border-[#DADADA] bg-[#DADADA] text-gray-dark text-lg px-3 py-1 cursor-pointer">
-            Round Closed
-          </div>
-        );
-      default:
-        return null;
-    }
-  };
 
   useEffect(() => {
     setStartDate(store.evaluation?.start_time ? moment(store.evaluation?.start_time) : "");
     setEndDate(store.evaluation?.end_time ? moment(store.evaluation?.end_time) : "");
   }, [store.evaluation?.start_time, store.evaluation?.end_time]);
+
+  useEffect(() => {
+    setEvaluationStatus(store.evaluation?.status);
+  }, [store.evaluation?.status]);
 
   return (
     <>
@@ -118,7 +96,18 @@ export default function EditEvaluation({ evaluation_id, store }: EditEvaluationP
         </div>
         <div className="flex-1 flex justify-between">
           <h1 className="text-3xl">{store.evaluation.name}</h1>
-          {actionButton()}
+          <div className="flex flex-col">
+            <h5 className="text-offblack font-bold mb-1">Round status</h5>
+            <select
+              className=" px-4 py-2 rounded-lg border border-gray bg-white focus:outline-none text-offblack"
+              value={evaluationStatus}
+              onChange={(e) => store.setEvaluationStatus(e.currentTarget.value)}
+            >
+              <option value="staging">Staging</option>
+              <option value="started">Started</option>
+              <option value="closed">Closed</option>
+            </select>
+          </div>
         </div>
       </div>
       <div className="max-w-3xl mx-auto">
@@ -187,23 +176,15 @@ export default function EditEvaluation({ evaluation_id, store }: EditEvaluationP
           )}
 
           <hr className="my-10 border-gray" />
-          <div className="mb-4">
+          <div className="flex justify-between mb-4">
             <EvaluationSubTitle text="Fields" />
+            <div>
+              <button onClick={() => setShowFormFields((prev) => !prev)} className="border border-blue rounded p-1">
+                <Edit className="fill-blue-alt" />
+              </button>
+            </div>
           </div>
-          <ul className="list-disc ml-5">
-            {store.evaluation.evaluation_field.map((field: any) => {
-              return (
-                <div className="flex flex-col py-1" key={field.id}>
-                  <li className="text-blue font-bold">
-                    <div className="inline-block text-offblack font-semibold">Heading: {field.heading}</div>
-                  </li>
-                  <div className="inline-block text-offblack font-semibold">Subheading: {field.subheading}</div>
-                  <div className="inline-block text-offblack font-semibold">Placeholder: {field.placeholder}</div>
-                  <div className="inline-block text-offblack font-semibold">Character count: {field.char_count}</div>
-                </div>
-              );
-            })}
-          </ul>
+          <EvaluationFormFields store={store} showFormFields={showFormFields} />
           <hr className="my-10 border-gray" />
           <div className="pb-4">
             <EvaluationSubTitle text="Evaluators and voice credits" />

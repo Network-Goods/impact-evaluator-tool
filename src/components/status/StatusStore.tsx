@@ -1,5 +1,5 @@
 import create from "zustand";
-import { Submission, rpc, RoundStatus } from "src/lib";
+import { rpc, RoundStatus } from "src/lib";
 
 export type StatusStore = {
   fetching: boolean;

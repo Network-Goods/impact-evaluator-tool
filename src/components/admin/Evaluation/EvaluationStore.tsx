@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { v4 as uuid } from "uuid";
-import { Evaluation, rpc, Submission } from "src/lib";
+import { rpc, Submission } from "src/lib";
 
 export interface EvaluationStore {
   fetching: boolean;
@@ -385,6 +385,7 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
       description: "",
       evaluation_id: evaluation.id,
       name: "",
+      user_id: null,
       github_link: "",
       github_handle: "",
       links: [],
@@ -762,7 +763,7 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
       }
     });
   },
-  setSubmissionField: (value: string, field_id: string, submission_id: string) => {
+  setSubmissionField: (value: string, field_id: string) => {
     const evaluation = get().evaluation;
 
     if (!evaluation) {
