@@ -6,10 +6,10 @@ const env = {
   NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
   NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
   NEXT_PUBLIC_SHOW_EMAIL_LOGIN: process.env.NEXT_PUBLIC_SHOW_EMAIL_LOGIN,
-  CLIENT_PORT: process.env.CLIENT_PORT,
+  // CLIENT_PORT: process.env.CLIENT_PORT,
   CLIENT_BACKEND: process.env.CLIENT_BACKEND || "staging",
-  BASE_URL: process.env.BASE_URL,
-  CLIENT_PORT: process.env.CLIENT_PORT,
+  // BASE_URL: process.env.BASE_URL,
+  // CLIENT_PORT: process.env.CLIENT_PORT,
 };
 
 let errors = [];
