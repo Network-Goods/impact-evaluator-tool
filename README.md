@@ -1,5 +1,20 @@
 # Impact Evaluator Tool
 
+## Environment Variables
+
+To facilitate low friction switching between different backends (local, staging, prod) during development the environment variables for each backend are split into seperate files in the .env directory. Which env file is loaded is determined by the `CLIENT_BACKEND` environment variable, so `CLIENT_BACKEND=staging` would load environment variables from the file `.env/.staging`.
+
+If `CLIENT_BACKEND` is not set, variables will still be read in from the environment. Setting variables directly in the environment is how we configure builds on github/vercel.
+
+Convenience commands are included for the common backends:
+
+- `yarn dev:local`
+- `yarn dev:staging`
+- `yarn dev:production`
+- `yarn dev` (does not set CLIENT_BACKEND itself)
+
+Implementation of this switch is in `next.config.js`
+
 ## Development
 
 ### Running

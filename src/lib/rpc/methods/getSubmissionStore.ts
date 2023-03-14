@@ -22,5 +22,5 @@ export async function getSubmissionStore({
     return new Error(`ERROR -- failed to get Submission Store`);
   }
 
-  return data;
+  return data as any;
 }
