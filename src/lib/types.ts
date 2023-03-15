@@ -60,6 +60,7 @@ export interface Submission {
   github_link: string;
   github_handle: string;
   evaluation_id: string;
+  contract_id: string;
   description: any;
   links: any;
 }
