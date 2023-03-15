@@ -34,3 +34,5 @@ yarn-error.log*
 /playwright-report/
 /playwright/.cache/
 /playwright/.auth
+
+result
