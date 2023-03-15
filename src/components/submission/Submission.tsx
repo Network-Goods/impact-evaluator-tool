@@ -193,10 +193,10 @@ export default function Submission() {
           </u>{" "}
           <ul className="list-disc ml-6">
             <li>
-              <b>Submission Deadline:</b> Mon., Mar 20 at 23:59 UTC-5
+              <b>Submission Deadline:</b> Mon., Mar 20 at 23:59 UTC-4
             </li>
             <li>
-              <b>Voting Dates:</b> Begins Wed., Mar. 22 at 00:01 UTC-5 and ends Thurs., Mar. 23 at 23:59 UTC-5
+              <b>Voting Dates:</b> Begins Wed., Mar. 22 at 00:01 UTC-4 and ends Thurs., Mar. 23 at 23:59 UTC-4
             </li>
             <li>
               <b>Voting Method:</b>{" "}
