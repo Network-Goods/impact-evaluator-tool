@@ -31,5 +31,5 @@ export async function joinWithCode({ supabase, params }: ServerParams<Params>): 
   //   };
   // }
 
-  return data;
+  return <any>data;
 }

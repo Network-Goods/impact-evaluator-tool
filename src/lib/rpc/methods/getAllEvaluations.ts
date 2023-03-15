@@ -3,7 +3,7 @@ import { DashboardEvaluation } from "../..";
 
 type Params = null;
 
-export async function getAllEvaluations({ supabase }: ServerParams<Params>): Promise<DashboardEvaluation[] | Error> {
+export async function getAllEvaluations({ supabase }: ServerParams<Params>): Promise<{ [x: string]: any }[] | Error> {
   const { error, data } = await supabase.from("evaluation").select("*");
 
   if (error) {

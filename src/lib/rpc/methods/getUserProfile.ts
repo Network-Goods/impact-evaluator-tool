@@ -19,5 +19,5 @@ export async function getUserProfile({ supabase, params, auth }: ServerParams<Pa
     return new Error(`ERROR -- getUserProfile failed. user_id: ${user_id}, message: ${error.message}`);
   }
 
-  return data;
+  return <any>data;
 }
