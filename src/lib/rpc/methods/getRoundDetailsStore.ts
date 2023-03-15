@@ -25,5 +25,5 @@ export async function getRoundDetailsStore({
     data = [];
   }
 
-  return data;
+  return <any>data;
 }

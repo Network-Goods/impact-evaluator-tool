@@ -14,7 +14,7 @@ export async function getEvaluationResult({
   supabase,
   auth,
   params: { evaluation_id, user_id },
-}: ServerParams<Params>): Promise<Return | Error> {
+}: ServerParams<Params>): Promise<any | Error> {
   user_id = user_id ? user_id : auth.user_id;
 
   if (!isAdmin(auth) && user_id != auth.user_id) {

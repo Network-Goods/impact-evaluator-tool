@@ -20,6 +20,7 @@ interface FormInputs {
   description: string;
   summary: string;
   specs: string;
+  contract_id: string;
   github_link: string;
   links?: LinkInputs[];
   githubHandle: string;
@@ -58,6 +59,7 @@ export default function Submission() {
     summary: store.submission?.description.summary,
     specs: store.submission?.description.specs,
     github_link: store.submission?.github_link,
+    contract_id: store.submission?.contract_id,
     links: store.submission?.links || [],
     githubHandle: isGithubHandleChecked ? store.submission?.github_handle : "",
   });
@@ -115,6 +117,7 @@ export default function Submission() {
       summary: store.submission?.description.summary,
       specs: store.submission?.description.specs,
       github_link: store.submission?.github_link,
+      contract_id: store.submission?.contract_id,
       links: store.submission?.links,
       githubHandle: store.submission?.github_handle,
     });
@@ -126,6 +129,7 @@ export default function Submission() {
     !formInputs.description ||
     !formInputs.summary ||
     !formInputs.specs ||
+    !formInputs.contract_id ||
     !formInputs.github_link ||
     (isGithubHandleChecked ? !githubHandleFromProfile : !formInputs.githubHandle) ||
     (formInputs.links && formInputs.links.some((link) => !link.name || !link.value));
@@ -145,7 +149,7 @@ export default function Submission() {
             </Link>
           </div>
           <div className="flex-1">
-            <Title text="Space Warp Impact Evaluator | Round 4" />
+            <Title text="Space Warp Impact Evaluator | Round 5" />
           </div>
         </div>
 
@@ -160,7 +164,7 @@ export default function Submission() {
           >
             Space Warp
           </a>
-          &#39;s <b>Impact Evaluator: Round 4</b>, where builders and FVM subject matter experts vote on the top
+          &#39;s <b>Impact Evaluator: Round 5</b>, where builders and FVM subject matter experts vote on the top
           projects in the community and direct the allocation of funding. See the{" "}
           <a
             className="text-blue hover:text-blue-dark underline"
@@ -174,7 +178,7 @@ export default function Submission() {
           <br />
           <br />
           <u>
-            Round 4 details [
+            Round 5 details [
             <a
               className="text-blue hover:text-blue-dark underline"
               href="https://network-goods.notion.site/Impact-Evaluators-Builders-Leaderboard-602ea6755b5642e1ad6f9da59a47fa62"
@@ -189,10 +193,10 @@ export default function Submission() {
           </u>{" "}
           <ul className="list-disc ml-6">
             <li>
-              <b>Submission Deadline:</b> Mon., Mar 6 at 23:59 UTC-5
+              <b>Submission Deadline:</b> Mon., Mar 20 at 23:59 UTC-5
             </li>
             <li>
-              <b>Voting Dates:</b> Begins Wed., Mar. 8 at 00:01 UTC-5 and ends Thurs., Mar. 9 at 23:59 UTC-5
+              <b>Voting Dates:</b> Begins Wed., Mar. 22 at 00:01 UTC-5 and ends Thurs., Mar. 23 at 23:59 UTC-5
             </li>
             <li>
               <b>Voting Method:</b>{" "}
@@ -200,6 +204,7 @@ export default function Submission() {
                 Quadratic Voting
               </button>
             </li>
+
             <li>
               <b>Reward Pool:</b> $15,000 USD (denominated in FIL)
             </li>
@@ -313,6 +318,22 @@ export default function Submission() {
                 value={formInputs.specs || ""}
                 onChange={(e) => handleFormChange(e, "specs")}
                 onBlur={(e) => store.setSubmissionDescription("specs", e.target.value)}
+              />
+            </div>
+            <div className="mb-9">
+              <p className="text-xl font-bold">FVM Contract ID(s)</p>
+              <div className="text-[17px] text-[#898888] py-1">
+                Please provide the <b>Smart Contract ID(s)</b> for your dApp to authenticate deployment to mainnet,
+                which is <b>required</b> to participate in this round.
+              </div>
+              <textarea
+                className="w-full min-h-[112px] px-4 py-2 rounded-lg border border-gray focus:outline-none"
+                placeholder="0xfe00000000000000000000000000000000000000"
+                name="contract_id"
+                maxLength={280}
+                value={formInputs.contract_id || ""}
+                onChange={(e) => handleFormChange(e, "contract_id")}
+                onBlur={(e) => store.setSubmissionContractID(e.target.value)}
               />
             </div>
             <p className="text-xl font-bold pb-3">Links</p>

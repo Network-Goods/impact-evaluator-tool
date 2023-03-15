@@ -9,6 +9,7 @@ export interface SubmissionStore {
   load: (submission_id: string, githubHandle: string) => void;
   setSubmissionTitle: (title: string) => void;
   setSubmissionDescription: (title: string, link: string) => void;
+  setSubmissionContractID: (id: string) => void;
   setSubmissionLinkTitle: (title: string, index: number) => void;
   setSubmissionLink: (link: string, index: number) => void;
   setGithubLink: (link: string) => void;
@@ -157,6 +158,33 @@ export const useSubmissionStore = create<SubmissionStore>()((set, get) => ({
     });
   },
 
+  setSubmissionContractID: (id: string) => {
+    const submission = get().submission;
+
+    if (!submission) {
+      return new Error("Submission not loaded");
+    }
+
+    set({
+      submission: {
+        ...submission,
+        contract_id: id,
+      },
+    });
+
+    rpc
+      .call("setSubmissionContractID", {
+        id: submission.id,
+        contract_id: id,
+      })
+      .then((data) => {
+        if (data instanceof Error) {
+          console.error(`ERROR -- rpc call setSubmissionContractID failed`, data);
+          return;
+        }
+      });
+  },
+
   setGithubLink: (link: string) => {
     const submission = get().submission;
 
@@ -293,7 +321,6 @@ export const useSubmissionStore = create<SubmissionStore>()((set, get) => ({
     if (get().fetching || !githubHandle) {
       return null;
     }
-
     const newSubmission = Submission.init({
       description: "",
       evaluation_id: evaluation_id,
@@ -301,6 +328,7 @@ export const useSubmissionStore = create<SubmissionStore>()((set, get) => ({
       user_id: user_id,
       github_handle: githubHandle,
       github_link: "",
+      contract_id: "",
       links: [],
     });
 

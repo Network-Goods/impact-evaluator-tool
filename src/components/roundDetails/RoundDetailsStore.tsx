@@ -70,6 +70,7 @@ export const useRoundDetailsStore = create<RoundDetailsStore>()((set, get) => ({
       name: "",
       user_id: userID,
       github_link: "",
+      contract_id: "",
       github_handle: githubHandle,
       links: [],
     });
