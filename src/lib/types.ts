@@ -66,6 +66,20 @@ export interface Submission {
   links: any;
 }
 
+export interface VotingTableBodySubmission extends Submission {
+  fields: VotingTableBodySubmissionFields[];
+}
+
+type VotingTableBodySubmissionFields = {
+  char_count: number;
+  field_body: string;
+  field_id: string;
+  heading: string;
+  placeholder: string;
+  subheading: string;
+  submission_field_id: string;
+};
+
 export interface RoundStatus {
   name: string;
   num_evaluators: number;

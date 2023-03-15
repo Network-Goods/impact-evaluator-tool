@@ -1,10 +1,10 @@
 import VotingTableLink from "./VotingTableLink";
 import { filterSubmissions } from "src/lib/utils";
-import { Submission } from "src/lib";
+import { Submission, VotingTableBodySubmission } from "src/lib";
 
 type VotingTableBodyProps = {
   idx: number;
-  project: Submission;
+  project: VotingTableBodySubmission;
   submissions: any;
   search: string;
 };
@@ -20,12 +20,12 @@ export default function VotingTableBody({ idx, project, submissions, search }: V
       <div className="border border-gray w-full h-[3px]"></div>
       <div className="flex flex-col md:flex-row pt-5">
         <div className="md:w-[70%] pr-12">
-          <div className="font-bold">Project Description</div>
-          <p className="text-sm mb-3">{project.description.description}</p>
-          <div className="font-bold">Progress Summary</div>
-          <p className="text-sm mb-3">{project.description.summary}</p>
-          <div className="font-bold">FVM Tech Specs</div>
-          <p className="text-sm mb-3">{project.description.specs}</p>
+          {project.fields.map((field: any) => (
+            <div key={field.field_id}>
+              <div className="font-bold">{field.heading}</div>
+              <p className="text-sm mb-3">{field.field_body}</p>
+            </div>
+          ))}
         </div>
         <div className="md:w-[30%] md:border-l md:border-gray md:pl-6">
           <div className="font-bold">{`Project Link${project.links.length > 1 ? "s" : ""}`}</div>

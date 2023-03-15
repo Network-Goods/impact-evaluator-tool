@@ -8,7 +8,7 @@ import EvaluationLinkButton from "../dashboard/EvaluationLinkButton";
 import SmallTitle from "../shared/SmallTitle";
 import Title from "../shared/Title";
 import VotingTableBody from "../voting/VotingTableBody";
-import { Submission } from "src/lib";
+import { Submission, VotingTableBodySubmission } from "src/lib";
 import Add from "public/images/svg/Add";
 import QuadraticVotingModal from "../voting/QuadraticVotingModal";
 import parse from "html-react-parser";
@@ -42,7 +42,6 @@ export default function RoundDetails({
 
     setOpenArray(arr);
   }, [store.submissions]);
-
   return (
     <>
       <div className="pb-2">
@@ -81,7 +80,7 @@ export default function RoundDetails({
                   </div>
                   {Array.isArray(store.submissions) && store.submissions.length > 0 ? (
                     <div>
-                      {store.submissions?.map((submission: Submission, idx: number) => {
+                      {store.submissions?.map((submission: VotingTableBodySubmission, idx: number) => {
                         return (
                           <div key={idx}>
                             <div>
