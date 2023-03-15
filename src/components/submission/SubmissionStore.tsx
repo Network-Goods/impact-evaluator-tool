@@ -176,7 +176,6 @@ export const useSubmissionStore = create<SubmissionStore>()((set, get) => ({
       .call("setSubmissionContractID", {
         id: submission.id,
         contract_id: id,
-        user_id: submission.user_id,
       })
       .then((data) => {
         if (data instanceof Error) {
