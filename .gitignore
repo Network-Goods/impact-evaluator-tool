@@ -34,3 +34,7 @@ yarn-error.log*
 /playwright-report/
 /playwright/.cache/
 /playwright/.auth
+
+result
+
+supabase/migrations/*_seed.sql
