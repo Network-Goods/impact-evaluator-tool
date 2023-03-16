@@ -30,7 +30,7 @@ If you update the database, run `$ yarn run codegen:fetch` to fetch the new type
 
 #### Migrations
 
-No system is yet in place for database migrations. My intention is to use
+supabase db push
 
 ### Design
 
