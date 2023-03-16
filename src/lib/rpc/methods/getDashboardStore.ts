@@ -8,7 +8,7 @@ export async function getDashboardStore({
   auth,
 }: ServerParams<Params>): Promise<DashboardEvaluation[] | Error> {
   const { data, error } = await supabase.rpc("get_dashboard_store", {
-    in_user_id: auth.user_id,
+    user_id: auth.user_id,
   });
 
   if (error) {

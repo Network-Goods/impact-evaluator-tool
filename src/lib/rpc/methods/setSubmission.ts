@@ -5,9 +5,6 @@ type Params = {
 };
 
 export async function setSubmission({ supabase, params: { id }, auth }: ServerParams<Params>): Promise<void | Error> {
-  if (!isAdmin(auth)) {
-    return new Error(`Unauthorized`);
-  }
   const { error } = await supabase.from("submission").update({ is_submitted: true }).eq("id", id);
 
   if (error) {

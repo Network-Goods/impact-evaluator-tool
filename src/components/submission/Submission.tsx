@@ -118,7 +118,8 @@ export default function Submission() {
       links: store.submission?.links,
       githubHandle: store.submission?.github_handle,
     });
-    setIsGithubHandleChecked(githubHandleFromProfile === store.submission?.github_handle);
+    // TODO: get Chris to review this
+    // setIsGithubHandleChecked(githubHandleFromProfile === store.submission?.github_handle);
   }, [store.submission]);
 
   const isSubmitButtonDisabled =
