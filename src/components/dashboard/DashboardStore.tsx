@@ -6,7 +6,7 @@ export interface DashboardStore {
   error?: any;
   evaluations: DashboardEvaluation[];
   load: () => void;
-  createEvaluation: () => Promise<DashboardEvaluation | Error>;
+  createEvaluation: () => Promise<Evaluation | Error>;
 }
 
 export const useDashboardStore = create<DashboardStore>()((set, get) => ({
@@ -27,15 +27,10 @@ export const useDashboardStore = create<DashboardStore>()((set, get) => ({
     });
   },
 
-  createEvaluation: async (): Promise<DashboardEvaluation | Error> => {
-    const newEvaluation: DashboardEvaluation = {
+  createEvaluation: async (): Promise<Evaluation | Error> => {
+    const newEvaluation: Evaluation = {
       ...Evaluation.init(),
-      is_submitted: false,
     };
-
-    set({
-      evaluations: [...get().evaluations, newEvaluation],
-    });
 
     const res = await rpc.call("createEvaluation", {
       evaluation: newEvaluation,
@@ -44,7 +39,6 @@ export const useDashboardStore = create<DashboardStore>()((set, get) => ({
     if (res instanceof Error) {
       return res;
     }
-
     return newEvaluation;
   },
 }));

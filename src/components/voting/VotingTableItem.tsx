@@ -78,17 +78,8 @@ export default function VotingTableItem({
             {userProfileStore.profile?.github_handle === project.github_handle ? (
               <SelfDealingTooltip>
                 <div className="pointer-events-none">
-                  <button
-                    className={`w-6 h-6 md:w-9 md:h-9 rounded outline-none
-               bg-blue-light bg-opacity-50
-            `}
-                  >
-                    <span
-                      className={`m-auto md:text-2xl font-semibold text-blue text-opacity-30
-                  `}
-                    >
-                      +
-                    </span>
+                  <button className={`w-6 h-6 md:w-9 md:h-9 rounded outline-none bg-blue-light bg-opacity-50`}>
+                    <span className={`m-auto md:text-2xl font-semibold text-blue text-opacity-30`}>+</span>
                   </button>
                 </div>
               </SelfDealingTooltip>

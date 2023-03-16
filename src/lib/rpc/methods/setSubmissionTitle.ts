@@ -13,7 +13,6 @@ export async function setSubmissionTitle({
   auth,
 }: ServerParams<Params>): Promise<void | Error> {
   user_id = user_id ? user_id : auth.user_id;
-
   if (!isAdmin(auth) && user_id != auth.user_id) {
     return new Error(`Unauthorized`);
   }

@@ -1,39 +1,34 @@
 import { Collapse } from "@mui/material";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import Delete from "public/images/svg/Delete";
 import DownChevron from "public/images/svg/DownChevron";
 import LeftArrow from "public/images/svg/LeftArrow";
 import { useEffect, useState } from "react";
-import LoadingSpinner from "src/components/shared/LoadingSpinner";
 import EvaluationLinkButton from "../dashboard/EvaluationLinkButton";
 import SmallTitle from "../shared/SmallTitle";
-import Button from "../shared/Button";
 import Title from "../shared/Title";
-import VotingTable from "../voting/VotingTable";
 import VotingTableBody from "../voting/VotingTableBody";
-import { useRoundDetailsStore } from "./RoundDetailsStore";
-import { Submission } from "src/lib";
-import { useUserProfileStore } from "src/lib/UserProfileStore";
+import { Submission, VotingTableBodySubmission } from "src/lib";
 import Add from "public/images/svg/Add";
 import QuadraticVotingModal from "../voting/QuadraticVotingModal";
+import parse from "html-react-parser";
+import moment from "moment";
 
-export default function RoundDetails() {
-  const router = useRouter();
-  const store = useRoundDetailsStore();
-  const userProfileStore = useUserProfileStore();
+type RoundDetailsProps = {
+  store: any;
+  clickNewSubmission: () => void;
+  isNewSubmissionPending: boolean;
+  evaluation_id: string | string[] | undefined;
+};
+
+export default function RoundDetails({
+  store,
+  clickNewSubmission,
+  isNewSubmissionPending,
+  evaluation_id,
+}: RoundDetailsProps) {
   const [openArray, setOpenArray] = useState<boolean[]>([]);
-  const [isNewSubmissionPending, setIsNewSubmissionPending] = useState<boolean>(false);
   const [openQuadraticModal, setOpenQuadraticModal] = useState(false);
-
-  const { evaluation_id } = router.query;
-
-  useEffect(() => {
-    if (!evaluation_id || Array.isArray(evaluation_id) || !userProfileStore.profile) {
-      return;
-    }
-    store.load(userProfileStore.profile.id, evaluation_id, userProfileStore.profile.github_handle);
-  }, [evaluation_id, store.fetching, userProfileStore.profile]);
 
   useEffect(() => {
     if (!store.submissions) {
@@ -47,19 +42,6 @@ export default function RoundDetails() {
 
     setOpenArray(arr);
   }, [store.submissions]);
-
-  const clickNewSubmission = async () => {
-    setIsNewSubmissionPending(true);
-    const submission = await store.createSubmission();
-    if (!submission) {
-      return;
-    }
-
-    router.push(`/evaluation/${evaluation_id}/submission/${submission.id}`);
-  };
-
-  if (store.fetching) return <LoadingSpinner />;
-
   return (
     <>
       <div className="pb-2">
@@ -72,7 +54,7 @@ export default function RoundDetails() {
             </Link>
           </div>
           <div className="flex-1">
-            <Title text="Space Warp Impact Evaluator | Round 4" />
+            <Title text={store.evaluation.name} />
           </div>
         </div>
         <div className="px-2">
@@ -96,9 +78,9 @@ export default function RoundDetails() {
                   <div className="flex py-4 pl-4 md:pl-12">
                     <SmallTitle text="Name" />
                   </div>
-                  {Array.isArray(store.submissions) && store.submissions.length ? (
+                  {Array.isArray(store.submissions) && store.submissions.length > 0 ? (
                     <div>
-                      {store.submissions?.map((submission: Submission, idx: number) => {
+                      {store.submissions?.map((submission: VotingTableBodySubmission, idx: number) => {
                         return (
                           <div key={idx}>
                             <div>
@@ -106,7 +88,7 @@ export default function RoundDetails() {
                                 className={`flex items-center pl-4 md:px-6 border border-gray border-x-0 border-b-0 ${
                                   idx % 2 === 0 ? "bg-white" : "bg-gray-lighter"
                                 }
-                        ${!openArray[idx] ? "rounded-b-lg" : ""}`}
+                                ${!openArray[idx] ? "rounded-b-lg" : ""}`}
                               >
                                 <div
                                   className={`w-[60%] md:w-[83%] flex justify-between ${
@@ -129,8 +111,8 @@ export default function RoundDetails() {
                                   >
                                     <DownChevron
                                       className={`h-5 w-5 transform transition-all duration-300  ease-in-out
-                            ${openArray[idx] ? "rotate-180 fill-blue" : "rotate-0"}
-                            `}
+                                    ${openArray[idx] ? "rotate-180 fill-blue" : "rotate-0"}
+                                    `}
                                     />
                                   </button>
                                 </div>
@@ -150,7 +132,6 @@ export default function RoundDetails() {
                                 </div>
                               </div>
                             </div>
-
                             <Collapse in={openArray[idx]} timeout="auto" unmountOnExit>
                               <VotingTableBody
                                 idx={idx}
@@ -175,40 +156,7 @@ export default function RoundDetails() {
           <div className="pb-14">
             <h3 className="text-2xl text-blue-alt font-bold">Round Overview</h3>
             <div className="text-xl pt-4">
-              This Impact Evaluator (IE) round is part of the Space Warp program, which leads up to the mainnet launch
-              of the Filecoin Virtual Machine (FVM). The recurring IE rounds crowdsource the community’s perspective on
-              the most valuable work being done on the FVM, which populates the <b>FVM Builders Leaderboard</b> and
-              directs the allocation of a $75,000 prize pool.
-              <br />
-              <br />
-              Impact Evaluators are a type of funding mechanism that Protocol Labs is working to define and grow. By
-              transparently measuring, evaluating, and rewarding valuable projects over time, this project aims to
-              increase the efficiency of public goods funding for the Filecoin ecosystem.
-              <br />
-              <br />
-              To learn more about Space Warp’s Impact Evaluator Rounds, see:
-              <ul className="list-disc ml-6 pt-2">
-                <li>
-                  <a
-                    className="text-blue hover:text-blue-dark font-bold underline"
-                    href="https://network-goods.notion.site/Impact-Evaluators-Builders-Leaderboard-602ea6755b5642e1ad6f9da59a47fa62"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    IE Round Overview & FAQ
-                  </a>
-                </li>
-                <li>
-                  <a
-                    className="text-blue hover:text-blue-dark font-bold underline"
-                    href="https://spacewarp.fvm.dev/#ie"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    FVM Builders Leaderboard
-                  </a>
-                </li>
-              </ul>
+              <div className="rich-text-display">{parse(store.evaluation.description)}</div>
             </div>
           </div>
 
@@ -220,12 +168,13 @@ export default function RoundDetails() {
                 <div>
                   <b>Start:</b>
                   <br />
-                  <span>Wednesday, Mar. 8 at 00:01 UTC-5</span>
+
+                  <span>{moment(store.evaluation.start_time).utc().format("dddd, MMM. D [at] HH:mm z")}</span>
                 </div>
                 <div className="pt-4 md:pt-0 md:pl-20">
                   <b>End:</b>
                   <br />
-                  <span>Thursday, Mar. 9 at 23:59 UTC-5</span>
+                  <span>{moment(store.evaluation.end_time).utc().format("dddd, MMM. D [at] HH:mm z")}</span>
                 </div>
               </div>
             </div>

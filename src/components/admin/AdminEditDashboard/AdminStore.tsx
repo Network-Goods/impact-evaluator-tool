@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { Evaluation, rpc, DashboardEvaluation } from "src/lib";
+import { rpc } from "src/lib";
 
 export interface AdminStore {
   fetching: boolean;

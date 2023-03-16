@@ -12,6 +12,12 @@ type Return = {
   submission: Submission;
 };
 
+// select *
+// 	into _new_submission
+// 	from (
+// 		values ( create_submission.id, create_submission.name, create_submission.github_link, create_submission.evaluation_id, '{}', create_submission.links, create_submission.github_handle, false, create_submission.user_id)
+// 	)as t;
+
 export async function joinWithCode({ supabase, params }: ServerParams<Params>): Promise<Return | AppError> {
   // TODO: if user has already joined the round error, we should show which round it is that they tried to rejoin
   // TODO: errors raised in stored procedures are now caught in the error object? (causes a panic)

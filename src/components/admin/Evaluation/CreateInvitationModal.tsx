@@ -2,7 +2,6 @@ import { useState } from "react";
 import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
-import Fade from "@mui/material/Fade";
 import Button from "src/components/shared/Button";
 import EvaluationSubTitle from "./EvaluationSubTitle";
 
@@ -20,7 +19,7 @@ type CreateInvitationModalProps = {
 };
 
 const CreateInvitationModal = ({ handleClose, open, store }: CreateInvitationModalProps) => {
-  const [inputs, setInputs] = useState<any>({});
+  const [inputs, setInputs] = useState<any>({ is_sme: false });
 
   const handleChange = (event: any) => {
     const name = event.target.name;
@@ -28,6 +27,9 @@ const CreateInvitationModal = ({ handleClose, open, store }: CreateInvitationMod
     setInputs((values: any) => ({ ...values, [name]: value }));
   };
 
+  const handleChecked = () => {
+    setInputs((values: any) => ({ ...values, is_sme: !values.is_sme }));
+  };
   const handleSubmit = () => {
     store.createInvitation(inputs);
     handleClose();
@@ -54,7 +56,7 @@ const CreateInvitationModal = ({ handleClose, open, store }: CreateInvitationMod
         <div className="pb-10">
           <h4 className="font-bold pt-5 pb-3">Create unique code for Impact Evaluator round.</h4>
           <div className="grid lg:grid-cols-6 lg:gap-[18px]">
-            <div className="col-span-4">
+            <div className="col-span-3">
               <EvaluationSubTitle small text="Round code" />
               <input
                 type="text"
@@ -84,6 +86,16 @@ const CreateInvitationModal = ({ handleClose, open, store }: CreateInvitationMod
                 value={inputs.remaining_uses || 0}
                 onChange={handleChange}
               />
+            </div>
+            <div>
+              <EvaluationSubTitle small text="Form Submission" />
+              <input
+                type="checkbox"
+                name="form"
+                checked={!inputs.is_sme || false}
+                onChange={() => handleChecked()}
+              />{" "}
+              <span className="text-sm">Required</span>
             </div>
           </div>
         </div>

@@ -9,7 +9,13 @@ export async function getSubmissionStore({
   supabase,
   params: { submission_id },
 }: ServerParams<Params>): Promise<any | Error> {
-  const { error, data } = await supabase.from("submission").select("*").eq("id", submission_id).single();
+  const { error, data } = await supabase
+    .from("submission")
+    .select(
+      "*, evaluation(description, name, evaluation_field!evaluation_field_evaluation_id_fkey(*, submission_field(*)))",
+    )
+    .eq("id", submission_id)
+    .single();
 
   if (error) {
     console.error(error);

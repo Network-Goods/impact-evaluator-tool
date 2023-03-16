@@ -1,9 +1,15 @@
-export function returnTime(date: string) {
+export function returnTime(date: string | null) {
+  if (date === null) {
+    return;
+  }
   const time = new Date(date).toUTCString();
   return time.slice(17, 22) + " UTC";
 }
 
-export function returnDate(date: string) {
+export function returnDate(date: string | null) {
+  if (date === null) {
+    return;
+  }
   const fullDate = new Date(date);
   return fullDate.getUTCFullYear() + "." + (Number(fullDate.getUTCMonth()) + 1) + "." + fullDate.getUTCDate();
 }
@@ -90,4 +96,16 @@ export function downloadCSV(data: any, csvName: string) {
   a.setAttribute("href", url);
   a.setAttribute("download", csvName);
   a.click();
+}
+
+export function submissionFormCustomFieldsCheck(formInputs: any, submission_id: string | string[] | undefined) {
+  let completed = true;
+  formInputs.evaluation_field.map((field: any) => {
+    field.submission_field.map((subfield: any) => {
+      if (subfield.submission_id === submission_id && subfield.field_body === "") {
+        completed = false;
+      }
+    });
+  });
+  return completed;
 }

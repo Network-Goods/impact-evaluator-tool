@@ -2,46 +2,49 @@
 @tailwind components;
 @tailwind utilities;
 
-/* react-datepicker */
-.react-datepicker {
-  font-family: Aileron !important;
-}
-.react-datepicker__header {
-  background-color: transparent !important;
-  border: 0 !important;
-}
-.react-datepicker__current-month {
-  font-size: 17px !important;
-}
-.react-datepicker__day-name {
-  color: #3c3c434d !important;
-  text-transform: uppercase !important;
-}
-.react-datepicker__day {
-  font-size: 16px !important;
-  font-weight: 400 !important;
-}
-.react-datepicker__day--selected {
-  border-radius: 100% !important;
-  background-color: #0a7aff1f !important;
-  color: #0a7aff !important;
-}
-.react-datepicker__navigation-icon::before {
-  border: solid #0a7aff !important;
-  border-width: 2px 2px 0 0 !important;
-  margin-top: 8px !important;
-}
-.react-datepicker-time__caption,
-.react-datepicker-time__input {
-  font-size: 18px !important;
-  font-weight: 400 !important;
-}
-
-.react-datepicker__input-time-container {
-  margin-left: 10px !important;
-}
-
 @font-face {
   font-family: "Aileron";
   src: local("Aileron"), url(../../public/fonts/Aileron-Regular.otf) format("opentype");
+}
+
+/* react-datetime */
+.rdt.create .form-control {
+  @apply w-full px-4 py-2 border border-gray focus:outline-none bg-white;
+}
+.rdt.left .form-control {
+  @apply rounded-l-lg;
+}
+.rdt.right .form-control {
+  @apply rounded-r-lg border-l-0;
+}
+
+/* rich text editor */
+.rdw-link-modal-target-option {
+  @apply !mb-0;
+}
+
+.public-DraftStyleDefault-block {
+  @apply !my-0;
+}
+
+.rich-text-display p {
+  @apply mb-6;
+}
+.rich-text-display p:has(+ ol) {
+  @apply mb-0;
+}
+.rich-text-display p:has(+ ul) {
+  @apply mb-0;
+}
+.rich-text-display ol {
+  @apply list-decimal ml-6 pt-2;
+}
+.rich-text-display ul {
+  @apply list-disc ml-6 pt-2;
+}
+.rich-text-display a {
+  @apply text-blue hover:text-blue-dark font-bold underline;
+}
+.rich-text-display ins {
+  @apply underline;
 }

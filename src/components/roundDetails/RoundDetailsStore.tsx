@@ -1,11 +1,12 @@
 import { create } from "zustand";
 import { v4 as uuid } from "uuid";
 import { rpc, Submission } from "src/lib";
-import { deleteSubmission } from "src/lib/rpc/methods";
 
 export interface RoundDetailsStore {
   fetching: boolean;
+  evaluation?: any;
   submissions?: Submission[];
+  evaluation_field?: any;
   evaluationID?: string;
   userID?: string;
   githubHandle?: string;
@@ -29,7 +30,9 @@ export const useRoundDetailsStore = create<RoundDetailsStore>()((set, get) => ({
     }
 
     set({
-      submissions: data,
+      evaluation: data.evaluation[0],
+      submissions: data.submissions,
+      evaluation_field: data.evaluation_field,
       evaluationID: evaluationID,
       userID: userID,
       githubHandle: githubHandle,

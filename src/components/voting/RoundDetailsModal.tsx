@@ -3,6 +3,7 @@ import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 import Close from "public/images/svg/Close";
+import parse from "html-react-parser";
 
 const style = {
   position: "absolute",
@@ -14,9 +15,10 @@ const style = {
 type RoundDetailsModalProps = {
   handleClose: () => void;
   open: boolean;
+  content: string;
 };
 
-export default function RoundDetailsModal({ handleClose, open }: RoundDetailsModalProps) {
+export default function RoundDetailsModal({ handleClose, open, content }: RoundDetailsModalProps) {
   return (
     <Modal
       aria-labelledby="transition-modal-title"
@@ -44,45 +46,7 @@ export default function RoundDetailsModal({ handleClose, open }: RoundDetailsMod
               <Close className="fill-current" />
             </button>
           </div>
-          <div className="md:text-lg">
-            <div className="py-3">
-              This Impact Evaluator (IE) round is part of the Space Warp program, which leads up to the mainnet launch
-              of the Filecoin Virtual Machine (FVM). The recurring IE rounds crowdsource the community’s perspective on
-              the most valuable work being done on the FVM, which populates the{" "}
-              <span className="font-bold">FVM Builders Leaderboard</span> and directs the allocation of a $75,000 prize
-              pool.
-            </div>
-            <div className="py-3">
-              Impact Evaluators are a type of funding mechanism that Protocol Labs is working to define and grow. By
-              transparently measuring, evaluating, and rewarding valuable projects over time, this project aims to
-              increase the efficiency of public goods funding for the Filecoin ecosystem.
-            </div>
-            <div className="py-3">
-              To learn more about Space Warp’s Impact Evaluator Rounds, see:
-              <ul className="list-disc ml-6">
-                <li>
-                  <a
-                    className="text-blue hover:text-blue-dark font-bold underline"
-                    href="https://network-goods.notion.site/Impact-Evaluators-Builders-Leaderboard-602ea6755b5642e1ad6f9da59a47fa62"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    IE Round Overview & FAQ
-                  </a>
-                </li>
-                <li>
-                  <a
-                    className="text-blue hover:text-blue-dark font-bold underline"
-                    href="https://spacewarp.fvm.dev/#ie"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    FVM Builders Leaderboard
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
+          <div className="md:text-lg rich-text-display">{parse(content)}</div>
         </Box>
       </Fade>
     </Modal>

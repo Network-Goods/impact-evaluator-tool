@@ -3,7 +3,6 @@ import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 import Button from "../shared/Button";
-import { useRouter } from "next/router";
 
 const style = {
   position: "absolute",
@@ -22,8 +21,6 @@ type SubmitEvaluationModalProps = {
 };
 
 const SubmitEvaluationModal = ({ handleSubmit, handleClose, open }: SubmitEvaluationModalProps) => {
-  const router = useRouter();
-
   const submit = () => {
     handleSubmit();
     window.location.replace("/");

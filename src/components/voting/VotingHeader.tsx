@@ -17,7 +17,6 @@ export default function VotingHeader({ evaluation }: VotingHeaderProps) {
 
   const handleOpenQuadraticModal = () => setOpenQuadraticModal(true);
   const handleCloseQuadraticModal = () => setOpenQuadraticModal(false);
-
   const handleOpenDetailsModal = () => setOpenDetailsModal(true);
   const handleCloseDetailsModal = () => setOpenDetailsModal(false);
   return (
@@ -70,7 +69,11 @@ export default function VotingHeader({ evaluation }: VotingHeaderProps) {
         </div>
       </div>
       <QuadraticVotingModal open={openQuadraticModal} handleClose={handleCloseQuadraticModal} />
-      <RoundDetailsModal open={openDetailsModal} handleClose={handleCloseDetailsModal} />
+      <RoundDetailsModal
+        open={openDetailsModal}
+        handleClose={handleCloseDetailsModal}
+        content={evaluation.description}
+      />
     </div>
   );
 }

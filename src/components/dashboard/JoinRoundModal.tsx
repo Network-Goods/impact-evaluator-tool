@@ -1,5 +1,5 @@
-import { ChangeEvent, useState } from "react";
-import { SupabaseClient, useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
+import { useState } from "react";
+import { useSession } from "@supabase/auth-helpers-react";
 import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
