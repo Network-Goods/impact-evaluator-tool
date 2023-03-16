@@ -16,10 +16,9 @@ export default function Dashboard() {
 
   if (store.fetching) return <LoadingSpinner />;
   if (store.error) return <p>Oh no... {store.error.message}</p>;
-
   return (
     <>
-      <DashboardHeader />
+      <DashboardHeader store={store} />
       {store.evaluations.filter((evaluation) => evaluation.status !== "closed" && evaluation.status !== "draft")
         .length !== 0 ? (
         <EvaluationCard>

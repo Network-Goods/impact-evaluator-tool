@@ -1,7 +1,7 @@
 import Container from "src/components/layout/Container";
 import Layout from "src/components/layout/Layout";
 import AuthNavbar from "src/components/navBar/AuthNavbar";
-import Submission from "src/components/submission/Submission";
+import SubmissionPage from "src/components/submission/SubmissionPage";
 
 export default function Index() {
   return (
@@ -9,7 +9,7 @@ export default function Index() {
       <AuthNavbar />
       <main>
         <Container>
-          <Submission />
+          <SubmissionPage />
         </Container>
       </main>
     </Layout>

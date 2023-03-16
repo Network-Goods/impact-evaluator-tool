@@ -40,7 +40,7 @@ export default function AuthNavbar() {
               </div>
             </Link>
             {userProfileStore.isAdmin() ? (
-              <Link href="/admin">
+              <Link href="/admin/evaluation">
                 <div className="ml-[10px]">
                   <div className="inline-flex flex-row w-auto items-center justify-center font-bold rounded-lg text-sm py-[5px] px-[10px] bg-gray-lighter text-blue">
                     ADMIN

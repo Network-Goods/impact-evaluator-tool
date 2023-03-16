@@ -1,36 +1,31 @@
-import { useRouter } from "next/router";
 import Add from "public/images/svg/Add";
 import { useState } from "react";
 import Button from "src/components/shared/Button";
-import { useDashboardStore } from "./DashboardStore";
 
-export default function CreateEvaluationButton() {
-  const dashboardStore = useDashboardStore();
-  const [disabled, set_disabled] = useState(false);
-  const router = useRouter();
+type CreateEvaluationButtonProps = {
+  store: any;
+};
 
-  async function onClick() {
-    set_disabled(true);
+export default function CreateEvaluationButton({ store }: CreateEvaluationButtonProps) {
+  const [isNewEvaluationPending, setIsNewEvaluationPending] = useState<boolean>(false);
 
-    const res = await dashboardStore.createEvaluation();
+  const handleCreateNewEvaluation = async () => {
+    setIsNewEvaluationPending(true);
 
-    if (res instanceof Error) {
-      set_disabled(false);
-      console.error(res);
+    const evaluation = await store.createEvaluation();
+    if (!evaluation) {
       return;
     }
-
-    router.push(`/evaluation/${res.id}`);
-    set_disabled(false);
-  }
+    window.location.replace(`/admin/evaluation/${evaluation.id}`);
+  };
 
   return (
     <div>
       <Button
         text="Create a Round"
         icon={<Add className="fill-white" />}
-        onClick={() => console.log("Create a Round")}
-        disabled
+        onClick={() => handleCreateNewEvaluation()}
+        disabled={isNewEvaluationPending}
       />
     </div>
   );

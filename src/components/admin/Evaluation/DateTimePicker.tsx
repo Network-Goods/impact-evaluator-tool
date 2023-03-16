@@ -1,23 +1,26 @@
 import { forwardRef } from "react";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import Datetime from "react-datetime";
+import { Moment } from "moment";
+import "react-datetime/css/react-datetime.css";
 
 type DateTimePickerProps = {
-  date: Date;
-  setDate: (date: Date) => void;
+  date: string | Date | Moment | undefined;
+  setDate: (date: string) => void;
+  classes: string;
 };
 
-export const DateTimePicker = forwardRef<any, DateTimePickerProps>(({ date, setDate }, ref) => (
-  <DatePicker
-    ref={ref}
-    selected={date}
-    onChange={(date: Date) => setDate(date)}
-    showTimeInput
-    dateFormat={"yyyy.MM.dd"}
-    className="w-[100px]"
-    showPopperArrow={false}
-    timeInputLabel="Local Time:"
+export const DateTimePicker = forwardRef<any, DateTimePickerProps>(({ date, setDate, classes }, ref) => (
+  <Datetime
+    utc={true}
+    value={date}
+    onChange={(date: any) => setDate(date)}
+    dateFormat={"yyyy.MM.DD"}
+    timeFormat={"HH:mm z"}
+    inputProps={{
+      placeholder: "Select date",
+      ref: ref,
+    }}
+    className={classes}
   />
 ));
 DateTimePicker.displayName = "DateTimePicker";
-// LegacyRef<ReactDatePicker<never, undefined>> | undefined;
