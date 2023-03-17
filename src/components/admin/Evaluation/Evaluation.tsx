@@ -20,8 +20,6 @@ export default function Evaluation() {
   if (store.fetching) return <LoadingSpinner />;
   // if (store.error) return <p>Oh no... {store.error.message}</p>;
 
-  console.log("HEHEHEHEH");
-
   return (
     <>
       {store.evaluation.status === "draft" ? (
