@@ -8,8 +8,6 @@ export async function getStatusStore({ supabase, auth }: ServerParams<null>): Pr
 
   const { data, error } = await supabase.rpc("get_status_store");
 
-  console.log("status store data: ", data);
-
   if (error) {
     console.error(error);
     return new Error(`ERROR -- get_status_store failed. message: ${error.message}`);
