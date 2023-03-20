@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import dynamic from "next/dynamic";
 import Button from "../shared/Button";
 import SubmitEvaluationModal from "./SubmitEvaluationModal";
 import { useClickOutside } from "../../hooks/useClickOutside";
@@ -6,11 +7,14 @@ import { useRouter } from "next/router";
 import VotingHeader from "./VotingHeader";
 import VotingFilter from "./VotingFilter";
 import VotingTable from "./VotingTable";
-import VotingCreditCounter from "./VotingCreditCounter";
 import { useVotingStore } from "./VotingStore";
 import { useUserProfileStore } from "src/lib/UserProfileStore";
 import Link from "next/link";
 import LoadingSpinner from "../shared/LoadingSpinner";
+
+const VotingCreditCounter = dynamic(() => import("./VotingCreditCounter"), {
+  ssr: false,
+});
 
 export default function Voting() {
   const [openModal, setOpenModal] = useState(false);
@@ -73,13 +77,12 @@ export default function Voting() {
           openArray={openArray}
           setOpenArray={setOpenArray}
         />
-        <div>
-          <VotingCreditCounter
-            handleReset={store.resetVotes}
-            credits={store.availableCredits}
-            allocatedCredits={store.allocatedCredits}
-          />
-        </div>
+
+        <VotingCreditCounter
+          handleReset={store.resetVotes}
+          credits={store.availableCredits}
+          allocatedCredits={store.allocatedCredits}
+        />
       </div>
 
       <div className="flex justify-between mt-10">
