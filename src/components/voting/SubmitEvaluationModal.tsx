@@ -15,14 +15,14 @@ const style = {
 };
 
 type SubmitEvaluationModalProps = {
-  handleSubmit: () => void;
+  handleSubmit: () => Promise<void>;
   handleClose: () => void;
   open: boolean;
 };
 
 const SubmitEvaluationModal = ({ handleSubmit, handleClose, open }: SubmitEvaluationModalProps) => {
-  const submit = () => {
-    handleSubmit();
+  const submit = async () => {
+    await handleSubmit();
     window.location.replace("/");
   };
   return (
