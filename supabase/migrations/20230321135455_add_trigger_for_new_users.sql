@@ -1,4 +1,3 @@
-CREATE TRIGGER on_new_user AFTER INSERT ON auth.users FOR EACH ROW EXECUTE FUNCTION handle_new_user();
 set check_function_bodies = off;
 CREATE OR REPLACE FUNCTION public.handle_new_user()
  RETURNS trigger
@@ -9,3 +8,4 @@ AS $function$begin
   return new;
 end;$function$
 ;
+CREATE TRIGGER on_new_user AFTER INSERT ON auth.users FOR EACH ROW EXECUTE FUNCTION handle_new_user();
