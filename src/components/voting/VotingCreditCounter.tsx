@@ -10,14 +10,15 @@ type VotingCreditCounterProps = {
 };
 
 export default function VotingCreditCounter({ handleReset, credits, allocatedCredits }: VotingCreditCounterProps) {
-  const div = useRef<any>();
+  const div = useRef<HTMLDivElement>(null);
   const { width } = useWindowDimensions();
 
   useLayoutEffect(() => {
-    if (width && width < 1024) return;
+    if ((width && width < 1024) || !div.current) return;
     const divAnimate = div.current.getBoundingClientRect().top - 97.44;
     const divLeftSide = div.current.getBoundingClientRect().left;
     const onScroll = () => {
+      if (!div.current) return;
       if (divAnimate < window.scrollY) {
         div.current.style.position = "fixed";
         div.current.style.top = "73.44px";
@@ -33,7 +34,7 @@ export default function VotingCreditCounter({ handleReset, credits, allocatedCre
   }, [width]);
   return (
     <div className="lg:relative lg:min-w-[263px]">
-      <div ref={div} className="">
+      <div ref={div}>
         <div className="rounded-lg bg-white border border-gray p-12 mt-4 lg:mt-6 lg:ml-6 text-center">
           <SmallTitle text="VOICE CREDITS" />
           <div className="text-4xl mt-2 min-w-[141.08px]">
