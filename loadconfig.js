@@ -43,6 +43,4 @@ const env = {
   ...optional,
 };
 
-console.log(env);
-
 module.exports = env;
