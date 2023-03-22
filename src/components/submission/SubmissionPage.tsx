@@ -67,7 +67,9 @@ export default function SubmissionPage() {
     if (!submission) {
       return;
     }
+
     setIsSubmitted(false);
+    setIsNewSubmissionPending(false);
 
     router.push(`/evaluation/${evaluation_id}/submission/${submission.id}`);
   };
