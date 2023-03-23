@@ -19,7 +19,7 @@ export default function VotingFilter({
 }: VotingFilter) {
   return (
     <div className="flex flex-col md:flex-row">
-      <div className="mb-1 md:mr-2">
+      <div className="md:mr-2">
         <div className="absolute pl-6">
           <Search className="mt-[14px]" />
         </div>
@@ -31,7 +31,7 @@ export default function VotingFilter({
           "
         />
       </div>
-      <div className="h-16 flex justify-center md:block">
+      <div className="h-12 flex justify-center md:block">
         <div className="absolute" ref={projectsViewWrapperRef}>
           <div>
             <button

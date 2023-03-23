@@ -14,7 +14,7 @@ type VotingTableProps = {
 export default function VotingTable({ search, submissions, openArray, setOpenArray }: VotingTableProps) {
   return (
     <div className="flex-1">
-      <div className="w-full rounded-lg bg-[#f0f0f0] border border-gray">
+      <div className="w-full rounded-lg bg-[#f0f0f0] border border-gray mt-6">
         <VotingTableHeader />
         <div>
           {filterSubmissions(search, submissions).map((project: any, idx: number) => {
