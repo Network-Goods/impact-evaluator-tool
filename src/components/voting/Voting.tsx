@@ -11,10 +11,7 @@ import { useVotingStore } from "./VotingStore";
 import { useUserProfileStore } from "src/lib/UserProfileStore";
 import Link from "next/link";
 import LoadingSpinner from "../shared/LoadingSpinner";
-
-const VotingCreditCounter = dynamic(() => import("./VotingCreditCounter"), {
-  ssr: false,
-});
+import VotingCreditCounter from "./VotingCreditCounter";
 
 export default function Voting() {
   const [openModal, setOpenModal] = useState(false);
