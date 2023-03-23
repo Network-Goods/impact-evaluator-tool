@@ -27,7 +27,7 @@ export type VotingStore = {
   getAllocatedVoiceCredits: (submission_id: string) => number;
   canVoteAgain: (submission_id: string) => boolean;
   resetVotes: () => void;
-  setEvaluatorSubmission: () => void;
+  setEvaluatorSubmission: () => Promise<void>;
 };
 
 export const useVotingStore = create<VotingStore>()((set, get) => ({
@@ -176,14 +176,14 @@ export const useVotingStore = create<VotingStore>()((set, get) => ({
         }
       });
   },
-  setEvaluatorSubmission: () => {
+  setEvaluatorSubmission: async () => {
     const evaluator = get().evaluator;
 
     if (!evaluator) {
       return;
     }
 
-    rpc.call("setEvaluatorSubmission", { evaluator_id: evaluator.id }).then((data) => {
+    return rpc.call("setEvaluatorSubmission", { evaluator_id: evaluator.id }).then((data) => {
       if (data instanceof Error) {
         console.error(`ERROR -- rpc call setEvaluatorSubmission failed`, data);
         return;
