@@ -22,5 +22,7 @@ export async function getSubmissionStore({
     return new Error(`ERROR -- failed to get Submission Store`);
   }
 
+  (data as any).evaluation.evaluation_field.sort((a: any, b: any) => a.field_order - b.field_order);
+
   return data as any;
 }
