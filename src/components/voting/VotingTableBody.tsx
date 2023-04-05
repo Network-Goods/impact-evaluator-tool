@@ -10,6 +10,8 @@ type VotingTableBodyProps = {
 };
 
 export default function VotingTableBody({ idx, project, submissions, search }: VotingTableBodyProps) {
+  project.fields.sort((a: any, b: any) => a.field_order - b.field_order);
+
   return (
     <div
       className={`px-4 md:px-12 pb-4 md:pb-6
