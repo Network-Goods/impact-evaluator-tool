@@ -25,7 +25,7 @@ export default function VotingTableBody({ idx, project, submissions, search }: V
           {project.fields.map((field: any) => (
             <div key={field.field_id}>
               <div className="font-bold">{field.heading}</div>
-              <p className="text-sm mb-3">{field.field_body}</p>
+              <p className="text-sm mb-3 whitespace-pre-wrap">{field.field_body}</p>
             </div>
           ))}
         </div>
