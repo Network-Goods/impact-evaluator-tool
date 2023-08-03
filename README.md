@@ -1,4 +1,20 @@
-# Impact Evaluator Tool
+# Impact Evaluator Tool | Quadratic Voting Implementation
+Impact Evaluator implementatiom used for subjective, quantitative evaluations of a list of outcomes or projects. The tool uses quadratic voting as the evaluation mechanism.
+
+Website: impactevaluator.io
+
+## Resources
+### Demo:
+Video: bit.ly/ietooldemo
+Link: impactevaluator.io
+Codes:
+  - Round4Demo
+  - DemoSubmissions
+
+### Case Studies:
+- [IPFS Impact Evaluator Round 1](https://network-goods.notion.site/IPFS-Impact-Evaluator-Round-1-bcc8450ae387487fad9916cf9d645417)
+- [FVM Impact Evaluator & Builders Leaderboard](https://network-goods.notion.site/Impact-Evaluators-Builders-Leaderboard-602ea6755b5642e1ad6f9da59a47fa62)
+- [IPFS Impact Evaluator Round 2](https://docs.google.com/document/d/105-nsKp5KkH9SSWY0XmWwZ7_RqZDvlheK3W5ez7Hi1I/edit)
 
 ## Development
 
