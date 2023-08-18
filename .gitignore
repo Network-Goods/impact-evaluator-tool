@@ -38,3 +38,5 @@ yarn-error.log*
 result
 
 supabase/migrations/*_seed.sql
+
+.direnv

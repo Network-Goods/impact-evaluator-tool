@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { v4 as uuid } from "uuid";
 import { rpc, Submission } from "src/lib";
+import { trpc } from "src/lib/trpc";
 
 export interface EvaluationStore {
   fetching: boolean;
@@ -212,10 +213,8 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
       },
     });
 
-    rpc
-      .call("createFormField", {
-        formField: newFormField,
-      })
+    trpc()
+      .admin.createFormField.mutate(newFormField)
       .then((data) => {
         if (data instanceof Error) {
           console.error(`ERROR -- rpc call createFormField failed`, data);
@@ -352,12 +351,14 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
       },
     });
 
-    rpc.call("deleteFormField", { id: id }).then((data) => {
-      if (data instanceof Error) {
-        console.error(`ERROR -- rpc call deleteFormField failed`, data);
-        return;
-      }
-    });
+    trpc()
+      .admin.deleteFormField.mutate({ id: id })
+      .then((data) => {
+        if (data instanceof Error) {
+          console.error(`ERROR -- rpc call deleteFormField failed`, data);
+          return;
+        }
+      });
   },
   deleteEvaluation: () => {
     const evaluation = get().evaluation;
@@ -366,12 +367,14 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
       return;
     }
 
-    rpc.call("deleteEvaluation", { id: evaluation.id }).then((data) => {
-      if (data instanceof Error) {
-        console.error(`ERROR -- rpc call deleteEvaluation failed`, data);
-        return;
-      }
-    });
+    trpc()
+      .admin.deleteEvaluation.mutate({ id: evaluation.id })
+      .then((data) => {
+        if (data instanceof Error) {
+          console.error(`ERROR -- rpc call deleteEvaluation failed`, data);
+          return;
+        }
+      });
   },
 
   createSubmission: async (): Promise<Submission | null> => {
@@ -398,7 +401,8 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
       },
     });
 
-    const res = await rpc.call("createSubmission", { submission: newSubmission });
+    const res = await trpc().user.createSubmission.mutate(newSubmission);
+
     // TODO: error handling
     if (res instanceof Error) {
       console.error(`ERROR -- rpc call createSubmission failed`, res);
@@ -540,12 +544,14 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
       },
     });
 
-    rpc.call("deleteInvitation", { id: id }).then((data) => {
-      if (data instanceof Error) {
-        console.error(`ERROR -- rpc call deleteInvitation failed`, data);
-        return;
-      }
-    });
+    trpc()
+      .admin.deleteInvitation.mutate({ id: id })
+      .then((data) => {
+        if (data instanceof Error) {
+          console.error(`ERROR -- rpc call deleteInvitation failed`, data);
+          return;
+        }
+      });
   },
 
   resetVotes: (id: string) => {
@@ -655,10 +661,8 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
       },
     });
 
-    rpc
-      .call("createInvitation", {
-        invitation: newInvitation,
-      })
+    trpc()
+      .admin.createInvitation.mutate(newInvitation)
       .then((data) => {
         if (data instanceof Error) {
           console.error(`ERROR -- rpc call createInvitation failed`, data);

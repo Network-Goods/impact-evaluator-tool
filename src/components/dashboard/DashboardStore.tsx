@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { Evaluation, rpc, DashboardEvaluation } from "src/lib";
+import { trpc } from "src/lib/trpc";
 
 export interface DashboardStore {
   fetching: boolean;
@@ -14,17 +15,19 @@ export const useDashboardStore = create<DashboardStore>()((set, get) => ({
   evaluations: [],
 
   load: async () => {
-    rpc.call("getDashboardStore", null).then((data) => {
-      if (data instanceof Error) {
-        console.error(`ERROR -- rpc call getUserEvaluations failed`, data);
-        return;
-      }
+    trpc()
+      .user.getDashboardStore.query()
+      .then((data) => {
+        if (data instanceof Error) {
+          console.error(`ERROR -- rpc call getUserEvaluations failed`, data);
+          return;
+        }
 
-      set({
-        fetching: false,
-        evaluations: data,
+        set({
+          fetching: false,
+          evaluations: data,
+        });
       });
-    });
   },
 
   createEvaluation: async (): Promise<Evaluation | Error> => {
@@ -32,9 +35,7 @@ export const useDashboardStore = create<DashboardStore>()((set, get) => ({
       ...Evaluation.init(),
     };
 
-    const res = await rpc.call("createEvaluation", {
-      evaluation: newEvaluation,
-    });
+    const res = await trpc().admin.createEvaluation.mutate(newEvaluation);
 
     if (res instanceof Error) {
       return res;
