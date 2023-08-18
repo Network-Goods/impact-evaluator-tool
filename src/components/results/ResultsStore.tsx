@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { Evaluation, rpc, DashboardEvaluation } from "src/lib";
-import { sortEvaluationResults } from "src/lib/utils";
+import { parseSubmissions, sortEvaluationResults } from "src/lib/utils";
 import { parseEvaluationResults } from "src/lib/utils";
 import { parseNestedArraysIntoCSV } from "src/lib/utils";
 import { downloadCSV } from "src/lib/utils";
@@ -12,6 +12,7 @@ export interface ResultsStore {
   load: () => void;
   data?: any;
   getEvaluationResult: (evaluation_id: string) => Promise<Error | any>;
+  getEvaluationSubmissions: (evaluation_id: string) => Promise<Error | any>;
 }
 
 export const useResultsStore = create<ResultsStore>()((set, get) => ({
@@ -45,6 +46,24 @@ export const useResultsStore = create<ResultsStore>()((set, get) => ({
     const parsedArray = parseEvaluationResults(data);
     const csv = parseNestedArraysIntoCSV(parsedArray);
     const csv_name = `${(data as any).evaluation.name} - Results.csv`;
+    downloadCSV(csv, csv_name);
+  },
+  getEvaluationSubmissions: async (evaluation_id: string): Promise<Error | any> => {
+    const data = await rpc.call("getSubmissions", {
+      evaluation_id: evaluation_id,
+    });
+
+    if (data instanceof Error) {
+      console.error(`ERROR -- rpc call getVotingStore failed. evaluation_id: ${evaluation_id}`, data);
+      return;
+    }
+    console.log(data);
+
+    // sortEvaluationResults(data);
+    const parsedArray = parseSubmissions(data.submissions);
+    console.log(parsedArray);
+    const csv = parseNestedArraysIntoCSV(parsedArray);
+    const csv_name = `submissions.csv`;
     downloadCSV(csv, csv_name);
   },
 }));

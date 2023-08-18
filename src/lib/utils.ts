@@ -29,7 +29,10 @@ export function filterSubmissions(search: string, submissions: any) {
 export function parseEvaluationResults(results: any) {
   const output = [];
   const headerArr: (string | number)[] = ["github_handle"];
-  results.submissions.forEach(function (submission: any, idx: number) {
+  const submissions = results.submissions.filter((sub: any) => sub.is_submitted == true);
+
+  submissions.forEach(function (submission: any, idx: number) {
+    console.log(submission);
     headerArr.push(submission.name);
   });
   headerArr.push("credits_used");
@@ -42,7 +45,7 @@ export function parseEvaluationResults(results: any) {
     output.push(evalArr);
     evalArr.push(evaluator.github_handle);
     let creditsUsed = 0;
-    results.submissions.forEach(function (submission: any, j: number) {
+    submissions.forEach(function (submission: any, j: number) {
       let votes = 0;
       results.votes.forEach(function (vote: any, j: number) {
         if (vote.evaluator_id === evaluator.evaluator_id && vote.submission_id === submission.id) {
@@ -55,6 +58,57 @@ export function parseEvaluationResults(results: any) {
     evalArr.push(creditsUsed);
     evalArr.push(evaluator.voice_credits);
   });
+  return output;
+}
+
+export function parseSubmissions(submissions: any) {
+  submissions = submissions.filter((sub: any) => sub.is_submitted == true);
+  submissions.sort((a: any, b: any) => a.project_name.toLowerCase().localeCompare(b.project_name.toLowerCase()));
+
+  // submission.name as project_name,
+  // "user".github_handle as submitter_github,
+  // "user".preferred_email as submitter_email,
+  // submission.github_handle as representative_github,
+  // description->>'summary' as summary,
+  // description->>'description' as description,
+  // description->>'specs' as specs,
+
+  if (submissions.length == 0) {
+    return [];
+  }
+
+  console.log(submissions);
+  const output = [];
+  const headerArr: (string | number)[] = [
+    "project_name",
+    "submitter_github",
+    "submitter_email",
+    "representative_github",
+  ];
+
+  submissions[0].fields.sort((a: any, b: any) => a.field_order - b.field_order);
+  for (const field of submissions[0].fields) {
+    headerArr.push(field.heading);
+  }
+
+  output.push(headerArr);
+
+  for (const submission of submissions) {
+    const submissionArr: (string | number)[] = [];
+    submissionArr.push(submission.project_name);
+    submissionArr.push(submission.submitter_github);
+    submissionArr.push(submission.submitter_email);
+    submissionArr.push(submission.representative_github);
+
+    submission.fields.sort((a: any, b: any) => a.field_order - b.field_order);
+
+    for (const field of submission.fields) {
+      submissionArr.push(field.field_body);
+    }
+
+    output.push(submissionArr);
+  }
+
   return output;
 }
 
@@ -83,7 +137,11 @@ export function sortEvaluationResults(obj: any) {
 export function parseNestedArraysIntoCSV(data: any) {
   let csv = "";
   data.forEach((row: any) => {
-    csv += row.join(",");
+    const r = [];
+    for (let a of row) {
+      r.push(`"${a.split('"').join("")}"`);
+    }
+    csv += r.join(",");
     csv += "\n";
   });
   return csv;

@@ -43,3 +43,4 @@ export * from "./joinWithCode";
 export * from "./getEvaluationResult";
 export * from "./getRoundDetailsStore";
 export * from "./setUserID";
+export * from "./getSubmissions";

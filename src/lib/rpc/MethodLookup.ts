@@ -44,6 +44,7 @@ import {
   getEvaluationResult,
   getRoundDetailsStore,
   setUserID,
+  getSubmissions,
 } from "./methods";
 
 export const MethodLookup = {
@@ -92,4 +93,5 @@ export const MethodLookup = {
   getEvaluationResult,
   getRoundDetailsStore,
   setUserID,
+  getSubmissions,
 };
