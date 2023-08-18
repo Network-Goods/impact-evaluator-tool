@@ -4,6 +4,7 @@ import { parseSubmissions, sortEvaluationResults } from "src/lib/utils";
 import { parseEvaluationResults } from "src/lib/utils";
 import { parseNestedArraysIntoCSV } from "src/lib/utils";
 import { downloadCSV } from "src/lib/utils";
+import { trpc } from "src/lib/trpc";
 
 export interface ResultsStore {
   fetching: boolean;
@@ -20,16 +21,18 @@ export const useResultsStore = create<ResultsStore>()((set, get) => ({
   evaluations: [],
 
   load: async () => {
-    rpc.call("getAllEvaluations", null).then((data) => {
-      if (data instanceof Error) {
-        console.error(`ERROR -- rpc call getUserEvaluations failed`, data);
-        return;
-      }
-      set({
-        fetching: false,
-        evaluations: data,
+    trpc()
+      .admin.getAllEvaluations.query()
+      .then((data) => {
+        if (data instanceof Error) {
+          console.error(`ERROR -- rpc call getUserEvaluations failed`, data);
+          return;
+        }
+        set({
+          fetching: false,
+          evaluations: data,
+        });
       });
-    });
   },
   getEvaluationResult: async (evaluation_id: string): Promise<Error | any> => {
     const data = await rpc.call("getEvaluationResult", { evaluation_id: evaluation_id });

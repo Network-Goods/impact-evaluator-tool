@@ -5,6 +5,7 @@ import { createInvitation } from "./createInvitation";
 import { deleteEvaluation } from "./deleteEvaluation";
 import { deleteFormField } from "./deleteFormField";
 import { deleteInvitation } from "./deleteInvitation";
+import { getAllEvaluations } from "./getAllEvaluations";
 
 export const admin = router({
   createEvaluation,
@@ -13,4 +14,5 @@ export const admin = router({
   deleteEvaluation,
   deleteFormField,
   deleteInvitation,
+  getAllEvaluations,
 });

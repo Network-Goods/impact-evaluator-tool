@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { rpc } from "src/lib";
+import { trpc } from "src/lib/trpc";
 
 export interface AdminStore {
   fetching: boolean;
@@ -13,15 +14,17 @@ export const useAdminStore = create<AdminStore>()((set) => ({
   evaluations: [],
 
   load: async () => {
-    rpc.call("getAllEvaluations", null).then((data) => {
-      if (data instanceof Error) {
-        console.error(`ERROR -- rpc call getUserEvaluations failed`, data);
-        return;
-      }
-      set({
-        fetching: false,
-        evaluations: data,
+    trpc()
+      .admin.getAllEvaluations.query()
+      .then((data) => {
+        if (data instanceof Error) {
+          console.error(`ERROR -- rpc call getUserEvaluations failed`, data);
+          return;
+        }
+        set({
+          fetching: false,
+          evaluations: data,
+        });
       });
-    });
   },
 }));

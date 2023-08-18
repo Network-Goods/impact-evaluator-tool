@@ -1,9 +1,7 @@
-import { ServerParams } from "../..";
-import { DashboardEvaluation } from "../..";
+import { adminProcedure } from "../../trpc";
+import { z } from "zod";
 
-type Params = null;
-
-export async function getAllEvaluations({ supabase }: ServerParams<Params>): Promise<DashboardEvaluation[] | Error> {
+export const getAllEvaluations = adminProcedure.query(async ({ ctx: { supabase, auth }, input }) => {
   const { error, data } = await supabase.from("evaluation").select("*");
 
   if (error) {
@@ -12,4 +10,4 @@ export async function getAllEvaluations({ supabase }: ServerParams<Params>): Pro
   }
 
   return (data as any) || [];
-}
+});

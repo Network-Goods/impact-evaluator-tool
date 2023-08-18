@@ -18,7 +18,7 @@ const isAdmin = t.middleware(({ next, ctx }) => {
 });
 
 const isUser = t.middleware(({ next, ctx }) => {
-  // TODO
+  // TODO make sure user is authenticated
   return next({
     ctx: {
       ...ctx,
