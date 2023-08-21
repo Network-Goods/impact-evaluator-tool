@@ -1,23 +1,18 @@
-import { isAdmin, ServerParams } from "../..";
+import { adminProcedure } from "src/server/trpc";
+import { z } from "zod";
 
-type Params = {
-  id: string;
-  credits: string;
-};
+export const setInvitationCredits = adminProcedure
+  .input(
+    z.object({
+      id: z.string(),
+      credits: z.number(),
+    }),
+  )
+  .mutation(async ({ ctx: { supabase, auth }, input }) => {
+    const { error } = await supabase.from("invitation").update({ voice_credits: input.credits }).eq("id", input.id);
 
-export async function setInvitationCredits({
-  supabase,
-  params: { id, credits },
-  auth,
-}: ServerParams<Params>): Promise<void | Error> {
-  if (!isAdmin(auth)) {
-    return new Error(`Unauthorized`);
-  }
-
-  const { error } = await supabase.from("invitation").update({ voice_credits: credits }).eq("id", id);
-
-  if (error) {
-    console.error(error);
-    return new Error(`ERROR -- failed to set inviation credits. invitation id: ${id}`);
-  }
-}
+    if (error) {
+      console.error(error);
+      return new Error(`ERROR -- failed to set inviation credits. invitation id: ${input.id}`);
+    }
+  });

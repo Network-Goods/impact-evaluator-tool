@@ -10,8 +10,8 @@ export interface EvaluationStore {
   setEvaluationName: (name: string) => void;
   setEvaluationDescription: (description: string) => void;
   setEvaluationStatus: (status: string) => void;
-  setEvaluationStartTime: (time: Date) => void;
-  setEvaluationEndTime: (time: Date) => void;
+  setEvaluationStartTime: (time: string) => void;
+  setEvaluationEndTime: (time: string) => void;
   setFormDescription: (form_description: string) => void;
   createFormField: () => void;
   setFormFieldHeading: (heading: string, id: string) => void;
@@ -23,14 +23,13 @@ export interface EvaluationStore {
   createSubmission: () => Promise<Submission | null>;
   createInvitation: (invitation?: any) => void;
   setInvitationCode: (code: string, id: string) => void;
-  setInvitationCredits: (credits: string, id: string) => void;
-  setInvitationRemainingUses: (uses: string, id: string) => void;
+  setInvitationCredits: (credits: number, id: string) => void;
+  setInvitationRemainingUses: (uses: number, id: string) => void;
   setInvitationSubmissionRequired: (id: string, is_sme: boolean) => void;
   deleteInvitation: (id: string) => void;
   resetVotes: (id: string) => void;
   setVoiceCredits: (id: string, amount: number) => void;
   setEmail: (evalId: string, userId: string, email: string) => void;
-  createEvaluator: (evaluator: any) => void;
   setSubmissionTitle: (title: string, id: string) => void;
   setSubmissionDescription: (text: string, type: string, id: string) => void;
   setSubmissionField: (value: string, field_id: string, submission_id: string) => void;
@@ -51,9 +50,7 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
   evaluation: null,
 
   load: async (evaluation_id: string): Promise<void> => {
-    const data = await rpc.call("getEvaluationStore", {
-      evaluation_id: evaluation_id,
-    });
+    const data = await trpc().admin.getEvaluationStore.query({ evaluation_id: evaluation_id });
 
     if (data instanceof Error) {
       console.error(`ERROR -- rpc call getEvaluation failed. evaluation_id: ${evaluation_id}`, data);
@@ -72,6 +69,7 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
     if (!evaluation) {
       return;
     }
+
     set({
       evaluation: {
         ...evaluation,
@@ -79,12 +77,14 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
       },
     });
 
-    rpc.call("setEvaluationName", { name: name, id: evaluation.id }).then((data) => {
-      if (data instanceof Error) {
-        console.error(`ERROR -- rpc call setEvaluationName failed`, data);
-        return;
-      }
-    });
+    trpc()
+      .admin.setEvaluationName.mutate({ name: name, id: evaluation.id })
+      .then((data) => {
+        if (data instanceof Error) {
+          console.error(`ERROR -- rpc call setEvaluationName failed`, data);
+          return;
+        }
+      });
   },
 
   setEvaluationDescription: (description: string) => {
@@ -101,12 +101,14 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
       },
     });
 
-    rpc.call("setEvaluationDescription", { description: description, id: evaluation.id }).then((data) => {
-      if (data instanceof Error) {
-        console.error(`ERROR -- rpc call setEvaluationDescription failed`, data);
-        return;
-      }
-    });
+    trpc()
+      .admin.setEvaluationDescription.mutate({ description: description, id: evaluation.id })
+      .then((data) => {
+        if (data instanceof Error) {
+          console.error(`ERROR -- rpc call setEvaluationDescription failed`, data);
+          return;
+        }
+      });
   },
   setEvaluationStatus: (status: string) => {
     const evaluation = get().evaluation;
@@ -122,14 +124,16 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
       },
     });
 
-    rpc.call("setEvaluationStatus", { status: status, id: evaluation.id }).then((data) => {
-      if (data instanceof Error) {
-        console.error(`ERROR -- rpc call setEvaluationStatus failed`, data);
-        return;
-      }
-    });
+    trpc()
+      .admin.setEvaluationStatus.mutate({ status: status, id: evaluation.id })
+      .then((data) => {
+        if (data instanceof Error) {
+          console.error(`ERROR -- rpc call setEvaluationStatus failed`, data);
+          return;
+        }
+      });
   },
-  setEvaluationStartTime: (time: Date) => {
+  setEvaluationStartTime: (time: string) => {
     const evaluation = get().evaluation;
 
     if (!evaluation) {
@@ -142,14 +146,17 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
         start_time: time,
       },
     });
-    rpc.call("setEvaluationStartTime", { time: time, id: evaluation.id }).then((data) => {
-      if (data instanceof Error) {
-        console.error(`ERROR -- rpc call setEvaluationStartTime failed`, data);
-        return;
-      }
-    });
+
+    trpc()
+      .admin.setEvaluationStartTime.mutate({ time: time, id: evaluation.id })
+      .then((data) => {
+        if (data instanceof Error) {
+          console.error(`ERROR -- rpc call setEvaluationStartTime failed`, data);
+          return;
+        }
+      });
   },
-  setEvaluationEndTime: (time: Date) => {
+  setEvaluationEndTime: (time: string) => {
     const evaluation = get().evaluation;
 
     if (!evaluation) {
@@ -162,12 +169,15 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
         end_time: time,
       },
     });
-    rpc.call("setEvaluationEndTime", { time: time, id: evaluation.id }).then((data) => {
-      if (data instanceof Error) {
-        console.error(`ERROR -- rpc call setEvaluationEndTime failed`, data);
-        return;
-      }
-    });
+
+    trpc()
+      .admin.setEvaluationEndTime.mutate({ time: time, id: evaluation.id })
+      .then((data) => {
+        if (data instanceof Error) {
+          console.error(`ERROR -- rpc call setEvaluationEndTime failed`, data);
+          return;
+        }
+      });
   },
 
   setFormDescription: (form_description: string) => {
@@ -184,12 +194,14 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
       },
     });
 
-    rpc.call("setFormDescription", { description: form_description, id: evaluation.id }).then((data) => {
-      if (data instanceof Error) {
-        console.error(`ERROR -- rpc call setFormDescription failed`, data);
-        return;
-      }
-    });
+    trpc()
+      .admin.setFormDescription.mutate({ description: form_description, id: evaluation.id })
+      .then((data) => {
+        if (data instanceof Error) {
+          console.error(`ERROR -- rpc call setFormDescription failed`, data);
+          return;
+        }
+      });
   },
   createFormField: () => {
     const evaluation = get().evaluation;
@@ -243,12 +255,14 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
       },
     });
 
-    rpc.call("setFormFieldHeading", { heading: heading, id: id }).then((data) => {
-      if (data instanceof Error) {
-        console.error(`ERROR -- rpc call setFormFieldHeading failed`, data);
-        return;
-      }
-    });
+    trpc()
+      .admin.setFormFieldHeading.mutate({ heading: heading, id: id })
+      .then((data) => {
+        if (data instanceof Error) {
+          console.error(`ERROR -- rpc call setFormFieldHeading failed`, data);
+          return;
+        }
+      });
   },
   setFormFieldSubheading: (subheading: string, id: string) => {
     const evaluation = get().evaluation;
@@ -271,12 +285,14 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
       },
     });
 
-    rpc.call("setFormFieldSubheading", { subheading: subheading, id: id }).then((data) => {
-      if (data instanceof Error) {
-        console.error(`ERROR -- rpc call setFormFieldSubheading failed`, data);
-        return;
-      }
-    });
+    trpc()
+      .admin.setFormFieldSubheading.mutate({ subheading: subheading, id: id })
+      .then((data) => {
+        if (data instanceof Error) {
+          console.error(`ERROR -- rpc call setFormFieldSubheading failed`, data);
+          return;
+        }
+      });
   },
   setFormFieldPlaceholder: (placeholder: string, id: string) => {
     const evaluation = get().evaluation;
@@ -299,12 +315,14 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
       },
     });
 
-    rpc.call("setFormFieldPlaceholder", { placeholder: placeholder, id: id }).then((data) => {
-      if (data instanceof Error) {
-        console.error(`ERROR -- rpc call setFormFieldPlaceholder failed`, data);
-        return;
-      }
-    });
+    trpc()
+      .admin.setFormFieldPlaceholder.mutate({ placeholder: placeholder, id: id })
+      .then((data) => {
+        if (data instanceof Error) {
+          console.error(`ERROR -- rpc call setFormFieldPlaceholder failed`, data);
+          return;
+        }
+      });
   },
   setFormFieldCharCount: (count: number, id: string) => {
     const evaluation = get().evaluation;
@@ -312,6 +330,7 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
     if (!evaluation) {
       return;
     }
+
     set({
       evaluation: {
         ...evaluation,
@@ -327,12 +346,14 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
       },
     });
 
-    rpc.call("setFormFieldCharCount", { char_count: count, id: id }).then((data) => {
-      if (data instanceof Error) {
-        console.error(`ERROR -- rpc call setFormFieldCharCount failed`, data);
-        return;
-      }
-    });
+    trpc()
+      .admin.setFormFieldCharCount.mutate({ char_count: count, id: id })
+      .then((data) => {
+        if (data instanceof Error) {
+          console.error(`ERROR -- rpc call setFormFieldCharCount failed`, data);
+          return;
+        }
+      });
   },
 
   deleteFormField: (id: string) => {
@@ -435,14 +456,16 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
       },
     });
 
-    rpc.call("setInvitationCode", { code: trimmedCode, id: id }).then((data) => {
-      if (data instanceof Error) {
-        console.error(`ERROR -- rpc call setInvitationCode failed`, data);
-        return;
-      }
-    });
+    trpc()
+      .admin.setInvitationCode.mutate({ code: trimmedCode, id: id })
+      .then((data) => {
+        if (data instanceof Error) {
+          console.error(`ERROR -- rpc call setInvitationCode failed`, data);
+          return;
+        }
+      });
   },
-  setInvitationCredits: (credits: string, id: string) => {
+  setInvitationCredits: (credits: number, id: string) => {
     const evaluation = get().evaluation;
 
     if (!evaluation) {
@@ -463,15 +486,16 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
         }),
       },
     });
-
-    rpc.call("setInvitationCredits", { credits: credits, id: id }).then((data) => {
-      if (data instanceof Error) {
-        console.error(`ERROR -- rpc call setInvitationCredits failed`, data);
-        return;
-      }
-    });
+    trpc()
+      .admin.setInvitationCredits.mutate({ credits: credits, id: id })
+      .then((data) => {
+        if (data instanceof Error) {
+          console.error(`ERROR -- rpc call setInvitationCredits failed`, data);
+          return;
+        }
+      });
   },
-  setInvitationRemainingUses: (uses: string, id: string) => {
+  setInvitationRemainingUses: (uses: number, id: string) => {
     const evaluation = get().evaluation;
 
     if (!evaluation) {
@@ -492,13 +516,14 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
         }),
       },
     });
-
-    rpc.call("setInvitationRemainingUses", { uses: uses, id: id }).then((data) => {
-      if (data instanceof Error) {
-        console.error(`ERROR -- rpc call setInvitationRemainingUses failed`, data);
-        return;
-      }
-    });
+    trpc()
+      .admin.setInvitationRemainingUses.mutate({ uses: uses, id: id })
+      .then((data) => {
+        if (data instanceof Error) {
+          console.error(`ERROR -- rpc call setInvitationRemainingUses failed`, data);
+          return;
+        }
+      });
   },
 
   setInvitationSubmissionRequired: (id: string, is_sme: boolean) => {
@@ -521,13 +546,14 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
         }),
       },
     });
-
-    rpc.call("setInvitationSubmissionRequired", { is_sme: !is_sme, id: id }).then((data) => {
-      if (data instanceof Error) {
-        console.error(`ERROR -- rpc call setInvitationSubmissionRequired failed`, data);
-        return;
-      }
-    });
+    trpc()
+      .admin.setInvitationSubmissionRequired.mutate({ is_sme: !is_sme, id: id })
+      .then((data) => {
+        if (data instanceof Error) {
+          console.error(`ERROR -- rpc call setInvitationSubmissionRequired failed`, data);
+          return;
+        }
+      });
   },
 
   deleteInvitation: (id: string) => {
@@ -555,10 +581,8 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
   },
 
   resetVotes: (id: string) => {
-    rpc
-      .call("setResetVotes", {
-        in_evaluator_id: id,
-      })
+    trpc()
+      .user.setResetVotes.mutate({ in_evaluator_id: id })
       .then((data) => {
         if (data instanceof Error) {
           console.error(`ERROR -- rpc call setResetVotes failed`, data);
@@ -589,11 +613,8 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
       },
     });
 
-    rpc
-      .call("setVoiceCredits", {
-        id: id,
-        amount: amount,
-      })
+    trpc()
+      .admin.setVoiceCredits.mutate({ amount: amount, id: id })
       .then((data) => {
         if (data instanceof Error) {
           console.error(`ERROR -- rpc call setVoiceCredits failed`, data);
@@ -626,8 +647,8 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
       },
     });
 
-    rpc
-      .call("setEmail", {
+    trpc()
+      .admin.setEmail.mutate({
         id: userId,
         email: email,
       })
@@ -670,33 +691,6 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
         }
       });
   },
-  createEvaluator: async (inputs: any) => {
-    // const evaluation = get().evaluation;
-    // if (!evaluation) {
-    //   return new Error("Evaluation not loaded");
-    // }
-    // const newEvaluator = {
-    //   ...inputs,
-    //   id: uuid(),
-    //   evaluation_id: evaluation.id,
-    // };
-    // set({
-    //   evaluation: {
-    //     ...evaluation,
-    //     evaluator: [...evaluation.evaluator, newEvaluator],
-    //   },
-    // });
-    // rpc
-    //   .call("createEvaluator", {
-    //     evaluator: newEvaluator,
-    //   })
-    //   .then((data) => {
-    //     if (data instanceof Error) {
-    //       console.error(`ERROR -- rpc call createEvaluator failed`, data);
-    //       return;
-    //     }
-    //   });
-  },
   setSubmissionTitle: (title: string, id: string) => {
     const evaluation = get().evaluation;
 
@@ -721,11 +715,8 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
       },
     });
 
-    rpc
-      .call("setSubmissionTitle", {
-        id: id,
-        title: trimmedTitle,
-      })
+    trpc()
+      .user.setSubmissionTitle.mutate({ title: trimmedTitle, id: id })
       .then((data) => {
         if (data instanceof Error) {
           console.error(`ERROR -- rpc call setSubmissionTitle failed`, data);
@@ -791,12 +782,14 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
       },
     });
 
-    rpc.call("setSubmissionField", { value: value, id: field_id }).then((data) => {
-      if (data instanceof Error) {
-        console.error(`ERROR -- rpc call setSubmissionField failed`, data);
-        return;
-      }
-    });
+    trpc()
+      .user.setSubmissionField.mutate({ value: value, id: field_id })
+      .then((data) => {
+        if (data instanceof Error) {
+          console.error(`ERROR -- rpc call setSubmissionField failed`, data);
+          return;
+        }
+      });
   },
 
   setSubmissionLinkTitle: (title: string, index: number, id: string) => {
@@ -816,6 +809,7 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
       }
       return e;
     });
+
     set({
       evaluation: {
         ...evaluation,
@@ -830,13 +824,14 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
         }),
       },
     });
-
-    rpc.call("setLink", { newArr: newArr, id: id }).then((data) => {
-      if (data instanceof Error) {
-        console.error(`ERROR -- rpc call setLink failed`, data);
-        return;
-      }
-    });
+    trpc()
+      .user.setLink.mutate({ newArr: newArr, id: id })
+      .then((data) => {
+        if (data instanceof Error) {
+          console.error(`ERROR -- rpc call setLink failed`, data);
+          return;
+        }
+      });
   },
   setSubmissionLink: (value: string, index: number, id: string) => {
     const evaluation = get().evaluation;
@@ -871,12 +866,14 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
       },
     });
 
-    rpc.call("setLink", { newArr: newArr, id: id }).then((data) => {
-      if (data instanceof Error) {
-        console.error(`ERROR -- rpc call setLink failed`, data);
-        return;
-      }
-    });
+    trpc()
+      .user.setLink.mutate({ newArr: newArr, id: id })
+      .then((data) => {
+        if (data instanceof Error) {
+          console.error(`ERROR -- rpc call setLink failed`, data);
+          return;
+        }
+      });
   },
 
   setGithubLink: (link: string, id: string) => {
@@ -901,12 +898,14 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
       },
     });
 
-    rpc.call("setGithubLink", { link: link, id: id }).then((data) => {
-      if (data instanceof Error) {
-        console.error(`ERROR -- rpc call setGithubLink failed`, data);
-        return;
-      }
-    });
+    trpc()
+      .user.setGithubLink.mutate({ link: link, id: id })
+      .then((data) => {
+        if (data instanceof Error) {
+          console.error(`ERROR -- rpc call setGithubLink failed`, data);
+          return;
+        }
+      });
   },
   setGithubHandle: (handle: string, id: string) => {
     const evaluation = get().evaluation;
@@ -929,11 +928,8 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
       },
     });
 
-    rpc
-      .call("setGithubHandle", {
-        id: id,
-        github_handle: handle,
-      })
+    trpc()
+      .user.setGithubHandle.mutate({ id: id, github_handle: handle })
       .then((data) => {
         if (data instanceof Error) {
           console.error(`ERROR -- rpc call setGithubHandle failed`, data);
@@ -977,13 +973,14 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
         }),
       },
     });
-
-    rpc.call("setLink", { newArr: newArr, id: id }).then((data) => {
-      if (data instanceof Error) {
-        console.error(`ERROR -- rpc call setEvaluationName failed`, data);
-        return;
-      }
-    });
+    trpc()
+      .user.setLink.mutate({ newArr: newArr, id: id })
+      .then((data) => {
+        if (data instanceof Error) {
+          console.error(`ERROR -- rpc call setEvaluationName failed`, data);
+          return;
+        }
+      });
   },
   deleteSubmissionLink: (index: number, id: string) => {
     const evaluation = get().evaluation;
@@ -1009,12 +1006,14 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
       },
     });
 
-    rpc.call("setLink", { newArr: newArr, id: id }).then((data) => {
-      if (data instanceof Error) {
-        console.error(`ERROR -- rpc call setEvaluationName failed`, data);
-        return;
-      }
-    });
+    trpc()
+      .user.setLink.mutate({ newArr: newArr, id: id })
+      .then((data) => {
+        if (data instanceof Error) {
+          console.error(`ERROR -- rpc call setEvaluationName failed`, data);
+          return;
+        }
+      });
   },
 
   setUserID: (userID: string, id: string) => {
@@ -1039,11 +1038,8 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
       },
     });
 
-    rpc
-      .call("setUserID", {
-        id: id,
-        user_id: userID,
-      })
+    trpc()
+      .admin.setUserID.mutate({ id: id, user_id: userID })
       .then((data) => {
         if (data instanceof Error) {
           console.error(`ERROR -- rpc call setUserID failed`, data);
@@ -1065,12 +1061,14 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
       },
     });
 
-    rpc.call("deleteSubmission", { id: id }).then((data) => {
-      if (data instanceof Error) {
-        console.error(`ERROR -- rpc call deleteSubmission failed`, data);
-        return;
-      }
-    });
+    trpc()
+      .user.deleteSubmission.mutate({ id: id })
+      .then((data) => {
+        if (data instanceof Error) {
+          console.error(`ERROR -- rpc call deleteSubmission failed`, data);
+          return;
+        }
+      });
   },
   setSubmission: (id: string) => {
     const evaluation = get().evaluation;
@@ -1093,11 +1091,8 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
         }),
       },
     });
-
-    rpc
-      .call("setSubmission", {
-        id: id,
-      })
+    trpc()
+      .user.setSubmission.mutate({ id: id })
       .then((data) => {
         if (data instanceof Error) {
           console.error(`ERROR -- rpc call setSubmission failed`, data);

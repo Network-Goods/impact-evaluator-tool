@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { rpc, UserProfile } from "../lib";
+import { trpc } from "../lib/trpc";
 
 export type UserProfileStore = {
   profile?: UserProfile;
@@ -10,20 +11,22 @@ export type UserProfileStore = {
 
 export const useUserProfileStore = create<UserProfileStore>()((set, get) => ({
   login: () => {
-    rpc.call("getUserProfile", null).then((profile) => {
-      if (profile instanceof Error) {
-        console.error(`ERROR -- rpc call getUserProfile failed.`, profile);
-        return;
-      }
+    trpc()
+      .user.getUserProfile.query()
+      .then((profile) => {
+        if (profile instanceof Error) {
+          console.error(`ERROR -- rpc call getUserProfile failed.`, profile);
+          return;
+        }
 
-      if (!profile) {
-        return;
-      }
+        if (!profile) {
+          return;
+        }
 
-      set({
-        profile: profile,
+        set({
+          profile: profile,
+        });
       });
-    });
   },
   logout: () => {
     set({

@@ -1,5 +1,4 @@
 import { userProcedure } from "../../trpc";
-import { z } from "zod";
 
 export const getDashboardStore = userProcedure.query(async ({ ctx: { supabase, auth } }) => {
   const { data, error } = await supabase.rpc("get_dashboard_store", {

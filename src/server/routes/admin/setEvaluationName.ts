@@ -1,23 +1,18 @@
-import { isAdmin, ServerParams } from "../..";
+import { adminProcedure } from "src/server/trpc";
+import { z } from "zod";
 
-type Params = {
-  id: string;
-  name: string;
-};
+export const setEvaluationName = adminProcedure
+  .input(
+    z.object({
+      id: z.string(),
+      name: z.string(),
+    }),
+  )
+  .mutation(async ({ ctx: { supabase, auth }, input }) => {
+    const { error } = await supabase.from("evaluation").update({ name: input.name }).eq("id", input.id);
 
-export async function setEvaluationName({
-  supabase,
-  params: { id, name },
-  auth,
-}: ServerParams<Params>): Promise<void | Error> {
-  if (!isAdmin(auth)) {
-    return new Error(`Unauthorized`);
-  }
-
-  const { error } = await supabase.from("evaluation").update({ name: name }).eq("id", id);
-
-  if (error) {
-    console.error(error);
-    return new Error(`ERROR -- failed to set evaluation name. evaluation id: ${id}`);
-  }
-}
+    if (error) {
+      console.error(error);
+      return new Error(`ERROR -- failed to set evaluation name. evaluation id: ${input.id}`);
+    }
+  });

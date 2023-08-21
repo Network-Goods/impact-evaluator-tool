@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { v4 as uuid } from "uuid";
 import { rpc, Submission } from "src/lib";
+import { trpc } from "src/lib/trpc";
 
 export interface RoundDetailsStore {
   fetching: boolean;
@@ -20,7 +21,7 @@ export const useRoundDetailsStore = create<RoundDetailsStore>()((set, get) => ({
   submission: null,
 
   load: async (userID: string, evaluationID: string, githubHandle: string): Promise<void> => {
-    const data = await rpc.call("getRoundDetailsStore", {
+    const data = await trpc().user.getRoundDetailsStore.query({
       evaluation_id: evaluationID,
     });
 
@@ -50,13 +51,14 @@ export const useRoundDetailsStore = create<RoundDetailsStore>()((set, get) => ({
     set({
       submissions: submissions?.filter((submission) => submission.id != submissionID),
     });
-
-    rpc.call("deleteSubmission", { id: submissionID }).then((data) => {
-      if (data instanceof Error) {
-        console.error(`ERROR -- rpc call deleteSubmission failed`, data);
-        return;
-      }
-    });
+    trpc()
+      .user.deleteSubmission.mutate({ id: submissionID })
+      .then((data) => {
+        if (data instanceof Error) {
+          console.error(`ERROR -- rpc call deleteSubmission failed`, data);
+          return;
+        }
+      });
   },
   createSubmission: async (): Promise<Submission | null> => {
     const evaluationID = get().evaluationID;
@@ -77,7 +79,7 @@ export const useRoundDetailsStore = create<RoundDetailsStore>()((set, get) => ({
       links: [],
     });
 
-    const res = await rpc.call("createSubmission", { submission: newSubmission });
+    const res = await trpc().user.createSubmission.mutate(newSubmission);
     // TODO: error handling
     if (res instanceof Error) {
       console.error(`ERROR -- rpc call createSubmission failed`, res);

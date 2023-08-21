@@ -1,22 +1,18 @@
-import { isAdmin, ServerParams } from "../..";
+import { adminProcedure } from "src/server/trpc";
+import { z } from "zod";
 
-type Params = {
-  time: Date;
-  id: string;
-};
+export const setEvaluationStartTime = adminProcedure
+  .input(
+    z.object({
+      id: z.string(),
+      time: z.string(),
+    }),
+  )
+  .mutation(async ({ ctx: { supabase, auth }, input }) => {
+    const { error } = await supabase.from("evaluation").update({ start_time: input.time }).eq("id", input.id);
 
-export async function setEvaluationStartTime({
-  supabase,
-  params: { time, id },
-  auth,
-}: ServerParams<Params>): Promise<void | Error> {
-  if (!isAdmin(auth)) {
-    return new Error(`Unauthorized`);
-  }
-  const { error } = await supabase.from("evaluation").update({ start_time: time }).eq("id", id);
-
-  if (error) {
-    console.error(error);
-    return new Error(`ERROR -- failed to set evaluation start time. evaluation id: ${id}`);
-  }
-}
+    if (error) {
+      console.error(error);
+      return new Error(`ERROR -- failed to set evaluation start time. evaluation id: ${input.id}`);
+    }
+  });

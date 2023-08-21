@@ -74,12 +74,12 @@ export default function OutcomesPage({ store, formInputs, setFormInputs }: Outco
               <div>
                 <h5 className="text-[#979797] text-sm mb-1">Max length (characters)</h5>
                 <input
-                  type="text"
+                  type="number"
                   className="appearance-none w-full px-4 py-2 rounded-lg border border-gray focus:outline-none"
-                  placeholder="Project Overview"
+                  placeholder="280"
                   value={field.char_count || ""}
                   onChange={(e) => handleFormFieldChange(e, field.id, "char_count")}
-                  onBlur={(e) => store.setFormFieldCharCount(e.target.value, field.id)}
+                  onBlur={(e) => store.setFormFieldCharCount(Number(e.target.value), field.id)}
                 />
               </div>
               <button

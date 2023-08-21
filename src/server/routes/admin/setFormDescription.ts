@@ -1,23 +1,20 @@
-import { isAdmin, ServerParams } from "../..";
+import { adminProcedure } from "src/server/trpc";
+import { z } from "zod";
 
-type Params = {
-  id: string;
-  description: string;
-};
-
-export async function setFormDescription({
-  supabase,
-  params: { id, description },
-  auth,
-}: ServerParams<Params>): Promise<void | Error> {
-  if (!isAdmin(auth)) {
-    return new Error(`Unauthorized`);
-  }
-
-  const { error } = await supabase.from("evaluation").update({ form_description: description }).eq("id", id);
-
-  if (error) {
-    console.error(error);
-    return new Error(`ERROR -- failed to set form description. evaluation id: ${id}`);
-  }
-}
+export const setFormDescription = adminProcedure
+  .input(
+    z.object({
+      id: z.string(),
+      description: z.string(),
+    }),
+  )
+  .mutation(async ({ ctx: { supabase, auth }, input }) => {
+    const { error } = await supabase
+      .from("evaluation")
+      .update({ form_description: input.description })
+      .eq("id", input.id);
+    if (error) {
+      console.error(error);
+      return new Error(`ERROR -- failed to set form description. evaluation id: ${input.id}`);
+    }
+  });

@@ -1,5 +1,4 @@
 import { adminProcedure } from "../../trpc";
-import { z } from "zod";
 
 export const getAllEvaluations = adminProcedure.query(async ({ ctx: { supabase, auth }, input }) => {
   const { error, data } = await supabase.from("evaluation").select("*");

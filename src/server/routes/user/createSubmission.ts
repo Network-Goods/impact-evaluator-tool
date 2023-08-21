@@ -1,8 +1,8 @@
 import { isAdmin } from "src/lib/rpc";
-import { adminProcedure } from "../../trpc";
+import { userProcedure } from "../../trpc";
 import { z } from "zod";
 
-export const createSubmission = adminProcedure
+export const createSubmission = userProcedure
   .input(
     z.object({
       id: z.string(),

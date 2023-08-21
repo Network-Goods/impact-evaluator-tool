@@ -35,7 +35,7 @@ export const useResultsStore = create<ResultsStore>()((set, get) => ({
       });
   },
   getEvaluationResult: async (evaluation_id: string): Promise<Error | any> => {
-    const data = await rpc.call("getEvaluationResult", { evaluation_id: evaluation_id });
+    const data = await trpc().admin.getEvaluationResult.query({ evaluation_id: evaluation_id });
 
     if (data instanceof Error) {
       console.error(`ERROR -- rpc call deleteEvaluation failed`, data);
@@ -52,15 +52,12 @@ export const useResultsStore = create<ResultsStore>()((set, get) => ({
     downloadCSV(csv, csv_name);
   },
   getEvaluationSubmissions: async (evaluation_id: string): Promise<Error | any> => {
-    const data = await rpc.call("getSubmissions", {
-      evaluation_id: evaluation_id,
-    });
+    const data = await trpc().admin.getSubmissions.query({ evaluation_id: evaluation_id });
 
     if (data instanceof Error) {
-      console.error(`ERROR -- rpc call getVotingStore failed. evaluation_id: ${evaluation_id}`, data);
+      console.error(`ERROR -- rpc call getSubmissions failed. evaluation_id: ${evaluation_id}`, data);
       return;
     }
-    console.log(data);
 
     // sortEvaluationResults(data);
     const parsedArray = parseSubmissions(data.submissions);

@@ -1,38 +1,30 @@
-import { getIsUserEvaluator, isAdmin, ServerParams } from "../..";
+import { Submission } from "src/lib";
+import { adminProcedure } from "src/server/trpc";
+import { z } from "zod";
 
-type Params = {
-  evaluation_id: string;
-};
+export const getSubmissions = adminProcedure
+  .input(
+    z.object({
+      evaluation_id: z.string(),
+    }),
+  )
+  .query(async ({ ctx: { supabase, auth }, input }) => {
+    // User has to be evaluator for the evaluation for get_voting_store to work
 
-type Return = {
-  submissions: any[];
-};
+    const { data, error } = await supabase
+      .rpc("get_submissions", {
+        in_evaluation_id: input.evaluation_id,
+      })
+      .single();
 
-export async function getSubmissions({
-  supabase,
-  auth,
-  params: { evaluation_id },
-}: ServerParams<Params>): Promise<Return | Error> {
-  if (!isAdmin(auth)) {
-    return new Error(`Unauthorized`);
-  }
+    if (error) {
+      console.error(error);
+      // return new Error(`ERROR -- get_submissions failed. evaluation_id: ${input.evaluation_id}`);
+    }
 
-  // User has to be evaluator for the evaluation for get_voting_store to work
+    const d: any = data;
 
-  const { data, error } = await supabase
-    .rpc("get_submissions", {
-      in_evaluation_id: evaluation_id,
-    })
-    .single();
-
-  if (error) {
-    console.error(error);
-    return new Error(`ERROR -- get_submissions failed. evaluation_id: ${evaluation_id}`);
-  }
-
-  const d: any = data;
-
-  return {
-    submissions: d.submissions || [],
-  };
-}
+    return {
+      submissions: (d.submissions || []) as Submission[],
+    };
+  });

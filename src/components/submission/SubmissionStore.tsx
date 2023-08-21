@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { v4 as uuid } from "uuid";
 import { Evaluation, rpc, Submission } from "src/lib";
-
+import { trpc } from "src/lib/trpc";
 export interface SubmissionStore {
   fetching: boolean;
   submission?: any;
@@ -25,7 +25,7 @@ export const useSubmissionStore = create<SubmissionStore>()((set, get) => ({
   submission: null,
 
   load: async (submission_id: string, githubHandle: string): Promise<void> => {
-    const data = await rpc.call("getSubmissionStore", {
+    const data = await trpc().user.getSubmissionStore.query({
       submission_id: submission_id,
     });
 
@@ -56,12 +56,8 @@ export const useSubmissionStore = create<SubmissionStore>()((set, get) => ({
       },
     });
 
-    rpc
-      .call("setSubmissionTitle", {
-        id: submission.id,
-        title: trimmedTitle,
-        user_id: submission.user_id,
-      })
+    trpc()
+      .user.setSubmissionTitle.mutate({ title: trimmedTitle, id: submission.id, user_id: submission.user_id })
       .then((data) => {
         if (data instanceof Error) {
           console.error(`ERROR -- rpc call setSubmissionTitle failed`, data);
@@ -120,13 +116,14 @@ export const useSubmissionStore = create<SubmissionStore>()((set, get) => ({
         },
       },
     });
-
-    rpc.call("setSubmissionField", { value: value, id: id }).then((data) => {
-      if (data instanceof Error) {
-        console.error(`ERROR -- rpc call setSubmissionField failed`, data);
-        return;
-      }
-    });
+    trpc()
+      .user.setSubmissionField.mutate({ value: value, id: id })
+      .then((data) => {
+        if (data instanceof Error) {
+          console.error(`ERROR -- rpc call setSubmissionField failed`, data);
+          return;
+        }
+      });
   },
   setSubmissionLinkTitle: (title: string, index: number) => {
     const submission = get().submission;
@@ -152,12 +149,14 @@ export const useSubmissionStore = create<SubmissionStore>()((set, get) => ({
       },
     });
 
-    rpc.call("setLink", { newArr: newArr, id: submission.id }).then((data) => {
-      if (data instanceof Error) {
-        console.error(`ERROR -- rpc call setSubmissionLinkTitle failed`, data);
-        return;
-      }
-    });
+    trpc()
+      .user.setLink.mutate({ newArr: newArr, id: submission.id })
+      .then((data) => {
+        if (data instanceof Error) {
+          console.error(`ERROR -- rpc call setSubmissionLinkTitle failed`, data);
+          return;
+        }
+      });
   },
   setSubmissionLink: (link: string, index: number) => {
     const submission = get().submission;
@@ -182,13 +181,14 @@ export const useSubmissionStore = create<SubmissionStore>()((set, get) => ({
         links: newArr,
       },
     });
-
-    rpc.call("setLink", { newArr: newArr, id: submission.id }).then((data) => {
-      if (data instanceof Error) {
-        console.error(`ERROR -- rpc call setSubmissionLink failed`, data);
-        return;
-      }
-    });
+    trpc()
+      .user.setLink.mutate({ newArr: newArr, id: submission.id })
+      .then((data) => {
+        if (data instanceof Error) {
+          console.error(`ERROR -- rpc call setSubmissionLink failed`, data);
+          return;
+        }
+      });
   },
 
   setGithubLink: (link: string) => {
@@ -205,12 +205,14 @@ export const useSubmissionStore = create<SubmissionStore>()((set, get) => ({
       },
     });
 
-    rpc.call("setGithubLink", { link: link, id: submission.id }).then((data) => {
-      if (data instanceof Error) {
-        console.error(`ERROR -- rpc call setGithubLink failed`, data);
-        return;
-      }
-    });
+    trpc()
+      .user.setGithubLink.mutate({ link: link, id: submission.id })
+      .then((data) => {
+        if (data instanceof Error) {
+          console.error(`ERROR -- rpc call setGithubLink failed`, data);
+          return;
+        }
+      });
   },
   setGithubHandle: (handle: string) => {
     const submission = get().submission;
@@ -224,12 +226,8 @@ export const useSubmissionStore = create<SubmissionStore>()((set, get) => ({
         github_handle: handle,
       },
     });
-
-    rpc
-      .call("setGithubHandle", {
-        id: submission.id,
-        github_handle: handle,
-      })
+    trpc()
+      .user.setGithubHandle.mutate({ id: submission.id, github_handle: handle })
       .then((data) => {
         if (data instanceof Error) {
           console.error(`ERROR -- rpc call setGithubHandle failed`, data);
@@ -265,13 +263,14 @@ export const useSubmissionStore = create<SubmissionStore>()((set, get) => ({
         links: newArr,
       },
     });
-
-    rpc.call("setLink", { newArr: newArr, id: submission.id }).then((data) => {
-      if (data instanceof Error) {
-        console.error(`ERROR -- rpc call createSubmissionLink failed`, data);
-        return;
-      }
-    });
+    trpc()
+      .user.setLink.mutate({ newArr: newArr, id: submission.id })
+      .then((data) => {
+        if (data instanceof Error) {
+          console.error(`ERROR -- rpc call createSubmissionLink failed`, data);
+          return;
+        }
+      });
   },
   deleteSubmissionLink: (index: number) => {
     const submission = get().submission;
@@ -289,12 +288,14 @@ export const useSubmissionStore = create<SubmissionStore>()((set, get) => ({
       },
     });
 
-    rpc.call("setLink", { newArr: newArr, id: submission.id }).then((data) => {
-      if (data instanceof Error) {
-        console.error(`ERROR -- rpc call deleteSubmissionLink failed`, data);
-        return;
-      }
-    });
+    trpc()
+      .user.setLink.mutate({ newArr: newArr, id: submission.id })
+      .then((data) => {
+        if (data instanceof Error) {
+          console.error(`ERROR -- rpc call deleteSubmissionLink failed`, data);
+          return;
+        }
+      });
   },
   setSubmission: () => {
     const submission = get().submission;
@@ -310,10 +311,8 @@ export const useSubmissionStore = create<SubmissionStore>()((set, get) => ({
       },
     });
 
-    rpc
-      .call("setSubmission", {
-        id: submission.id,
-      })
+    trpc()
+      .user.setSubmission.mutate({ id: submission.id })
       .then((data) => {
         if (data instanceof Error) {
           console.error(`ERROR -- rpc call setSubmission failed`, data);
@@ -338,7 +337,7 @@ export const useSubmissionStore = create<SubmissionStore>()((set, get) => ({
       links: [],
     });
 
-    const res = await rpc.call("createSubmission", { submission: newSubmission });
+    const res = await trpc().user.createSubmission.mutate(newSubmission);
     // TODO: error handling
     if (res instanceof Error) {
       console.error(`ERROR -- rpc call createSubmission failed`, res);

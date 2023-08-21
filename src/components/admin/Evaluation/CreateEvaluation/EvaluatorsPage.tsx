@@ -87,7 +87,7 @@ export default function EvaluatorsPage({ store, formInputs, setFormInputs }: Eva
                 className="appearance-none w-full pl-4 pr-2 py-2 rounded-lg border border-gray focus:outline-none"
                 value={invitation.voice_credits || 0}
                 onChange={(e) => handleInvitationChange(e, invitation.id, "voice_credits")}
-                onBlur={(e) => store.setInvitationCredits(e.target.value, invitation.id)}
+                onBlur={(e) => store.setInvitationCredits(Number(e.target.value), invitation.id)}
               />
             </div>
 
@@ -98,7 +98,7 @@ export default function EvaluatorsPage({ store, formInputs, setFormInputs }: Eva
                 className="appearance-none w-full pl-4 pr-2 py-2 rounded-lg border border-gray focus:outline-none"
                 value={invitation.remaining_uses || 0}
                 onChange={(e) => handleInvitationChange(e, invitation.id, "remaining_uses")}
-                onBlur={(e) => store.setInvitationRemainingUses(e.target.value, invitation.id)}
+                onBlur={(e) => store.setInvitationRemainingUses(Number(e.target.value), invitation.id)}
               />
             </div>
             <div className="flex items-center justify-evenly text-center py-2 px-5 border-l border-gray w-[140px]">

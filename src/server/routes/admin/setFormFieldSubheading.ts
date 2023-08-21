@@ -1,23 +1,21 @@
-import { isAdmin, ServerParams } from "../..";
+import { adminProcedure } from "src/server/trpc";
+import { z } from "zod";
 
-type Params = {
-  id: string;
-  subheading: string;
-};
+export const setFormFieldSubheading = adminProcedure
+  .input(
+    z.object({
+      id: z.string(),
+      subheading: z.string(),
+    }),
+  )
+  .mutation(async ({ ctx: { supabase, auth }, input }) => {
+    const { error } = await supabase
+      .from("evaluation_field")
+      .update({ subheading: input.subheading })
+      .eq("id", input.id);
 
-export async function setFormFieldSubheading({
-  supabase,
-  params: { id, subheading },
-  auth,
-}: ServerParams<Params>): Promise<void | Error> {
-  if (!isAdmin(auth)) {
-    return new Error(`Unauthorized`);
-  }
-
-  const { error } = await supabase.from("evaluation_field").update({ subheading: subheading }).eq("id", id);
-
-  if (error) {
-    console.error(error);
-    return new Error(`ERROR -- failed to set form field subheading. evaluation id: ${id}`);
-  }
-}
+    if (error) {
+      console.error(error);
+      return new Error(`ERROR -- failed to set form field subheading. evaluation id: ${input.id}`);
+    }
+  });

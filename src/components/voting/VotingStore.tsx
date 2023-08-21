@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { Submission, rpc } from "src/lib";
+import { trpc } from "src/lib/trpc";
 
 function calculateAvailableCredits(votes: SubmissionVotes) {
   let usedCredits = 0;
@@ -41,7 +42,7 @@ export const useVotingStore = create<VotingStore>()((set, get) => ({
   allocatedCredits: 0,
 
   load: async (evaluation_id: string): Promise<void> => {
-    const data = await rpc.call("getVotingStore", {
+    const data = await trpc().user.getVotingStore.query({
       evaluation_id: evaluation_id,
     });
 
@@ -80,9 +81,8 @@ export const useVotingStore = create<VotingStore>()((set, get) => ({
         [submission_id]: current_votes + 1,
       },
     });
-
-    rpc
-      .call("setVote", {
+    trpc()
+      .user.setVote.mutate({
         in_evaluator_id: evaluator.id,
         in_submission_id: submission_id,
         vote_count: current_votes + 1,
@@ -116,9 +116,8 @@ export const useVotingStore = create<VotingStore>()((set, get) => ({
         [submission_id]: current_votes - 1,
       },
     });
-
-    rpc
-      .call("setVote", {
+    trpc()
+      .user.setVote.mutate({
         in_evaluator_id: evaluator.id,
         in_submission_id: submission_id,
         vote_count: current_votes - 1,
@@ -165,10 +164,8 @@ export const useVotingStore = create<VotingStore>()((set, get) => ({
       votes: resetVotes(get().votes),
     });
 
-    rpc
-      .call("setResetVotes", {
-        in_evaluator_id: evaluator.id,
-      })
+    trpc()
+      .user.setResetVotes.mutate({ in_evaluator_id: evaluator.id })
       .then((data) => {
         if (data instanceof Error) {
           console.error(`ERROR -- rpc call setResetVotes failed`, data);
@@ -183,11 +180,13 @@ export const useVotingStore = create<VotingStore>()((set, get) => ({
       return;
     }
 
-    return rpc.call("setEvaluatorSubmission", { evaluator_id: evaluator.id }).then((data) => {
-      if (data instanceof Error) {
-        console.error(`ERROR -- rpc call setEvaluatorSubmission failed`, data);
-        return;
-      }
-    });
+    return trpc()
+      .user.setEvaluatorSubmission.mutate({ evaluator_id: evaluator.id })
+      .then((data) => {
+        if (data instanceof Error) {
+          console.error(`ERROR -- rpc call setEvaluatorSubmission failed`, data);
+          return;
+        }
+      });
   },
 }));

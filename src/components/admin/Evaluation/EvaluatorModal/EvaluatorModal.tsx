@@ -89,7 +89,7 @@ export default function EvaluatorModal({ handleClose, handleReset, open, evaluat
                 className={`appearance-none w-full py-2 rounded-lg border focus:outline-none mr-4 border-transparent focus:border-gray focus:px-4`}
                 value={credits || 0}
                 onChange={(e) => setCredits(e.target.value)}
-                onBlur={(e) => store.setVoiceCredits(evaluator.id, e.target.value)}
+                onBlur={(e) => store.setVoiceCredits(evaluator.id, Number(e.target.value))}
               />
               <div>
                 <button onClick={() => creditsRef.current?.focus()} className="border border-blue rounded p-1">
