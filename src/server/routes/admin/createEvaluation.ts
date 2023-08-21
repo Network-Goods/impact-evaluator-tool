@@ -13,10 +13,12 @@ export const createEvaluation = adminProcedure
       form_description: z.string(),
     }),
   )
-  .mutation(async ({ ctx: { supabase, auth }, input }) => {
-    const { data, error } = await supabase.from("evaluation").insert([input]);
-
-    if (error) {
+  .mutation(async ({ ctx: { db }, input }) => {
+    try {
+      await db.evaluation.create({
+        data: input,
+      });
+    } catch (error) {
       console.error(error);
       return new Error(`ERROR -- failed to insert evaluation.`);
     }

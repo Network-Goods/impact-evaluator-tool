@@ -7,10 +7,14 @@ export const deleteEvaluation = adminProcedure
       id: z.string(),
     }),
   )
-  .mutation(async ({ ctx: { supabase, auth }, input }) => {
-    const { data, error } = await supabase.from("evaluation").delete().eq("id", input.id);
-
-    if (error) {
+  .mutation(async ({ ctx: { db }, input }) => {
+    try {
+      await db.evaluation.delete({
+        where: {
+          id: input.id,
+        },
+      });
+    } catch (error) {
       console.error(error);
       return new Error(`ERROR -- failed to delete evaluation. evaluation id: ${input.id}`);
     }

@@ -2,6 +2,7 @@ import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { type inferAsyncReturnType } from "@trpc/server";
 import type { CreateNextContextOptions } from "@trpc/server/adapters/next";
 import { Auth, getUserProfileAuth } from "src/lib/rpc";
+import { db } from "src/lib/db";
 
 export const createContext = async (opts: CreateNextContextOptions) => {
   const supabaseServerClient = createServerSupabaseClient<any>({
@@ -44,6 +45,7 @@ export const createContext = async (opts: CreateNextContextOptions) => {
   const ctx = {
     auth,
     supabase: supabaseServerClient,
+    db,
   };
 
   return ctx;
