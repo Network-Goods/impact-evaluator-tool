@@ -8,11 +8,14 @@ export const setInvitationCredits = adminProcedure
       credits: z.number(),
     }),
   )
-  .mutation(async ({ ctx: { supabase, auth }, input }) => {
-    const { error } = await supabase.from("invitation").update({ voice_credits: input.credits }).eq("id", input.id);
-
-    if (error) {
+  .mutation(async ({ ctx: { db }, input }) => {
+    try {
+      await db.invitation.update({
+        where: { id: input.id },
+        data: { voice_credits: input.credits },
+      });
+    } catch (error) {
       console.error(error);
-      return new Error(`ERROR -- failed to set inviation credits. invitation id: ${input.id}`);
+      return new Error(`ERROR -- failed to set invitation credits. invitation id: ${input.id}`);
     }
   });

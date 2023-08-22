@@ -1,17 +1,23 @@
 import { userProcedure } from "src/server/trpc";
 import { isAdmin } from "src/lib/rpc";
 
-export const getUserProfile = userProcedure.query(async ({ ctx: { supabase, auth }, input }) => {
+export const getUserProfile = userProcedure.query(async ({ ctx: { db, auth } }) => {
   if (!isAdmin(auth)) {
     return new Error("Not authorized");
   }
 
-  const { data, error } = await supabase.from("user").select().eq("id", auth.user_id).single();
+  try {
+    const user = await db.user.findUnique({
+      where: { id: auth.user_id },
+    });
 
-  if (error) {
-    console.error(error);
-    return new Error(`ERROR -- getUserProfile failed. user_id: ${auth.user_id}, message: ${error.message}`);
+    if (!user) {
+      return new Error(`ERROR -- getUserProfile failed. user_id: ${auth.user_id}`);
+    }
+
+    return user;
+  } catch (error) {
+    console.error("An error occurred while fetching the user profile:", error);
+    return new Error(`ERROR -- getUserProfile failed. user_id: ${auth.user_id}`);
   }
-
-  return data as any;
 });

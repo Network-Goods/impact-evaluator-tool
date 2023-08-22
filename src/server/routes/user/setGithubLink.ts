@@ -8,10 +8,13 @@ export const setGithubLink = userProcedure
       link: z.string(),
     }),
   )
-  .mutation(async ({ ctx: { supabase, auth }, input }) => {
-    const { data, error } = await supabase.from("submission").update({ github_link: input.link }).eq("id", input.id);
-
-    if (error) {
+  .mutation(async ({ ctx: { db }, input }) => {
+    try {
+      await db.submission.update({
+        where: { id: input.id },
+        data: { github_link: input.link },
+      });
+    } catch (error) {
       console.error(error);
       return new Error(`ERROR -- failed to set github link. submission id: ${input.id}`);
     }

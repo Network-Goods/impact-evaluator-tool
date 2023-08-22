@@ -8,14 +8,14 @@ export const setFormFieldPlaceholder = adminProcedure
       placeholder: z.string(),
     }),
   )
-  .mutation(async ({ ctx: { supabase, auth }, input }) => {
-    const { error } = await supabase
-      .from("evaluation_field")
-      .update({ placeholder: input.placeholder })
-      .eq("id", input.id);
-    console.log("hello?", input);
-    if (error) {
+  .mutation(async ({ ctx: { db }, input }) => {
+    try {
+      await db.evaluation_field.update({
+        where: { id: input.id },
+        data: { placeholder: input.placeholder },
+      });
+    } catch (error) {
       console.error(error);
-      return new Error(`ERROR -- failed to set form field placeholder. evaluation id: ${input.id}`);
+      return new Error(`ERROR -- failed to set form field placeholder. evaluation_field id: ${input.id}`);
     }
   });

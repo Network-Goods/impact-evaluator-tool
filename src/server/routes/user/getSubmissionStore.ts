@@ -7,21 +7,34 @@ export const getSubmissionStore = userProcedure
       submission_id: z.string(),
     }),
   )
-  .query(async ({ ctx: { supabase }, input }) => {
-    const { error, data } = await supabase
-      .from("submission")
-      .select(
-        "*, evaluation(description, name, evaluation_field!evaluation_field_evaluation_id_fkey(*, submission_field(*)))",
-      )
-      .eq("id", input.submission_id)
-      .single();
+  .query(async ({ ctx: { db }, input }) => {
+    try {
+      const submission = await db.submission.findUnique({
+        where: { id: input.submission_id },
+        include: {
+          evaluation: {
+            include: {
+              evaluation_field: {
+                include: {
+                  submission_field: true,
+                },
+              },
+            },
+          },
+        },
+      });
 
-    if (error) {
+      if (!submission) {
+        return new Error(`Submission not found`);
+      }
+
+      if (submission.evaluation && submission.evaluation.evaluation_field) {
+        submission.evaluation.evaluation_field.sort((a: any, b: any) => a.field_order - b.field_order);
+      }
+
+      return submission;
+    } catch (error) {
       console.error(error);
       return new Error(`ERROR -- failed to get Submission Store`);
     }
-
-    (data as any).evaluation.evaluation_field.sort((a: any, b: any) => a.field_order - b.field_order);
-
-    return data as any;
   });

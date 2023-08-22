@@ -8,11 +8,14 @@ export const setInvitationCode = adminProcedure
       code: z.string(),
     }),
   )
-  .mutation(async ({ ctx: { supabase, auth }, input }) => {
-    const { error } = await supabase.from("invitation").update({ code: input.code }).eq("id", input.id);
-
-    if (error) {
+  .mutation(async ({ ctx: { db }, input }) => {
+    try {
+      await db.invitation.update({
+        where: { id: input.id },
+        data: { code: input.code },
+      });
+    } catch (error) {
       console.error(error);
-      return new Error(`ERROR -- failed to set inviation code. invitation id: ${input.id}`);
+      return new Error(`ERROR -- failed to set invitation code. invitation id: ${input.id}`);
     }
   });

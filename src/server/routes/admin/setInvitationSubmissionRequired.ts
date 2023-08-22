@@ -8,10 +8,13 @@ export const setInvitationSubmissionRequired = adminProcedure
       is_sme: z.boolean(),
     }),
   )
-  .mutation(async ({ ctx: { supabase, auth }, input }) => {
-    const { error } = await supabase.from("invitation").update({ is_sme: input.is_sme }).eq("id", input.id);
-
-    if (error) {
+  .mutation(async ({ ctx: { db }, input }) => {
+    try {
+      await db.invitation.update({
+        where: { id: input.id },
+        data: { is_sme: input.is_sme },
+      });
+    } catch (error) {
       console.error(error);
       return new Error(`ERROR -- failed to set invitation submission required. invitation id: ${input.id}`);
     }

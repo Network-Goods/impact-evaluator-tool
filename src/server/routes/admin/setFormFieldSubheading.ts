@@ -8,14 +8,14 @@ export const setFormFieldSubheading = adminProcedure
       subheading: z.string(),
     }),
   )
-  .mutation(async ({ ctx: { supabase, auth }, input }) => {
-    const { error } = await supabase
-      .from("evaluation_field")
-      .update({ subheading: input.subheading })
-      .eq("id", input.id);
-
-    if (error) {
+  .mutation(async ({ ctx: { db }, input }) => {
+    try {
+      await db.evaluation_field.update({
+        where: { id: input.id },
+        data: { subheading: input.subheading },
+      });
+    } catch (error) {
       console.error(error);
-      return new Error(`ERROR -- failed to set form field subheading. evaluation id: ${input.id}`);
+      return new Error(`ERROR -- failed to set form field subheading. evaluation_field id: ${input.id}`);
     }
   });

@@ -7,10 +7,13 @@ export const setSubmission = userProcedure
       id: z.string(),
     }),
   )
-  .mutation(async ({ ctx: { supabase, auth }, input }) => {
-    const { error } = await supabase.from("submission").update({ is_submitted: true }).eq("id", input.id);
-
-    if (error) {
+  .mutation(async ({ ctx: { db }, input }) => {
+    try {
+      await db.submission.update({
+        where: { id: input.id },
+        data: { is_submitted: true },
+      });
+    } catch (error) {
       console.error(error);
       return new Error(`ERROR -- failed to set submission. submission id: ${input.id}`);
     }

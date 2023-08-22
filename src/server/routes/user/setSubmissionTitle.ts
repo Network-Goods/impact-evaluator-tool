@@ -10,15 +10,17 @@ export const setSubmissionTitle = userProcedure
       user_id: z.string().nullish(),
     }),
   )
-  .mutation(async ({ ctx: { supabase, auth }, input }) => {
+  .mutation(async ({ ctx: { db, auth }, input }) => {
     if (!isAdmin(auth) && input.user_id != auth.user_id) {
       return new Error(`Unauthorized`);
     }
 
-    // Trimming the title here and in setSubmissionTitle in SubmissionStore
-    const { data, error } = await supabase.from("submission").update({ name: input.title.trim() }).eq("id", input.id);
-
-    if (error) {
+    try {
+      await db.submission.update({
+        where: { id: input.id },
+        data: { name: input.title.trim() },
+      });
+    } catch (error) {
       console.error(error);
       return new Error(`ERROR -- failed to set link title. submission id: ${input.id}`);
     }

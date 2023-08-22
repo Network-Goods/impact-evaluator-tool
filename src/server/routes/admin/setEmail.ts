@@ -8,10 +8,13 @@ export const setEmail = adminProcedure
       id: z.string(),
     }),
   )
-  .mutation(async ({ ctx: { supabase, auth }, input }) => {
-    const { error } = await supabase.from("user").update({ preferred_email: input.email }).eq("id", input.id);
-
-    if (error) {
+  .mutation(async ({ ctx: { db }, input }) => {
+    try {
+      await db.user.update({
+        where: { id: input.id },
+        data: { preferred_email: input.email },
+      });
+    } catch (error) {
       console.error(error);
       return new Error(`ERROR -- failed to set user email. user id: ${input.id}`);
     }

@@ -8,13 +8,14 @@ export const setFormFieldCharCount = adminProcedure
       char_count: z.number(),
     }),
   )
-  .mutation(async ({ ctx: { supabase, auth }, input }) => {
-    const { error } = await supabase
-      .from("evaluation_field")
-      .update({ char_count: input.char_count })
-      .eq("id", input.id);
-    if (error) {
+  .mutation(async ({ ctx: { db }, input }) => {
+    try {
+      await db.evaluation_field.update({
+        where: { id: input.id },
+        data: { char_count: input.char_count },
+      });
+    } catch (error) {
       console.error(error);
-      return new Error(`ERROR -- failed to set form field character count. evaluation id: ${input.id}`);
+      return new Error(`ERROR -- failed to set form field character count. evaluation_field id: ${input.id}`);
     }
   });

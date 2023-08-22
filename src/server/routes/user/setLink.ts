@@ -15,10 +15,13 @@ export const setLink = userProcedure
       newArr: newArrSchema,
     }),
   )
-  .mutation(async ({ ctx: { supabase, auth }, input }) => {
-    const { data, error } = await supabase.from("submission").update({ links: input.newArr }).eq("id", input.id);
-
-    if (error) {
+  .mutation(async ({ ctx: { db }, input }) => {
+    try {
+      await db.submission.update({
+        where: { id: input.id },
+        data: { links: JSON.stringify(input.newArr) },
+      });
+    } catch (error) {
       console.error(error);
       return new Error(`ERROR -- failed to set link title. submission id: ${input.id}`);
     }

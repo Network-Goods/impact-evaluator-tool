@@ -3,13 +3,6 @@ import { Evaluation, Evaluator, Submission } from "src/lib";
 import { userProcedure } from "../../trpc";
 import { z } from "zod";
 
-type Return = {
-  submissions: Submission[];
-  evaluator: Evaluator;
-  evaluation: Evaluation;
-  votes: { [submission_id: string]: number };
-};
-
 export const getVotingStore = userProcedure
   .input(
     z.object({

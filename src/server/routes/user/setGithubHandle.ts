@@ -8,13 +8,13 @@ export const setGithubHandle = userProcedure
       github_handle: z.string(),
     }),
   )
-  .mutation(async ({ ctx: { supabase, auth }, input }) => {
-    const { data, error } = await supabase
-      .from("submission")
-      .update({ github_handle: input.github_handle })
-      .eq("id", input.id);
-
-    if (error) {
+  .mutation(async ({ ctx: { db }, input }) => {
+    try {
+      await db.submission.update({
+        where: { id: input.id },
+        data: { github_handle: input.github_handle },
+      });
+    } catch (error) {
       console.error(error);
       return new Error(`ERROR -- failed to set github handle. submission id: ${input.id}`);
     }

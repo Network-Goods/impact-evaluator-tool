@@ -8,10 +8,13 @@ export const setEvaluationStatus = adminProcedure
       status: z.string(),
     }),
   )
-  .mutation(async ({ ctx: { supabase, auth }, input }) => {
-    const { error } = await supabase.from("evaluation").update({ status: input.status }).eq("id", input.id);
-
-    if (error) {
+  .mutation(async ({ ctx: { db }, input }) => {
+    try {
+      await db.evaluation.update({
+        where: { id: input.id },
+        data: { status: input.status },
+      });
+    } catch (error) {
       console.error(error);
       return new Error(`ERROR -- failed to set evaluation status. evaluation id: ${input.id}`);
     }

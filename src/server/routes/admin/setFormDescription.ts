@@ -8,12 +8,13 @@ export const setFormDescription = adminProcedure
       description: z.string(),
     }),
   )
-  .mutation(async ({ ctx: { supabase, auth }, input }) => {
-    const { error } = await supabase
-      .from("evaluation")
-      .update({ form_description: input.description })
-      .eq("id", input.id);
-    if (error) {
+  .mutation(async ({ ctx: { db }, input }) => {
+    try {
+      await db.evaluation.update({
+        where: { id: input.id },
+        data: { form_description: input.description },
+      });
+    } catch (error) {
       console.error(error);
       return new Error(`ERROR -- failed to set form description. evaluation id: ${input.id}`);
     }
