@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { Evaluation, rpc, DashboardEvaluation } from "src/lib";
+import { evaluation } from "@prisma/client";
 import { trpc } from "src/lib/trpc";
 
 export interface DashboardStore {
@@ -7,7 +8,7 @@ export interface DashboardStore {
   error?: any;
   evaluations: DashboardEvaluation[];
   load: () => void;
-  createEvaluation: () => Promise<Evaluation | Error>;
+  createEvaluation: () => Promise<evaluation | Error>;
 }
 
 export const useDashboardStore = create<DashboardStore>()((set, get) => ({
@@ -30,8 +31,8 @@ export const useDashboardStore = create<DashboardStore>()((set, get) => ({
       });
   },
 
-  createEvaluation: async (): Promise<Evaluation | Error> => {
-    const newEvaluation: Evaluation = {
+  createEvaluation: async (): Promise<evaluation | Error> => {
+    const newEvaluation: evaluation = {
       ...Evaluation.init(),
     };
 

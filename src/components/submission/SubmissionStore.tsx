@@ -2,6 +2,8 @@ import { create } from "zustand";
 import { v4 as uuid } from "uuid";
 import { Evaluation, rpc, Submission } from "src/lib";
 import { trpc } from "src/lib/trpc";
+import { submission } from "@prisma/client";
+
 export interface SubmissionStore {
   fetching: boolean;
   submission?: any;
@@ -17,7 +19,7 @@ export interface SubmissionStore {
   createSubmissionLink: () => void;
   deleteSubmissionLink: (index: number) => void;
   setSubmission: () => void;
-  createSubmission: (evaluation_id: string, user_id: string) => Promise<Submission | null>;
+  createSubmission: (evaluation_id: string, user_id: string) => Promise<submission | null>;
 }
 
 export const useSubmissionStore = create<SubmissionStore>()((set, get) => ({
@@ -320,7 +322,7 @@ export const useSubmissionStore = create<SubmissionStore>()((set, get) => ({
         }
       });
   },
-  createSubmission: async (evaluation_id: string, user_id: string): Promise<Submission | null> => {
+  createSubmission: async (evaluation_id: string, user_id: string): Promise<submission | null> => {
     const githubHandle = get().githubHandle;
 
     if (get().fetching || !githubHandle) {
@@ -328,13 +330,9 @@ export const useSubmissionStore = create<SubmissionStore>()((set, get) => ({
     }
 
     const newSubmission = Submission.init({
-      description: "",
       evaluation_id: evaluation_id,
-      name: "",
       user_id: user_id,
       github_handle: githubHandle,
-      github_link: "",
-      links: [],
     });
 
     const res = await trpc().user.createSubmission.mutate(newSubmission);

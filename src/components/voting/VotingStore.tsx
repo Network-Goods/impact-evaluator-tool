@@ -1,6 +1,7 @@
 import { create } from "zustand";
-import { Submission, rpc } from "src/lib";
+import { rpc, Submission } from "src/lib";
 import { trpc } from "src/lib/trpc";
+import { submission } from "@prisma/client";
 
 function calculateAvailableCredits(votes: SubmissionVotes) {
   let usedCredits = 0;
@@ -17,7 +18,7 @@ export type VotingStore = {
   votes: SubmissionVotes;
   evaluator: { id: string; voice_credits: number } | null;
   evaluation: any | null;
-  submissions: Submission[];
+  submissions: submission[];
   expandedSubmissions: { [submissionId: string]: boolean };
   availableCredits: number;
   allocatedCredits: number;
@@ -50,7 +51,7 @@ export const useVotingStore = create<VotingStore>()((set, get) => ({
       console.error(`ERROR -- rpc call getVotingStore failed. evaluation_id: ${evaluation_id}`, data);
       return;
     }
-
+    console.log("data", data);
     data.submissions.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
 
     set({

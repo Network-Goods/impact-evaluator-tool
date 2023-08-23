@@ -1,8 +1,8 @@
 import Add from "public/images/svg/Add";
 import Delete from "public/images/svg/Delete";
 import Edit from "public/images/svg/Edit";
-import { Submission as SubmissionType, SubmissionFormInputs } from "src/lib";
-import { SubmissionFormLinkInputs } from "src/lib";
+import { SubmissionFormInputs, SubmissionFormLinkInputs } from "src/lib";
+import { submission } from "@prisma/client";
 
 type SubmissionProps = {
   store: any;
@@ -11,7 +11,7 @@ type SubmissionProps = {
   setFormInputs: any;
   isGithubHandleChecked?: boolean;
   setIsGithubHandleChecked?: any;
-  submission?: SubmissionType;
+  submission?: submission;
   submission_id: string | string[] | undefined;
 };
 
@@ -229,8 +229,8 @@ export default function Submission({
         className="text-base appearance-none border border-gray rounded-lg w-full py-2 px-3 mt-1 font-medium disabled:text-gray focus:outline-none"
         type="text"
         name="githubHandle"
-        value={formInputs.githubHandle || ""}
-        onChange={(e) => handleFormChange(e, "githubHandle")}
+        value={formInputs.github_handle || ""}
+        onChange={(e) => handleFormChange(e, "github_handle")}
         onBlur={
           !submission
             ? (e) => store.setGithubHandle(e.target.value)

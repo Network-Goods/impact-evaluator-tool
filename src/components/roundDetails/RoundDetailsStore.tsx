@@ -1,19 +1,19 @@
 import { create } from "zustand";
 import { v4 as uuid } from "uuid";
 import { rpc, Submission } from "src/lib";
+import { submission } from "@prisma/client";
 import { trpc } from "src/lib/trpc";
 
 export interface RoundDetailsStore {
   fetching: boolean;
   evaluation?: any;
-  submissions?: Submission[];
-  evaluation_field?: any;
+  submissions?: submission[];
   evaluationID?: string;
   userID?: string;
   githubHandle?: string;
   load: (userID: string, evaluationID: string, githubHandle: string) => void;
   deleteSubmission: (submissionID: string) => void;
-  createSubmission: () => Promise<Submission | null>;
+  createSubmission: () => Promise<submission | null>;
 }
 
 export const useRoundDetailsStore = create<RoundDetailsStore>()((set, get) => ({
@@ -31,9 +31,8 @@ export const useRoundDetailsStore = create<RoundDetailsStore>()((set, get) => ({
     }
 
     set({
-      evaluation: data.evaluation[0],
+      evaluation: data.evaluation,
       submissions: data.submissions,
-      evaluation_field: data.evaluation_field,
       evaluationID: evaluationID,
       userID: userID,
       githubHandle: githubHandle,
@@ -60,7 +59,7 @@ export const useRoundDetailsStore = create<RoundDetailsStore>()((set, get) => ({
         }
       });
   },
-  createSubmission: async (): Promise<Submission | null> => {
+  createSubmission: async (): Promise<submission | null> => {
     const evaluationID = get().evaluationID;
     const userID = get().userID;
     const githubHandle = get().githubHandle;

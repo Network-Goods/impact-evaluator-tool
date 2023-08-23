@@ -47,7 +47,8 @@ export default function SubmissionPage() {
     specs: store.submission?.description.specs,
     github_link: store.submission?.github_link,
     links: store.submission?.links || [],
-    githubHandle: isGithubHandleChecked ? store.submission?.github_handle : "",
+    github_handle: isGithubHandleChecked ? store.submission?.github_handle : "",
+    user_id: store.submission?.user_id,
   });
 
   const handleSubmitModal = () => {
@@ -83,7 +84,8 @@ export default function SubmissionPage() {
       specs: store.submission?.description.specs,
       github_link: store.submission?.github_link,
       links: store.submission?.links,
-      githubHandle: store.submission?.github_handle,
+      github_handle: store.submission?.github_handle,
+      user_id: store.submission?.user_id,
     });
     if (githubHandleFromProfile) setIsGithubHandleChecked(githubHandleFromProfile === store.submission?.github_handle);
   }, [store.submission]);
@@ -91,7 +93,7 @@ export default function SubmissionPage() {
   const isSubmitButtonDisabled =
     !formInputs.name ||
     !formInputs.github_link ||
-    (isGithubHandleChecked ? !githubHandleFromProfile : !formInputs.githubHandle) ||
+    (isGithubHandleChecked ? !githubHandleFromProfile : !formInputs.github_handle) ||
     (formInputs.links && formInputs.links.some((link) => !link.name || !link.value)) ||
     !submissionFormCustomFieldsCheck(formInputs, submission_id);
 

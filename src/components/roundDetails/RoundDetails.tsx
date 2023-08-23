@@ -8,7 +8,7 @@ import EvaluationLinkButton from "../dashboard/EvaluationLinkButton";
 import SmallTitle from "../shared/SmallTitle";
 import Title from "../shared/Title";
 import VotingTableBody from "../voting/VotingTableBody";
-import { Submission, VotingTableBodySubmission } from "src/lib";
+import { VotingTableBodySubmission } from "src/lib";
 import Add from "public/images/svg/Add";
 import QuadraticVotingModal from "../voting/QuadraticVotingModal";
 import parse from "html-react-parser";

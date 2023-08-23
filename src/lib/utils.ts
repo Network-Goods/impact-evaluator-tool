@@ -1,4 +1,4 @@
-export function returnTime(date: string | null) {
+export function returnTime(date: Date | null) {
   if (date === null) {
     return;
   }
@@ -6,7 +6,7 @@ export function returnTime(date: string | null) {
   return time.slice(17, 22) + " UTC";
 }
 
-export function returnDate(date: string | null) {
+export function returnDate(date: Date | null) {
   if (date === null) {
     return;
   }
