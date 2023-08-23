@@ -96,7 +96,7 @@ type VotingTableBodySubmissionFields = {
 };
 
 export interface RoundStatus {
-  name: string;
+  name: string | null;
   num_evaluators: number;
   num_submitted: number;
   status: string;

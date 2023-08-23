@@ -10,7 +10,7 @@ export const setGithubLink = userProcedure
   )
   .mutation(async ({ ctx: { db }, input }) => {
     try {
-      await db.Submission.update({
+      await db.submission.update({
         where: { id: input.id },
         data: { github_link: input.link },
       });

@@ -2,7 +2,7 @@ import Add from "public/images/svg/Add";
 import Delete from "public/images/svg/Delete";
 import Edit from "public/images/svg/Edit";
 import { SubmissionFormInputs, SubmissionFormLinkInputs } from "src/lib";
-import { submission } from "@prisma/client";
+import { Submission as submission } from "@prisma/client";
 
 type SubmissionProps = {
   store: any;

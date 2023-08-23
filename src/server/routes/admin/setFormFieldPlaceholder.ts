@@ -10,7 +10,7 @@ export const setFormFieldPlaceholder = adminProcedure
   )
   .mutation(async ({ ctx: { db }, input }) => {
     try {
-      await db.EvaluationField.update({
+      await db.evaluationField.update({
         where: { id: input.id },
         data: { placeholder: input.placeholder },
       });

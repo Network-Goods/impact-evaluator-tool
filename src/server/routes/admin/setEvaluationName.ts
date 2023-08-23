@@ -10,7 +10,7 @@ export const setEvaluationName = adminProcedure
   )
   .mutation(async ({ ctx: { db }, input }) => {
     try {
-      await db.Evaluation.update({
+      await db.evaluation.update({
         where: { id: input.id },
         data: { name: input.name },
       });

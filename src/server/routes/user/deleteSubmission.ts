@@ -11,7 +11,7 @@ export const deleteSubmission = userProcedure
   .mutation(async ({ ctx: { db, auth }, input }) => {
     let submission;
     try {
-      submission = await db.Submission.findUnique({
+      submission = await db.submission.findUnique({
         where: { id: input.id },
         select: { user_id: true },
       });
@@ -29,7 +29,7 @@ export const deleteSubmission = userProcedure
     }
 
     try {
-      await db.Submission.delete({ where: { id: input.id } });
+      await db.submission.delete({ where: { id: input.id } });
     } catch (error) {
       console.error(error);
       return new Error(`ERROR -- failed to delete submission. submission id: ${input.id}`);

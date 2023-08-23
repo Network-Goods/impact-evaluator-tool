@@ -7,7 +7,7 @@ export const getUserProfile = userProcedure.query(async ({ ctx: { db, auth } }) 
   }
 
   try {
-    const user = await db.User.findUnique({
+    const user = await db.user.findUnique({
       where: { id: auth.user_id },
     });
 

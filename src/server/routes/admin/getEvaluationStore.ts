@@ -32,7 +32,7 @@ export const getEvaluationStore = adminProcedure
 //   )
 //   .query(async ({ ctx: { db, auth }, input }) => {
 //     try {
-//       const data = await db.Evaluation.findUnique({
+//       const data = await db.evaluation.findUnique({
 //         where: { id: input.evaluation_id },
 //         include: {
 //           evaluation_field: {

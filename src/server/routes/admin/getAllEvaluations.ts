@@ -2,7 +2,7 @@ import { adminProcedure } from "../../trpc";
 
 export const getAllEvaluations = adminProcedure.query(async ({ ctx: { db } }) => {
   try {
-    const data = await db.Evaluation.findMany();
+    const data = await db.evaluation.findMany();
     return data || [];
   } catch (error) {
     console.error(error);

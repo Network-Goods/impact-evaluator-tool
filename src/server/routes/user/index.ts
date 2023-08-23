@@ -16,6 +16,7 @@ import { getVotingStore } from "./getVotingStore";
 import { setResetVotes } from "./setResetVotes";
 import { setVote } from "./setVote";
 import { setEvaluatorSubmission } from "./setEvaluatorSubmission";
+import { setSubmissionDescription } from "./setSubmissionDescription";
 
 export const user = router({
   getDashboardStore,
@@ -35,4 +36,5 @@ export const user = router({
   setResetVotes,
   setVote,
   setEvaluatorSubmission,
+  setSubmissionDescription,
 });

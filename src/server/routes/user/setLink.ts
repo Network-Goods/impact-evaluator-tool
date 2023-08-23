@@ -17,7 +17,7 @@ export const setLink = userProcedure
   )
   .mutation(async ({ ctx: { db }, input }) => {
     try {
-      await db.Submission.update({
+      await db.submission.update({
         where: { id: input.id },
         data: { links: JSON.stringify(input.newArr) },
       });

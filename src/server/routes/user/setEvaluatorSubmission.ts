@@ -16,7 +16,7 @@ export const setEvaluatorSubmission = userProcedure
     }
 
     try {
-      await db.Evaluator.update({
+      await db.evaluator.update({
         where: { id: input.evaluator_id },
         data: { is_submitted: true },
       });

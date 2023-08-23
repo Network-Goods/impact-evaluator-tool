@@ -23,7 +23,7 @@ export const createSubmission = userProcedure
       return new Error(`Unauthorized`);
     }
     try {
-      const newSubmission = await db.Submission.create({
+      const newSubmission = await db.submission.create({
         data: {
           id: input.id,
           user_id: input.user_id || null,
@@ -49,13 +49,13 @@ export const createSubmission = userProcedure
         },
       });
 
-      const evaluationFields = await db.EvaluationField.findMany({
+      const evaluationFields = await db.evaluationField.findMany({
         where: {
           evaluation_id: input.evaluation_id,
         },
       });
 
-      const submissionFields = await db.SubmissionField.createMany({
+      const submissionFields = await db.submissionField.createMany({
         data: evaluationFields.map((field) => ({
           id: uuid(),
           field_body: "",

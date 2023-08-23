@@ -10,7 +10,7 @@ export const setEmail = adminProcedure
   )
   .mutation(async ({ ctx: { db }, input }) => {
     try {
-      await db.User.update({
+      await db.user.update({
         where: { id: input.id },
         data: { preferred_email: input.email },
       });

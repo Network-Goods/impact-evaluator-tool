@@ -2,7 +2,7 @@ import { isAdmin } from "src/lib/rpc";
 import { Evaluation, Evaluator, Submission } from "src/lib";
 import { userProcedure } from "../../trpc";
 import { z } from "zod";
-import { submission, evaluation } from "@prisma/client";
+import { Submission as submission, Evaluation as evaluation } from "@prisma/client";
 
 export const getVotingStore = userProcedure
   .input(
@@ -35,9 +35,9 @@ export const getVotingStore = userProcedure
 
     return {
       submissions: (d.submissions || []) as submission[],
-      evaluator: d.evaluator,
+      evaluator: d.evaluator as any,
       evaluation: d.evaluation as evaluation,
-      votes: d.votes || {},
+      votes: (d.votes || {}) as any,
     };
   });
 
@@ -52,7 +52,7 @@ export const getVotingStore = userProcedure
 //       return new Error(`Unauthorized`);
 //     }
 
-//     const evaluator = await db.Evaluator.findFirst({
+//     const evaluator = await db.evaluator.findFirst({
 //       where: {
 //         user_id: auth.user_id,
 //         evaluation_id: input.evaluation_id,
@@ -67,11 +67,11 @@ export const getVotingStore = userProcedure
 //       throw new Error(`User is not assigned as evaluator for evaluation. evaluation_id: ${input.evaluation_id}`);
 //     }
 
-//     const evaluation = await db.Evaluation.findUnique({
+//     const evaluation = await db.evaluation.findUnique({
 //       where: { id: input.evaluation_id },
 //     });
 
-//     const submissions = await db.Submission.findMany({
+//     const submissions = await db.submission.findMany({
 //       where: { evaluation_id: input.evaluation_id },
 //       select: {
 //         submission_field: {

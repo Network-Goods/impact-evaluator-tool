@@ -10,7 +10,7 @@ export const setInvitationSubmissionRequired = adminProcedure
   )
   .mutation(async ({ ctx: { db }, input }) => {
     try {
-      await db.Invitation.update({
+      await db.invitation.update({
         where: { id: input.id },
         data: { is_sme: input.is_sme },
       });

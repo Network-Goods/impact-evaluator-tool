@@ -1,18 +1,16 @@
-import { ServerParams } from "..";
+import { userProcedure } from "src/server/trpc";
+import { z } from "zod";
 
-type Params = {
-  id: string;
-  newObj: any;
-};
-
-export async function setSubmissionDescription({
-  supabase,
-  params: { id, newObj },
-}: ServerParams<Params>): Promise<void | Error> {
-  const { data, error } = await supabase.from("submission").update({ description: newObj }).eq("id", id);
-
-  if (error) {
-    console.error(error);
-    return new Error(`ERROR -- failed to set link title. submission id: ${id}`);
-  }
-}
+export const setSubmissionDescription = userProcedure
+  .input(
+    z.object({
+      id: z.string(),
+      description: z.any(),
+    }),
+  )
+  .mutation(async ({ ctx: { db }, input }) => {
+    await db.submission.update({
+      where: { id: input.id },
+      data: { description: input.description },
+    });
+  });

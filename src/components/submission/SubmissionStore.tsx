@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { v4 as uuid } from "uuid";
 import { Evaluation, rpc, Submission } from "src/lib";
 import { trpc } from "src/lib/trpc";
-import { submission } from "@prisma/client";
+import { Submission as submission } from "@prisma/client";
 
 export interface SubmissionStore {
   fetching: boolean;
@@ -86,12 +86,12 @@ export const useSubmissionStore = create<SubmissionStore>()((set, get) => ({
       },
     });
 
-    rpc.call("setSubmissionDescription", { newObj: newObj, id: submission.id }).then((data) => {
-      if (data instanceof Error) {
-        console.error(`ERROR -- rpc call setSubmissionDescription failed`, data);
-        return;
-      }
-    });
+    trpc()
+      .user.setSubmissionDescription.mutate({ description: newObj, id: submission.id })
+      .catch((err) => {
+        // TODO: error handling
+        console.error(`ERROR -- rpc call setSubmissionDescription failed`, err);
+      });
   },
   setSubmissionField: (value: string, id: string) => {
     const submission = get().submission;
@@ -292,11 +292,9 @@ export const useSubmissionStore = create<SubmissionStore>()((set, get) => ({
 
     trpc()
       .user.setLink.mutate({ newArr: newArr, id: submission.id })
-      .then((data) => {
-        if (data instanceof Error) {
-          console.error(`ERROR -- rpc call deleteSubmissionLink failed`, data);
-          return;
-        }
+      .catch((err) => {
+        // TODO: error handling
+        console.error(`ERROR -- rpc call setLink failed`, err);
       });
   },
   setSubmission: () => {
@@ -315,11 +313,9 @@ export const useSubmissionStore = create<SubmissionStore>()((set, get) => ({
 
     trpc()
       .user.setSubmission.mutate({ id: submission.id })
-      .then((data) => {
-        if (data instanceof Error) {
-          console.error(`ERROR -- rpc call setSubmission failed`, data);
-          return;
-        }
+      .catch((err) => {
+        // TODO: error handling
+        console.error(`ERROR -- rpc call setSubmission failed`, err);
       });
   },
   createSubmission: async (evaluation_id: string, user_id: string): Promise<submission | null> => {
@@ -335,10 +331,15 @@ export const useSubmissionStore = create<SubmissionStore>()((set, get) => ({
       github_handle: githubHandle,
     });
 
-    const res = await trpc().user.createSubmission.mutate(newSubmission);
-    // TODO: error handling
-    if (res instanceof Error) {
-      console.error(`ERROR -- rpc call createSubmission failed`, res);
+    const res = await trpc()
+      .user.createSubmission.mutate(newSubmission)
+      .catch((err) => {
+        // TODO: error handling
+        console.error(`ERROR -- rpc call createSubmission failed`, err);
+        return null;
+      });
+
+    if (!res) {
       return null;
     }
 

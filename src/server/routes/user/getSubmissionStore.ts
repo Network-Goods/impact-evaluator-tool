@@ -9,7 +9,7 @@ export const getSubmissionStore = userProcedure
   )
   .query(async ({ ctx: { db }, input }) => {
     try {
-      const submission = await db.Submission.findUnique({
+      const submission = await db.submission.findUnique({
         where: { id: input.submission_id },
         include: {
           evaluation: {

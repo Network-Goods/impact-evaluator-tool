@@ -9,7 +9,7 @@ export const getRoundDetailsStore = userProcedure
   )
   .query(async ({ ctx: { db, auth }, input }) => {
     try {
-      const submissions = await db.Submission.findMany({
+      const submissions = await db.submission.findMany({
         where: {
           evaluation_id: input.evaluation_id,
           user_id: auth.user_id,
@@ -43,7 +43,7 @@ export const getRoundDetailsStore = userProcedure
         },
       });
 
-      const evaluation = await db.Evaluation.findUnique({
+      const evaluation = await db.evaluation.findUnique({
         where: { id: input.evaluation_id },
       });
 

@@ -18,7 +18,9 @@ export default function Index() {
     if (!evaluation_id || Array.isArray(evaluation_id) || !userProfileStore.profile) {
       return;
     }
-    store.load(userProfileStore.profile.id, evaluation_id, userProfileStore.profile.github_handle);
+
+    // TODO: why is github_handle maybe null?
+    store.load(userProfileStore.profile.id, evaluation_id, userProfileStore.profile.github_handle!);
   }, [evaluation_id, store.fetching, userProfileStore.profile]);
 
   const clickNewSubmission = async () => {

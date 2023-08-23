@@ -10,7 +10,7 @@ export const setInvitationRemainingUses = adminProcedure
   )
   .mutation(async ({ ctx: { db }, input }) => {
     try {
-      await db.Invitation.update({
+      await db.invitation.update({
         where: { id: input.id },
         data: { remaining_uses: input.uses },
       });

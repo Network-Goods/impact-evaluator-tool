@@ -9,7 +9,7 @@ export const deleteEvaluation = adminProcedure
   )
   .mutation(async ({ ctx: { db }, input }) => {
     try {
-      await db.Evaluation.delete({
+      await db.evaluation.delete({
         where: {
           id: input.id,
         },

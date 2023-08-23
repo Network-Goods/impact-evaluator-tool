@@ -10,7 +10,7 @@ export const setUserID = adminProcedure
   )
   .mutation(async ({ ctx: { db }, input }) => {
     try {
-      await db.Submission.update({
+      await db.submission.update({
         where: { id: input.id },
         data: { user_id: input.user_id },
       });

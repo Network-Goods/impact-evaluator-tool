@@ -747,12 +747,12 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
       },
     });
 
-    rpc.call("setSubmissionDescription", { newObj: newObj, id: id }).then((data) => {
-      if (data instanceof Error) {
-        console.error(`ERROR -- rpc call setEvaluationName failed`, data);
-        return;
-      }
-    });
+    trpc()
+      .user.setSubmissionDescription.mutate({ description: newObj, id: id })
+      .catch((err) => {
+        // TODO: error handling
+        console.log("ERROR -- rpc call setSubmissionDescription failed", err);
+      });
   },
   setSubmissionField: (value: string, field_id: string) => {
     const evaluation = get().evaluation;
@@ -1087,13 +1087,12 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
         }),
       },
     });
+
     trpc()
       .user.setSubmission.mutate({ id: id })
-      .then((data) => {
-        if (data instanceof Error) {
-          console.error(`ERROR -- rpc call setSubmission failed`, data);
-          return;
-        }
+      .catch((err) => {
+        // TODO: error handling
+        console.log("ERROR -- rpc call setSubmission failed", err);
       });
   },
 }));

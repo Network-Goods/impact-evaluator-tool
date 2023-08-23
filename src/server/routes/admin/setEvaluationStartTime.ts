@@ -10,7 +10,7 @@ export const setEvaluationStartTime = adminProcedure
   )
   .mutation(async ({ ctx: { db }, input }) => {
     try {
-      await db.Evaluation.update({
+      await db.evaluation.update({
         where: { id: input.id },
         data: { start_time: input.time },
       });

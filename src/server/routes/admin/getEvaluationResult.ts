@@ -24,15 +24,15 @@ export const getEvaluationResult = adminProcedure
         select: { evaluator_id: true, submission_id: true, votes: true },
       });
 
-      const evaluation = await db.Evaluation.findUnique({
+      const evaluation = await db.evaluation.findUnique({
         where: { id: evaluation_id },
       });
 
-      const submissions = await db.Submission.findMany({
+      const submissions = await db.submission.findMany({
         where: { evaluation_id },
       });
 
-      const evaluators = await db.Evaluator.findMany({
+      const evaluators = await db.evaluator.findMany({
         where: { evaluation_id },
         select: {
           id: true,

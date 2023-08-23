@@ -1,6 +1,6 @@
 import { adminProcedure } from "src/server/trpc";
 import { z } from "zod";
-import { submission } from "@prisma/client";
+import { Submission } from "@prisma/client";
 
 export const getSubmissions = adminProcedure
   .input(
@@ -25,6 +25,6 @@ export const getSubmissions = adminProcedure
     const d: any = data;
 
     return {
-      submissions: (d.submissions || []) as submission[],
+      submissions: (d.submissions || []) as Submission[],
     };
   });

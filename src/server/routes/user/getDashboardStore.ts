@@ -15,7 +15,7 @@ export const getDashboardStore = userProcedure.query(async ({ ctx: { supabase, a
 
 // export const getDashboardStore = userProcedure.query(async ({ ctx: { db, auth } }) => {
 //   try {
-//     const evaluations = await db.Evaluator.findMany({
+//     const evaluations = await db.evaluator.findMany({
 //       where: {
 //         user_id: auth.user_id,
 //       },

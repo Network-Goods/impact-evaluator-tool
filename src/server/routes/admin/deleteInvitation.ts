@@ -9,7 +9,7 @@ export const deleteInvitation = adminProcedure
   )
   .mutation(async ({ ctx: { db }, input }) => {
     try {
-      await db.Invitation.delete({
+      await db.invitation.delete({
         where: {
           id: input.id,
         },

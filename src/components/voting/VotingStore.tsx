@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { rpc, Submission } from "src/lib";
 import { trpc } from "src/lib/trpc";
-import { submission } from "@prisma/client";
+import { Submission as submission } from "@prisma/client";
 
 function calculateAvailableCredits(votes: SubmissionVotes) {
   let usedCredits = 0;
@@ -54,12 +54,15 @@ export const useVotingStore = create<VotingStore>()((set, get) => ({
     console.log("data", data);
     data.submissions.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
 
+    const votes = (data as any).votes;
+    const evaluator = (data as any).evaluator;
+
     set({
-      votes: data.votes,
+      votes: votes,
       submissions: data.submissions,
-      evaluator: data.evaluator,
-      availableCredits: data.evaluator.voice_credits - calculateAvailableCredits(data.votes),
-      allocatedCredits: data.evaluator.voice_credits,
+      evaluator: evaluator,
+      availableCredits: evaluator.voice_credits - calculateAvailableCredits(votes),
+      allocatedCredits: evaluator.voice_credits,
       evaluation: data.evaluation,
       loaded: true,
     });

@@ -3,7 +3,7 @@ import { z } from "zod";
 
 export const createFormField = adminProcedure.input(z.any()).mutation(async ({ ctx: { db }, input }) => {
   try {
-    await db.EvaluationField.create({
+    await db.evaluationField.create({
       data: input,
     });
   } catch (error) {

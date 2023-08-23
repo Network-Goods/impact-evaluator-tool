@@ -3,7 +3,7 @@ import { z } from "zod";
 
 export const createInvitation = adminProcedure.input(z.any()).mutation(async ({ ctx: { db }, input }) => {
   try {
-    await db.Invitation.create({
+    await db.invitation.create({
       data: input,
     });
   } catch (error) {

@@ -15,7 +15,7 @@ export const createEvaluation = adminProcedure
   )
   .mutation(async ({ ctx: { db }, input }) => {
     try {
-      await db.Evaluation.create({
+      await db.evaluation.create({
         data: input,
       });
     } catch (error) {

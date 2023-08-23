@@ -1,10 +1,10 @@
 import { create } from "zustand";
 import { rpc } from "../lib";
-import { user } from "@prisma/client";
+import { User } from "@prisma/client";
 import { trpc } from "../lib/trpc";
 
 export type UserProfileStore = {
-  profile?: user;
+  profile?: User;
   login: () => void;
   logout: () => void;
   isAdmin: () => boolean;
