@@ -9,7 +9,7 @@ export const setSubmission = userProcedure
   )
   .mutation(async ({ ctx: { db }, input }) => {
     try {
-      await db.submission.update({
+      await db.Submission.update({
         where: { id: input.id },
         data: { is_submitted: true },
       });

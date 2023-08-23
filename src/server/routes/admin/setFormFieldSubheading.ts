@@ -10,7 +10,7 @@ export const setFormFieldSubheading = adminProcedure
   )
   .mutation(async ({ ctx: { db }, input }) => {
     try {
-      await db.evaluation_field.update({
+      await db.EvaluationField.update({
         where: { id: input.id },
         data: { subheading: input.subheading },
       });

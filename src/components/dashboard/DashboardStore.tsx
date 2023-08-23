@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { Evaluation, rpc, DashboardEvaluation } from "src/lib";
-import { evaluation } from "@prisma/client";
+import { Evaluation as evaluation } from "@prisma/client";
 import { trpc } from "src/lib/trpc";
 
 export interface DashboardStore {

@@ -1,5 +1,5 @@
 import { v4 as uuid } from "uuid";
-import { submission, evaluation } from "@prisma/client";
+import { Submission as submission, Evaluation as evaluation } from "@prisma/client";
 
 export interface AppError {
   error: string;

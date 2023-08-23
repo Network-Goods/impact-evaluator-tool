@@ -16,7 +16,7 @@ export const setSubmissionTitle = userProcedure
     }
 
     try {
-      await db.submission.update({
+      await db.Submission.update({
         where: { id: input.id },
         data: { name: input.title.trim() },
       });

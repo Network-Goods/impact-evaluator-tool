@@ -10,7 +10,7 @@ export const setFormDescription = adminProcedure
   )
   .mutation(async ({ ctx: { db }, input }) => {
     try {
-      await db.evaluation.update({
+      await db.Evaluation.update({
         where: { id: input.id },
         data: { form_description: input.description },
       });

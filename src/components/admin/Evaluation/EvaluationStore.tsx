@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { v4 as uuid } from "uuid";
 import { rpc, Submission } from "src/lib";
-import { submission } from "@prisma/client";
+import { Submission as submission } from "@prisma/client";
 import { trpc } from "src/lib/trpc";
 
 export interface EvaluationStore {

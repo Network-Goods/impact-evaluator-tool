@@ -9,7 +9,7 @@ export const deleteFormField = adminProcedure
   )
   .mutation(async ({ ctx: { db }, input }) => {
     try {
-      await db.evaluation_field.delete({
+      await db.EvaluationField.delete({
         where: {
           id: input.id,
         },

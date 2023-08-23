@@ -2,11 +2,11 @@ import { adminProcedure } from "../../trpc";
 
 export const getStatusStore = adminProcedure.query(async ({ ctx: { db }, input }) => {
   try {
-    const evaluations = await db.evaluation.findMany();
+    const evaluations = await db.Evaluation.findMany();
 
     const results = [];
     for (let evaluationItem of evaluations) {
-      const evaluators = await db.evaluator.findMany({
+      const evaluators = await db.Evaluator.findMany({
         where: {
           evaluation_id: evaluationItem.id,
           user: {
@@ -31,6 +31,6 @@ export const getStatusStore = adminProcedure.query(async ({ ctx: { db }, input }
     return results;
   } catch (error) {
     console.error(error);
-    return new Error(`ERROR -- get_status_store failed.`);
+    throw new Error(`ERROR -- get_status_store failed.`);
   }
 });

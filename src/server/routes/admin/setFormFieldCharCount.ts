@@ -10,7 +10,7 @@ export const setFormFieldCharCount = adminProcedure
   )
   .mutation(async ({ ctx: { db }, input }) => {
     try {
-      await db.evaluation_field.update({
+      await db.EvaluationField.update({
         where: { id: input.id },
         data: { char_count: input.char_count },
       });

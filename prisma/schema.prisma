@@ -24,14 +24,14 @@ model Evaluation {
 }
 
 model EvaluationField {
-  id               String             @id @db.Uuid
-  evaluation_id    String?            @db.Uuid
+  id               String            @id @db.Uuid
+  evaluation_id    String?           @db.Uuid
   heading          String?
   subheading       String?
   char_count       Int?
   placeholder      String?
-  evaluation       Evaluation?        @relation(fields: [evaluation_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  submission_field submission_field[]
+  evaluation       Evaluation?       @relation(fields: [evaluation_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  submission_field SubmissionField[]
 
   @@map("evaluation_field")
 }
@@ -64,25 +64,24 @@ model Invitation {
 }
 
 model Submission {
-  id               String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id               String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name             String
   github_link      String?
-  evaluation_id    String             @db.Uuid
-  description      Json               @db.Json
+  evaluation_id    String            @db.Uuid
+  description      Json              @db.Json
   links            Json?
   github_handle    String?
-  user_id          String?            @db.Uuid
-  is_submitted     Boolean            @default(false)
+  user_id          String?           @db.Uuid
+  is_submitted     Boolean           @default(false)
   contract_id      String?
-  evaluation       Evaluation         @relation(fields: [evaluation_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  submission_field submission_field[]
+  evaluation       Evaluation        @relation(fields: [evaluation_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  submission_field SubmissionField[]
   votes            Votes[]
-  test             String?
 
   @@map("submission")
 }
 
-model submission_field {
+model SubmissionField {
   id               String           @id @db.Uuid
   fields_id        String?          @db.Uuid
   field_body       String?

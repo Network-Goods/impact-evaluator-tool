@@ -10,7 +10,7 @@ export const setVoiceCredits = adminProcedure
   )
   .mutation(async ({ ctx: { db }, input }) => {
     try {
-      await db.evaluator.update({
+      await db.Evaluator.update({
         where: { id: input.id },
         data: { voice_credits: input.amount },
       });

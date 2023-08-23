@@ -52,7 +52,7 @@ export const getVotingStore = userProcedure
 //       return new Error(`Unauthorized`);
 //     }
 
-//     const evaluator = await db.evaluator.findFirst({
+//     const evaluator = await db.Evaluator.findFirst({
 //       where: {
 //         user_id: auth.user_id,
 //         evaluation_id: input.evaluation_id,
@@ -67,11 +67,11 @@ export const getVotingStore = userProcedure
 //       throw new Error(`User is not assigned as evaluator for evaluation. evaluation_id: ${input.evaluation_id}`);
 //     }
 
-//     const evaluation = await db.evaluation.findUnique({
+//     const evaluation = await db.Evaluation.findUnique({
 //       where: { id: input.evaluation_id },
 //     });
 
-//     const submissions = await db.submission.findMany({
+//     const submissions = await db.Submission.findMany({
 //       where: { evaluation_id: input.evaluation_id },
 //       select: {
 //         submission_field: {

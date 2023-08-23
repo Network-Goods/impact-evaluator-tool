@@ -10,7 +10,7 @@ export const setGithubHandle = userProcedure
   )
   .mutation(async ({ ctx: { db }, input }) => {
     try {
-      await db.submission.update({
+      await db.Submission.update({
         where: { id: input.id },
         data: { github_handle: input.github_handle },
       });
