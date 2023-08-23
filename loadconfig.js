@@ -5,6 +5,10 @@ if (process.env.CLIENT_BACKEND) {
 const required = {
   NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
   NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+  PGHOST: process.env.PGHOST,
+  PGPORT: process.env.PGPORT,
+  PGUSER: process.env.PGUSER,
+  PGPASSWORD: process.env.PGPASSWORD,
 };
 
 const optional_with_default = {
@@ -37,10 +41,13 @@ if (errors.length != 0) {
   process.exit(1);
 }
 
+const DATABASE_URL = `postgres://${process.env.PGUSER}:${process.env.PGPASSWORD}@${process.env.PGHOST}`;
+
 const env = {
   ...required,
   ...optional_with_default,
   ...optional,
+  DATABASE_URL,
 };
 
 module.exports = env;
