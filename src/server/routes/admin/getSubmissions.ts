@@ -1,6 +1,6 @@
-import { Submission } from "src/lib";
 import { adminProcedure } from "src/server/trpc";
 import { z } from "zod";
+import { submission } from "@prisma/client";
 
 export const getSubmissions = adminProcedure
   .input(
@@ -21,10 +21,10 @@ export const getSubmissions = adminProcedure
       console.error(error);
       // return new Error(`ERROR -- get_submissions failed. evaluation_id: ${input.evaluation_id}`);
     }
-
+    console.log("data", data);
     const d: any = data;
 
     return {
-      submissions: (d.submissions || []) as Submission[],
+      submissions: (d.submissions || []) as submission[],
     };
   });

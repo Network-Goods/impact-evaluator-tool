@@ -1,4 +1,4 @@
-import { DashboardEvaluation } from "src/lib";
+import { evaluation } from "@prisma/client";
 import Link from "next/link";
 import { returnTime, returnDate } from "src/lib/utils";
 
@@ -19,7 +19,7 @@ enum RoundTiming {
 type EvaluationItemProps = {
   first: boolean;
   last: boolean;
-  evaluation: DashboardEvaluation;
+  evaluation: evaluation;
 };
 export const AdminEditItem = ({ evaluation, first, last }: EvaluationItemProps) => {
   return (

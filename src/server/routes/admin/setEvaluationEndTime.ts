@@ -12,7 +12,7 @@ export const setEvaluationEndTime = adminProcedure
     try {
       await db.evaluation.update({
         where: { id: input.id },
-        data: { end_time: new Date(input.time) },
+        data: { end_time: input.time },
       });
     } catch (error) {
       console.error(error);

@@ -35,7 +35,7 @@ const OutcomeModal = ({ handleClose, open, submission, store }: OutcomeModalProp
     specs: storeSubmissionExists?.description.specs,
     github_link: storeSubmissionExists?.github_link,
     links: storeSubmissionExists?.links || [],
-    githubHandle: storeSubmissionExists?.github_handle || "",
+    github_handle: storeSubmissionExists?.github_handle || "",
     user_id: storeSubmissionExists?.user_id,
   });
 
@@ -56,7 +56,7 @@ const OutcomeModal = ({ handleClose, open, submission, store }: OutcomeModalProp
       specs: storeSubmissionExists?.description.specs,
       github_link: storeSubmissionExists?.github_link,
       links: storeSubmissionExists?.links || [],
-      githubHandle: storeSubmissionExists?.github_handle || "",
+      github_handle: storeSubmissionExists?.github_handle || "",
       user_id: storeSubmissionExists?.user_id,
     });
   }, [storeSubmissionExists]);
@@ -64,7 +64,7 @@ const OutcomeModal = ({ handleClose, open, submission, store }: OutcomeModalProp
   const isDisabled =
     !formInputs.name ||
     !formInputs.github_link ||
-    !formInputs.githubHandle ||
+    !formInputs.github_handle ||
     !formInputs.user_id ||
     !submissionFormCustomFieldsCheck(formInputs, submission?.id);
   return (

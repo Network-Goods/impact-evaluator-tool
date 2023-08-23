@@ -3,7 +3,7 @@ import { isAdmin } from "src/lib/rpc";
 
 export const getUserProfile = userProcedure.query(async ({ ctx: { db, auth } }) => {
   if (!isAdmin(auth)) {
-    return new Error("Not authorized");
+    // return new Error("Not authorized");
   }
 
   try {
@@ -12,12 +12,12 @@ export const getUserProfile = userProcedure.query(async ({ ctx: { db, auth } }) 
     });
 
     if (!user) {
-      return new Error(`ERROR -- getUserProfile failed. user_id: ${auth.user_id}`);
+      // return new Error(`ERROR -- getUserProfile failed. user_id: ${auth.user_id}`);
     }
 
     return user;
   } catch (error) {
     console.error("An error occurred while fetching the user profile:", error);
-    return new Error(`ERROR -- getUserProfile failed. user_id: ${auth.user_id}`);
+    // return new Error(`ERROR -- getUserProfile failed. user_id: ${auth.user_id}`);
   }
 });

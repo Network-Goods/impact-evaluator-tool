@@ -12,7 +12,7 @@ export const setEvaluationStartTime = adminProcedure
     try {
       await db.evaluation.update({
         where: { id: input.id },
-        data: { start_time: new Date(input.time) },
+        data: { start_time: input.time },
       });
     } catch (error) {
       console.error(error);

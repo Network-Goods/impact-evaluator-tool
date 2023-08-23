@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { v4 as uuid } from "uuid";
 import { rpc, Submission } from "src/lib";
+import { submission } from "@prisma/client";
 import { trpc } from "src/lib/trpc";
 
 export interface EvaluationStore {
@@ -20,7 +21,7 @@ export interface EvaluationStore {
   setFormFieldCharCount: (count: number, id: string) => void;
   deleteFormField: (id: string) => void;
   deleteEvaluation: () => void;
-  createSubmission: () => Promise<Submission | null>;
+  createSubmission: () => Promise<submission | null>;
   createInvitation: (invitation?: any) => void;
   setInvitationCode: (code: string, id: string) => void;
   setInvitationCredits: (credits: number, id: string) => void;
@@ -398,7 +399,7 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
       });
   },
 
-  createSubmission: async (): Promise<Submission | null> => {
+  createSubmission: async (): Promise<submission | null> => {
     const evaluation = get().evaluation;
 
     if (get().fetching || !evaluation) {
@@ -406,13 +407,8 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
     }
 
     const newSubmission = Submission.init({
-      description: "",
       evaluation_id: evaluation.id,
-      name: "",
       user_id: null,
-      github_link: "",
-      github_handle: "",
-      links: [],
     });
 
     set({

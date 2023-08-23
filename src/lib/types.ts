@@ -1,4 +1,5 @@
 import { v4 as uuid } from "uuid";
+import { submission, evaluation } from "@prisma/client";
 
 export interface AppError {
   error: string;
@@ -19,22 +20,22 @@ export interface UserProfile {
   role: string;
 }
 
-export interface Evaluation {
-  id: string;
-  name: string;
-  status: string;
-  description: string;
-  start_time: string | null;
-  end_time: string | null;
-  form_description: string;
-}
+// export interface Evaluation {
+//   id: string;
+//   name: string;
+//   status: string;
+//   description: string;
+//   start_time: string | null;
+//   end_time: string | null;
+//   form_description: string;
+// }
 
-export interface DashboardEvaluation extends Evaluation {
+export interface DashboardEvaluation extends evaluation {
   is_submitted: boolean;
 }
 
 export namespace Evaluation {
-  export function init(): Evaluation {
+  export function init(): evaluation {
     return {
       id: uuid(),
       name: "",
@@ -66,8 +67,22 @@ export interface Submission {
   links: any;
 }
 
-export interface VotingTableBodySubmission extends Submission {
-  fields: VotingTableBodySubmissionFields[];
+// export interface VotingTableBodySubmission extends Submission {
+//   submission_field: VotingTableBodySubmissionFields[];
+// }
+
+// type VotingTableBodySubmissionFields = {
+//   char_count: number;
+//   field_body: string;
+//   field_id: string;
+//   heading: string;
+//   placeholder: string;
+//   subheading: string;
+//   submission_field_id: string;
+// };
+
+export interface VotingTableBodySubmission extends submission {
+  submission_field: VotingTableBodySubmissionFields[];
 }
 
 type VotingTableBodySubmissionFields = {
@@ -88,29 +103,31 @@ export interface RoundStatus {
 }
 
 export namespace Submission {
-  export function init(params: Omit<Submission, "id">): Submission {
+  export function init(params: Partial<Omit<submission, "id">> & Pick<submission, "evaluation_id">): submission {
     return {
-      ...params,
+      description: "",
+      name: "",
+      user_id: null,
+      github_handle: "",
+      github_link: "",
+      links: [],
       id: uuid(),
+      is_submitted: false,
+      contract_id: null,
+      ...params,
     };
   }
 }
 
-export interface RoundDetailsData extends Submission {
+export interface RoundDetailsData extends submission {
   user: { github_handle: string };
 }
-
-export interface SubmissionFormInputs {
-  name: string;
+export type SubmissionFormInputs = Omit<submission, "id" | "is_submitted" | "evaluation_id" | "contract_id"> & {
   evaluation_field: SubmissionFormFieldInputs[];
-  description: string;
   summary: string;
   specs: string;
-  github_link: string;
   links?: SubmissionFormLinkInputs[];
-  githubHandle: string;
-  user_id?: string;
-}
+};
 
 export interface SubmissionFormLinkInputs {
   name: string;

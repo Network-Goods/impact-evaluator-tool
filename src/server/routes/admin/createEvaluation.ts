@@ -5,12 +5,12 @@ export const createEvaluation = adminProcedure
   .input(
     z.object({
       id: z.string(),
-      name: z.string(),
+      name: z.string().nullable(),
       status: z.string(),
       description: z.string(),
-      start_time: z.string().nullish(),
-      end_time: z.string().nullish(),
-      form_description: z.string(),
+      start_time: z.date().nullish(),
+      end_time: z.date().nullish(),
+      form_description: z.string().nullable(),
     }),
   )
   .mutation(async ({ ctx: { db }, input }) => {
