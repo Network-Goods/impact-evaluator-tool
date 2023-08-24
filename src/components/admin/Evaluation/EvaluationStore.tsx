@@ -32,7 +32,6 @@ export interface EvaluationStore {
   setVoiceCredits: (id: string, amount: number) => void;
   setEmail: (evalId: string, userId: string, email: string) => void;
   setSubmissionTitle: (title: string, id: string) => void;
-  setSubmissionDescription: (text: string, type: string, id: string) => void;
   setSubmissionField: (value: string, field_id: string, submission_id: string) => void;
   setSubmissionLinkTitle: (title: string, index: number, id: string) => void;
   setSubmissionLink: (value: string, index: number, id: string) => void;
@@ -718,40 +717,6 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
           console.error(`ERROR -- rpc call setSubmissionTitle failed`, data);
           return;
         }
-      });
-  },
-  setSubmissionDescription: (text: string, type: string, id: string) => {
-    const evaluation = get().evaluation;
-
-    if (!evaluation) {
-      return;
-    }
-    const oldObj = evaluation.submission.find((e: any) => e.id === id).description;
-    const newObj = {
-      ...oldObj,
-      [type]: text,
-    };
-
-    set({
-      evaluation: {
-        ...evaluation,
-        submission: evaluation.submission.map((e: any) => {
-          if (e.id === id) {
-            return {
-              ...e,
-              description: newObj,
-            };
-          }
-          return e;
-        }),
-      },
-    });
-
-    trpc()
-      .user.setSubmissionDescription.mutate({ description: newObj, id: id })
-      .catch((err) => {
-        // TODO: error handling
-        console.log("ERROR -- rpc call setSubmissionDescription failed", err);
       });
   },
   setSubmissionField: (value: string, field_id: string) => {

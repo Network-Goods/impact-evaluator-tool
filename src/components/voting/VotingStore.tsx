@@ -56,10 +56,11 @@ export const useVotingStore = create<VotingStore>()((set, get) => ({
 
     const votes = (data as any).votes;
     const evaluator = (data as any).evaluator;
+    const submissions = (data as any).submissions;
 
     set({
       votes: votes,
-      submissions: data.submissions,
+      submissions: submissions,
       evaluator: evaluator,
       availableCredits: evaluator.voice_credits - calculateAvailableCredits(votes),
       allocatedCredits: evaluator.voice_credits,

@@ -10,7 +10,6 @@ export interface SubmissionStore {
   githubHandle?: string;
   load: (submission_id: string, githubHandle: string) => void;
   setSubmissionTitle: (title: string) => void;
-  setSubmissionDescription: (title: string, link: string) => void;
   setSubmissionField: (value: string, id: string) => void;
   setSubmissionLinkTitle: (title: string, index: number) => void;
   setSubmissionLink: (link: string, index: number) => void;
@@ -65,32 +64,6 @@ export const useSubmissionStore = create<SubmissionStore>()((set, get) => ({
           console.error(`ERROR -- rpc call setSubmissionTitle failed`, data);
           return;
         }
-      });
-  },
-  setSubmissionDescription: (type: string, text: string) => {
-    const submission = get().submission;
-
-    if (!submission) {
-      return;
-    }
-
-    const newObj = {
-      ...submission.description,
-      [type]: text,
-    };
-
-    set({
-      submission: {
-        ...submission,
-        description: newObj,
-      },
-    });
-
-    trpc()
-      .user.setSubmissionDescription.mutate({ description: newObj, id: submission.id })
-      .catch((err) => {
-        // TODO: error handling
-        console.error(`ERROR -- rpc call setSubmissionDescription failed`, err);
       });
   },
   setSubmissionField: (value: string, id: string) => {
