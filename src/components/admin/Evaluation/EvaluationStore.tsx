@@ -427,7 +427,7 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
     return newSubmission;
   },
 
-  setInvitationCode: (code: string, id: string) => {
+  setInvitationCode: async (code: string, id: string) => {
     const evaluation = get().evaluation;
 
     if (!evaluation) {
@@ -436,29 +436,39 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
 
     const trimmedCode = code.trim();
 
-    set({
-      evaluation: {
-        ...evaluation,
-        invitation: evaluation.invitation.map((i: any) => {
-          if (i.id === id) {
-            return {
-              ...i,
-              code: trimmedCode,
-            };
-          }
-          return i;
-        }),
-      },
-    });
+    try {
+      const data = await trpc().admin.setInvitationCode.mutate({ code: trimmedCode, id: id });
 
-    trpc()
-      .admin.setInvitationCode.mutate({ code: trimmedCode, id: id })
-      .then((data) => {
-        if (data instanceof Error) {
-          console.error(`ERROR -- rpc call setInvitationCode failed`, data);
-          return;
-        }
-      });
+      if (data instanceof Error) {
+        console.error(`ERROR -- rpc call setInvitationCode failed`, data);
+        return;
+      }
+
+      if ("success" in data && data.success) {
+        set({
+          evaluation: {
+            ...evaluation,
+            invitation: evaluation.invitation.map((i: any) => {
+              if (i.id === id) {
+                return {
+                  ...i,
+                  code: trimmedCode,
+                };
+              }
+              return i;
+            }),
+          },
+        });
+      } else if ("error" in data) {
+        console.error(`ERROR -- setInvitationCode reported an error:`, data.error);
+        return { error: data.error };
+      }
+
+      return data;
+    } catch (error) {
+      console.error(`ERROR -- setInvitationCode failed`, error);
+      return;
+    }
   },
   setInvitationCredits: (credits: number, id: string) => {
     const evaluation = get().evaluation;
@@ -662,29 +672,38 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
       return new Error("Evaluation not loaded");
     }
 
-    const invitationInputs = inputs || null;
+    const invitationInputs = inputs || { code: "" };
 
     const newInvitation = {
       ...invitationInputs,
       id: uuid(),
       evaluation_id: evaluation.id,
     };
+    try {
+      const data = await trpc().admin.createInvitation.mutate(newInvitation);
 
-    set({
-      evaluation: {
-        ...evaluation,
-        invitation: [...evaluation.invitation, newInvitation],
-      },
-    });
+      if (data instanceof Error) {
+        console.error(`ERROR -- rpc call createInvitation failed`, data);
+        return { error: data.message };
+      }
 
-    trpc()
-      .admin.createInvitation.mutate(newInvitation)
-      .then((data) => {
-        if (data instanceof Error) {
-          console.error(`ERROR -- rpc call createInvitation failed`, data);
-          return;
-        }
-      });
+      if ("success" in data && data.success) {
+        set({
+          evaluation: {
+            ...evaluation,
+            invitation: [...evaluation.invitation, newInvitation],
+          },
+        });
+      } else if ("error" in data) {
+        console.error(`ERROR -- createInvitation reported an error:`, data.error);
+        return { error: data.error };
+      }
+
+      return data;
+    } catch (error) {
+      console.error(`ERROR -- rpc call createInvitation failed`, error);
+      return;
+    }
   },
   setSubmissionTitle: (title: string, id: string) => {
     const evaluation = get().evaluation;

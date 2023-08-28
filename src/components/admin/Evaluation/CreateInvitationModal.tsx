@@ -20,6 +20,7 @@ type CreateInvitationModalProps = {
 
 const CreateInvitationModal = ({ handleClose, open, store }: CreateInvitationModalProps) => {
   const [inputs, setInputs] = useState<any>({ is_sme: false });
+  const [error, setError] = useState("");
 
   const handleChange = (event: any) => {
     const name = event.target.name;
@@ -30,10 +31,20 @@ const CreateInvitationModal = ({ handleClose, open, store }: CreateInvitationMod
   const handleChecked = () => {
     setInputs((values: any) => ({ ...values, is_sme: !values.is_sme }));
   };
-  const handleSubmit = () => {
-    store.createInvitation(inputs);
-    handleClose();
-    setInputs({});
+  const handleSubmit = async () => {
+    const sanitizedInputs = {
+      ...inputs,
+      voice_credits: parseInt(inputs.voice_credits, 10),
+      remaining_uses: parseInt(inputs.remaining_uses, 10),
+    };
+    const res = await store.createInvitation(sanitizedInputs);
+    console.log("res", res);
+    if (res && res.error) {
+      setError(res.error);
+    } else {
+      handleClose();
+      setInputs({});
+    }
   };
 
   return (
@@ -98,6 +109,8 @@ const CreateInvitationModal = ({ handleClose, open, store }: CreateInvitationMod
               <span className="text-sm">Required</span>
             </div>
           </div>
+
+          {error ? <p className="text-red text-sm">{error}</p> : null}
         </div>
         <div className="flex justify-evenly">
           <div>

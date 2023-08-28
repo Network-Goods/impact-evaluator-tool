@@ -26,6 +26,8 @@ interface FormInputs {
   email: string;
 }
 
+type JoinWithCodeResult = null | { error: string } | { evaluationID: string; submission?: any };
+
 type JoinRoundModalProps = {
   handleClose: () => void;
   open: boolean;
@@ -64,7 +66,7 @@ const JoinRoundModal = ({ handleClose, open }: JoinRoundModalProps) => {
     }
 
     // TODO: add correct type for errors
-    const data = await trpc().user.joinWithCode.mutate({
+    const data: JoinWithCodeResult = await trpc().user.joinWithCode.mutate({
       user_id: userProfileStore.profile.id!,
       code: formInputs.code,
       preferred_email: formInputs.email,

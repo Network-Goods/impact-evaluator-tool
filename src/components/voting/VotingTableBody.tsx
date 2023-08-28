@@ -12,7 +12,12 @@ type VotingTableBodyProps = {
 export default function VotingTableBody({ idx, project, submissions, search }: VotingTableBodyProps) {
   project.submission_field.sort((a: any, b: any) => a.field_order - b.field_order);
 
-  const linksArray = Array.isArray(project.links) ? project.links : [];
+  let linksArray = [];
+  try {
+    linksArray = typeof project.links === "string" ? JSON.parse(project.links) : project.links;
+  } catch (error) {
+    console.error("Error parsing project.links:", error);
+  }
 
   return (
     <div
@@ -33,16 +38,18 @@ export default function VotingTableBody({ idx, project, submissions, search }: V
         </div>
         <div className="md:w-[30%] md:border-l md:border-gray md:pl-6">
           <div className="font-bold">{linksArray.length > 1 ? "Project Links" : "Project Link"}</div>
-          {linksArray.length > 0 && (
-            <div className="flex flex-col">
-              {project.github_link ? <VotingTableLink title="Github" link={project.github_link} /> : null}
-              {linksArray.map((link: any, idx: number) => (
-                <div key={idx}>
-                  <VotingTableLink title={link.name} link={link.value} />
-                </div>
-              ))}
-            </div>
-          )}
+          <div className="flex flex-col">
+            {project.github_link ? <VotingTableLink title="Github" link={project.github_link} /> : null}
+            {linksArray.length > 0 && (
+              <>
+                {linksArray.map((link: any, idx: number) => (
+                  <div key={idx}>
+                    <VotingTableLink title={link.name} link={link.value} />
+                  </div>
+                ))}
+              </>
+            )}
+          </div>
         </div>
       </div>
     </div>

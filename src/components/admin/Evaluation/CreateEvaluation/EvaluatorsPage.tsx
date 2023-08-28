@@ -1,3 +1,4 @@
+import { useState } from "react";
 import SmallTitle from "src/components/shared/SmallTitle";
 import { EvaluationDetailsType } from ".";
 import Delete from "public/images/svg/Delete";
@@ -14,6 +15,7 @@ type InvitationInputs = {
   remaining_uses: string;
 };
 export default function EvaluatorsPage({ store, formInputs, setFormInputs }: EvaluatorsPageProps) {
+  const [error, setError] = useState("");
   const handleInvitationChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     id: number,
@@ -37,6 +39,16 @@ export default function EvaluatorsPage({ store, formInputs, setFormInputs }: Eva
     });
     setFormInputs({ ...formInputs, invitation: newFormInputs });
     store.setInvitationSubmissionRequired(id, is_sme);
+  };
+
+  const handleInvitationCodeBlur = async (value: string, id: string) => {
+    setError("");
+
+    const result = await store.setInvitationCode(value, id);
+
+    if (result && "error" in result) {
+      setError(result.error);
+    }
   };
 
   return (
@@ -76,7 +88,7 @@ export default function EvaluatorsPage({ store, formInputs, setFormInputs }: Eva
               placeholder="ExampleCode123"
               value={invitation.code || ""}
               onChange={(e) => handleInvitationChange(e, invitation.id, "code")}
-              onBlur={(e) => store.setInvitationCode(e.target.value, invitation.id)}
+              onBlur={(e) => handleInvitationCodeBlur(e.target.value, invitation.id)}
             />
           </div>
           <div className="flex">
@@ -123,6 +135,7 @@ export default function EvaluatorsPage({ store, formInputs, setFormInputs }: Eva
           </div>
         </div>
       ))}
+      {error && <p className="text-red">{error}</p>}
       <button
         className="transition-colors duration-200 ease-in-out transform outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold border border-blue hover:bg-white focus:bg-white text-blue text-lg px-4 py-1 mt-2"
         onClick={() => store.createInvitation()}

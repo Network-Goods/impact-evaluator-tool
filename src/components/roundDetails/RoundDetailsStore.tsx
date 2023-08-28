@@ -69,13 +69,9 @@ export const useRoundDetailsStore = create<RoundDetailsStore>()((set, get) => ({
     }
 
     const newSubmission = Submission.init({
-      description: "",
       evaluation_id: evaluationID,
-      name: "",
       user_id: userID,
-      github_link: "",
       github_handle: githubHandle,
-      links: [],
     });
 
     const res = await trpc().user.createSubmission.mutate(newSubmission);

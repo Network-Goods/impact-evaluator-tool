@@ -1,9 +1,12 @@
 import { create } from "zustand";
 import { Evaluation, rpc, DashboardEvaluation } from "src/lib";
-import { parseSubmissions, sortEvaluationResults } from "src/lib/utils";
-import { parseEvaluationResults } from "src/lib/utils";
-import { parseNestedArraysIntoCSV } from "src/lib/utils";
-import { downloadCSV } from "src/lib/utils";
+import {
+  parseSubmissions,
+  sortEvaluationResults,
+  parseEvaluationResults,
+  parseNestedArraysIntoCSV,
+  downloadCSV,
+} from "src/lib/utils";
 import { trpc } from "src/lib/trpc";
 
 export interface ResultsStore {
@@ -54,14 +57,12 @@ export const useResultsStore = create<ResultsStore>()((set, get) => ({
   getEvaluationSubmissions: async (evaluation_id: string): Promise<Error | any> => {
     const data = await trpc().admin.getSubmissions.query({ evaluation_id: evaluation_id });
 
-    if (data instanceof Error) {
+    if (!data || data instanceof Error) {
       console.error(`ERROR -- rpc call getSubmissions failed. evaluation_id: ${evaluation_id}`, data);
       return;
     }
-
     // sortEvaluationResults(data);
     const parsedArray = parseSubmissions(data.submissions);
-    console.log(parsedArray);
     const csv = parseNestedArraysIntoCSV(parsedArray);
     const csv_name = `submissions.csv`;
     downloadCSV(csv, csv_name);
