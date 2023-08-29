@@ -1,6 +1,9 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
+import Papa from "papaparse";
+import { useUserProfileStore } from "src/lib/UserProfileStore";
 import { EvaluationDetailsType, EvaluationFieldType } from ".";
+import ConfirmUploadModal from "../EvaluatorModal/ConfirmUploadModal";
 
 const EvaluationFormDescription = dynamic(() => import("../EvaluationFormDescription"), {
   ssr: false,
@@ -12,6 +15,10 @@ type OutcomesPageProps = {
   setFormInputs: (formInputs: EvaluationDetailsType) => void;
 };
 export default function OutcomesPage({ store, formInputs, setFormInputs }: OutcomesPageProps) {
+  const userProfileStore = useUserProfileStore();
+  const [loading, setLoading] = useState(false);
+  const [csvData, setCsvData] = useState<Array<Record<string, any>>>([]);
+  const [openConfirmUploadModal, setOpenConfirmUploadModal] = useState(false);
   const handleFormFieldChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     id: string,
@@ -27,6 +34,33 @@ export default function OutcomesPage({ store, formInputs, setFormInputs }: Outco
     setFormInputs({ ...formInputs, evaluation_field: store.evaluation?.evaluation_field });
   }, [store.evaluation?.evaluation_field]);
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      Papa.parse(file, {
+        header: true,
+        complete: (result) => {
+          setCsvData(result.data as Record<string, any>[]);
+        },
+      });
+    }
+  };
+
+  const handleUploadClick = async () => {
+    setLoading(true);
+    const user_id = userProfileStore.profile?.id;
+
+    if (!user_id) {
+      console.error("Profile is not defined.");
+      setLoading(false);
+      return;
+    }
+
+    await store.uploadSubmissions(csvData, user_id);
+    setCsvData([]);
+    setLoading(false);
+  };
+
   return (
     <>
       <div className="mb-6">
@@ -37,6 +71,7 @@ export default function OutcomesPage({ store, formInputs, setFormInputs }: Outco
       <div className="mb-6">
         <h3 className="text-lg text-offblack font-bold mb-2">Create a form to collect submissions for your round</h3>
       </div>
+
       <div className="mb-6">
         <h5 className="text-offblack font-bold mb-1">Form Fields</h5>
         {store.evaluation?.evaluation_field.map((field: any, index: number) => (
@@ -98,6 +133,25 @@ export default function OutcomesPage({ store, formInputs, setFormInputs }: Outco
           <span>Add Field</span>
         </button>
       </div>
+      <div className="mb-6">or</div>
+      <h5 className="text-offblack font-bold mb-1">Upload submissions</h5>
+
+      <div className="flex">
+        <input type="file" accept=".csv" onChange={handleFileChange} />
+        {csvData.length > 0 ? (
+          <button
+            className="transition-colors duration-200 ease-in-out transform  outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold border border-blue bg-blue hover:bg-blue-darkest hover:border-blue-darkest  text-white text-sm md:text-base py-1 w-20"
+            onClick={() => setOpenConfirmUploadModal(true)}
+          >
+            {loading ? "Uploading" : "Upload"}
+          </button>
+        ) : null}
+      </div>
+      <ConfirmUploadModal
+        open={openConfirmUploadModal}
+        handleClose={() => setOpenConfirmUploadModal(false)}
+        handleUpload={handleUploadClick}
+      />
     </>
   );
 }

@@ -20,6 +20,7 @@ export interface EvaluationStore {
   setFormFieldPlaceholder: (placeholder: string, id: string) => void;
   setFormFieldCharCount: (count: number, id: string) => void;
   deleteFormField: (id: string) => void;
+  uploadSubmissions: (csvData: Record<string, any>[], user_id: string) => Promise<void>;
   deleteEvaluation: () => void;
   createSubmission: () => Promise<submission | null>;
   createInvitation: (invitation?: any) => void;
@@ -380,6 +381,28 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
           return;
         }
       });
+  },
+  uploadSubmissions: async (csvData: Record<string, any>[], user_id: string): Promise<void> => {
+    const evaluation = get().evaluation;
+
+    if (!evaluation) {
+      console.error("Evaluation is not defined.");
+      return;
+    }
+
+    try {
+      const isSuccess = await trpc().admin.importCSVData.mutate({
+        csvFile: JSON.stringify(csvData),
+        evaluation_id: evaluation.id,
+        user_id,
+      });
+
+      if (!isSuccess) {
+        console.error(`ERROR -- rpc call importCSVData did not return expected data`);
+      }
+    } catch (error) {
+      console.error("Error in mutation call:", error);
+    }
   },
   deleteEvaluation: () => {
     const evaluation = get().evaluation;

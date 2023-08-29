@@ -52,9 +52,7 @@ export default function Results() {
                 
                 `}
               >
-                <div className="">
-                  <div className="text-[20px] text-charcoal pb-4 md:py-[21.5px] text-center">{evaluation.name}</div>
-                </div>
+                <div className="text-[20px] text-charcoal pb-4 md:py-[21.5px] text-center">{evaluation.name}</div>
                 <div className="flex items-center">
                   <div className="pr-4 md:pr-7 text-center min-w-[109px]">
                     <div className="text-blue text-xs italic">
