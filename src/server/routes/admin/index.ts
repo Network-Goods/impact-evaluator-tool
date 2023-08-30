@@ -27,6 +27,8 @@ import { setInvitationSubmissionRequired } from "./setInvitationSubmissionRequir
 import { setUserID } from "./setUserID";
 import { setVoiceCredits } from "./setVoiceCredits";
 import { getEvaluationResult } from "./getEvaluationResult";
+import { setUploadStatus } from "./setUploadStatus";
+import { importCSVData } from "./importCSVData";
 
 export const admin = router({
   createEvaluation,
@@ -57,4 +59,6 @@ export const admin = router({
   setUserID,
   setVoiceCredits,
   getEvaluationResult,
+  setUploadStatus,
+  importCSVData,
 });

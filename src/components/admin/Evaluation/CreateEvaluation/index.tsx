@@ -19,6 +19,7 @@ export interface EvaluationDetailsType {
   form_description: string;
   invitation: InvitationType[];
   status: string;
+  is_upload: boolean;
 }
 export type EvaluationFieldType = {
   id: string;
@@ -55,6 +56,7 @@ export default function CreateEvaluation({ store }: CreateEvaluationProps) {
     form_description: store.evaluation?.form_description,
     invitation: store.evaluation?.invitation,
     evaluation_field: store.evaluation?.evaluation_field,
+    is_upload: store.evaluation?.is_upload,
   });
 
   const handleFormChange = (
@@ -85,6 +87,7 @@ export default function CreateEvaluation({ store }: CreateEvaluationProps) {
       form_description: store.evaluation?.form_description,
       invitation: store.evaluation?.invitation,
       evaluation_field: store.evaluation?.evaluation_field,
+      is_upload: store.evaluation?.is_upload,
     });
   }, [store.evaluation]);
 
@@ -163,7 +166,7 @@ export default function CreateEvaluation({ store }: CreateEvaluationProps) {
             ) : (
               <button
                 onClick={() => setPage((prev) => prev + 1)}
-                className="transition-colors duration-200 ease-in-out transform  outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold mx-auto border border-blue bg-blue  text-white text-lg px-3 py-1 cursor-pointer hover:bg-blue-darkest hover:border-blue-darkest"
+                className="transition-colors duration-200 ease-in-out transform outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold mx-auto border border-blue bg-blue text-white text-lg px-3 py-1 cursor-pointer hover:bg-blue-darkest hover:border-blue-darkest"
               >
                 Next
               </button>

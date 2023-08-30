@@ -20,16 +20,6 @@ export interface UserProfile {
   role: string;
 }
 
-// export interface Evaluation {
-//   id: string;
-//   name: string;
-//   status: string;
-//   description: string;
-//   start_time: string | null;
-//   end_time: string | null;
-//   form_description: string;
-// }
-
 export interface DashboardEvaluation extends evaluation {
   is_submitted: boolean;
 }
@@ -55,31 +45,6 @@ export interface Evaluator {
   id: string;
   is_submitted: boolean;
 }
-
-export interface Submission {
-  id: string;
-  user_id?: string | null;
-  name: string;
-  github_link: string;
-  github_handle: string;
-  evaluation_id: string;
-  description: any;
-  links: any;
-}
-
-// export interface VotingTableBodySubmission extends Submission {
-//   submission_field: VotingTableBodySubmissionFields[];
-// }
-
-// type VotingTableBodySubmissionFields = {
-//   char_count: number;
-//   field_body: string;
-//   field_id: string;
-//   heading: string;
-//   placeholder: string;
-//   subheading: string;
-//   submission_field_id: string;
-// };
 
 export interface VotingTableBodySubmission extends submission {
   submission_field: VotingTableBodySubmissionFields[];

@@ -15,6 +15,7 @@ model Evaluation {
   start_time       DateTime?         @db.Timestamptz(6)
   end_time         DateTime?         @db.Timestamptz(6)
   form_description String?
+  is_upload        Boolean?
   evaluation_field EvaluationField[]
   evaluator        Evaluator[]
   invitation       Invitation[]

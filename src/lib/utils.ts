@@ -32,7 +32,6 @@ export function parseEvaluationResults(results: any) {
   const submissions = results.submissions.filter((sub: any) => sub.is_submitted == true);
 
   submissions.forEach(function (submission: any, idx: number) {
-    console.log(submission);
     headerArr.push(submission.name);
   });
   headerArr.push("credits_used");
@@ -77,13 +76,15 @@ export function parseSubmissions(submissions: any) {
     return [];
   }
 
-  console.log(submissions);
   const output = [];
   const headerArr: (string | number)[] = [
     "project_name",
     "submitter_github",
     "submitter_email",
     "representative_github",
+    "github_link",
+    "links",
+    "contract_id",
   ];
 
   submissions[0].fields.sort((a: any, b: any) => a.field_order - b.field_order);
@@ -99,6 +100,9 @@ export function parseSubmissions(submissions: any) {
     submissionArr.push(submission.submitter_github);
     submissionArr.push(submission.submitter_email);
     submissionArr.push(submission.representative_github);
+    submissionArr.push(submission.github_link);
+    submissionArr.push(submission.links);
+    submissionArr.push(submission.contract_id || "");
 
     submission.fields.sort((a: any, b: any) => a.field_order - b.field_order);
 
@@ -139,7 +143,8 @@ export function parseNestedArraysIntoCSV(data: any) {
   data.forEach((row: any) => {
     const r = [];
     for (let a of row) {
-      r.push(`"${a.split('"').join("")}"`);
+      let strValue = String(a);
+      r.push(`"${strValue.split('"').join('""')}"`);
     }
     csv += r.join(",");
     csv += "\n";

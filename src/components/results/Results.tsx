@@ -37,8 +37,8 @@ export default function Results() {
                 <SmallTitle text="STATUS" />
               </div>
 
-              <div className="text-center py-2 border-l border-gray pl-9 min-w-[121px]">
-                <SmallTitle text="ACTION" />
+              <div className="text-center py-2 border-l border-gray pl-9 min-w-[273px]">
+                <SmallTitle text="ACTIONS" />
               </div>
             </div>
           </div>
@@ -52,9 +52,7 @@ export default function Results() {
                 
                 `}
               >
-                <div className="">
-                  <div className="text-[20px] text-charcoal pb-4 md:py-[21.5px] text-center">{evaluation.name}</div>
-                </div>
+                <div className="text-[20px] text-charcoal pb-4 md:py-[21.5px] text-center">{evaluation.name}</div>
                 <div className="flex items-center">
                   <div className="pr-4 md:pr-7 text-center min-w-[109px]">
                     <div className="text-blue text-xs italic">
@@ -63,12 +61,14 @@ export default function Results() {
                   </div>
                   <div className="pl-4 md:pl-10 border-l border-gray">
                     <button onClick={() => store.getEvaluationResult(evaluation.id)}>
-                      <div className="transition-colors duration-200 ease-in-out transform  outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold mx-auto  border border-blue bg-blue hover:bg-blue-darkest hover:border-blue-darkest  text-white text-sm md:text-base py-1 w-16 md:w-20">
+                      <div className="transition-colors duration-200 ease-in-out transform  outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold mx-auto  border border-blue bg-blue hover:bg-blue-darkest hover:border-blue-darkest  text-white text-sm md:text-base py-1 w-20">
                         Export
                       </div>
                     </button>
+                  </div>
+                  <div className="pl-5 ml-5 border-l border-gray">
                     <button onClick={() => store.getEvaluationSubmissions(evaluation.id)}>
-                      <div className="transition-colors duration-200 ease-in-out transform  outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold mx-auto  border border-blue bg-blue hover:bg-blue-darkest hover:border-blue-darkest  text-white text-sm md:text-base py-1 w-16 md:w-20">
+                      <div className="transition-colors duration-200 ease-in-out transform  outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold mx-auto  border border-blue bg-blue hover:bg-blue-darkest hover:border-blue-darkest  text-white text-sm md:text-base py-1 w-28">
                         Submissions
                       </div>
                     </button>
