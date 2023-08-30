@@ -6,6 +6,10 @@ import { user } from "./routes/user";
 export const appRouter = router({
   admin: admin,
   user: user,
+
+  test1: publicProcedure.query(async () => {
+    throw new Error("test1");
+  }),
 });
 
 // Export type router type signature,

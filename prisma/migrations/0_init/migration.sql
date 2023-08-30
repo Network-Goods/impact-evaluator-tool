@@ -3,7 +3,7 @@ CREATE TABLE "evaluation" (
     "id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "name" TEXT,
     "status" TEXT NOT NULL DEFAULT 'draft',
-    "description" TEXT NOT NULL DEFAULT '',
+    "description" TEXT DEFAULT '',
     "start_time" TIMESTAMPTZ(6),
     "end_time" TIMESTAMPTZ(6),
     "form_description" TEXT,
@@ -19,6 +19,7 @@ CREATE TABLE "evaluation_field" (
     "subheading" TEXT,
     "char_count" INTEGER,
     "placeholder" TEXT,
+    "field_order" INTEGER,
 
     CONSTRAINT "evaluation_field_pkey" PRIMARY KEY ("id")
 );
@@ -42,7 +43,7 @@ CREATE TABLE "invitation" (
     "evaluation_id" UUID NOT NULL,
     "code" TEXT,
     "voice_credits" INTEGER,
-    "remaining_uses" INTEGER NOT NULL DEFAULT 100,
+    "remaining_uses" INTEGER NOT NULL,
     "is_sme" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "invitation_pkey" PRIMARY KEY ("id")

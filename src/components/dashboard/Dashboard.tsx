@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import LoadingSpinner from "src/components/shared/LoadingSpinner";
 import SubTitle from "src/components/shared/SubTitle";
 import DashboardHeader from "./DashboardHeader";
@@ -6,9 +6,16 @@ import { EvaluationCard } from "./EvaluationCard";
 import { EvaluationEmptyCard } from "./EvaluationEmptyCard";
 import { EvaluationItem } from "./EvaluationItem";
 import { useDashboardStore } from "./DashboardStore";
+import { trpc } from "src/lib/trpc";
+import { ErrorBoundary } from "react-error-boundary";
 
 export default function Dashboard() {
-  const store = useDashboardStore();
+  const [spinner, setSpinner] = useState(1);
+
+  const store = useDashboardStore(setSpinner)();
+  // const store = useDashboardStore();
+
+  console.log(spinner);
 
   useEffect(() => {
     store.load();
@@ -16,6 +23,7 @@ export default function Dashboard() {
 
   if (store.fetching) return <LoadingSpinner />;
   if (store.error) return <p>Oh no... {store.error.message}</p>;
+
   return (
     <>
       <DashboardHeader store={store} />

@@ -1,1 +1,0 @@
-alter table votes add constraint votes_pkey primary key (evaluator_id, submission_id);
