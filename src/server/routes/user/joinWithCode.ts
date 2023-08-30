@@ -73,7 +73,6 @@ export const joinWithCode = userProcedure
       }
 
       const { github_handle } = user;
-      console.log("auth3", auth);
 
       const initSubmission = Submission.init({
         evaluation_id: invite.evaluation_id,

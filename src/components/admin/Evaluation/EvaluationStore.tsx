@@ -58,7 +58,6 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
       console.error(`ERROR -- rpc call getEvaluation failed. evaluation_id: ${evaluation_id}`, data);
       return;
     }
-    console.log("data", data);
     set({
       evaluation: data,
       fetching: false,

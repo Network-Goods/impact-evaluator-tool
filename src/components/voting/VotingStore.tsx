@@ -51,7 +51,7 @@ export const useVotingStore = create<VotingStore>()((set, get) => ({
       console.error(`ERROR -- rpc call getVotingStore failed. evaluation_id: ${evaluation_id}`, data);
       return;
     }
-    console.log("data", data);
+
     data.submissions.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
 
     const votes = (data as any).votes;

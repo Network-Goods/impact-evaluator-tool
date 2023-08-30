@@ -32,7 +32,6 @@ export function parseEvaluationResults(results: any) {
   const submissions = results.submissions.filter((sub: any) => sub.is_submitted == true);
 
   submissions.forEach(function (submission: any, idx: number) {
-    console.log(submission);
     headerArr.push(submission.name);
   });
   headerArr.push("credits_used");
@@ -140,7 +139,6 @@ export function sortEvaluationResults(obj: any) {
 }
 
 export function parseNestedArraysIntoCSV(data: any) {
-  console.log("data", data);
   let csv = "";
   data.forEach((row: any) => {
     const r = [];

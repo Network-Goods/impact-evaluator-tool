@@ -21,7 +21,7 @@ type CreateInvitationModalProps = {
 const CreateInvitationModal = ({ handleClose, open, store }: CreateInvitationModalProps) => {
   const [inputs, setInputs] = useState<any>({ is_sme: false });
   const [error, setError] = useState("");
-  console.log("store", store);
+
   const handleChange = (event: any) => {
     const name = event.target.name;
     const value = event.target.value;
@@ -38,7 +38,6 @@ const CreateInvitationModal = ({ handleClose, open, store }: CreateInvitationMod
       remaining_uses: parseInt(inputs.remaining_uses, 10),
     };
     const res = await store.createInvitation(sanitizedInputs);
-    console.log("res", res);
     if (res && res.error) {
       setError(res.error);
     } else {

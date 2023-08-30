@@ -46,7 +46,6 @@ export const createSubmissionUtil = async ({ db, auth, input }: { db: any; auth:
         fields_id: field.id,
       })),
     });
-    console.log("submissionFields", submissionFields);
 
     return {
       submission: newSubmission,
