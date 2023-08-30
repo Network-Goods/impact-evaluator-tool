@@ -20,6 +20,7 @@ export interface EvaluationStore {
   setFormFieldPlaceholder: (placeholder: string, id: string) => void;
   setFormFieldCharCount: (count: number, id: string) => void;
   deleteFormField: (id: string) => void;
+  setUploadStatus: (is_upload: boolean) => void;
   uploadSubmissions: (csvData: Record<string, any>[], user_id: string) => Promise<void>;
   deleteEvaluation: () => void;
   createSubmission: () => Promise<submission | null>;
@@ -57,7 +58,7 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
       console.error(`ERROR -- rpc call getEvaluation failed. evaluation_id: ${evaluation_id}`, data);
       return;
     }
-
+    console.log("data", data);
     set({
       evaluation: data,
       fetching: false,
@@ -382,6 +383,28 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
         }
       });
   },
+  setUploadStatus: (is_upload: boolean) => {
+    const evaluation = get().evaluation;
+
+    if (!evaluation) {
+      return;
+    }
+    set({
+      evaluation: {
+        ...evaluation,
+        is_upload: is_upload,
+      },
+    });
+
+    trpc()
+      .admin.setUploadStatus.mutate({ is_upload: is_upload, id: evaluation.id })
+      .then((data) => {
+        if (data instanceof Error) {
+          console.error(`ERROR -- rpc call setUploadStatus failed`, data);
+          return;
+        }
+      });
+  },
   uploadSubmissions: async (csvData: Record<string, any>[], user_id: string): Promise<void> => {
     const evaluation = get().evaluation;
 
@@ -391,15 +414,21 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
     }
 
     try {
-      const isSuccess = await trpc().admin.importCSVData.mutate({
+      const createdEvaluationFields = await trpc().admin.importCSVData.mutate({
         csvFile: JSON.stringify(csvData),
         evaluation_id: evaluation.id,
         user_id,
       });
 
-      if (!isSuccess) {
+      if (!createdEvaluationFields) {
         console.error(`ERROR -- rpc call importCSVData did not return expected data`);
       }
+      set({
+        evaluation: {
+          ...evaluation,
+          evaluation_field: createdEvaluationFields,
+        },
+      });
     } catch (error) {
       console.error("Error in mutation call:", error);
     }
@@ -696,6 +725,10 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
     }
 
     const invitationInputs = inputs || { code: "" };
+
+    if (evaluation.is_upload) {
+      invitationInputs.is_sme = true;
+    }
 
     const newInvitation = {
       ...invitationInputs,

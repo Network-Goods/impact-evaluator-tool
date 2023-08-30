@@ -19,6 +19,7 @@ export interface EvaluationDetailsType {
   form_description: string;
   invitation: InvitationType[];
   status: string;
+  is_upload: boolean;
 }
 export type EvaluationFieldType = {
   id: string;
@@ -55,6 +56,7 @@ export default function CreateEvaluation({ store }: CreateEvaluationProps) {
     form_description: store.evaluation?.form_description,
     invitation: store.evaluation?.invitation,
     evaluation_field: store.evaluation?.evaluation_field,
+    is_upload: store.evaluation?.is_upload,
   });
 
   const handleFormChange = (
@@ -85,6 +87,7 @@ export default function CreateEvaluation({ store }: CreateEvaluationProps) {
       form_description: store.evaluation?.form_description,
       invitation: store.evaluation?.invitation,
       evaluation_field: store.evaluation?.evaluation_field,
+      is_upload: store.evaluation?.is_upload,
     });
   }, [store.evaluation]);
 

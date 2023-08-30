@@ -67,9 +67,11 @@ export default function EvaluatorsPage({ store, formInputs, setFormInputs }: Eva
             <div className="text-center px-7 py-2 border-l border-gray  w-[121px]">
               <SmallTitle text="CODE LIMIT" />
             </div>
-            <div className="text-center px-7 py-2 border-l border-gray  w-[140px]">
-              <SmallTitle text="FORM SUBMISSION" />
-            </div>
+            {store.evaluation?.is_upload === false ? (
+              <div className="text-center px-7 py-2 border-l border-gray  w-[140px]">
+                <SmallTitle text="FORM SUBMISSION" />
+              </div>
+            ) : null}
             <div className="text-center py-2 border-l border-gray pl-5 w-[74px]"></div>
           </div>
         </div>
@@ -113,15 +115,17 @@ export default function EvaluatorsPage({ store, formInputs, setFormInputs }: Eva
                 onBlur={(e) => store.setInvitationRemainingUses(Number(e.target.value), invitation.id)}
               />
             </div>
-            <div className="flex items-center justify-evenly text-center py-2 px-5 border-l border-gray w-[140px]">
-              <input
-                type="checkbox"
-                name="form"
-                checked={!invitation.is_sme || false}
-                onChange={() => handleChecked(invitation.id, invitation.is_sme)}
-              />{" "}
-              <span className="text-sm">Required</span>
-            </div>
+            {store.evaluation?.is_upload === false ? (
+              <div className="flex items-center justify-evenly text-center py-2 px-5 border-l border-gray w-[140px]">
+                <input
+                  type="checkbox"
+                  name="form"
+                  checked={!invitation.is_sme || false}
+                  onChange={() => handleChecked(invitation.id, invitation.is_sme)}
+                />{" "}
+                <span className="text-sm">Required</span>
+              </div>
+            ) : null}
             <div className="flex items-center justify-end py-2 border-l border-gray w-[74px]">
               <div>
                 <button
@@ -136,12 +140,16 @@ export default function EvaluatorsPage({ store, formInputs, setFormInputs }: Eva
         </div>
       ))}
       {error && <p className="text-red">{error}</p>}
-      <button
-        className="transition-colors duration-200 ease-in-out transform outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold border border-blue hover:bg-white focus:bg-white text-blue text-lg px-4 py-1 mt-2"
-        onClick={() => store.createInvitation()}
-      >
-        <span>Add Code</span>
-      </button>
+      {store.evaluation?.is_upload === null ? (
+        <div className="italic">Please select a submission type on page 2.</div>
+      ) : (
+        <button
+          className="transition-colors duration-200 ease-in-out transform outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold border border-blue hover:bg-white focus:bg-white text-blue text-lg px-4 py-1 mt-2"
+          onClick={() => store.createInvitation()}
+        >
+          <span>Add Code</span>
+        </button>
+      )}
     </div>
   );
 }
