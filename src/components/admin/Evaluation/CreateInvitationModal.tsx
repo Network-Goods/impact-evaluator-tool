@@ -21,7 +21,7 @@ type CreateInvitationModalProps = {
 const CreateInvitationModal = ({ handleClose, open, store }: CreateInvitationModalProps) => {
   const [inputs, setInputs] = useState<any>({ is_sme: false });
   const [error, setError] = useState("");
-
+  console.log("store", store);
   const handleChange = (event: any) => {
     const name = event.target.name;
     const value = event.target.value;
@@ -98,16 +98,18 @@ const CreateInvitationModal = ({ handleClose, open, store }: CreateInvitationMod
                 onChange={handleChange}
               />
             </div>
-            <div>
-              <EvaluationSubTitle small text="Form Submission" />
-              <input
-                type="checkbox"
-                name="form"
-                checked={!inputs.is_sme || false}
-                onChange={() => handleChecked()}
-              />{" "}
-              <span className="text-sm">Required</span>
-            </div>
+            {store.evaluation?.is_upload === false ? (
+              <div>
+                <EvaluationSubTitle small text="Form Submission" />
+                <input
+                  type="checkbox"
+                  name="form"
+                  checked={!inputs.is_sme || false}
+                  onChange={() => handleChecked()}
+                />{" "}
+                <span className="text-sm">Required</span>
+              </div>
+            ) : null}
           </div>
 
           {error ? <p className="text-red text-sm">{error}</p> : null}
