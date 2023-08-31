@@ -104,6 +104,7 @@ model User {
   github_user_id  String?     @db.Uuid
   role            String      @default("user")
   evaluator       Evaluator[]
+  test            String?
 
   @@map("user")
 }
