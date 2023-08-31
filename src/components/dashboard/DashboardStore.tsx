@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { Evaluation, rpc, DashboardEvaluation } from "src/lib";
 import { Evaluation as evaluation } from "@prisma/client";
 import { trpc } from "src/lib/trpc";
+import { Dispatch, SetStateAction } from "react";
 
 export interface DashboardStore {
   fetching: boolean;
@@ -11,36 +12,76 @@ export interface DashboardStore {
   createEvaluation: () => Promise<evaluation | Error>;
 }
 
-export const useDashboardStore = create<DashboardStore>()((set, get) => ({
-  fetching: true,
-  evaluations: [],
+export function useDashboardStore(setSpinner: Dispatch<SetStateAction<number>>) {
+  return create<DashboardStore>()((set, get) => ({
+    fetching: true,
+    evaluations: [],
 
-  load: async () => {
-    trpc()
-      .user.getDashboardStore.query()
-      .then((data) => {
-        if (data instanceof Error) {
-          console.error(`ERROR -- rpc call getUserEvaluations failed`, data);
-          return;
-        }
+    load: async () => {
+      trpc()
+        .user.getDashboardStore.query()
+        .then((data) => {
+          if (data instanceof Error) {
+            console.error(`ERROR -- rpc call getUserEvaluations failed`, data);
+            return;
+          }
 
-        set({
-          fetching: false,
-          evaluations: data,
+          set({
+            fetching: false,
+            evaluations: data,
+          });
+
+          setSpinner((prev) => prev + 1);
         });
-      });
-  },
+    },
 
-  createEvaluation: async (): Promise<evaluation | Error> => {
-    const newEvaluation: evaluation = {
-      ...Evaluation.init(),
-    };
+    createEvaluation: async (): Promise<evaluation | Error> => {
+      const newEvaluation: evaluation = {
+        ...Evaluation.init(),
+      };
 
-    const res = await trpc().admin.createEvaluation.mutate(newEvaluation);
+      const res = await trpc().admin.createEvaluation.mutate(newEvaluation);
 
-    if (res instanceof Error) {
-      return res;
-    }
-    return newEvaluation;
-  },
-}));
+      if (res instanceof Error) {
+        return res;
+      }
+      return newEvaluation;
+    },
+  }));
+}
+
+// setSpinner: Dispatch<SetStateAction<number>>
+
+// export const useDashboardStore = create<DashboardStore>()((set, get) => ({
+//   fetching: true,
+//   evaluations: [],
+
+//   load: async () => {
+//     trpc()
+//       .user.getDashboardStore.query()
+//       .then((data) => {
+//         if (data instanceof Error) {
+//           console.error(`ERROR -- rpc call getUserEvaluations failed`, data);
+//           return;
+//         }
+
+//         set({
+//           fetching: false,
+//           evaluations: data,
+//         });
+//       });
+//   },
+
+//   createEvaluation: async (): Promise<evaluation | Error> => {
+//     const newEvaluation: evaluation = {
+//       ...Evaluation.init(),
+//     };
+
+//     const res = await trpc().admin.createEvaluation.mutate(newEvaluation);
+
+//     if (res instanceof Error) {
+//       return res;
+//     }
+//     return newEvaluation;
+//   },
+// }));
