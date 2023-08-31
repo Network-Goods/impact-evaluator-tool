@@ -34,9 +34,21 @@ export const useSubmissionStore = create<SubmissionStore>()((set, get) => ({
       console.error(`ERROR -- rpc call getSubmission failed. submission_id: ${submission_id}`, data);
       return;
     }
+    let parsedLinks;
+    if ("links" in data && typeof data.links === "string") {
+      try {
+        parsedLinks = JSON.parse(data.links);
+      } catch (error) {
+        console.error("Failed to parse links:", error);
+        parsedLinks = [];
+      }
+    }
 
     set({
-      submission: data,
+      submission: {
+        ...data,
+        links: parsedLinks || [],
+      },
       githubHandle: githubHandle,
       fetching: false,
     });

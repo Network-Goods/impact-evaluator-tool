@@ -54,7 +54,8 @@ export const importCSVData = adminProcedure
       createdEvaluationFields.push(evaluationField);
     }
 
-    for (const row of parsedData) {
+    const validData = parsedData.filter((row: any) => row.project_name); //preventing empty rows from being added
+    for (const row of validData) {
       const submissionId = uuid();
       const submissionData = {
         id: submissionId,
