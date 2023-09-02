@@ -56,7 +56,7 @@ export default function VotingTableItem({
       </div>
       <div className="w-[33%] md:w-[23.5%] text-center">
         <div className="py-[22px]">
-          <div className="flex flex-row  justify-evenly items-center">
+          <div className="flex flex-row justify-evenly items-center">
             <button
               onClick={() => votingStore.decrementVote(project.id)}
               className={`w-6 h-6 md:w-9 md:h-9 rounded  outline-none ${

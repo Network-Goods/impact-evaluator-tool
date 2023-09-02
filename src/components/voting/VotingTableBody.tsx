@@ -50,6 +50,17 @@ export default function VotingTableBody({ idx, project, submissions, search }: V
               </>
             )}
           </div>
+          {project.submission_metric_value.length > 0 && (
+            <>
+              <div className="font-bold mt-6 mb-3">Metrics</div>
+              {project.submission_metric_value.map((metric: any) => (
+                <div key={metric.id} className="">
+                  <div className="font-bold">{metric.evaluation_metric.name}</div>
+                  <p className="text-sm mb-3 whitespace-pre-wrap">{metric.value}</p>
+                </div>
+              ))}
+            </>
+          )}
         </div>
       </div>
     </div>

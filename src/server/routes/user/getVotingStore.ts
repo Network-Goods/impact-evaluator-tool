@@ -53,6 +53,17 @@ export const getVotingStore = userProcedure
               },
             },
           },
+          submission_metric_value: {
+            select: {
+              id: true,
+              value: true,
+              evaluation_metric: {
+                select: {
+                  name: true,
+                },
+              },
+            },
+          },
         },
       });
 

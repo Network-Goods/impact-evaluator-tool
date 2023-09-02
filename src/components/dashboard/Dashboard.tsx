@@ -6,16 +6,9 @@ import { EvaluationCard } from "./EvaluationCard";
 import { EvaluationEmptyCard } from "./EvaluationEmptyCard";
 import { EvaluationItem } from "./EvaluationItem";
 import { useDashboardStore } from "./DashboardStore";
-import { trpc } from "src/lib/trpc";
-import { ErrorBoundary } from "react-error-boundary";
 
 export default function Dashboard() {
-  const [spinner, setSpinner] = useState(1);
-
-  const store = useDashboardStore(setSpinner)();
-  // const store = useDashboardStore();
-
-  console.log(spinner);
+  const store = useDashboardStore();
 
   useEffect(() => {
     store.load();

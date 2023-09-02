@@ -28,7 +28,8 @@ import { setUserID } from "./setUserID";
 import { setVoiceCredits } from "./setVoiceCredits";
 import { getEvaluationResult } from "./getEvaluationResult";
 import { setUploadStatus } from "./setUploadStatus";
-import { importCSVData } from "./importCSVData";
+import { importSubmissionCSVData } from "./importSubmissionCSVData";
+import { importMetricsCSVData } from "./importMetricsCSVData";
 
 export const admin = router({
   createEvaluation,
@@ -60,5 +61,6 @@ export const admin = router({
   setVoiceCredits,
   getEvaluationResult,
   setUploadStatus,
-  importCSVData,
+  importSubmissionCSVData,
+  importMetricsCSVData,
 });

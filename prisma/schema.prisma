@@ -8,18 +8,19 @@ datasource db {
 }
 
 model Evaluation {
-  id               String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name             String?
-  status           String            @default("draft")
-  description      String            @default("")
-  start_time       DateTime?         @db.Timestamptz(6)
-  end_time         DateTime?         @db.Timestamptz(6)
-  form_description String?
-  is_upload        Boolean?
-  evaluation_field EvaluationField[]
-  evaluator        Evaluator[]
-  invitation       Invitation[]
-  submission       Submission[]
+  id                String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name              String?
+  status            String             @default("draft")
+  description       String             @default("")
+  start_time        DateTime?          @db.Timestamptz(6)
+  end_time          DateTime?          @db.Timestamptz(6)
+  form_description  String?
+  is_upload         Boolean?
+  evaluation_field  EvaluationField[]
+  evaluator         Evaluator[]
+  invitation        Invitation[]
+  submission        Submission[]
+  evaluation_metric EvaluationMetric[]
 
   @@map("evaluation")
 }
@@ -66,19 +67,20 @@ model Invitation {
 }
 
 model Submission {
-  id               String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name             String
-  github_link      String?
-  evaluation_id    String            @db.Uuid
-  description      Json              @db.Json
-  links            Json?
-  github_handle    String?
-  user_id          String?           @db.Uuid
-  is_submitted     Boolean           @default(false)
-  contract_id      String?
-  evaluation       Evaluation        @relation(fields: [evaluation_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  submission_field SubmissionField[]
-  votes            Votes[]
+  id                      String                  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name                    String
+  github_link             String?
+  evaluation_id           String                  @db.Uuid
+  description             Json                    @db.Json
+  links                   Json?
+  github_handle           String?
+  user_id                 String?                 @db.Uuid
+  is_submitted            Boolean                 @default(false)
+  contract_id             String?
+  evaluation              Evaluation              @relation(fields: [evaluation_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  submission_field        SubmissionField[]
+  votes                   Votes[]
+  submission_metric_value SubmissionMetricValue[]
 
   @@map("submission")
 }
@@ -104,7 +106,6 @@ model User {
   github_user_id  String?     @db.Uuid
   role            String      @default("user")
   evaluator       Evaluator[]
-  test            String?
 
   @@map("user")
 }
@@ -118,4 +119,25 @@ model Votes {
 
   @@id([evaluator_id, submission_id])
   @@map("votes")
+}
+
+model EvaluationMetric {
+  id                      String                  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  evaluation_id           String                  @db.Uuid
+  name                    String
+  evaluation              Evaluation              @relation(fields: [evaluation_id], references: [id], onDelete: Cascade)
+  submission_metric_value SubmissionMetricValue[]
+
+  @@map("evaluation_metric")
+}
+
+model SubmissionMetricValue {
+  id                   String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  evaluation_metric_id String           @db.Uuid
+  value                String
+  submission_id        String           @db.Uuid
+  evaluation_metric    EvaluationMetric @relation(fields: [evaluation_metric_id], references: [id], onDelete: Cascade)
+  submission           Submission       @relation(fields: [submission_id], references: [id], onDelete: Cascade)
+
+  @@map("submission_metric_value")
 }

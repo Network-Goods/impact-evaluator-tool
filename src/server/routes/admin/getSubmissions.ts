@@ -13,6 +13,7 @@ export const getSubmissions = adminProcedure
         where: { evaluation_id: input.evaluation_id },
         orderBy: { name: "asc" },
         select: {
+          id: true,
           name: true,
           github_link: true,
           github_handle: true,
@@ -54,6 +55,7 @@ export const getSubmissions = adminProcedure
 
       const formattedSubmissions = submissionsWithUsers.map((s) => {
         const commonProperties = {
+          id: s.id,
           project_name: s.name,
           representative_github: s.github_handle,
           is_submitted: s.is_submitted,

@@ -2,7 +2,7 @@ import { adminProcedure } from "src/server/trpc";
 import { z } from "zod";
 import { v4 as uuid } from "uuid";
 
-export const importCSVData = adminProcedure
+export const importSubmissionCSVData = adminProcedure
   .input(
     z.object({
       csvFile: z.string(),

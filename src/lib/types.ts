@@ -34,6 +34,7 @@ export namespace Evaluation {
       start_time: null,
       end_time: null,
       form_description: "",
+      is_upload: null,
     };
   }
 }
@@ -48,6 +49,7 @@ export interface Evaluator {
 
 export interface VotingTableBodySubmission extends submission {
   submission_field: VotingTableBodySubmissionFields[];
+  submission_metric_value: VotingTableBodySubmissionMetricValue[];
 }
 
 type VotingTableBodySubmissionFields = {
@@ -58,6 +60,12 @@ type VotingTableBodySubmissionFields = {
   placeholder: string;
   subheading: string;
   submission_field_id: string;
+};
+
+type VotingTableBodySubmissionMetricValue = {
+  evaluation_metric: { name: string };
+  id: string;
+  value: number;
 };
 
 export interface RoundStatus {

@@ -115,6 +115,38 @@ export function parseSubmissions(submissions: any) {
 
   return output;
 }
+export function parseSubmissionsForMetrics(submissions: any) {
+  submissions = submissions.filter((sub: any) => sub.is_submitted == true);
+  submissions.sort((a: any, b: any) => a.project_name.toLowerCase().localeCompare(b.project_name.toLowerCase()));
+
+  if (submissions.length == 0) {
+    return [];
+  }
+
+  const output = [];
+  const headerArr: (string | number)[] = [
+    "submission_name",
+    "submission_id",
+    "representative_github",
+    "example metrics 1",
+    "example metrics 2",
+  ];
+
+  output.push(headerArr);
+
+  for (const submission of submissions) {
+    const submissionArr: (string | number)[] = [];
+    submissionArr.push(submission.project_name);
+    submissionArr.push(submission.id);
+    submissionArr.push(submission.representative_github);
+    submissionArr.push(Math.random() * 100);
+    submissionArr.push(Math.random() * 100);
+
+    output.push(submissionArr);
+  }
+
+  return output;
+}
 
 export function sortEvaluationResults(obj: any) {
   obj.evaluators.sort(function (a: any, b: any) {

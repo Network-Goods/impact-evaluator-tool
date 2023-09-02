@@ -20,6 +20,11 @@ export const getEvaluationStore = adminProcedure
             include: { user: true },
           },
           invitation: true,
+          evaluation_metric: {
+            include: {
+              submission_metric_value: true,
+            },
+          },
         },
       });
 

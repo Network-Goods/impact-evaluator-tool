@@ -3,6 +3,7 @@ import { v4 as uuid } from "uuid";
 import { rpc, Submission } from "src/lib";
 import { Submission as submission } from "@prisma/client";
 import { trpc } from "src/lib/trpc";
+import { parseSubmissionsForMetrics, parseNestedArraysIntoCSV, downloadCSV } from "src/lib/utils";
 
 export interface EvaluationStore {
   fetching: boolean;
@@ -44,6 +45,8 @@ export interface EvaluationStore {
   setUserID: (userID: string, id: string) => void;
   deleteSubmission: (id: string) => void;
   setSubmission: (id: string) => void;
+  getSubmissionsForMetrics: (evaluation_id: string) => Promise<Error | any>;
+  uploadMetrics: (csvData: Record<string, any>[], user_id: string) => Promise<void>;
 }
 
 export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
@@ -413,14 +416,14 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
     }
 
     try {
-      const createdEvaluationFields = await trpc().admin.importCSVData.mutate({
+      const createdEvaluationFields = await trpc().admin.importSubmissionCSVData.mutate({
         csvFile: JSON.stringify(csvData),
         evaluation_id: evaluation.id,
         user_id,
       });
 
       if (!createdEvaluationFields) {
-        console.error(`ERROR -- rpc call importCSVData did not return expected data`);
+        console.error(`ERROR -- rpc call importSubmissionCSVData did not return expected data`);
       }
       set({
         evaluation: {
@@ -1133,5 +1136,44 @@ export const useEvaluationStore = create<EvaluationStore>()((set, get) => ({
         // TODO: error handling
         console.log("ERROR -- rpc call setSubmission failed", err);
       });
+  },
+  getSubmissionsForMetrics: async (evaluation_id: string): Promise<Error | any> => {
+    const data = await trpc().admin.getSubmissions.query({ evaluation_id: evaluation_id });
+
+    if (!data || data instanceof Error) {
+      console.error(`ERROR -- rpc call getSubmissions failed. evaluation_id: ${evaluation_id}`, data);
+      return;
+    }
+    const parsedArray = parseSubmissionsForMetrics(data.submissions);
+    const csv = parseNestedArraysIntoCSV(parsedArray);
+    const csv_name = `submissions_for_metrics.csv`;
+    downloadCSV(csv, csv_name);
+  },
+  uploadMetrics: async (csvData: Record<string, any>[], user_id: string): Promise<void> => {
+    const evaluation = get().evaluation;
+
+    if (!evaluation) {
+      console.error("Evaluation is not defined.");
+      return;
+    }
+
+    try {
+      const createdEvaluationMetrics = await trpc().admin.importMetricsCSVData.mutate({
+        csvFile: JSON.stringify(csvData),
+        evaluation_id: evaluation.id,
+      });
+
+      if (!createdEvaluationMetrics) {
+        console.error(`ERROR -- rpc call importMetricsCSVData did not return expected data`);
+      }
+      set({
+        evaluation: {
+          ...evaluation,
+          evaluation_metric: createdEvaluationMetrics,
+        },
+      });
+    } catch (error) {
+      console.error("Error in mutation call:", error);
+    }
   },
 }));

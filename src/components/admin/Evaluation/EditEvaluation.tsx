@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import Papa from "papaparse";
 import LeftArrow from "public/images/svg/LeftArrow";
 import EvaluationSubTitle from "./EvaluationSubTitle";
 import Edit from "public/images/svg/Edit";
@@ -35,6 +36,8 @@ export default function EditEvaluation({ evaluation_id, store }: EditEvaluationP
   const [showFormFields, setShowFormFields] = useState<boolean>(false);
   const [startDate, setStartDate] = useState(store.evaluation?.start_time ? moment(store.evaluation?.start_time) : "");
   const [endDate, setEndDate] = useState(store.evaluation?.end_time ? moment(store.evaluation?.end_time) : "");
+  const [loading, setLoading] = useState(false);
+  const [csvData, setCsvData] = useState<Array<Record<string, any>>>([]);
 
   const handleOpenOutcomeModal = (submission: any) => {
     setOutcomeModalContent(submission);
@@ -73,6 +76,26 @@ export default function EditEvaluation({ evaluation_id, store }: EditEvaluationP
   const handleEndDateChange = (date: string) => {
     setEndDate(date);
     store.setEvaluationEndTime(date);
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      Papa.parse(file, {
+        header: true,
+        complete: (result) => {
+          setCsvData(result.data as Record<string, any>[]);
+        },
+      });
+    }
+  };
+
+  const handleUploadMetricsClick = async () => {
+    setLoading(true);
+
+    await store.uploadMetrics(csvData);
+    setCsvData([]);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -279,6 +302,51 @@ export default function EditEvaluation({ evaluation_id, store }: EditEvaluationP
               );
             })}
           </ol>
+          <hr className="my-10 border-gray" />
+          <div className="pb-4">
+            <EvaluationSubTitle text="Metrics (will only work once submissions exist)" />
+          </div>
+          <div className="flex justify-between items-center">
+            <div>
+              <h5 className="text-offblack font-bold mb-1">Metrics Template</h5>
+              <button onClick={() => store.getSubmissionsForMetrics(store.evaluation.id)}>
+                <div className="transition-colors duration-200 ease-in-out transform  outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold mx-auto  border border-blue bg-blue hover:bg-blue-darkest hover:border-blue-darkest  text-white text-sm md:text-base py-1 px-2">
+                  Download
+                </div>
+              </button>
+            </div>
+            <div>
+              <div>
+                <h5 className="text-offblack font-bold mb-1">Upload metrics</h5>
+                <div className="flex">
+                  <input type="file" accept=".csv" onChange={handleFileChange} />
+                  {csvData.length > 0 ? (
+                    <button
+                      className="transition-colors duration-200 ease-in-out transform  outline-none focus:outline-none flex flex-row items-center justify-center rounded-md font-bold border border-blue bg-blue hover:bg-blue-darkest hover:border-blue-darkest  text-white text-sm md:text-base py-1 w-20"
+                      onClick={handleUploadMetricsClick}
+                    >
+                      {loading ? "Uploading" : "Upload"}
+                    </button>
+                  ) : null}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="p-4">
+            {store.evaluation.evaluation_metric &&
+              store.evaluation.evaluation_metric.map((metric: any) => (
+                <div key={metric.id} className="mb-4 p-4 border">
+                  <h2 className="font-bold mb-2">{metric.name}</h2>
+                  <ul>
+                    {metric.submission_metric_value.map((submission: any) => (
+                      <li key={submission.id} className="mb-1">
+                        Submission ID: {submission.submission_id} - Value: {submission.value}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+          </div>
         </div>
         <OutcomeModal
           store={store}
@@ -287,7 +355,6 @@ export default function EditEvaluation({ evaluation_id, store }: EditEvaluationP
           submission={outcomeModalContent}
           evaluation_id={evaluation_id}
         />
-
         <EvaluatorModal
           store={store}
           open={openEvaluatorModal}
